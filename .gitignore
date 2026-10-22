@@ -1,0 +1,11 @@
+Data/
+engine/config.json
+engine/enshrouded-patcher.exe
+engine/bin/
+engine/vendor/
+*.exe
+*.bytecode
+*.zip
+Pruefungen/
+outputs/
+work/

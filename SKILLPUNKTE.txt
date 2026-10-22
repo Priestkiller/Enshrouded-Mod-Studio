@@ -1,0 +1,55 @@
+FERTIGKEITSPUNKTE MIT DEDICATED SERVER PRÜFEN
+Mod Studio 0.4.5 · 18. Oktober 2026
+
+BEFUND
+Der gemeldete Patch wurde nur auf dem Dedicated Server angewendet. Im lokal
+geprüften Spielclient steht skillPointsPerLevel weiterhin auf 2.
+Die vorhandene Patcher-Funktion kann den Archivwert korrekt auf 8 oder 12 setzen.
+Ein Serverpatch ändert jedoch keine Dateien auf den Computern der Mitspieler.
+
+Die Analyse der Client-EXE fand eine passende Berechnung des Levelanteils mit
+(Level − 1) × Punktewert. Die vollständige Netzwerkzuständigkeit und die
+tatsächliche Punkteübernahme wurden dabei nicht im laufenden Spiel geprüft.
+Deshalb zuerst Client und Server mit demselben Wert testen, statt ungeprüft
+eine andere Spielformel oder den Charakter-Spielstand umzuschreiben.
+
+VORGEHEN
+1. Mod Studio 0.4.5 in einen festen Ordner entpacken.
+2. Über „Altes Setup übernehmen“ Profile und gespeicherte Archivbasen aus dem
+   bisherigen Studio-Ordner übernehmen. Data aufbewahren. Fehlt eine passende
+   Basis für bereits gepatchte Dateien, zuerst saubere Steam-Dateien herstellen.
+3. Dein gewünschtes Server-Profil laden. Unter Spieler „Fertigkeitspunkte pro
+   Level“ einschalten und die gewünschte ganze Zahl einstellen, etwa 8.
+4. Den Server bei Bedarf mit diesem Wert aktualisieren und danach den Patcher
+   beenden beziehungsweise den Abschluss der Aktualisierung abwarten.
+5. Direkt an der Fertigkeitspunkte-Option auf
+   „Gleiches Profil für Spielclient anlegen …“ klicken.
+6. Die enshrouded.exe aus deinem Spielclient auswählen, NICHT
+   enshrouded_server.exe. Es entsteht ein separates Client-Profil.
+7. Die Kopie enthält alle Einstellungen des bisherigen Profils. Diese Auswahl
+   prüfen und bei geschlossenem Spiel „Patch anwenden / aktualisieren“ drücken.
+8. Die Abschlussmeldung muss den Client und den gewünschten Archivwert nennen,
+   zum Beispiel „Fertigkeitspunkte-Tabelle (Client): 2 → 8 im Archiv bestätigt“.
+9. Server und Spiel neu starten und einen neuen Levelaufstieg prüfen.
+   Für einen konsistenten Mehrspielertest auf den beteiligten Clients denselben
+   Punktewert verwenden.
+
+PRÜFUNG SEIT 0.4.2
+Der Punkte-Handler bleibt erhalten. Eine neue Kontrolle blockiert den Patch,
+wenn die ausgegebene Tabelle fehlt, ihre Identität nicht passt oder nicht der
+gewünschte Wert darin steht. Das gepackte Archiv wird danach erneut eingelesen.
+Ein Serverlauf meldet ausdrücklich, dass die Clientdateien nicht angepasst
+wurden. Die Erfolgsmeldung benennt den tatsächlich bestätigten Archivwert.
+
+WENN ES DANACH WEITER BEI 2 BLEIBT
+Zuerst kontrollieren, ob die Abschlussmeldung tatsächlich „Client“ und den
+gewünschten Wert nennt. Ein erfolgreich geändertes Archiv ist ein Datenbeleg,
+noch kein Beleg für die laufende Punkteberechnung im Mehrspieler.
+Wie bereits verteilte Punkte behandelt werden, ist ebenfalls noch offen.
+Vorhandene Charakter- oder Weltspeicherstände werden durch dieses Tool nicht
+direkt gelesen oder umgeschrieben. Eine pauschale Live-Funktionsgarantie ist
+mit den bisherigen Tests nicht belegt.
+
+Updateprüfung vom 21. Oktober 2026: Auf Clientrevision 1273043 wurde der
+Wert 2 → 8 auch nach Repack und vollständigem Readback bestätigt. Die
+Abgrenzung zwischen Archivnachweis und offenem Spieltest bleibt bestehen.

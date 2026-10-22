@@ -1,0 +1,258 @@
+{
+  "gameDirectory": "",
+  "outputDirectory": "./output",
+  "player": {
+    "adjustPlayerMaxLevel": {
+      "enabled": false,
+      "value": 100,
+      "description": "Adjust player max level"
+    },
+    "adjustSkillPointsPerLevel": {
+      "enabled": false,
+      "value": 8,
+      "description": "Adjust skill points gained per level"
+    },
+    "adjustSkillPointsPerRoot": {
+      "enabled": false,
+      "factor": 4,
+      "description": "Adjust skill points by factor from killing Root/Elixir Wells. original * factor"
+    },
+    "adjustFoodBuffReapply": {
+      "enabled": false,
+      "description": "Remove food buff reapply limit"
+    },
+    "enableCreativeMode": {
+      "enabled": false,
+      "includeUpgrade": false,
+      "description": "Unlock most recipes, no crafting cost. Set includeUpgrade to also apply to Flame Altar upgrade recipes (e.g. Flame_Level_X_to_Y_Unlock)."
+    },
+    "adjustPlayerManaPerAP": {
+      "enabled": false,
+      "value": 20,
+      "description": "Mana increase per AP"
+    },
+    "adjustPlayerHealthPerAP": {
+      "enabled": false,
+      "value": 50,
+      "description": "HP increase per AP"
+    },
+    "adjustPlayerStaminaPerAP": {
+      "enabled": false,
+      "value": 10,
+      "description": "Stamina increase per AP"
+    },
+    "adjustStaminaRegen": {
+      "enabled": false,
+      "factor": 1.5,
+      "description": "Scale base stamina recharge rate (default: 1)"
+    }
+  },
+  "inventory": {
+    "adjustStackSize": {
+      "enabled": true,
+      "value": 65000,
+      "description": "Set item maxStackSize"
+    },
+    "adjustSlotCount": {
+      "enabled": true,
+      "factor": 2,
+      "cap": 96,
+      "description": "Storage slots - factor * original, cap at cap. Need rebuild storage"
+    },
+    "enableHigherBackpackSlot": {
+      "enabled": true,
+      "bonus": 8,
+      "cap": 48,
+      "description": "Add slots to backpack size. Final size is original + bonus, capped at cap."
+    }
+  },
+  "world": {
+    "adjustFogOfWar": {
+      "enabled": false,
+      "factor": 5,
+      "description": "Fog of war range multiplier"
+    },
+    "adjustAltarLimit": {
+      "enabled": false,
+      "factor": 3,
+      "cap": 16,
+      "unlockSafeAltarCap": false,
+      "description": "Altar count per flame level - multiply by factor, cap at cap. Experimental unlockSafeAltarCap attempts to bypass Flame Altar placement cap; may cause server, magic chest, or network bugs above 10 altars."
+    },
+    "adjustTerrainExchange": {
+      "enabled": false,
+      "factor": 20,
+      "description": "Resource from terrain mining — original ÷ factor"
+    },
+    "adjustRegrowable": {
+      "enabled": false,
+      "includeAloe": false,
+      "description": "Make harvestable plants regrowable"
+    },
+    "adjustFactoryInventoryAccess": {
+      "enabled": true,
+      "description": "Normale Kisten und Stationsinventare als zusätzlichen Herstellungsbestand kennzeichnen."
+    },
+    "enableAllMarkerFastTravel": {
+      "enabled": true,
+      "description": "Make most map markers fast travel-able"
+    },
+    "adjustUpdraft": {
+      "enabled": false,
+      "factor": 10,
+      "description": "Updraft strength multiplier"
+    },
+    "enableAllBuildingBreakable": {
+      "enabled": true,
+      "description": "Make most buildings breakable"
+    },
+    "unblockBuildLimit": {
+      "enabled": true,
+      "description": "Remove build limit, place altars anywhere"
+    },
+    "adjustShroudSettings": {
+      "enabled": false,
+      "extinctionValue": 0.3499999940395355,
+      "densityValue": 1,
+      "thicknessValue": 8,
+      "description": "Shroud fog settings — extinction (light penetration, 0-1, default 0.35), density (thickness, 0-1, default 1.0), barrier thickness (0 removes barrier, default 8)"
+    },
+    "enableSingleStepTaming": {
+      "enabled": false,
+      "description": "Benötigte erfolgreiche Zähmungsschritte unterstützter Tiere auf 1 setzen."
+    }
+  },
+  "gameplay": {
+    "adjustItemMaxLevel": {
+      "enabled": false,
+      "value": 100,
+      "description": "Item max enhancement level"
+    },
+    "adjustManaCost": {
+      "enabled": false,
+      "factor": 0.2,
+      "description": "Spell mana cost multiplier"
+    },
+    "adjustSpellCastTime": {
+      "enabled": false,
+      "factor": 0.2,
+      "description": "Spell cast time multiplier"
+    },
+    "adjustBowChargeTime": {
+      "enabled": false,
+      "factor": 0.2,
+      "description": "Bow charge time multiplier"
+    },
+    "adjustPickaxeRange": {
+      "enabled": false,
+      "factor": 10,
+      "description": "Pickaxe mining range in blocks"
+    },
+    "adjustWoodDamage": {
+      "enabled": false,
+      "factor": 3,
+      "description": "Axe wood damage multiplier"
+    },
+    "adjustFallDistance": {
+      "enabled": false,
+      "factorLethal": 3,
+      "factorStart": 2,
+      "description": "Fall distance: lethalDistance * factorLethal, startDistance * factorStart"
+    },
+    "adjustWandProjectileDuration": {
+      "enabled": false,
+      "factor": 5,
+      "description": "Wand projectile lifetime multiplier"
+    },
+    "adjustChestRandomSlots": {
+      "enabled": false,
+      "min": 1,
+      "max": 5,
+      "description": "Random loot slots in chests (original 1-3)"
+    },
+    "enableUncapDedicatedServerSettings": {
+      "enabled": false,
+      "uncapServerFactorMin": 0.1,
+      "uncapServerFactorMax": 5,
+      "description": "[EXPERIMENTAL] Extend numeric factor bounds only (0.1–5x); durations, enums, and booleans remain unchanged."
+    },
+    "enableUncapClientSettings": {
+      "enabled": false,
+      "clientFactorMin": 0.1,
+      "clientFactorMax": 5,
+      "description": "[EXPERIMENTAL] Extend numeric factor sliders only; booleans, enums, and time settings are skipped. Player health, stamina, and mana stay capped at 4x."
+    },
+    "enableAdjustCraftingTime": {
+      "enabled": false,
+      "factor": 0.1,
+      "description": "Crafting time multiplier"
+    },
+    "adjustMusicTime": {
+      "enabled": false,
+      "factorTime": 0.2,
+      "description": "Music time to max buff = original * factorTime"
+    },
+    "adjustMusicInstruments": {
+      "enabled": false,
+      "factorInstruments": 10,
+      "description": "Max instruments for comfort = original * factorInstruments"
+    },
+    "adjustMusicBuff": {
+      "enabled": false,
+      "factorBuff": 10,
+      "description": "Max music comfort buff = original * factorBuff"
+    },
+    "adjustGemSlotProbability": {
+      "enabled": false,
+      "common": 0,
+      "uncommon": 0.05,
+      "rare": 0.25,
+      "epic": 0.5,
+      "legendary": 1,
+      "description": "Probability item has gem slot by rarity (value 0 - 1)"
+    },
+    "adjustWaterSourcePerFlameLevel": {
+      "enabled": false,
+      "factor": 1,
+      "cap": 50,
+      "description": "Water sources per flame level - multiply by factor, cap at cap"
+    },
+    "enableCraftOutputMultiplier": {
+      "enabled": false,
+      "globalMultiplier": 1,
+      "description": "Craft output stack multiplier for every recipe"
+    },
+    "enableGatherLootMultipliers": {
+      "enabled": false,
+      "collectingMultiplier": 1,
+      "treesMultiplier": 1,
+      "farmingMultiplier": 1,
+      "enemyLootMultiplier": 1,
+      "chestLootMultiplier": 1,
+      "patchGameSettings": true,
+      "description": "Gather, enemy, and chest loot quantity multipliers"
+    },
+    "enableAutoLoot": {
+      "enabled": false,
+      "autoCollectGravityLoot": true,
+      "autoCollectMaterialPiles": true,
+      "autoCollectQuestLoot": true,
+      "pickupRadiusMeters": 16,
+      "pickupUpdateDelayMs": 0,
+      "tuneGatherNodes": true,
+      "keepLootSparks": true,
+      "description": "Automatically collect supported ground loot and optionally settle gather-node drops"
+    },
+    "enableSourceLootSlots": {
+      "enabled": false,
+      "enemyMultiplier": 1,
+      "chestMultiplier": 1,
+      "description": "Studio: random loot slot multipliers by source; not guaranteed item amounts."
+    }
+  },
+  "settings": {
+    "keepTempFiles": false,
+    "keepModdedFiles": false
+  },
+  "kfcParserVersion": ""
+}

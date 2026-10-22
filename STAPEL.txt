@@ -1,0 +1,53 @@
+STAPELGRÖSSEN — MOD STUDIO 0.4.5
+21. Oktober 2026
+
+WAS DIE ÄNDERUNG MACHT
+Bereits stapelbare Gegenstände erhalten die eingestellte Höchstzahl pro
+Stapel. Bei Holz kann das beispielsweise 65000 statt 250 sein. Es werden
+keine Gegenstände erzeugt und vorhandene Stapel nicht automatisch vereinigt.
+Waffen, Rüstung und andere Einzelstücke werden nicht stapelbar gemacht.
+
+Die aktuelle Spielrevision 1273043 speichert das Feld als 16-Bit-Zahl.
+Deshalb erlaubt das Tool nur ganze Werte von 2 bis 65535. Die bisherige
+allgemeine Grenze von 1 Milliarde war für dieses Feld falsch. Vorhandene
+ungültige Profilwerte müssen bewusst korrigiert werden; sie werden nicht
+still auf einen anderen Wert gesetzt.
+
+SO PRÜFST DU DEN TATSÄCHLICH INSTALLIERTEN STAND
+1. Den gewünschten Client- oder Serverordner im Tool auswählen.
+2. Unter Inventar bei „Größere Item-Stapel“ den gewünschten Wert einstellen.
+3. „Installierte Stapel prüfen …“ drücken. Das liest Archivkopien frisch aus.
+4. Im Ergebnis Zielordner und Spielversion kontrollieren. Bei ausgeschalteter
+   Profiloption ist der Wert nur ein Vergleichswert, kein aktiver Patchauftrag.
+5. Enthalten die betroffenen Items noch ihre alten Grenzen, das Spiel bzw.
+   den Server schließen, den Schalter aktivieren und das Profil anwenden.
+6. Auf den bestätigten Abschluss mit Item-Anzahl und Stapelwert warten.
+   Anschließend erneut „Installierte Stapel prüfen …“ drücken.
+
+Für getrennte Installationen den Ablauf getrennt ausführen. Eine Prüfung
+des lokalen Clients sagt nichts über die Dateien eines entfernten Servers.
+Im Tool immer den Ordner mit der dazugehörigen EXE/KFC/kfc_resources wählen.
+
+NACH EINEM ENSHROUDED-UPDATE
+Die Dateiprüfung über Steam durchführen, unter Werkzeuge die neue Basis
+freigeben und danach das Profil erneut anwenden. Eine alte Basis wird
+weiterhin gesperrt. Das Tool liest die Reflection jedes Mal frisch aus und
+prüft für den Stapelpatch Feldtyp, geeignete Items und die exakten Werte
+vor dem Packen und nach dem erneuten Auslesen. Eine unbekannte Feldstruktur
+oder eine fehlende/übersprungene Ausgabe bricht den Patch ab.
+Das ersetzt keine Prüfung der Spielwirkung nach einem unbekannten Update.
+
+SPIELTEST
+Nach dem Anwenden Spiel/Server neu starten und identische Materialien
+aufnehmen oder zwei gleiche Stapel zusammenlegen. Zum Beispiel sollte ein
+Holzstapel mit 250 und ein weiteres identisches Holzstück zu 251 zusammen-
+gelegt werden können, wenn das neue Limit höher als 250 ist. Die reine
+Anzeige zweier alter Stapel belegt noch keine fehlende Wirkung.
+
+PRÜFSTAND
+Der ursprüngliche Handler setzt auf Revision 1273043 das Feld maxStackSize
+bei 2267 bereits stapelbaren Item-Ressourcen korrekt. 1995 Einzelstücke
+bleiben unverändert. Ein zusätzlicher eigener Guard kontrolliert die
+Absicht des Profils und den Archiv-Readback. Die native Inventarroutine
+verwendet dieses Feld ebenfalls; eine Spielwirkungs-Garantie wird daraus
+nicht abgeleitet. Vollständige Ergebnisse: PRUEFBERICHT.txt.

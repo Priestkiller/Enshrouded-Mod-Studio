@@ -1,0 +1,32 @@
+$ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.Drawing
+$studioAssets = Join-Path (Split-Path -Parent $PSScriptRoot) 'assets'
+$studioBitmap = [Drawing.Bitmap]::new(256,256)
+$studioGraphics = [Drawing.Graphics]::FromImage($studioBitmap)
+$studioGraphics.SmoothingMode = [Drawing.Drawing2D.SmoothingMode]::AntiAlias
+$studioGraphics.Clear([Drawing.Color]::FromArgb(255,14,22,34))
+$studioAmber = [Drawing.SolidBrush]::new([Drawing.Color]::FromArgb(255,232,183,119))
+$studioSoft = [Drawing.SolidBrush]::new([Drawing.Color]::FromArgb(255,37,32,27))
+$studioOutline = [Drawing.Pen]::new([Drawing.Color]::FromArgb(255,143,103,58),5)
+$studioHex = [Drawing.PointF[]]@([Drawing.PointF]::new(128,17),[Drawing.PointF]::new(223,72),[Drawing.PointF]::new(223,184),[Drawing.PointF]::new(128,239),[Drawing.PointF]::new(33,184),[Drawing.PointF]::new(33,72))
+$studioGraphics.FillPolygon($studioSoft,$studioHex)
+$studioGraphics.DrawPolygon($studioOutline,$studioHex)
+$studioFlame = [Drawing.Drawing2D.GraphicsPath]::new()
+$studioFlame.AddBezier(143,54,95,96,156,109,104,145)
+$studioFlame.AddBezier(104,145,65,185,161,220,172,164)
+$studioFlame.AddBezier(172,164,184,121,144,106,143,54)
+$studioFlame.CloseFigure()
+$studioGraphics.FillPath($studioAmber,$studioFlame)
+$studioGraphics.Dispose()
+$studioBitmap.Save((Join-Path $studioAssets 'studio-icon.png'),[Drawing.Imaging.ImageFormat]::Png)
+$studioPng = [IO.MemoryStream]::new()
+$studioBitmap.Save($studioPng,[Drawing.Imaging.ImageFormat]::Png)
+$studioPngBytes = $studioPng.ToArray()
+$studioIco = [IO.File]::Create((Join-Path $studioAssets 'studio.ico'))
+$studioWriter = [IO.BinaryWriter]::new($studioIco)
+$studioWriter.Write([uint16]0); $studioWriter.Write([uint16]1); $studioWriter.Write([uint16]1)
+$studioWriter.Write([byte]0); $studioWriter.Write([byte]0); $studioWriter.Write([byte]0); $studioWriter.Write([byte]0)
+$studioWriter.Write([uint16]1); $studioWriter.Write([uint16]32); $studioWriter.Write([uint32]$studioPngBytes.Length); $studioWriter.Write([uint32]22)
+$studioWriter.Write($studioPngBytes)
+$studioWriter.Dispose(); $studioPng.Dispose(); $studioBitmap.Dispose(); $studioOutline.Dispose(); $studioAmber.Dispose(); $studioSoft.Dispose(); $studioFlame.Dispose()
+Write-Output 'App-Symbol erstellt.'

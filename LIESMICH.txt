@@ -1,0 +1,27 @@
+ENSHROUDED MOD STUDIO 0.4.9 — OEFFENTLICHES STUDIO-PAKET
+
+1. Komplettes ZIP in einen neuen, beschreibbaren Ordner entpacken.
+2. Enshrouded Mod Studio.exe starten (.NET Framework 4.8, Windows x64).
+3. „Altes Setup übernehmen“ wählen und deinen bisherigen Mod-Studio-Ordner
+   auswählen. Profile, passende Basen und fehlende geprüfte Laufzeitdateien
+   werden übernommen. Der alte Ordner bleibt erhalten.
+4. Client- oder Serverordner wählen, Einstellungen anpassen, Spiel/Server
+   schließen und „Patch anwenden / aktualisieren“ drücken.
+
+Die fremde Patcher-/Parser-Laufzeit wird aus deiner vorhandenen Installation
+übernommen und anhand der erwarteten Hashes geprüft. Sie liegt dieser
+öffentlichen ZIP nicht bei. Ohne sie sind noch keine Spielpatches möglich.
+
+Neu: Welt & Bauen → „Tiere beim ersten Erfolg zähmen“.
+Ein vollständiger erfolgreicher Köder-/Streichelvorgang bleibt erforderlich.
+Die benötigte Schrittzahl 1 ist in Client- und Serverarchiven bestätigt.
+Zähmung und Besitzübernahme im laufenden Spiel sind noch nicht bestätigt.
+
+„Update prüfen · 0.4.9“ prüft GitHub auf eine neue stabile Studio-Version.
+Der Download öffnet das passende ZIP im Browser. In einen neuen Ordner
+entpacken und das alte Setup übernehmen; keine automatische Installation.
+
+Ausführliche Anwendung: README.md, EINSTELLUNGEN.txt und ZAEHMUNG.txt.
+Fremdkomponenten: THIRD-PARTY.md.
+Interne Rohberichte, lokale Pfade und exportierte Spielressourcen sind
+nicht Bestandteil dieses öffentlichen Pakets.

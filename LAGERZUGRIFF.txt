@@ -1,0 +1,48 @@
+LAGERZUGRIFF — NORMALE KISTEN UND STATIONSINVENTARE
+Enshrouded Mod Studio 0.4.7 · Revision 1273043
+
+VERWENDUNG
+1. Das vollständige Toolpaket entpacken und bei Bedarf über „Altes Setup
+   übernehmen“ die bisherigen Profile und passenden Sicherungen übernehmen.
+2. Unter Welt & Bauen „Normale Kisten und Stationslager verknüpfen“ einschalten.
+   Der bisherige Schalter adjustFactoryInventoryAccess wird weiterverwendet;
+   ein bereits aktivierter Schalter bleibt beim Setup-Import eingeschaltet.
+3. Spiel/Server schließen und „Spiel aktualisieren“ ausführen. Für einen
+   kontrollierten Mehrspielertest die Option auf Server und Clients anwenden.
+4. Neu starten. Zunächst mit einer neuen normalen Kiste und einem erfassten
+   Stationsinventar prüfen, ob der Herstellungsdialog die Materialien anbietet.
+
+WAS DER DATENPATCH ERWEITERT
+Sechs normale platzierbare Kistenvarianten und 30 eigenständige
+Produktionsstationen erhalten die Bestandskennzeichnung InventoryCraftingStock.
+Bei neu ergänzten Kennzeichnungen ist canReceiveAreaDeposit=true, wie bei
+den originalen magischen Kisten. Das erlaubt im Datensatz zusätzlich
+Umgebungseinlagerung; diese ist von der Nutzung als Materialquelle zu trennen.
+Vorhandene Bestandskennzeichnungen und dynamische Einlagerungsoptionen werden
+bewahrt. Die frühere Option änderte nur 29 Stationen. Das neue Verfahren
+erfasst auch das bisher wegen der Namensschreibung übersehene Butterfass.
+
+ABGRENZUNG
+Inventarinhalte, Platzanzahl, Rezeptkosten und Zugriffsrechte werden durch
+diesen Patch nicht umgeschrieben. Magische Kisten bleiben erhalten.
+Zufallsbeute, Spieler-/NPC-Inventare, Gräber, Ausstellungsständer, Futtertröge
+und bepflanzte Ernteobjekte werden nicht zu zusätzlichen Quellen umgebaut.
+Eine deaktivierte alte 16er-Kiste ohne gültigen Rezept-Platzierungsbeleg
+bleibt ausgenommen. Drei Stationsfälle (Force Generator, Farmbed,
+Grindstones) sind durch Komponenten belegt; ihre heutige Spielerreichbarkeit
+ist nicht bestätigt. 27 der 30 Stationen besitzen zusätzlich Rezeptbelege.
+
+WAS OFFEN BLEIBT
+Der Patch kennzeichnet mögliche Quellen. Erfolgreicher Materialtransfer,
+Reichweite, Verhalten bestehender platzierter Lager und der Client-/Server-
+Abgleich müssen im Spiel bestätigt werden. Eine automatische Nachversorgung
+laufender Produktionswarteschlangen ist damit nicht implementiert oder
+nachgewiesen. Der Serverstart ersetzt diesen Spieltest nicht.
+
+AKTUALISIEREN UND AUSSCHALTEN
+Bei Änderungen denselben Schalter im vorhandenen Profil ändern und erneut
+„Spiel aktualisieren“ verwenden. Die passende Originalbasis wird verwendet;
+es wird nicht wiederholt auf bereits veränderte Daten multipliziert.
+Auf der separaten Testinstallation wurde auch Ausschalten plus Aktualisieren
+geprüft: Originalarchive exakt wiederhergestellt, verwaltete Zusatzdateien
+entfernt. Das bearbeitet keine bestehenden Welt-Spielstände.

@@ -1,0 +1,202 @@
+ENSHROUDED MOD STUDIO 0.4.9 — EIN ERFOLGREICHER ZAEHMUNGSSCHRITT
+22. Oktober 2026 · Engine 1.2.3 · Revision 1273043
+
+- Neue, standardmäßig ausgeschaltete Option unter Welt & Bauen:
+  „Tiere beim ersten Erfolg zähmen“. Damit gibt es 44 Schalter; die neue
+  Option benötigt keine zusätzlichen Zahlenfelder.
+- Updateknopf für die neueste öffentliche Tool-Version: fragt die GitHub-API
+  ab und öffnet bei einer neueren Veröffentlichung den ZIP-Download im Browser.
+  Neues Paket manuell entpacken und „Altes Setup übernehmen“ verwenden.
+  Keine Selbstinstallation und kein automatisches Ersetzen laufender Dateien.
+- Setzt bei vorhandenen unterstützten zähmbaren Tieren die erforderliche
+  Anzahl erfolgreicher Zähmungsdurchgänge auf 1. Ein vollständiger normaler
+  Köder-/Streichelvorgang bleibt nötig; kein automatisches Sofortzähmen.
+- Frische Typ-, Identitäts-, Futter- und Tierklassifikation vor Änderungen.
+  Vorhandene Köder, Annäherungsregeln, Besitzer und Spielstände bleiben
+  unverändert. Ausgeschaltet verursacht das Modul keinen Ressourcenzugriff.
+- Datenbeleg beider Rollen: 18 passende Tier-Vorlagen, davon 15 mit geänderter
+  Schrittzahl und drei bereits bei 1. Die 15 Änderungen werden nach dem
+  Packen aus dem Archiv zurückgelesen; Fehler verhindern stillen Erfolg.
+- Client-Vorschau, Server-Aktualisierung und Ausschalten/Rückbau an eigenen
+  Archivkopien geprüft. GUI-/Konfigurationsprüfungen, 47 gezielte Modulprüfungen
+  und fünf Runner-Vertragsprüfungen bestanden; genaue GUI-Anzahl im neuen Bericht.
+- Zähmung, Besitzerwechsel und das Zusammenspiel von Server und Clients
+  sind noch nicht im Spiel geprüft. Für einen kontrollierten Test dieselbe
+  Option auf Server und Spielclients anwenden und danach neu starten.
+- Die bisherigen 43 Optionen und ihre Standardwerte bleiben unverändert.
+  Frühere Prüfberichte bleiben als historische Nachweise vollständig erhalten.
+
+Vorherige Änderungen:
+
+ENSHROUDED MOD STUDIO 0.4.8 — KLARERE OBERFLAECHE UND BEDIENFEHLER
+22. Oktober 2026 · Engine 1.2.3
+
+- Kompakter Kopfbereich: mehr Höhe für die eigentlichen Einstellungen.
+- Schalter, Beschreibung und Werte stehen zuerst. Unter „Anwendung, Beispiel
+  und Grenzen“ bleiben alle ausführlichen Erklärungen der 43 Optionen erhalten.
+- Zielinstallation und Profilstatus sind getrennt erkennbar. „Speichern“
+  sichert das Profil; „Patch anwenden / aktualisieren“ ändert die Spieldateien.
+- Werkzeuge sind in einzelne Aufgabenbereiche gegliedert.
+- Suche mit Trefferanzahl, Löschknopf und Rücksetzen bei leerer Auswahl.
+  Strg+F öffnet die Suche, Strg+S speichert, Esc leert die fokussierte Suche.
+- Zahlen behalten beim Anzeigen ihre volle Präzision. Ungültige Felder zeigen
+  eine Erklärung am Feld; die rote Kontur bleibt auch beim Tippen sichtbar.
+- Ausschalten einer Option erlaubt Speichern trotz ungültigem Entwurf.
+  Beim erneuten Einschalten muss der Entwurf korrigiert werden. Gespeichert
+  wird für ausgeschaltete Optionen nur der letzte gültige Zahlenwert.
+- Profilwechsel bei einer gesperrten Auswahl-Datei wird abgefangen; das
+  bisherige Profil samt Entwürfen bleibt bestehen.
+- Fenster passt in die Arbeitsfläche bei hoher Windows-Skalierung; lange
+  Checkboxtexte umbrechen. Breitere Scrollleiste mit bedienbarer Klickfläche.
+- Suche, Filter und Kategorien starten oben; ausführliche Hilfe bleibt offen,
+  solange man im aktuellen Arbeitsprofil bleibt.
+- 151 GUI-/Konfigurationsprüfungen und 5 unabhängige WPF-Prüfungen bestanden.
+  Keine Änderungen an der eigentlichen Patchlogik oder den 43 Profiloptionen.
+- Fehlende historische Hintergrund-Testberichte wieder dem Paket beigefügt.
+
+Vorherige Änderungen:
+
+ENSHROUDED MOD STUDIO 0.4.7 — ERWEITERTER HERSTELLUNGSBESTAND
+22. Oktober 2026 · Engine 1.2.3 · Revision 1273043
+
+- Bestehenden Lagerzugriff-Schalter erweitert: sechs normale Kisten und
+  30 Stationsinventare statt bisher nur 29 Stationen. Keine neue Profiloption.
+- Komponentenprüfung erkennt auch das zuvor übersehene Butterfass.
+- Normale Kisten werden über Rezept, Item-ID und Platzierungsvorlage belegt;
+  beliebige Container, Ausstellungen und Beuteinventare bleiben ausgeschlossen.
+- Vorhandene Marker/dynamische Einlagerung und andere Modänderungen erhalten.
+- Frische Typ-/Identitätsprüfung vor Änderungen, keine unbekannten Feldlayouts.
+- Archiv-Rücklesen für Client und Server, separater Serverstart sowie
+  Ausschalten/Aktualisieren geprüft. Materialtransfer im Spiel weiter offen.
+- 45 gezielte Prüfungen, 24 Backend-Rollenprüfungen und 136 GUI-Prüfungen PASS.
+- Beschreibung und sichtbare Versionsnummer aktualisiert.
+
+Vorherige Änderungen:
+
+ENSHROUDED MOD STUDIO 0.4.6 — SEPARATER SERVERSCHNELLTEST
+22. Oktober 2026 · Engine 1.2.3
+
+- Echten Dedicated Server separat über Steam installiert und vor/nach dem
+  Patch mit neuen Testwelten gestartet. Details: Pruefungen/HINTERGRUNDTEST.txt.
+- Fehler behoben: Die Client-Menügrenzen-Option verlangte auf einem Dedicated
+  Server nicht vorhandene UI-Ressourcen und brach den gesamten Patch ab.
+  Sie wird dort jetzt mit einem Hinweis übersprungen. Die separate
+  Servergrenzen-Option arbeitet weiter; Client und unbekannte Rollen bleiben
+  bei fehlenden UI-Daten streng geprüft.
+- 24 gezielte Rollenprüfungen, 31 Regler-Regressionsprüfungen und 136
+  Oberfläche-/Konfigurationsprüfungen bestanden.
+- Der Hintergrundtest bestätigt Laden und Starten. Einzelne Spielwirkungen
+  wie Stapeln, Levelaufstieg oder Kampf sind damit noch nicht live bewiesen.
+
+Vorherige Änderungen:
+
+ENSHROUDED MOD STUDIO 0.4.5 — ALLE 43 EINSTELLUNGEN GEPRÜFT
+21. Oktober 2026 · Engine 1.2.3
+
+- Einzelprüfung aller 43 Optionen mit expliziten Feld-/Formelerwartungen.
+- Rucksack-Gatingfehler korrigiert: ItemInfo-Verarbeitung wird bei allein
+  aktivem Rucksack genau einmal nachgeholt. Andere Faktoren werden nicht
+  doppelt angewendet.
+- Lagerplatz-Cap auf uint8-Maximum 255 begrenzt.
+- Wurzelpunkt-Faktor auf ganze Werte von 1 bis 85 begrenzt. Die aktuellen
+  Belohnungsfelder sind uint8; zuvor akzeptierte Bruchfaktoren waren ungültig.
+- Creative-Bedingung, 0,2-Sekunden-Zauberminimum und 5-Sekunden-Wandgrenze
+  klarer beschrieben.
+- Neue lesende Diagnose „Ladepfad & Patchstand prüfen …“ unter Werkzeuge:
+  Archiv-/EXE-Hashes, erwarteter Patchstand, gestartete Prozesse und zuletzt
+  geladener KFC-Pfad. Keine Commandlines oder ungefilterten Spielerdaten.
+- Vollständige Einzelmatrix als Text, CSV und JSON im Paket.
+
+Diese Version behauptet keinen vollständigen Live-Test aller Servereffekte.
+
+Vorherige Änderungen:
+
+ENSHROUDED MOD STUDIO 0.4.4 — STAPELGRÖSSEN
+21. Oktober 2026 · Engine 1.2.3
+
+- Stapelgrößen auf den tatsächlichen uint16-Bereich 2 bis 65535 begrenzt.
+  Das bisherige Maximum von 1 Milliarde passte nicht zum Spielfeld.
+- Eigene Vor-/Nachprüfung des Stapelpatches statt ausschließlichem Vergleich
+  mit der Ausgabe des Originalhandlers. Fehlende Items, falsche Feldtypen,
+  übersprungene Ausgaben oder andere Werte werden zurückgewiesen.
+- Nach dem Repack werden die exakten Stapelwerte erneut geprüft.
+- „Installierte Stapel prüfen …“ liest den aktuellen Dateiinhalt aus einer
+  frischen Kopie. Ziel, Spielversion, vorhandene Limits und Vergleich zum
+  Profilwert sind sichtbar. Gespeicherte Basen werden dafür nicht geändert.
+- Die Prüfung ist sowohl an der Option als auch unter Werkzeuge erreichbar.
+- Abschlussmeldungen nennen bestätigten Stapelwert und betroffene Item-Anzahl.
+- Bei neuen Spielpatches werden die frisch erzeugten Datenstrukturen geprüft.
+  Die Versionssperre und der Basiswechsel aus 0.4.3 bleiben erhalten.
+
+Die Analyse der Revision 1273043 bestätigt, dass der bisherige Handler das
+richtige Feld bereits ändert. Die Archivprüfung im bisherigen Sammeltest
+belegte aber nicht den gewünschten Stapelwert als eigene Nachbedingung.
+Die neue Version korrigiert diese Lücke und die falsche Wertebereichsgrenze.
+Das belegt noch keinen Live-Spielerfolg auf jedem Dedicated Server.
+
+Vorherige Änderungen:
+
+ENSHROUDED MOD STUDIO 0.4.3 — SPIELUPDATES
+21. Oktober 2026 · Engine 1.2.3
+
+Nach dem Enshrouded-Update von Revision 1269579 auf 1273043 passt eine alte
+Patch-Basis nicht mehr. Die bestehende Sperre bleibt erhalten. Neu ist ein
+direkter, geführter Basiswechsel, damit der nächste Schritt verständlich ist.
+
+- Erkennt die Aktualisierung eine fremde Spielversion oder Archivänderung,
+  erscheint direkt der Knopf „Spielupdate / Basis wechseln …“.
+- Derselbe Dialog ist jederzeit unter Werkzeuge verfügbar. Er zeigt den
+  gewählten Ordner, Installationstyp und bisherige/aktuelle EXE-Prüfwerte.
+- Die Freigabe verlangt die ausdrückliche Bestätigung einer Steam- bzw.
+  Anbieter-Dateiprüfung. Das Tool überprüft diese Aktion nicht selbst.
+- Der Dateistand wird bei der Freigabe erneut geprüft. Ein Prüftoken ist an
+  den konkreten Ordner und seine EXE/Archivprüfsummen gebunden.
+- Nur die alte Basis-Zuordnung und ihre letzte Vorschau werden zurückgelegt.
+  Archivbasen, Profile und Sicherungen bleiben erhalten; die Freigabe
+  schreibt keine Spieldateien. Danach das gewünschte Profil erneut anwenden.
+- Ein unterbrochener Basiswechsel wird erkannt und sperrt weitere Schritte.
+  Die erweiterte Wiederherstellung (Menü 5) setzt seine Metadaten zurück.
+- Erste Basis und bereits passende Basis werden nicht unnötig zurückgesetzt.
+
+Prüfstand für die neue Clientrevision 1273043, Steam-Build 26082781:
+Alle 12.646 Reflection-Typen sind unverändert. Ein kombiniertes Profil mit
+allen 43 Schaltern ließ sich an Archivkopien packen und erneut vollständig
+lesen: 4.781 Änderungen bestätigt, 19.136 Ressourcen ohne Lesefehler.
+Fertigkeitspunkte 2 → 8 sind auch in dieser Revision im Archiv bestätigt.
+„Alle Mods aus“ stellt beide Testarchive SHA256-identisch auf die neue Basis
+zurück. Das bestätigt die Datenkompatibilität, nicht jede Spielwirkung.
+
+Die installierten Spieldateien wurden für diese Untersuchung nicht geändert.
+
+Vorherige Änderungen:
+
+ENSHROUDED MOD STUDIO 0.4.2 — FERTIGKEITSPUNKTE
+18. Oktober 2026 · Engine 1.2.3
+
+Der gemeldete Server-Patch hat den lokalen Client nicht angepasst. Dessen
+Punkte-Tabelle enthielt weiterhin den Standardwert 2. Der vorhandene Handler
+ändert das Feld korrekt; eine vollständig belegte alternative Spielformel
+wurde nicht gefunden. Die neue Version korrigiert deshalb Einrichtung,
+Kontrolle und bisher zu ungenaue Erklärungen.
+
+- Direkt an „Fertigkeitspunkte pro Level“ gibt es einen Client-Profil-Knopf.
+  Er kopiert alle aktuellen Einstellungen, aktiviert die Punkte-Option und
+  verlangt einen vollständigen, getrennten Spielclientordner.
+- Das neue Client-Profil ist zunächst nur gespeichert. Die Auswahl prüfen
+  und anschließend wie gewohnt anwenden. Der Serverordner wird nicht als
+  Client akzeptiert.
+- Server- und Client-Hinweise passen sich sofort an den gewählten Ordner an.
+- Nach dem vorhandenen Handler kontrolliert eine eigene Prüfung Ressourcen-
+  identität, Ganzzahltyp und den tatsächlich gewünschten Punktewert.
+  Fehlende oder falsche Ausgaben brechen die Vorbereitung ab.
+- Serverläufe melden ausdrücklich, dass Clientdateien nicht geändert wurden.
+- Abschluss und Protokoll nennen die bestätigte Archivänderung, etwa
+  „Fertigkeitspunkte-Tabelle (Client): 2 → 8 im Archiv bestätigt“.
+- Die Erklärung unterscheidet Levelanteil, zusätzliche Wissenspunkte und
+  Erfahrung. Sie verspricht keine ungetestete Gutschrift vorhandener Punkte.
+- Der kleine Installationsstatus bleibt auch mit Serverziel vollständig lesbar.
+
+Neue Mod-Loader, native DLLs oder Änderungen an Charakter-Spielständen wurden
+nicht eingeführt. Die archivierten Werte wurden geprüft; die tatsächliche
+Punkteübernahme nach Client- und Serverpatch bleibt im Spiel zu bestätigen.
+Anleitung: SKILLPUNKTE.txt.

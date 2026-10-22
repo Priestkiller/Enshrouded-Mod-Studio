@@ -1,0 +1,21 @@
+ENSHROUDED MOD STUDIO 0.4.9 — OEFFENTLICHER PRUEFUMFANG
+
+PASS 166 GUI-, Konfigurations-, Profil-, Update- und Laufzeitimportprüfungen.
+PASS 47 gezielte Zähmungsmodulprüfungen auf Speicherfixtures und Originalexporten.
+PASS 24 Backend-Rollenregressionen; 5 Status-/Abschlussprüfungen.
+PASS Client: 15 geänderte Tierressourcen gepackt und erneut ausgelesen;
+     19136 Deskriptoren gegen Original plus Solländerungen verglichen.
+     Die Client-Quelldateien blieben unverändert.
+PASS Server: 15 geänderte Tierressourcen gepackt und erneut ausgelesen;
+     19129 Deskriptoren gegen Original plus Solländerungen verglichen.
+PASS Ausschalten und Aktualisieren auf separater Testinstallation:
+     Originalarchive exakt wiederhergestellt, verwaltete Zusatzdateien entfernt.
+
+44 Optionen; bestehende 43 Optionen bleiben unverändert.
+Zähmung: 18 passende Tier-Vorlagen, 15 Änderungen, drei bereits auf eins.
+Revision 1273043; erforderliche ursprüngliche Patcher-Laufzeit 1.2.3.
+
+Kein Live-Spieltest der Zähmung oder Besitzübernahme. Ein erfolgreicher
+Archivtest bestätigt die Daten, nicht deren Wirkung bei einem verbundenen
+Spieler. Private Profile, Sicherungen und vollständige Rohberichte werden
+aus dem öffentlichen Paket ausgeschlossen.

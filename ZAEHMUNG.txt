@@ -1,0 +1,77 @@
+ENSHROUDED MOD STUDIO 0.4.9 — TIERE BEIM ERSTEN ERFOLG ZAEHMEN
+22. Oktober 2026 · Engine 1.2.3 · Revision 1273043
+
+ANWENDEN
+1. Spiel und Dedicated Server vollständig schließen.
+2. Den richtigen Client- oder Serverordner mit EXE und KFC auswählen.
+3. Unter Welt & Bauen „Tiere beim ersten Erfolg zähmen“ einschalten.
+   Der Schalter ist standardmäßig aus; es gibt keine zusätzlichen Zahlenfelder.
+4. „Patch anwenden / aktualisieren“ drücken und auf den bestätigten Abschluss
+   warten. Speichern allein ändert keine Spieldateien.
+5. Für den kontrollierten Mehrspielertest dieselbe Option auf dem Server
+   und allen beteiligten Spielclients anwenden; danach beide neu starten.
+
+WAS DER SCHALTER AENDERT
+Bei vorhandenen unterstützten zähmbaren Tier-Vorlagen wird das Feld
+Wildlife.tamingSetup.necessaryTamingSteps auf 1 gesetzt. Die aktuelle
+Reflection beschreibt dieses Feld als uint8 mit Editorgrenzen 1 bis 5.
+Es legt die benötigte Anzahl erfolgreicher Zähmungsschritte fest.
+
+Ein vollständiger erfolgreicher Köder-/Streichelvorgang bleibt erforderlich.
+Passendes Futter, Annäherung, Warnung, Flucht und die übrigen Bedingungen
+des normalen Ablaufs bleiben bestehen. Das ist kein sofortiges automatisches Zähmen:
+Allein das Werfen eines Köders ist nicht als ausreichend bestätigt.
+
+UMFANG DES DATENBELEGS
+Client und Dedicated Server enthalten 18 passende konkrete Tier-Vorlagen.
+15 benötigen ursprünglich mehr als einen Schritt und werden auf 1 gesetzt;
+drei stehen bereits auf 1 und werden nicht zusätzlich geändert. Basisvorlagen,
+nicht zähmbare Tiere, bereits gezähmte Platzierungshilfen sowie veraltete
+oder unfertige Vorlagen bleiben ausgeschlossen. Das macht nicht jedes
+beliebige Tier oder jeden Gegner zähmbar.
+
+Die Vorbereitung prüft die frisch erzeugte Typstruktur, Ressourcenidentität,
+das Tameable-Merkmal und passende Futterreferenzen. Nach dem Packen werden
+die 15 geänderten Felder erneut aus dem Archiv gelesen. Die Abschlussmeldung
+bestätigt den Archivwert; sie behauptet keinen beobachteten Zähmungserfolg.
+
+WAS UNVERAENDERT BLEIBT
+Köder, Reichweiten, Zeiten und Fluchtregeln werden nicht geändert.
+Es werden weder IsTame noch Besitz-, Netzwerk- oder Laufzeitfortschritt
+vorab gesetzt. Besitzer und vorhandene Spielstände werden nicht bearbeitet.
+Die offizielle Servereinstellung zum Verlust von Zähmungsfortschritt beim
+Erschrecken ist eine andere Regel und wird von diesem Schalter nicht geändert.
+
+AUSSCHALTEN UND AKTUALISIEREN
+Schalter ausschalten und den Patch erneut anwenden. Die Mod-Änderung wird
+aus der gespeicherten Ausgangsbasis entfernt; Multiplikatoren oder Schritte
+werden nicht auf den letzten Patch gestapelt. Enthielt die Ausgangsbasis
+bereits fremde Mods, bleiben diese Bestandteil der Basis.
+Der Rückbau von Archivdaten setzt keine bereits erfolgte Zähmung im Spielstand
+zurück und nimmt keinen Besitzerwechsel zurück.
+
+NOCH OFFEN
+Die tatsächliche Zähmung und die Besitzübertragung sind nicht im Spiel geprüft.
+Dasselbe gilt für bestehende Tiere, gespeicherten Fortschritt, HUD-Anzeigen und
+die Abstimmung zwischen Client und Dedicated Server. Die gemeinsame Anwendung
+auf Server und Clients ist der nächste kontrollierte Test, kein garantierter Fix.
+Die neue Funktion wurde nicht durch einen Spieler im laufenden Spiel bestätigt.
+
+BELEGE UND QUELLEN
+Pruefungen/Zaehmung-Datenbelege-0.4.9.json
+Pruefungen/Zaehmung-Zusammenfassung-0.4.9.json
+Pruefungen/Zaehmung-Befund-0.4.9.txt
+Pruefungen/Zaehmung-Belegpruefung-0.4.9.json
+Pruefungen/Zaehmung-Tests-0.4.9.json
+Pruefungen/Zaehmung-Clientvorschau-0.4.9.json
+Pruefungen/Zaehmung-Serverpatch-0.4.9.json
+Pruefungen/Zaehmung-Server-Aus-0.4.9.json
+
+Quelle der Schrittzahl: lokale Reflection und exportierte Tier-/Futterdaten
+der Revision 1273043; die konkreten JSON-Pointer stehen in den Datenbelegen.
+Der eigene Ergänzungshandler liegt offen unter engine/single-step-taming.js.
+
+Offizielle Serverkonfiguration, hier nur für die getrennte Verlustregel:
+https://enshrouded.zendesk.com/hc/en-us/articles/16055441447709-Dedicated-Server-Configuration
+Dieser Link belegt keine offizielle Ein-Schritt-Option und keinen Spieltest
+des hier verwendeten Ressourcenpatches.

@@ -1,0 +1,949 @@
+ENSHROUDED MOD STUDIO 0.4.9 — EINSTELLUNGEN
+22. Oktober 2026 · 44 Funktionen / 65 Einstellungsfelder
+
+Profil speichern allein ändert keine Spieldateien. Nach Änderungen das Profil
+anwenden und auf den bestätigten Abschluss warten. Der Archivnachweis und die
+Wirkung im laufenden Spiel sind getrennte Prüfungen. Die historische Einzelmatrix
+der bisherigen 43 Funktionen liegt unter Pruefungen/ALLE-43-ERGEBNISSE.txt.
+Die neue Zähmungsfunktion hat eigene 0.4.9-Belege; Anwendung: ZAEHMUNG.txt.
+Der Updateknopf ist eine Werkzeugfunktion außerhalb der 44 Mod-Schalter:
+neueste öffentliche GitHub-Version prüfen, ZIP im Browser herunterladen und
+das neue Paket manuell entpacken. Profilübernahme ist in LIESMICH.txt erklärt.
+
+SPIELER
+================================================================================
+
+1. Maximales Spielerlevel
+Setzt eine der hinterlegten Obergrenzen für die Stufe deines Charakters.
+Für wen: Wenn du die normale Levelgrenze versuchsweise anheben möchtest.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Schreibt den gewählten Wert als Levelgrenze. Du erhältst dadurch weder Erfahrung
+noch sofort zusätzliche Level. Die Erfahrungskurve und verfügbare Fertigkeiten werden nicht
+erweitert.
+Beispiel: Wert 100 setzt die bearbeitete Grenze von 50 auf 100. Das bedeutet nicht 100-fache
+Erfahrung und hebt den Charakter nicht sofort auf Level 100.
+Grenzen: Der Patcher ändert nur eine Levelgrenze; eine weitere bleibt auf 100. Level über
+100 und der vollständige Aufstieg bis 100 sind deshalb nicht bestätigt.
+Status: Funktion eingeschränkt · Spieltest offen
+  - Gewünschte Levelgrenze
+    Feste Stufe, kein Faktor: 100 schreibt die Grenze 100. Weitere interne Grenzen und die
+    Erfahrungskurve bleiben bestehen.
+    Bereich: 1 bis 1000000000 (ganze Zahl)
+
+2. Fertigkeitspunkte pro Level
+Stellt den Punktewert ein, mit dem der Levelanteil deiner Fertigkeitspunkte berechnet wird.
+Für wen: Wenn die Fertigkeitspunkte stärker oder schwächer mit deinem Charakterlevel wachsen
+sollen. Beim Dedicated Server auch den Spielclient berücksichtigen.
+Anwendung: Auch die Spieldateien des Clients bearbeiten: Ein Serverpatch allein ändert den
+lokalen Clientwert nicht. Im Mehrspieler denselben Punktewert auf Server und Spielclients
+einstellen; die Wirkung danach im Spiel prüfen.
+Wirkung: Schreibt eine feste ganze Zahl in die Punkte-Tabelle. In der Client-EXE wurde eine
+dazu passende Berechnung des Levelanteils gefunden: (Level minus 1) × Punktewert.
+Zusätzliche Wissens- beziehungsweise Wurzelpunkte werden separat berücksichtigt. Erfahrung
+und Level werden dadurch nicht vergeben. Die Wirkung im Mehrspieler muss nach dem
+Clientpatch geprüft werden.
+Beispiel: Bei Wert 8 entspricht ein zusätzliches Level rechnerisch 8 statt 2 Punkten im
+Levelanteil. Auf Level 10 wären das (10 − 1) × 8 = 72 Punkte vor zusätzlichen
+Wissenspunkten. Das ist die Rechnung aus dem geprüften Code, keine gemessene Gutschrift.
+Grenzen: Nur den Dedicated Server zu patchen reicht nicht als Prüfung des Clientwerts. Der
+Knopf für das Client-Profil kopiert alle aktuellen Einstellungen; diese Auswahl vor dem
+Anwenden prüfen. Danach Spiel und Server neu starten. Wie bereits verteilte Punkte behandelt
+werden und ob der Mehrspieler die Änderung vollständig übernimmt, ist noch nicht im Spiel
+bestätigt.
+Status: Archivwert geprüft · Client-Anwendung und Spieltest nötig
+  - Punkte je Levelaufstieg
+    Feste ganze Punktzahl: 2 ist der geprüfte Standardwert, 8 der Patch-Vorschlag. Es ist
+    kein XP-Faktor. Für den kontrollierten Mehrspielertest im Server- und Client-Profil
+    denselben Wert verwenden.
+    Bereich: 1 bis 1000000000 (ganze Zahl)
+
+3. Fertigkeitspunkte aus Miasmawurzeln
+Vervielfacht die hinterlegte Punktebelohnung passender Wurzeln und Elixierbrunnen.
+Für wen: Wenn das Zerstören solcher Wurzeln mehr Fertigkeitspunkte belohnen soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Multipliziert die vorgesehenen Fertigkeitspunkte mit deinem Faktor. Beide
+zusammengehörigen Punktetabellen werden geändert.
+Beispiel: Faktor 4 macht aus einer Belohnung von 1 Punkt insgesamt 4 Punkte; aus 3 Punkten
+werden 12.
+Grenzen: Bereits abgeschlossene Wurzeln werden damit nicht erneut freigeschaltet.
+Bruchfaktoren können nicht-ganzzahlige Punkte erzeugen; deren Behandlung ist nicht im Spiel
+geprüft. Aktuelle Belohnungswerte reichen bis 3; Faktor 85 bleibt im 8-Bit-Bereich bis 255.
+Es werden nur künftig ausgelöste Belohnungen verändert.
+Status: Daten geprüft · Spieltest offen
+  - Faktor für die Punktebelohnung
+    Ganze Zahl von 1 bis 85. Multipliziert die hinterlegten Wissenspunktbelohnungen. Die
+    aktuellen Belohnungsfelder sind 8-Bit-Zahlen; Bruchwerte würden abgeschnitten und zu
+    große Werte passen nicht ins Spielfeld.
+    Bereich: 1 bis 85 (ganze Zahl)
+
+4. Nahrung früher erneut essen
+Verschiebt die Sperre, die das zu frühe Erneuern eines Nahrungsbonus verhindert.
+Für wen: Wenn du Nahrung nachlegen möchtest, bevor der bisherige Bonus weit genug abgelaufen
+ist.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Setzt die Wiederanwendungsschwelle für Nahrungsboni auf den vorgesehenen vollen
+Bereich. Dadurch soll sich ein vorhandener Bonus früher auffrischen lassen.
+Beispiel: Die hinterlegte Schwelle wird von ungefähr 0,33 auf 1 gesetzt. Das soll erneutes
+Essen schon bei fast voller Restdauer ermöglichen.
+Grenzen: Erhöht weder die Zahl gleichzeitig möglicher Nahrungsboni noch deren Stärke. Das
+tatsächliche Essverhalten wurde nicht live geprüft.
+Status: Daten geprüft · Spieltest offen
+
+5. Ohne Rezeptkosten herstellen
+Entfernt bei unterstützten Rezepten Anforderungen und Materialkosten.
+Für wen: Wenn du bauen und herstellen möchtest, ohne dafür die üblichen Rezeptmaterialien zu
+verbrauchen.
+Anwendung: Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im
+Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert.
+Wirkung: Bearbeitet Freischaltbedingungen und Kosten passender Rezepte. Flammenaltar-
+Upgrades werden nur mit dem zusätzlichen Haken einbezogen.
+Beispiel: Ein betroffenes Rezept mit 10 Holz als Kosten wird ohne diese Holzkosten
+hinterlegt. Mit ausgeschalteter Altar-Option bleiben die entsprechenden Flammen-Upgrades
+ausgenommen.
+Grenzen: Das ist kein vollständiger Kreativmodus mit Flug, Unsterblichkeit oder automatisch
+allen Gegenständen. Der genaue Rezeptzugang im Spiel bleibt ungeprüft. Der Handler setzt
+eine Creative-Freischaltbedingung und leert Rezeptkosten. Ob dein normaler Servercharakter
+diese Bedingung erfüllt, ist nicht belegt; eine uneingeschränkte Rezeptfreischaltung wird
+damit nicht zugesichert.
+Status: Rezeptkosten geändert · Creative-Bedingung beachten
+  - Flammenaltar-Upgrades einbeziehen
+    Aus: Altar-Aufwertungsrezepte ausnehmen. An: auch deren unterstützte Anforderungen und
+    Kosten bearbeiten; kann die Weltfortschritt-Regeln verändern.
+
+6. Mana pro Attributpunkt
+Setzt den Manazuwachs eines passenden Attributpunkts als feste Zahl.
+Für wen: Wenn ein entsprechender Attributpunkt mehr oder weniger Mana bringen soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Ändert den hinterlegten Manabonus pro betroffenem Attributpunkt. Das ist eine feste
+Menge, kein Prozentwert und keine sofortige Managutschrift.
+Beispiel: Wert 20 steht für 20 Mana je betroffenem Attributpunkt. Wert 40 verdoppelt diesen
+Bonus gegenüber 20.
+Grenzen: Gilt für den passenden Attributbonus, nicht pauschal für jeden Fertigkeitspunkt.
+Die Neuberechnung bestehender Charaktere ist nicht geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Mana je passendem Attributpunkt
+    Feste Menge: 20 bedeutet +20 Mana je betroffenem Attributpunkt. 20 ist hier weder 20 %
+    noch ein Faktor.
+    Bereich: 1 bis 1000000000 (ganze Zahl)
+
+7. Leben pro Attributpunkt
+Setzt den Lebenspunkte-Zuwachs eines passenden Attributpunkts als feste Zahl.
+Für wen: Wenn ein entsprechender Attributpunkt mehr oder weniger Leben bringen soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Ändert den hinterlegten Lebenspunktebonus pro betroffenem Attributpunkt. Der Wert
+verleiht keine sofortige Heilung.
+Beispiel: Wert 50 steht für +50 Lebenspunkte je betroffenem Attributpunkt. Mit 100 ist
+dieser Bonus doppelt so hoch.
+Grenzen: Gilt für den passenden Attributbonus. Ob bestehende Charakterwerte sofort neu
+berechnet werden, ist nicht geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Leben je passendem Attributpunkt
+    Feste Menge: 50 bedeutet +50 Lebenspunkte pro betroffenem Attributpunkt. Es ist keine
+    Einstellung für 50 % Gegnerschaden.
+    Bereich: 1 bis 1000000000 (ganze Zahl)
+
+8. Ausdauer pro Attributpunkt
+Setzt den Ausdauer-Zuwachs eines passenden Attributpunkts als feste Zahl.
+Für wen: Wenn ein entsprechender Attributpunkt mehr oder weniger Ausdauer bringen soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Ändert den hinterlegten Ausdauerbonus pro betroffenem Attributpunkt. Die
+Geschwindigkeit der Ausdauerregeneration wird hier nicht eingestellt.
+Beispiel: Wert 10 steht für +10 Ausdauer je betroffenem Attributpunkt. Mit 20 fällt dieser
+Bonus doppelt so hoch aus.
+Grenzen: Die Neuberechnung bereits verteilter Punkte wurde nicht im Spiel geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Ausdauer je passendem Attributpunkt
+    Feste Menge: 10 bedeutet +10 Ausdauer je betroffenem Attributpunkt. Für schnelleres
+    Auffüllen gibt es die separate Regenerationsoption.
+    Bereich: 1 bis 1000000000 (ganze Zahl)
+
+9. Ausdauer schneller auffüllen
+Multipliziert den geprüften Basiswert der Ausdauerregeneration.
+Für wen: Wenn sich der Ausdauerbalken schneller oder langsamer erholen soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Skaliert die erkannte Grundformel für das Auffüllen von Ausdauer. Größer als 1
+erhöht den Regenerationswert; kleiner als 1 senkt ihn.
+Beispiel: Faktor 1,5 entspricht 150 % des bisherigen Basiswerts, also 50 % mehr. Ein
+Basiswert von 100 würde rechnerisch 150.
+Grenzen: Wirkt nur auf die erkannte Grundformel. Wartezeiten, Nahrung, Ausrüstung oder
+andere Boni können das tatsächliche Auffüllen zusätzlich beeinflussen.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der Grundregeneration
+    1 = bisheriger Basiswert; 1,5 = 150 %; 2 = doppelt. 1,5 bedeutet nicht 1,5 Sekunden
+    Wartezeit.
+    Bereich: 0.1 bis 10
+
+INVENTAR
+================================================================================
+
+10. Größere Item-Stapel
+Setzt das Stücklimit bereits stapelbarer Gegenstände und prüft den Wert nach dem Packen
+erneut.
+Für wen: Wenn du weniger Inventarplätze für große Mengen derselben Ressource belegen
+möchtest.
+Anwendung: Die ausgewählte Client- oder Serverinstallation. Für getrennte Installationen
+getrennt anwenden und jeweils prüfen. Die Anzeige belegt nur die Dateien dieses Ordners,
+keinen entfernten Server.
+Wirkung: Setzt maxStackSize bei Items mit einem Ausgangslimit über 1. Der Patcher prüft das
+Feld an der frisch ausgelesenen Spielversion und verlangt den exakten Wert im Ergebnis.
+Waffen, Rüstungen und andere Einzelstücke bleiben unverändert.
+Beispiel: Wert 65000 erlaubt bei einem betroffenen Gegenstand bis zu 65000 Einheiten pro
+Stapel statt beispielsweise 250.
+Grenzen: Vorhandene Stapel werden nicht automatisch zusammengelegt und ihre Stückzahl steigt
+nicht. Zum Testen weitere gleiche Items aufnehmen oder zwei Stapel zusammenlegen. Mit
+„Installierte Stapel prüfen“ liest du die tatsächlichen Archivwerte; deren Spielwirkung ist
+separat zu testen.
+Status: Exakte Archivprüfung · Spieltest offen
+  - Höchstzahl je Item-Stapel
+    Feste Stückzahl von 2 bis 65535. Das aktuelle Spielfeld ist eine 16-Bit-Zahl. 65000
+    setzt das Limit für bereits stapelbare Items auf 65000; es erzeugt keine zusätzlichen
+    Items.
+    Bereich: 2 bis 65535 (ganze Zahl)
+
+11. Mehr Platz in Lagerkisten
+Vergrößert unterstützte Lagerinventare mit einem Faktor und einer Obergrenze.
+Für wen: Wenn deine Lagerkisten mehr freie Plätze bekommen sollen.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Multipliziert vorhandene Lagerplätze und begrenzt das Ergebnis auf deine
+Höchstzahl. Zusammengehörige Inventareinstellungen werden gemeinsam geändert.
+Beispiel: 24 Plätze × Faktor 2 = 48 Plätze. Bei 64 Plätzen und Obergrenze 96 wird das
+Ergebnis auf 96 statt 128 begrenzt.
+Grenzen: Bereits gebaute Lager müssen laut Patcher-Anleitung gegebenenfalls neu gebaut
+werden. Eine niedrige Obergrenze kann größere vorhandene Angaben auch verkleinern. Die Zahl
+der Lagerplätze wird als 8-Bit-Zahl gespeichert; die Obergrenze ist deshalb auf 255
+begrenzt.
+Status: Einzeln geprüft · bestehende Lager ggf. neu bauen
+  - Faktor der Lagerplätze
+    2 verdoppelt die ursprüngliche Zahl, bis die eingestellte Obergrenze greift. Es werden
+    keine zusätzlichen Kisten erzeugt.
+    Bereich: 0.001 bis 1000000000
+  - Höchstens so viele Lagerplätze
+    Feste Obergrenze für das Ergebnis: 96 bedeutet maximal 96 Plätze. Diese Grenze gilt auch
+    bei Faktor 1.
+    Bereich: 1 bis 255 (ganze Zahl)
+
+12. Zusätzliche Rucksackplätze
+Addiert Plätze zur ursprünglichen Rucksackgröße und begrenzt die Gesamtzahl.
+Für wen: Wenn du mehr verschiedene Dinge gleichzeitig im Rucksack tragen möchtest.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Rechnet ursprüngliche Rucksackplätze plus Bonus. Die eingestellte Höchstzahl
+begrenzt das Ergebnis.
+Beispiel: 24 ursprüngliche Plätze + 8 Bonus = 32 Plätze. Mit 44 ursprünglichen Plätzen und
+Höchstzahl 48 entstehen höchstens 48.
+Grenzen: Die Aktualisierung bereits vorhandener Rucksäcke ist nicht live geprüft. Die
+Höchstzahl kann ein größeres vorhandenes Inventar begrenzen. Ein Fehler in der alten
+Aufrufsteuerung ließ bei allein aktiver Rucksackoption die Item-Anzeige aus. Das Tool holt
+diesen Schritt jetzt genau einmal nach.
+Status: Rucksack-Anzeige korrigiert · Spieltest offen
+  - Zusätzliche Plätze
+    Feste Zugabe: 8 bedeutet acht zusätzliche Plätze vor Anwendung der Gesamtgrenze. 0 fügt
+    keine Plätze hinzu.
+    Bereich: 0 bis 40 (ganze Zahl)
+  - Höchstens so viele Rucksackplätze
+    Gesamtgrenze einschließlich Bonus: Vorgabe 48. Nicht mit der Anzahl zusätzlich
+    gewünschter Plätze verwechseln.
+    Bereich: 8 bis 96 (ganze Zahl)
+
+WELT & BAUEN
+================================================================================
+
+13. Karte weiter aufdecken
+Ändert die Reichweite, mit der dein Charakter Kartennebel aufdeckt.
+Für wen: Wenn beim Erkunden ein größerer Bereich auf der Karte sichtbar werden soll.
+Anwendung: Spieler- und Kartendaten in den Spieldateien. Client-/Server-Zusammenspiel im
+Mehrspieler noch nicht live geprüft.
+Wirkung: Multipliziert die hinterlegte Aufdeckreichweite. Die gesamte Weltkarte wird dadurch
+nicht sofort enthüllt.
+Beispiel: Faktor 5 macht aus einer angenommenen Aufdeckreichweite von 30 rechnerisch 150.
+Faktor 1 belässt die bisherige Reichweite.
+Grenzen: Bezieht sich auf die Entdeckung beim Erkunden. Bereits erkundete Bereiche und das
+Verhalten nach einem Neustart wurden nicht live geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der Aufdeckreichweite
+    5 = fünffache bisherige Reichweite. Das ist ein Entfernungsfaktor, nicht fünf
+    zusätzliche Prozent der gesamten Weltkarte.
+    Bereich: 0.001 bis 1000000000
+
+14. Mehr Flammenaltäre
+Ändert, wie viele Flammenaltäre je Flammenstufe vorgesehen sind.
+Für wen: Wenn du zusätzliche Bauorte mit eigenen Flammenaltären möchtest.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Multipliziert die Altarzahl jeder Flammenstufe und begrenzt das Ergebnis. Eine
+Gesamtgrenze über 16 erfordert zusätzlich die experimentelle Freigabe.
+Beispiel: 6 ursprüngliche Altäre × Faktor 3 wären 18. Mit Höchstzahl 16 werden daraus 16
+Altäre.
+Grenzen: Die Vorgabe 16 erhält die höchsten vorhandenen Tabellenwerte. Platzierung über 16
+sowie Speichern und Mehrspieler-Synchronisierung sind nicht bestätigt. Eine niedrige
+Höchstzahl kann größere vorhandene Werte verkleinern.
+Status: Funktion eingeschränkt · Spieltest offen
+  - Faktor der erlaubten Altarzahl
+    3 = dreimal die ursprüngliche Altarzahl der jeweiligen Flammenstufe, bis die Höchstzahl
+    greift. Das ist kein Bonus von drei Altären.
+    Bereich: 0.001 bis 1000000000
+  - Höchstens so viele Altäre
+    Gesamtgrenze für jede Flammenstufe: Vorgabe 16. Werte von 17 bis 32 benötigen die
+    experimentelle Freigabe darunter.
+    Bereich: 1 bis 32 (ganze Zahl)
+  - Experiment: mehr als 16 Altäre erlauben
+    An erlaubt die zusätzliche Anpassung für eine Höchstzahl über 16. Bis 32 einstellbar;
+    dass sich diese Altäre tatsächlich zuverlässig setzen und speichern lassen, ist noch
+    nicht im Spiel geprüft.
+
+15. Boden schneller abbauen und austauschen
+Senkt den Aufwand für unterstützte Gelände-Bearbeitungen.
+Für wen: Wenn Erdarbeiten und das Austauschen von Gelände weniger Aufwand erfordern sollen.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Teilt die hinterlegten Austauschmengen und Gelände-Lebenspunkte durch den Faktor.
+Das Ergebnis wird aufgerundet und beträgt mindestens 1.
+Beispiel: Bei Faktor 20 werden aus 100 Gelände-Lebenspunkten 5. Eine Austauschmenge von 50
+wird zu 3, weil 50 ÷ 20 = 2,5 aufgerundet wird.
+Grenzen: Bearbeitet die erkannten Gelände-Regeln. Faktor 20 verspricht deshalb keine exakt
+zwanzigfache Rohstoffausbeute und ändert nicht sämtliche Bergbau-Regeln.
+Status: Daten geprüft · Spieltest offen
+  - Teiler für Gelände-Aufwand
+    Größer als 1 senkt Austauschmengen und Gelände-Lebenspunkte; 1 belässt sie. Durch
+    Aufrunden und mindestens 1 sind die Ergebnisse nicht immer exakt proportional.
+    Bereich: 0.001 bis 1000000000
+
+16. Unterstützte Pflanzen nachwachsen lassen
+Passt Wachstums-, Ernte- und Nachwachszustände ausgewählter Pflanzen an.
+Für wen: Wenn unterstützte Pflanzen nach dem Ernten wieder nutzbar werden sollen.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Ändert die erkannten Pflanzenzustände so, dass erneutes Wachsen und Ernten
+ermöglicht werden soll. Aloe kann zusätzlich einbezogen werden.
+Beispiel: Mit Aloe-Schalter Aus werden die normalen erkannten Pflanzen geändert. Mit An
+werden zusätzlich die passenden Aloe-Daten bearbeitet.
+Grenzen: Ein vollständiger Ablauf aus Ernten, Nachwachsen und erneutem Ernten wurde noch
+nicht im Spiel geprüft. Die Option umfasst nur erkannte Pflanzen und garantiert kein
+Nachwachsen sämtlicher Wildpflanzen.
+Status: Funktion eingeschränkt · Spieltest offen
+  - Aloe zusätzlich einbeziehen
+    An bearbeitet auch die unterstützten Aloe-Pflanzen. Aus lässt diese Zusatzfälle weg. Das
+    beeinflusst die erfassten Pflanzen, nicht eine Zeit in Sekunden.
+
+17. Normale Kisten und Stationslager verknüpfen
+Erweitert den Herstellungsbestand um erkannte normale Kisten und Inventare von Produktionsstationen.
+Für wen: Wenn neben magischen Kisten auch normale Kisten und vorhandene Stationsvorräte als Materialquellen dienen sollen.
+Anwendung: Erkannte normale platzierbare Kisten und eigenständige Produktionsstationen mit Inventar. Zufallsbeute, Spieler-/NPC-Inventare, Gräber, Ausstellungsinventare und bepflanzte Ernteobjekte werden nicht zu Lagerquellen umgebaut. Für den kontrollierten Mehrspielertest denselben Patch auf Server und Clients anwenden; Abgleich und Bedienung sind noch nicht live bestätigt.
+Wirkung: Ergänzt bei passenden Kisten und Produktionsstationen die Kennzeichnung als Herstellungsbestand. Neue Einträge erlauben zusätzlich Umgebungseinlagerung. Bereits vorhandene Lagerkennzeichnungen und dynamische Einstellungen bleiben erhalten.
+Beispiel: Eine normale platzierbare Kiste und ein erfasstes Stationsinventar erhalten dieselbe Bestandskennzeichnung wie eine magische Kiste. Auch das zuvor übersehene Butterfass wird über seine Stationskomponenten erkannt.
+Grenzen: Das ist ein Datenpatch für zusätzliche Materialquellen und Umgebungseinlagerung. Automatische Nachversorgung von Produktionswarteschlangen, unbegrenzte Reichweite und erfolgreiche Materialübertragung sind damit nicht bestätigt. Stationen ohne eigenes Inventar bieten keinen zusätzlichen Vorrat. Die Behandlung bereits platzierter Lager bleibt im Spiel zu prüfen.
+Status: Datenpatch erweitert · Spieltest offen
+
+18. Weitere Kartensymbole für Schnellreise freigeben
+Aktiviert die Schnellreise-Freigabe für zusätzliche erkannte Kartensymbol-Typen.
+Für wen: Wenn du zu mehr entdeckten Punkten auf der Weltkarte reisen möchtest.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Setzt bei passenden Kartensymbol-Typen die Schnellreise-Erlaubnis. Erfasst werden
+die vom Patcher erkannten Typen, nicht pauschal sämtliche Punkte der Welt.
+Beispiel: Ein unterstützter Symboltyp ohne Schnellreise-Freigabe erhält diese Freigabe.
+Bereits vorhandene Reisebedingungen können trotzdem gelten.
+Grenzen: Entdeckung, aktuelle Spielsituation oder andere Spielregeln können die Reise
+weiterhin einschränken. Der vollständige Reiseablauf ist noch nicht live geprüft.
+Status: Funktion eingeschränkt · Spieltest offen
+
+19. Stärkerer Gleiter-Aufwind
+Verstärkt den Aufwärtsimpuls und entfernt erkannte Kosten der Aufwind-Aktion.
+Für wen: Wenn du mit der Aufwind-Fertigkeit stärker aufsteigen möchtest.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Multipliziert den Aufwärtsimpuls. Zusätzlich entfernt der Patch die erkannte
+Kostenaktion und ihre Kostenverknüpfung.
+Beispiel: Impuls 22 × Faktor 10 = 220. Auch Faktor 1 entfernt beim aktivierten Patch
+weiterhin die Kostenverknüpfung.
+Grenzen: Faktor 1 setzt nur die Impulsänderung auf den bisherigen Wert; die zusätzliche
+Kostenänderung bleibt aktiv. Flugverhalten und Kostenwirkung wurden noch nicht im Spiel
+geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor des Aufwärtsimpulses
+    10 = zehnfacher hinterlegter Impuls. Das ist keine zugesagte zehnfache Flughöhe. Die
+    zusätzliche Kostenentfernung ist unabhängig von diesem Faktor.
+    Bereich: 0.001 bis 1000000000
+
+20. Weitere Bauobjekte zerstörbar machen
+Senkt die erkannte Unzerstörbar-Kennzeichnung unterstützter Bauobjekte.
+Für wen: Wenn du passende bislang unzerstörbare Bauobjekte abbauen möchtest.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Ersetzt die erkannte Härteklasse für unzerstörbare Bauobjekte durch eine
+zerstörbare harte Klasse.
+Beispiel: Ein betroffenes Objekt wechselt von unzerstörbar zu hart. Es wird dadurch nicht
+automatisch mit einem Schlag abgebaut.
+Grenzen: Nur erkannte Bauobjekt-Regeln werden geändert. Geschützte Bereiche, andere
+Objektarten oder weitere Spielprüfungen können das Zerstören weiterhin verhindern.
+Status: Funktion eingeschränkt · Spieltest offen
+
+21. Zusätzliche Bauverbote lockern
+Entfernt erkannte Bauverbotszonen und passt weitere Baubegrenzungen an.
+Für wen: Wenn du in zusätzlichen Bereichen bauen oder höher bauen möchtest.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Entfernt die erkannten Bauverbotszonen, ändert passende Werkzeug-Freigaben und
+setzt den erkannten Bauhöhenwert auf 160.
+Beispiel: Eine der erkannten Bauverbotszonen wird aus ihrer Liste entfernt. Die Bauhöhen-
+Einstellung erhält den festen Wert 160.
+Grenzen: Das ist keine Garantie für unbegrenztes Bauen überall. Andere Schutzbereiche,
+Gelände, Fortschrittsregeln oder die Spiel-Engine können weiterhin Grenzen setzen; die
+tatsächliche Nutzung ist offen.
+Status: Funktion eingeschränkt · Spieltest offen
+
+22. Miasma optisch anpassen
+Verändert Nebeldichte, Lichtdämpfung und den sichtbaren Nebelrand des Miasmas.
+Für wen: Wenn du im Miasma eine andere Sicht oder eine andere Nebeloptik möchtest.
+Anwendung: Darstellung auf dem Client. Für sichtbare Änderungen die Client-Spieldateien
+bearbeiten. Server-Spielregeln und Server-JSON bleiben unverändert.
+Wirkung: Setzt drei Darstellungswerte direkt: Lichtdämpfung, Dichteskala und Dicke des
+sichtbaren Barriere-Nebels.
+Beispiel: Dichteskala 0,5 setzt den Wert von beispielsweise 1 auf 0,5. Nebelrand 0 setzt
+dessen Dicke auf 0; die Miasma-Gefahr wird dadurch nicht entfernt.
+Grenzen: Rein optisch: keine zusätzliche Miasma-Zeit, kein Schutz vor Schaden und kein
+anderer Flammen-Fortschritt. Die Vorgabe für den Nebelrand ist 8; in den geprüften
+vorhandenen Daten lag er bei 6. Sichtbare Stärke und Darstellung sind noch nicht live
+geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Lichtdämpfung im Nebel
+    Fester Darstellungswert von 0 bis 1. Kleiner bedeutet weniger hinterlegte
+    Lichtabschwächung. 0,35 ist weder 35 % Schaden noch eine garantierte Helligkeitsstufe.
+    Bereich: 0 bis 1
+  - Dichteskala des Nebels
+    Fester Skalenwert von 0 bis 1. 0,5 setzt die hinterlegte Skala auf 0,5; die sichtbare
+    Dichte muss dabei nicht exakt halbiert erscheinen.
+    Bereich: 0 bis 1
+  - Dicke des sichtbaren Nebelrands
+    Fester Wert für den Barriere-Nebel. Vorgabe 8; 0 setzt dessen Dicke auf null. Das
+    entfernt nur diese optische Einstellung und keine Miasma-Spielregel.
+    Bereich: 0 bis 1000000000
+
+23. Tiere beim ersten Erfolg zähmen
+Setzt die benötigten erfolgreichen Zähmungsdurchgänge unterstützter Tiere auf 1.
+Für wen: Wenn bei bereits zähmbaren Tierarten ein erfolgreicher normaler
+Köder-/Streichelvorgang ausreichen soll.
+Anwendung: Unter Welt & Bauen einschalten und den Patch anwenden. Für den nächsten
+kontrollierten Mehrspielertest dieselbe Option auf Server und Spielclients anwenden,
+danach neu starten. Speichern allein ändert keine Spieldateien.
+Wirkung: Setzt Wildlife.tamingSetup.necessaryTamingSteps auf 1. Die frische Reflection
+belegt uint8 mit Editorgrenzen 1 bis 5. Passender Köder, Annäherung, Warnung, Flucht
+und die übrigen Bedingungen des normalen Zähmungsablaufs bleiben erforderlich.
+Beispiel: Eine unterstützte Tier-Vorlage mit drei nötigen Erfolgen erhält den Wert 1.
+Das ist kein automatisches Sofortzähmen und kein Überspringen des Köders oder Streichelns.
+Grenzen: 18 passende Vorlagen in Client und Server; 15 Änderungen, drei bereits bei 1.
+Nur vorhandene zähmbare Tiere werden erfasst; keine beliebigen Gegner. Besitzer und
+Spielstände bleiben unverändert. Zähmung, Besitzwechsel, vorhandene Tiere und das
+Zusammenspiel von Server und Clients sind noch nicht im Spiel geprüft.
+Status: Archivwert geprüft · Zähmung im Spiel offen
+Vorgabe: Aus. Keine zusätzlichen Zahlenfelder. Details: ZAEHMUNG.txt.
+
+GAMEPLAY
+================================================================================
+
+24. Höhere Gegenstandsstufen erlauben
+Erhöht die erkannte Obergrenze für unterstützte Gegenstandsstufen.
+Für wen: Wenn Gegenstände über der bisherigen Stufengrenze möglich sein sollen.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Setzt die Obergrenze in passenden Gegenstandsdaten und der zugehörigen Stufenregel
+auf den eingetragenen festen Wert.
+Beispiel: Wert 100 setzt die erkannten Grenzen auf Stufe 100. Ein vorhandener Gegenstand auf
+Stufe 30 wird dadurch nicht automatisch Stufe 100.
+Grenzen: Passende Datenänderungen sind geprüft. Verfügbarkeit, Aufwertung und Werte hoher
+Gegenstandsstufen wurden nicht im Spiel geprüft. Bestehende Gegenstände werden nicht
+pauschal auf die Höchststufe angehoben.
+Status: Funktion eingeschränkt · Spieltest offen
+  - Höchste vorgesehene Gegenstandsstufe
+    Feste Stufengrenze, kein Faktor. 100 bedeutet Grenze 100. Sehr hohe Werte garantieren
+    weder passende Gegenstände noch korrektes Balancing.
+    Bereich: 1 bis 1000000000 (ganze Zahl)
+
+25. Manakosten von Zaubern ändern
+Multipliziert die erkannten Manakosten unterstützter Zauber.
+Für wen: Wenn Zaubern weniger oder mehr Mana verbrauchen soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Multipliziert die passenden Manakosten und rundet das Ergebnis auf ganze Einheiten
+auf.
+Beispiel: 50 Mana × Faktor 0,2 = 10 Mana. Bei 81 Mana entstehen 17 statt 16,2 Mana, weil
+aufgerundet wird.
+Grenzen: Nur passende Kostenfelder werden erfasst. Andere Kosten oder Sperren einer
+Fähigkeit bleiben möglich; der Verbrauch im laufenden Spiel ist noch nicht geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der Manakosten
+    0,2 = 20 % der bisherigen Kosten, also 80 % weniger. 1 belässt die Kosten; 2 verdoppelt
+    sie. Ganze Kosten werden aufgerundet.
+    Bereich: 0.001 bis 1000000000
+
+26. Zauber schneller wirken
+Multipliziert die erkannten Vorbereitungszeiten unterstützter Zauber.
+Für wen: Wenn sich Zauber schneller oder langsamer vorbereiten sollen.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Skaliert die passenden Zauberzeiten. Ein kleinerer Faktor verkürzt diese
+hinterlegten Zeiten.
+Beispiel: 2 Sekunden × Faktor 0,2 = 0,4 Sekunden. Das sind 20 % der bisherigen Zeit und
+damit 80 % weniger Wartezeit.
+Grenzen: Sehr kurze Ergebnisse können durch die Zahlendarstellung gerundet werden.
+Animationen, Wiederholsperren oder andere Fähigkeitenzeiten können zusätzlich wirken. Der
+Handler rundet und lässt mindestens 0,2 Sekunden Wirkzeit stehen. Ein noch kleinerer Faktor
+senkt die Zeit nicht unter diese Grenze.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der Zaubervorbereitung
+    0,2 = ein Fünftel der bisherigen Zeit. 1 belässt die Zeit; 2 verdoppelt sie. Das ist
+    keine Einstellung für Zauberschaden.
+    Bereich: 0.001 bis 1000000000
+
+27. Bogen schneller spannen
+Multipliziert die erkannten Aufladezeiten unterstützter Bögen.
+Für wen: Wenn du einen Bogen schneller vollständig spannen möchtest.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Skaliert die hinterlegte Bogen-Aufladezeit. Kleiner als 1 verkürzt, größer als 1
+verlängert sie.
+Beispiel: 0,6 Sekunden × Faktor 0,2 = 0,12 Sekunden hinterlegte Aufladezeit.
+Grenzen: Verändert diese Aufladezeit, nicht direkt Schaden oder sämtliche Abläufe zwischen
+zwei Schüssen. Tatsächliche Animation und Schussfolge wurden noch nicht im Spiel geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der Bogen-Aufladezeit
+    0,2 = 20 % der bisherigen Aufladezeit. 1 belässt sie; 2 macht sie doppelt so lang. Die
+    Wirkung auf die gesamte Schussfolge kann abweichen.
+    Bereich: 0.001 bis 1000000000
+
+28. Reichweite der Spitzhacke setzen
+Ersetzt den Reichweitenwert unterstützter Spitzhacken durch eine feste Zahl.
+Für wen: Wenn deine Spitzhacke weiter entfernte Abbaupunkte erreichen soll.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Setzt die maximale Abbauentfernung direkt auf den eingetragenen Wert. Trotz des
+internen Feldnamens ist diese Eingabe kein Multiplikator.
+Beispiel: Wert 10 setzt eine bisherige Reichweite von 5 auf 10. Wert 1 würde sie auf 1
+verkürzen, nicht unverändert lassen.
+Grenzen: Die genaue Umrechnung dieses Spielwerts in Meter oder Blöcke ist nicht bestätigt.
+Sichtlinie, Trefferprüfung und andere Abbauregeln können die nutzbare Entfernung begrenzen.
+Status: Daten geprüft · Spieltest offen
+  - Fester Reichweitenwert der Spitzhacke
+    Absoluter Wert: 10 setzt die hinterlegte Reichweite auf 10. Es bedeutet weder zehnfache
+    Reichweite noch zehn zusätzliche Einheiten. Die räumliche Maßeinheit ist nicht live
+    bestätigt.
+    Bereich: 0.001 bis 1000000000
+
+29. Holz mit der Axt schneller fällen
+Multipliziert den erkannten Holzschaden unterstützter Äxte.
+Für wen: Wenn du Bäume mit weniger Axtschlägen fällen möchtest.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Erhöht oder senkt den Wert, der bei passenden Äxten für Holzschaden hinterlegt ist.
+Beispiel: 18 Holzschaden × Faktor 3 = 54 Holzschaden pro passendem Treffer.
+Grenzen: Das ist die Einstellung für Holzabbau. Sie ist kein allgemeiner
+Schadensmultiplikator gegen Gegner; tatsächliche Trefferzahl und weitere Boni sind noch
+nicht live geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor des Axt-Holzschadens
+    3 = dreifacher hinterlegter Holzschaden. 1 belässt ihn; 0,5 halbiert ihn. Mehr
+    Holzschaden erzeugt nicht automatisch mehr Holz je Baum.
+    Bereich: 0.001 bis 1000000000
+
+30. Fallschaden später einsetzen lassen
+Ändert die erkannten Entfernungsgrenzen für beginnenden und tödlichen Fallschaden.
+Für wen: Wenn du größere Stürze überstehen oder früher Fallschaden erleiden möchtest.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Multipliziert getrennt die Grenze für beginnenden Fallschaden und die Grenze für
+einen tödlichen Sturz.
+Beispiel: Eine Startgrenze von 10 wird mit Faktor 2 zu 20. Eine tödliche Grenze von 16 wird
+mit Faktor 3 zu 48.
+Grenzen: Die beiden Grenzen sollten zueinander passen: Beginn des Schadens unterhalb der
+tödlichen Grenze. Der Patch ist keine garantierte Fallschaden-Immunität; weitere Fallregeln
+und Maßeinheiten wurden nicht live geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der tödlichen Fallgrenze
+    3 verdreifacht die hinterlegte Entfernung bis zum tödlichen Fall. Das senkt nicht direkt
+    jeden Schadenswert um ein Drittel.
+    Bereich: 0.001 bis 1000000000
+  - Faktor für den Beginn von Fallschaden
+    2 verdoppelt die hinterlegte Entfernung, ab der Fallschaden beginnt. Die resultierende
+    Grenze sollte unter der tödlichen Fallgrenze bleiben.
+    Bereich: 0.001 bis 1000000000
+
+31. Zauberstab-Geschosse länger fliegen lassen
+Verlängert die Lebensdauer unterstützter Geschosse und passt weitere Flugeigenschaften an.
+Für wen: Wenn Zauberstab-Geschosse länger unterwegs bleiben sollen.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Multipliziert die erkannte Lebensdauer. Zusätzlich setzt der Patcher feste
+Änderungen an Flug-, Zielverfolgungs- und Reichweitenwerten.
+Beispiel: 1 Sekunde Lebensdauer × Faktor 5 = 5 Sekunden. Auch mit Faktor 1 bleiben die
+zusätzlichen Fluganpassungen aktiv.
+Grenzen: Die Wirkung hängt deshalb nicht allein vom Faktor ab. Flugbahn, Treffer und
+Zielverfolgung sind noch nicht im Spiel geprüft; die Option verspricht keine feste
+Trefferentfernung. Die Lebensdauer wird zusätzlich auf höchstens 5 Sekunden begrenzt.
+Dadurch entspricht das Ergebnis nicht immer dem vollen Faktor; bei Ausgangswerten über 5
+Sekunden kann der Handler sogar verkürzen. Ob solche Testressourcen im Spiel benutzt werden,
+ist nicht belegt.
+Status: Begrenzt auf 5 Sekunden · weitere Flugwerte geändert
+  - Faktor der Geschoss-Lebensdauer
+    5 = fünffache hinterlegte Lebensdauer. Das ist eine Zeitänderung und keine feste
+    Reichweite. Faktor 1 lässt die zusätzlichen Fluganpassungen des aktivierten Patches
+    bestehen.
+    Bereich: 0.001 bis 1000000000
+
+32. Zufallsbeute je Truhe festlegen
+Setzt eine feste Mindest- und Höchstzahl zufälliger Beuteauswahlen für unterstützte Truhen.
+Für wen: Wenn Truhen innerhalb einer von dir festgelegten Beutespanne liegen sollen.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Ersetzt die erkannten Grenzen für zufällige Beuteauswahlen einer Truhe. Diese
+Auswahlen sind weder Lagerplätze noch Stückzahlen eines einzelnen Items.
+Beispiel: Minimum 1 und Maximum 5 erlauben eine hinterlegte Spanne von 1 bis 5
+Zufallsauswahlen. Ein bisheriges Minimum von 2 wird dabei auf 1 gesenkt.
+Grenzen: Minimum darf nicht über Maximum liegen. Nicht zusammen mit einem Truhenfaktor über
+1 unter „Beuteplätze nach Quelle“ verwenden; das Tool blockiert diese Kombination. Inhalt
+und tatsächlich verfügbare Truhenkapazität können die Ausbeute beeinflussen.
+Status: Daten geprüft · Spieltest offen
+  - Mindestens so viele Zufallsauswahlen
+    Feste Untergrenze je betroffener Truhe. 1 bedeutet mindestens eine vorgesehene Auswahl,
+    nicht ein garantierter Stapel einer bestimmten Ressource.
+    Bereich: 0 bis 1000000000 (ganze Zahl)
+  - Höchstens so viele Zufallsauswahlen
+    Feste Obergrenze der vorgesehenen Auswahlen. 5 bedeutet bis zu fünf Auswahlen. Der Wert
+    muss mindestens so hoch sein wie die Untergrenze.
+    Bereich: 0 bis 1000000000 (ganze Zahl)
+
+33. Server-Faktorgrenzen erweitern
+Erweitert geprüfte Zahlenbereiche der Schwierigkeit, ohne aktive Schwierigkeitswerte
+umzuschreiben.
+Für wen: Wenn du unterstützte Server-Faktoren außerhalb ihrer bisherigen Grenzen einstellen
+möchtest.
+Anwendung: Zulässige Wertebereiche in den Server-Spieldateien. Bearbeitet weder
+enshrouded_server.json noch deren aktive Werte. Für passende Regler auf dem Client
+zusätzlich die Client-Faktorgrenzen verwenden.
+Wirkung: Setzt die erkannten Obergrenzen auf höchstens Faktor 5, bei Spieler-Leben, -Mana
+und -Ausdauer höchstens 4. Untergrenzen werden nur erweitert; vorhandene kleinere Werte
+bleiben erhalten.
+Beispiel: Mit Untergrenze 0,1 und Obergrenze 5 reichen passende Faktoren bis 500 %. Spieler-
+Leben, -Mana und -Ausdauer enden trotzdem bei 400 %. Ein bereits gespeicherter Schaden von
+1000 % wird dadurch nicht auf 100 % zurückgesetzt.
+Grenzen: Ändert keine aktiven Presets und behebt gespeicherte Extremwerte nicht automatisch.
+Zeiten als feste Sekundenwerte, Ja/Nein-Felder, Auswahllisten und nicht ausdrücklich
+unterstützte Regeln bleiben erhalten. Das Spiel und der Server müssen diese Bereiche noch
+live bestätigen; der Patch erteilt keine Adminrechte.
+Status: Daten geprüft · Spieltest offen
+  - Neue Untergrenze der unterstützten Faktoren
+    Vorgabe 0,1 = 10 % des normalen Faktors. Muss positiv sein und darf die wirksame
+    Obergrenze nicht übersteigen. Schon vorhandene kleinere zulässige Werte, etwa 0 für
+    Bergbau-XP, bleiben erhalten.
+    Bereich: 0.001 bis 4
+  - Neue Obergrenze der unterstützten Faktoren
+    Vorgabe 5 = 500 %; höchstens 5. Für Spieler-Leben, -Mana und -Ausdauer gilt zusätzlich
+    höchstens 4 = 400 %. Dies ist eine Bereichsgrenze, kein neuer aktiver
+    Schwierigkeitswert.
+    Bereich: 1 bis 5
+
+34. Schwierigkeitsregler passend erweitern
+Erweitert die angebotenen Schritte unterstützter Schwierigkeitsregler und stimmt ihre
+Datenbereiche ab.
+Für wen: Wenn du im Spiel feinere oder weitere Auswahlwerte für unterstützte Faktoren
+brauchst.
+Anwendung: Nur auf dem Spielclient: Menüschritte und passende Faktorgrenzen in dessen
+Spieldaten. Auf einem Dedicated Server wird diese Client-Option mit einem Hinweis
+übersprungen. Dort bei Bedarf die separate Server-Faktorgrenzen-Option verwenden;
+die externe Server-JSON wird nicht bearbeitet.
+Wirkung: Ergänzt die unterstützten Zahlenregler um passende Viertelschritte und die
+eingestellten Endwerte. Höchstens Faktor 5, für Spieler-Leben, -Mana und -Ausdauer höchstens
+4; eine niedrigere gleichzeitig aktive Servergrenze begrenzt den Client mit.
+Beispiel: Bei 0,1 bis 5 werden unter anderem 0,1, 0,25, 0,5 und weitere Viertelschritte
+angeboten. Ist die aktive Server-Obergrenze 3, endet auch der Client höchstens bei 3.
+Grenzen: Bestehende kleinere Menüwerte bleiben erhalten. Feste Zeiten, Ja/Nein-Felder,
+Auswahllisten und nicht unterstützte Regeln bleiben unverändert. Die Untergrenze muss unter
+dem kleinsten Wert aus Client-Maximum, aktivem Server-Maximum und 4 liegen. Die Option
+schaltet keine Adminanmeldung oder Bearbeitung gesperrter Dedicated-Menüs frei.
+Status: Daten geprüft · Spieltest offen
+  - Zusätzliche untere Reglerstufe
+    Vorgabe 0,1 = 10 %. Muss positiv und strikt kleiner als das wirksame Maximum
+    einschließlich der Spielergrenze 4 sein. Bereits angebotene noch kleinere Stufen bleiben
+    erhalten.
+    Bereich: 0.001 bis 4
+  - Gewünschte obere Reglerstufe
+    Vorgabe 5 = 500 %. Höchstens 5; Spieler-Leben, -Mana und -Ausdauer höchstens 4. Eine
+    gleichzeitig aktive niedrigere Servergrenze begrenzt die tatsächlich erzeugten Schritte.
+    Bereich: 1 bis 5
+
+35. Herstellungszeiten ändern
+Multipliziert die hinterlegte Dauer unterstützter Herstellungsrezepte.
+Für wen: Wenn passende Rezepte schneller oder langsamer fertig werden sollen.
+Anwendung: Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im
+Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert.
+Wirkung: Skaliert positive Rezeptzeiten. Kleiner als 1 verkürzt, größer als 1 verlängert die
+hinterlegte Herstellungszeit.
+Beispiel: 60 Sekunden × Faktor 0,1 = 6 Sekunden. Das entspricht 10 % der bisherigen Zeit,
+also 90 % weniger Wartezeit.
+Grenzen: Rezepte ohne Wartezeit werden dadurch nicht langsamer gemacht. Serverregeln für
+Produktionsgeschwindigkeit und weitere Werkstationsregeln können zusätzlich auf das Ergebnis
+wirken.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der Rezeptdauer
+    0,1 = ein Zehntel der bisherigen Dauer; 1 belässt sie; 2 verdoppelt sie. Das verändert
+    weder Materialkosten noch die produzierte Stückzahl.
+    Bereich: 0.001 bis 1000000000
+
+36. Musikbonus schneller aufbauen
+Multipliziert die hinterlegte Aufbauzeit des Musik-Komfortbonus je Instrument.
+Für wen: Wenn der Musikbonus früher oder später seine volle Stärke erreichen soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Ändert die Zeit pro Instrument bis zum maximalen Musikbonus. Die Einstellung ist
+ein Zeitfaktor.
+Beispiel: 10 Sekunden × Faktor 0,2 = 2 Sekunden hinterlegte Aufbauzeit pro Instrument.
+Grenzen: Ändert den Aufbau des Komfortbonus, nicht pauschal die Länge eines Lieds oder die
+maximale Stärke des Bonus. Zusammenspiel mehrerer Instrumente ist noch nicht live geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der Bonus-Aufbauzeit
+    0,2 = 20 % der bisherigen Zeit pro Instrument, also 80 % kürzer. 1 belässt die Zeit; 2
+    verdoppelt sie.
+    Bereich: 0.001 bis 1000000000
+
+37. Mehr Instrumente für Musik-Komfort zählen
+Multipliziert, wie viele Instrumente zum Musik-Komfortbonus beitragen dürfen.
+Für wen: Wenn mehr gemeinsam gespielte Instrumente für den Bonus zählen sollen.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Skaliert die maximale Zahl der Instrumente, die für den Musik-Komfort
+berücksichtigt werden.
+Beispiel: 4 berücksichtigte Instrumente × Faktor 10 = höchstens 40 berücksichtigte
+Instrumente.
+Grenzen: Ändert die Zählgrenze des Bonus. Das ist keine allgemeine Erlaubnis zum Platzieren
+zusätzlicher Instrumente und kein direkter Faktor für Kampfschaden.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der berücksichtigten Instrumentenzahl
+    10 verzehnfacht die bisherige Zählgrenze. 1 belässt sie. Der Wert ist kein festes
+    Maximum von zehn Instrumenten.
+    Bereich: 0.001 bis 1000000000
+
+38. Höheren Musik-Komfortbonus erlauben
+Multipliziert den maximalen Komfortbonus aus Musik.
+Für wen: Wenn Musik einen höheren oder niedrigeren maximalen Komfortbeitrag liefern soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated:
+Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Skaliert den hinterlegten Höchstwert des Musik-Komfortbonus. Die Einstellung ändert
+dessen Stärke, nicht seine Aufbauzeit.
+Beispiel: 15 Komfortpunkte × Faktor 10 = maximal 150 hinterlegte Komfortpunkte aus Musik.
+Grenzen: Der Komfortbonus ist kein direkter Schadensbonus. Welche weiteren Wirkungen ein
+höherer Komfortwert im Spiel hat, wird durch die übrigen Spielregeln bestimmt und ist hier
+noch nicht live geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor des maximalen Musik-Komforts
+    10 = zehnfacher ursprünglicher Höchstbonus. 1 belässt ihn; 0,5 halbiert ihn. Das ist
+    kein zusätzlicher fester Bonus von zehn Punkten.
+    Bereich: 0.001 bis 1000000000
+
+39. Chance auf Edelsteinsockel setzen
+Setzt die Sockelchance für jede Gegenstands-Seltenheit getrennt.
+Für wen: Wenn bestimmte Seltenheitsstufen häufiger oder seltener einen Sockel haben sollen.
+Anwendung: Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server
+und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON
+bleibt unverändert.
+Wirkung: Ersetzt die hinterlegten Wahrscheinlichkeiten durch feste Anteile zwischen 0 und 1.
+Beispiel: Selten 0,25 = 25 % Sockelchance; episch 0,5 = 50 %; legendär 1 = 100 % für die
+jeweils unterstützte Erzeugung.
+Grenzen: Die Wahrscheinlichkeiten sind keine Multiplikatoren und keine Anzahl von Sockeln.
+Bestehende Gegenstände werden dadurch nicht nachweislich rückwirkend geändert. Einzelne
+Zufallsergebnisse können auch bei 25 % stark schwanken.
+Status: Daten geprüft · Spieltest offen
+  - Gewöhnlich: Sockelchance
+    0 = 0 %, 0,25 = 25 %, 1 = 100 % für unterstützte gewöhnliche Gegenstände. Vorgabe 0.
+    Bereich: 0 bis 1
+  - Ungewöhnlich: Sockelchance
+    0,05 = 5 % Chance für unterstützte ungewöhnliche Gegenstände. Das ist nicht fünfmal die
+    bisherige Chance.
+    Bereich: 0 bis 1
+  - Selten: Sockelchance
+    0,25 = 25 % Chance für unterstützte seltene Gegenstände. Im Mittel eine von vier
+    Auswahlen, keine Garantie innerhalb der nächsten vier.
+    Bereich: 0 bis 1
+  - Episch: Sockelchance
+    0,5 = 50 % Chance für unterstützte epische Gegenstände. 1 würde 100 % bedeuten.
+    Bereich: 0 bis 1
+  - Legendär: Sockelchance
+    1 = 100 % Chance für die unterstützte Erzeugung legendärer Gegenstände. Keine Zusage
+    einer nachträglichen Änderung vorhandener Items.
+    Bereich: 0 bis 1
+
+40. Mehr Wasserquellen je Flammenstufe
+Multipliziert die erlaubte Wasserquellenzahl und begrenzt das Ergebnis.
+Für wen: Wenn je Flammenstufe mehr oder weniger Wasserquellen erlaubt sein sollen.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Multipliziert jeden erkannten Stufeneintrag und begrenzt ihn auf die gewählte
+Gesamtzahl.
+Beispiel: 8 erlaubte Quellen × Faktor 2 wären 16. Mit Höchstzahl 10 werden daraus 10
+Quellen.
+Grenzen: Die Vorgabe Faktor 1 und Höchstzahl 50 kann alle vorhandenen Einträge unverändert
+lassen. Das Einschalten allein erzeugt deshalb keine zusätzlichen Quellen; Platzierung und
+Nutzung wurden noch nicht live geprüft.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der erlaubten Wasserquellen
+    2 verdoppelt den ursprünglichen Eintrag jeder Flammenstufe, bis die Höchstzahl greift.
+    Vorgabe 1 fügt nichts hinzu.
+    Bereich: 0.001 bis 1000000000
+  - Höchstens so viele Wasserquellen
+    Gesamtgrenze für das berechnete Ergebnis, Vorgabe 50. Die Grenze füllt niedrigere
+    Ergebnisse nicht automatisch auf und kann höhere Ergebnisse verkleinern.
+    Bereich: 1 bis 1000000000 (ganze Zahl)
+
+41. Mehr Stück pro Herstellung
+Multipliziert die produzierte Stückzahl unterstützter Rezepte.
+Für wen: Wenn ein Herstellungsdurchlauf mehr fertige Gegenstände liefern soll.
+Anwendung: Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im
+Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert.
+Wirkung: Multipliziert positive Rezept-Ausgabemengen und rundet auf ganze Stückzahlen.
+Beispiel: 2 produzierte Stück × Faktor 3 = 6 Stück pro Durchlauf. 3 Stück × Faktor 1,5 =
+4,5, gerundet 5 Stück.
+Grenzen: Ändert die Ausgabemenge, nicht die Materialkosten oder Herstellungszeit. Weltbeute,
+Sammelknoten und Gegnerbeute werden über andere Optionen gesteuert.
+Status: Daten geprüft · Spieltest offen
+  - Faktor der produzierten Stückzahl
+    3 = dreifache ursprüngliche Rezept-Ausgabe, danach Rundung auf ganze Stücke. Vorgabe 1
+    belässt die Menge; das Einschalten allein erhöht sie nicht.
+    Bereich: 0.001 bis 1000000000
+
+42. Mehr Sammel-, Holz- und Erntemengen
+Ändert getrennt die Mengen unterstützter Sammelquellen, Bäume und Anbau-Ernten.
+Für wen: Wenn Sammeln, Holzfällen oder Ernten pro passender Quelle mehr Ressourcen liefern
+soll.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Multipliziert passende Mengen in drei Quellgruppen. Die alten Zusatzfelder für
+Gegner- und Truhenmengen sind wirkungslos und müssen bei aktivierter Option auf 1 stehen.
+Beispiel: Erntemenge 3 macht aus einer passenden Menge von 3 rechnerisch 9. Mit Sammelmenge
+1 und Baumertrag 1 bleiben diese beiden Gruppen unverändert. Alte Gegner- und Truhenfelder
+bleiben jeweils 1.
+Grenzen: Nicht jede Pflanze und Quelle gehört zu den unterstützten Fällen. Die alten
+Gegner-/Truhenfelder werden bei abweichenden Werten blockiert; das alte Spielregeln-Feld
+wird ignoriert. Für zusätzliche zufällige Gegner-/Truhenbeute gibt es die separate Option
+„Beuteplätze nach Quelle“. Diese verändert Auswahlen und garantiert keine proportionale
+Stückzahl.
+Status: Funktion eingeschränkt · Spieltest offen
+  - Faktor der Sammelmengen
+    2 verdoppelt die hinterlegte Menge passender Sammelquellen. Vorgabe 1 belässt sie.
+    Erfasst nicht pauschal jedes aufhebbare Objekt.
+    Bereich: 0.001 bis 1000000000
+  - Faktor der Baum-Erträge
+    3 verdreifacht die hinterlegte Menge passender Baumquellen. Vorgabe 1 belässt sie. Das
+    ändert die Ausbeute und nicht den Axtschaden.
+    Bereich: 0.001 bis 1000000000
+  - Faktor der Anbau-Ernten
+    3 macht aus einer hinterlegten passenden Erntemenge von 3 rechnerisch 9. Vorgabe 1
+    belässt sie. Erfasst nur unterstützte Anbau- und Erntequellen.
+    Bereich: 0.001 bis 1000000000
+  - Altes Gegner-Mengenfeld: auf 1 lassen
+    Dieses Feld hat keine bestätigte Datenwirkung. Bei aktivierter Sammeloption ist genau 1
+    erforderlich; andere Werte blockiert das Tool. Für mehr zufällige Auswahlen stattdessen
+    „Beuteplätze nach Quelle“ verwenden.
+    Bereich: 0.001 bis 1000000000
+  - Altes Truhen-Mengenfeld: auf 1 lassen
+    Dieses Feld hat keine bestätigte Datenwirkung. Bei aktivierter Sammeloption ist genau 1
+    erforderlich; andere Werte blockiert das Tool. Truhen-Auswahlen lassen sich über die
+    separate Quellenoption verändern.
+    Bereich: 0.001 bis 1000000000
+  - Altes Spielregeln-Feld: ohne Wirkung
+    Wird vom verwendeten Patcher ignoriert. An oder Aus ändert weder aktive Serverregeln
+    noch die Server-JSON. Bleibt erhalten, damit ältere Profile lesbar bleiben.
+
+43. Beute automatisch einsammeln
+Bereitet unterstützte Bodenbeute auf automatisches Einsammeln im eingestellten Bereich vor.
+Für wen: Wenn du passende Bodenbeute ohne einzelne Aufheben-Aktion einsammeln möchtest.
+Anwendung: Beute- und Einsammeldaten der gewählten Installation. Einzelspieler:
+Clientordner; bei Dedicated sind zusammenpassende Server-/Clientdaten erforderlich.
+Aufsammeln und Synchronisierung noch nicht live geprüft.
+Wirkung: Ergänzt automatische Aufhebezonen bei passenden Beuteobjekten. Beutegruppen,
+Bereich und Zeitabstand können getrennt eingestellt werden; Sammelknoten lassen sich
+zusätzlich für nahe liegende Auswürfe anpassen.
+Beispiel: Reichweitenwert 16 setzt die drei räumlichen Aufhebe-Ausdehnungen auf 16. Abstand
+1000 ms bedeutet 1 Sekunde, 0 bedeutet keine zusätzliche Wartezeit. Eine ausgeschaltete
+Beutegruppe wird von dieser Zusatzoption ausgelassen.
+Grenzen: Nur unterstützte Beute wird erfasst; bestimmte Tiere, Gegner und andere Objekte
+werden bewusst ausgelassen. Die genaue räumliche Form und das tatsächliche Einsammeln sind
+ungeprüft. Die sichtbare Wirkung der Beutefunken-Option ist nicht belegt. Questbeute
+einzubeziehen erledigt keine Quests automatisch.
+Status: Funktion eingeschränkt · Spieltest offen
+  - Fallende Bodenbeute einbeziehen
+    An bearbeitet die unterstützte fallende beziehungsweise physikalische Bodenbeute. Aus
+    lässt diese Beutegruppe von der jeweiligen Anpassung aus.
+  - Materialhaufen einbeziehen
+    An nimmt passende Materialhaufen in die automatischen Aufhebezonen auf. Das ist keine
+    Garantie für sämtliche Ressourcendepots der Welt.
+  - Unterstützte Questbeute einbeziehen
+    An bezieht passende Quest-Beuteobjekte ein. Dialoge, Questziele und andere notwendige
+    Aktionen werden dadurch nicht automatisch abgeschlossen.
+  - Aufhebe-Ausdehnung: Meterwert des Patchers
+    16 übernimmt den Patcher-Reichweitenwert 16 in alle drei Raumrichtungen. Die genaue Form
+    und tatsächlich nutzbare Entfernung sind noch nicht live geprüft; es ist kein
+    bestätigter kugelförmiger Radius.
+    Bereich: 0.001 bis 1000000000
+  - Zusätzlicher Aufhebe-Abstand in Millisekunden
+    1000 ms = 1 Sekunde; 250 ms = 0,25 Sekunden. Vorgabe 0 bedeutet keine zusätzliche
+    Wartezeit, nicht ausgeschaltetes Auto-Loot.
+    Bereich: 0 bis 1000000000 (ganze Zahl)
+  - Auswürfe von Sammelknoten näher halten
+    An passt an unterstützten Sammelknoten Auswurfgeschwindigkeit, Versatz und Streubereich
+    an. Dadurch soll Beute näher liegen bleiben. Keine Vermehrung der Stückzahl.
+  - Patcher-Option für Beutefunken übernehmen
+    An fordert das Beibehalten von Beutefunken gemäß Patcher-Option an. Eine sichtbare
+    Unterscheidung zwischen An und Aus ist nicht nachgewiesen; diese Einstellung verspricht
+    kein bestätigtes Leuchten.
+
+44. Beuteplätze nach Quelle
+Multipliziert getrennt die zufälligen Beuteauswahlen unterstützter Gegner und Truhen.
+Für wen: Wenn Gegner oder Truhen mehr Chancen auf zufällig ausgewählte Beute erhalten
+sollen.
+Anwendung: Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei
+Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft.
+Wirkung: Multipliziert erkannte Zufallsplätze nach Herkunft und rundet auf ganze Plätze. Das
+Ergebnis wird auf 16 begrenzt; bei Truhen gilt zusätzlich deren vorhandene Kapazität.
+Beispiel: 2 Zufallsplätze × Faktor 2 = 4 Auswahlen. 3 Plätze × Faktor 1,5 = 4,5, gerundet 5.
+Welche Gegenstände daraus entstehen, bleibt zufällig.
+Grenzen: Keine garantierte Verdopplung jeder Itemmenge. Quellen ohne Zufallsplätze bleiben
+ohne zusätzliche Plätze; Test- und veraltete Objekte werden ausgelassen. Truhenfaktor über 1
+ist nicht gleichzeitig mit festen Truhen-Zufallsplätzen zulässig. Vorgaben 1 und 1 ändern
+die Mengen nicht.
+Status: Daten geprüft · Spieltest offen
+  - Gegner: Faktor der Zufallsplätze
+    2 verdoppelt passende Zufallsplätze, danach Rundung auf ganze Plätze und höchstens 16. 1
+    belässt sie. Das erzeugt keine zugesagte doppelte Menge jedes einzelnen Gegenstands.
+    Bereich: 1 bis 16
+  - Truhen: Faktor der Zufallsplätze
+    2 verdoppelt passende Zufallsplätze, begrenzt auf 16 und die Truhenkapazität. 1 belässt
+    sie. Über 1 nicht zugleich mit „Zufallsbeute je Truhe festlegen“ verwenden.
+    Bereich: 1 bis 16
+
