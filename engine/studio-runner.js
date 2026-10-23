@@ -10,8 +10,8 @@ function parseArgs(argv) {
   let mode = null, statusFile = null, expectedFingerprint = null, steamFilesVerified = false;
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
-    if (['--update', '--preview', '--restore', '--inspect-basis', '--renew-basis', '--inspect-stacks'].includes(arg)) {
-      if (mode) throw Error('Nur einen Vorgang angeben: --update, --preview, --restore, --inspect-basis, --renew-basis oder --inspect-stacks.');
+    if (['--update', '--preview', '--restore', '--inspect-basis', '--renew-basis', '--inspect-stacks', '--inspect-skill-points'].includes(arg)) {
+      if (mode) throw Error('Nur einen Vorgang angeben: --update, --preview, --restore, --inspect-basis, --renew-basis, --inspect-stacks oder --inspect-skill-points.');
       mode = arg.slice(2);
     } else if (arg === '--status-file') {
       if (statusFile !== null || !argv[i + 1] || argv[i + 1].startsWith('--')) throw Error('--status-file benötigt genau einen absoluten JSON-Dateipfad.');
@@ -77,7 +77,7 @@ async function runAutomatic(parsed, configuredOptions = options, api = backend, 
       applicationConfirmed = true;
       finalResult = planSummary(plan, 'update', true);
       const points = finalResult.skillPoints;
-      const pointsInfo = points?.enabled && points.resources?.length ? ' Fertigkeitspunkte-Tabelle (' + (points.role === 'server' ? 'Server' : points.role === 'client' ? 'Client' : 'gewählter Ordner') + '): ' + points.resources.map(resource => resource.before + ' → ' + resource.after).join(', ') + ' im Archiv bestätigt.' : '';
+      const pointsInfo = points?.enabled && points.validated === true && points.archiveReadbackValidated === true && points.resources?.length ? ' Fertigkeitspunkte-Tabelle (' + (points.role === 'server' ? 'Server' : points.role === 'client' ? 'Client' : 'gewählter Ordner') + '): ' + points.resources.map(resource => resource.before + ' → ' + resource.after).join(', ') + ' im Archiv bestätigt.' : '';
       const stacks = finalResult.stacks;
       const stackInfo = stacks?.enabled && stacks.validated === true && stacks.archiveReadbackValidated === true ? ' Stapelgrößen (' + (stacks.role === 'server' ? 'Server' : stacks.role === 'client' ? 'Client' : 'gewählter Ordner') + '): ' + stacks.requested + ' je Stapel bei ' + stacks.stackableItems + ' stapelbaren Items im Archiv bestätigt.' : '';
       const taming = finalResult.taming;
@@ -97,6 +97,11 @@ async function runAutomatic(parsed, configuredOptions = options, api = backend, 
       const role = finalResult.targetRole === 'server' ? 'Server' : 'Client';
       const comparison = finalResult.allMatch ? 'Alle ' + finalResult.stackableCount + ' stapelbaren Items entsprechen dem Profilwert ' + finalResult.requested + '.' : finalResult.matchingRequested + ' von ' + finalResult.stackableCount + ' stapelbaren Items entsprechen dem Profilwert ' + finalResult.requested + '.';
       report({ stage: 'complete', message: 'Aktuelle Stapelwerte (' + role + ', Build ' + finalResult.build + ') gelesen. ' + comparison + ' Spieldateien wurden nicht verändert.', progress: 100, outcome: 'success', result: finalResult });
+    } else if (parsed.mode === 'inspect-skill-points') {
+      finalResult = await api.inspectSkillPoints(operationOptions);
+      const role = finalResult.targetRole === 'server' ? 'Server' : 'Client';
+      const values = finalResult.distribution.map(row => row.value + ' (' + row.count + ' Tabelle' + (row.count === 1 ? '' : 'n') + ')').join(', ');
+      report({ stage: 'complete', message: 'Installierter Punktewert (' + role + ', Build ' + finalResult.build + '): ' + values + '. Profilwert: ' + finalResult.requested + '. ' + (finalResult.allMatch ? 'Archiv und Profil stimmen überein.' : 'Archiv und Profil weichen ab; das Profil ist hier noch nicht so angewendet.') + ' Nur gelesen; Spieldateien und Spielstände wurden nicht verändert.', progress: 100, outcome: 'success', result: finalResult });
     } else if (parsed.mode === 'inspect-basis') {
       finalResult = await api.inspectBasis(operationOptions);
       const messages = { version_changed: 'Spielupdate erkannt. Die alte Basis gehört zu einer anderen Version.', archives_changed: 'Geänderte Archive erkannt. Vor einer neuen Basis die aktuellen Dateien prüfen.', ready: 'Gespeicherte Basis und aktuelle Dateien passen zusammen.', first_basis: 'Für diesen Ordner ist noch keine Basis gespeichert.' };
@@ -117,7 +122,7 @@ async function runAutomatic(parsed, configuredOptions = options, api = backend, 
   } finally { process.stdout.write = originalWrite; }
 }
 async function interactive(configuredOptions = options) {
-  console.log('\nENSHROUDED MOD STUDIO 0.4.9 · Engine 1.2.3\n');
+  console.log('\nENSHROUDED MOD STUDIO 0.4.10 · Engine 1.2.3\n');
   backend.verifyEngine(configuredOptions.root);
   const config = backend.read(configuredOptions.configPath), target = backend.target(config);
   backend.validate(config, configuredOptions.root);
@@ -127,7 +132,7 @@ async function interactive(configuredOptions = options) {
   const ask = question => new Promise(resolve => rl.question(question, resolve));
   try {
     while (true) {
-      console.log('\n1  Vorschau erstellen und Archive prüfen\n2  Geprüfte Vorschau ANWENDEN\n3  Gespeicherte Basis wiederherstellen\n4  Neue Basis aus aktuellen Dateien wählen (nach Spielupdate/Steam-Prüfung)\n5  Unterbrochenen Dateitausch zurücknehmen\n6  Aktuelle Stapelgrößen lesen (ohne Spieländerung)\n0  Beenden');
+      console.log('\n1  Vorschau erstellen und Archive prüfen\n2  Geprüfte Vorschau ANWENDEN\n3  Gespeicherte Basis wiederherstellen\n4  Neue Basis aus aktuellen Dateien wählen (nach Spielupdate/Steam-Prüfung)\n5  Unterbrochenen Dateitausch zurücknehmen\n6  Aktuelle Stapelgrößen lesen (ohne Spieländerung)\n7  Installierten Fertigkeitspunkte-Wert lesen (ohne Spieländerung)\n0  Beenden');
       const choice = (await ask('\nAuswahl: ')).trim();
       try {
         if (choice === '0') break;
@@ -152,7 +157,8 @@ async function interactive(configuredOptions = options) {
           if ((await ask('Steam-Dateiprüfung für genau diesen Ordner abgeschlossen und neue Basis jetzt freigeben? [ja/nein]: ')).trim().toLowerCase() === 'ja') { backend.renewBasis({ ...configuredOptions, expectedFingerprint: inspection.fingerprintToken, steamFilesVerified: true }); console.log('Neue Basis freigegeben. Jetzt eine neue Vorschau erstellen.'); }
         } else if (choice === '5') console.log(backend.recover(configuredOptions) + ' unterbrochene Vorgänge zurückgenommen.');
         else if (choice === '6') { const result = backend.inspectStacks(configuredOptions); console.log(JSON.stringify(result, null, 2)); }
-        else console.log('Bitte eine Zahl von 0 bis 6 eingeben.');
+        else if (choice === '7') { const result = backend.inspectSkillPoints(configuredOptions); console.log(JSON.stringify(result, null, 2)); }
+        else console.log('Bitte eine Zahl von 0 bis 7 eingeben.');
       } catch (error) { console.error('\nFEHLER / VORGANG GESTOPPT: ' + error.message); }
     }
   } finally { rl.close(); }

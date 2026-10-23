@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $studioRoot = Split-Path -Parent $PSScriptRoot
 $studioFramework = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319'
 $studioCompiler = Join-Path $studioFramework 'csc.exe'
@@ -9,6 +9,8 @@ $studioReferences = @(
     (Join-Path $studioFramework 'WPF\WindowsBase.dll'),
     (Join-Path $studioFramework 'System.Xaml.dll'),
     (Join-Path $studioFramework 'System.Web.Extensions.dll'),
+    (Join-Path $studioFramework 'System.IO.Compression.dll'),
+    (Join-Path $studioFramework 'System.IO.Compression.FileSystem.dll'),
     (Join-Path $studioFramework 'System.Windows.Forms.dll'),
     (Join-Path $studioFramework 'System.Drawing.dll'),
     (Join-Path $studioFramework 'Microsoft.CSharp.dll')
@@ -21,7 +23,9 @@ $studioCompileArgs += @((Join-Path $PSScriptRoot 'Core.cs'), (Join-Path $PSScrip
 $studioCompileArgs += @((Join-Path $PSScriptRoot 'BasisStatus.cs'), (Join-Path $PSScriptRoot 'BasisReview.cs'))
 $studioCompileArgs += @((Join-Path $PSScriptRoot 'StackStatus.cs'), (Join-Path $PSScriptRoot 'StackReview.cs'))
 $studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateCheck.cs')
+$studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateInstaller.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'RuntimeImport.cs')
+$studioCompileArgs += @((Join-Path $PSScriptRoot 'ToolHandoff.cs'), (Join-Path $PSScriptRoot 'SkillReview.cs'))
 & $studioCompiler @studioCompileArgs
 if ($LASTEXITCODE -ne 0) { throw 'Kompilieren fehlgeschlagen.' }
 Write-Output 'Enshrouded Mod Studio.exe erstellt.'

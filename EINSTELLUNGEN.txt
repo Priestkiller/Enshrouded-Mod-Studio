@@ -1,5 +1,12 @@
-ENSHROUDED MOD STUDIO 0.4.9 — EINSTELLUNGEN
-22. Oktober 2026 · 44 Funktionen / 65 Einstellungsfelder
+ENSHROUDED MOD STUDIO 0.4.10 — EINSTELLUNGEN
+
+NUR SERVER / ALLE SPIELER: NICHT UNTERSTUETZT
+Der vorhandene Archivpatcher kann zusätzliche Punkte je Level nicht allein
+über den Server automatisch an alle Spieler übertragen. Archivwertänderungen
+sind kein globaler Punkte-Fix. Für eine echte Serverlösung fehlen ein
+geprüfter Synchronisationsmechanismus und ein Mehrspielernachweis.
+
+23. Oktober 2026 · 44 Funktionen / 65 Einstellungsfelder
 
 Profil speichern allein ändert keine Spieldateien. Nach Änderungen das Profil
 anwenden und auf den bestätigten Abschluss warten. Der Archivnachweis und die
@@ -7,8 +14,9 @@ Wirkung im laufenden Spiel sind getrennte Prüfungen. Die historische Einzelmatr
 der bisherigen 43 Funktionen liegt unter Pruefungen/ALLE-43-ERGEBNISSE.txt.
 Die neue Zähmungsfunktion hat eigene 0.4.9-Belege; Anwendung: ZAEHMUNG.txt.
 Der Updateknopf ist eine Werkzeugfunktion außerhalb der 44 Mod-Schalter:
-neueste öffentliche GitHub-Version prüfen, ZIP im Browser herunterladen und
-das neue Paket manuell entpacken. Profilübernahme ist in LIESMICH.txt erklärt.
+neueste stabile GitHub-Version direkt installieren und Profile, Einstellungen,
+Sicherungen sowie passende Runtime automatisch übernehmen. Details: UPDATES.txt.
+Für den ersten Wechsel von 0.4.9 einmal „Altes Setup übernehmen“ verwenden.
 
 SPIELER
 ================================================================================
@@ -34,30 +42,15 @@ Status: Funktion eingeschränkt · Spieltest offen
 
 2. Fertigkeitspunkte pro Level
 Stellt den Punktewert ein, mit dem der Levelanteil deiner Fertigkeitspunkte berechnet wird.
-Für wen: Wenn die Fertigkeitspunkte stärker oder schwächer mit deinem Charakterlevel wachsen
-sollen. Beim Dedicated Server auch den Spielclient berücksichtigen.
-Anwendung: Auch die Spieldateien des Clients bearbeiten: Ein Serverpatch allein ändert den
-lokalen Clientwert nicht. Im Mehrspieler denselben Punktewert auf Server und Spielclients
-einstellen; die Wirkung danach im Spiel prüfen.
-Wirkung: Schreibt eine feste ganze Zahl in die Punkte-Tabelle. In der Client-EXE wurde eine
-dazu passende Berechnung des Levelanteils gefunden: (Level minus 1) × Punktewert.
-Zusätzliche Wissens- beziehungsweise Wurzelpunkte werden separat berücksichtigt. Erfahrung
-und Level werden dadurch nicht vergeben. Die Wirkung im Mehrspieler muss nach dem
-Clientpatch geprüft werden.
-Beispiel: Bei Wert 8 entspricht ein zusätzliches Level rechnerisch 8 statt 2 Punkten im
-Levelanteil. Auf Level 10 wären das (10 − 1) × 8 = 72 Punkte vor zusätzlichen
-Wissenspunkten. Das ist die Rechnung aus dem geprüften Code, keine gemessene Gutschrift.
-Grenzen: Nur den Dedicated Server zu patchen reicht nicht als Prüfung des Clientwerts. Der
-Knopf für das Client-Profil kopiert alle aktuellen Einstellungen; diese Auswahl vor dem
-Anwenden prüfen. Danach Spiel und Server neu starten. Wie bereits verteilte Punkte behandelt
-werden und ob der Mehrspieler die Änderung vollständig übernimmt, ist noch nicht im Spiel
-bestätigt.
-Status: Archivwert geprüft · Client-Anwendung und Spieltest nötig
+Für wen: Wenn sich die Fertigkeitspunkte mit einem anderen Punktewert je Charakterlevel berechnen sollen. Auch bei einem Dedicated Server den installierten Wert auf dem Spiel-PC prüfen.
+Anwendung: Gewählter Client- oder Serverordner. Ein Serverpatch allein ändert den lokalen Clientwert nicht. Für denselben Datensatz den gleichen Punktewert auf Server und Spielclients anwenden; danach die Wirkung im Spiel prüfen.
+Wirkung: Schreibt eine feste ganze Zahl in die Punkte-Tabelle. In der Client-EXE wurde eine dazu passende Berechnung des Levelanteils gefunden: (Level minus 1) × Punktewert. Zusätzliche Wissens- beziehungsweise Wurzelpunkte werden separat berücksichtigt. Erfahrung und Level werden dadurch nicht vergeben. Die Wirkung im Mehrspieler muss nach dem Clientpatch geprüft werden.
+Beispiel: Bei Wert 8 entspricht ein zusätzliches Level rechnerisch 8 statt 2 Punkten im Levelanteil. Auf Level 10 wären das (10 − 1) × 8 = 72 Punkte vor zusätzlichen Wissenspunkten. Das ist die Rechnung aus dem geprüften Code, keine gemessene Gutschrift.
+Grenzen: Ausschließlich über den Dedicated Server wird der Wert nicht automatisch an alle Spieler übertragen. Dafür gibt es im vorhandenen Patcher keinen geprüften Synchronisationsmechanismus. „Punkte auf diesem Spiel-PC anwenden …“ gleicht diese Option mit einem separaten Clientziel ab; vorhandene eindeutige Clienteinstellungen bleiben erhalten. „Installierte Fähigkeitspunkte prüfen …“ liest den Archivwert des gewählten Ziels. Bei Server 4 und Client 2 muss zuerst auch der Clientwert angepasst werden. Danach Spiel und Server neu starten. Der tatsächliche Punktegewinn und der Umgang mit bereits verteilten Punkten sind noch nicht im Spiel bestätigt.
+Status: Nur Server: nicht unterstützt · Archivwert geprüft · Spieltest offen
   - Punkte je Levelaufstieg
-    Feste ganze Punktzahl: 2 ist der geprüfte Standardwert, 8 der Patch-Vorschlag. Es ist
-    kein XP-Faktor. Für den kontrollierten Mehrspielertest im Server- und Client-Profil
-    denselben Wert verwenden.
-    Bereich: 1 bis 1000000000 (ganze Zahl)
+    Feste ganze Punktzahl, kein XP-Faktor: 2 ist der geprüfte Ausgangswert. Beispiel 4 schreibt den Punktewert 4. Die Schaltfläche zur Prüfung zeigt den tatsächlich installierten Archivwert; ein Serverwert ändert keine Clientdateien.
+    Bereich: 0.001 bis 1000000000 (ganze Zahl)
 
 3. Fertigkeitspunkte aus Miasmawurzeln
 Vervielfacht die hinterlegte Punktebelohnung passender Wurzeln und Elixierbrunnen.

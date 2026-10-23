@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -321,6 +321,10 @@ namespace EnshroudedStudio
                 Check(store.Validate(store.Defaults).Count == 0, "Actual engine defaults satisfy schema");
                 UpdateCheck.SelfTest(Check);
                 RuntimeImport.SelfTest(Check, sandbox);
+                UpdateInstaller.SelfTest(Check, appRoot, sandbox);
+                ToolHandoff.SelfTest(Check, appRoot, sandbox);
+                ClientProfiles.SelfTest(Check, appRoot, sandbox);
+                SkillReview.SelfTest(Check, sandbox);
                 var oldTamingConfig = store.Baseline(); Json.Object(oldTamingConfig["world"], "world").Remove("enableSingleStepTaming");
                 var migratedTamingConfig = store.Normalize(oldTamingConfig);
                 Check(!(bool)Mod(migratedTamingConfig, "world", "enableSingleStepTaming")["enabled"], "An older profile receives the new taming option disabled without enabling other mods");
@@ -334,6 +338,11 @@ namespace EnshroudedStudio
                 Check(store.Active(store.Baseline()) == 0, "Initial baseline disables every mod");
                 Check(store.Profiles.Count == 3, "Baseline, comfort and building profiles created");
                 Check(store.Profiles.First(p => p.Id == store.LastId).Name == "Unverändert", "First start selects unchanged baseline");
+                string uiSettings = Path.Combine(store.DataRoot, "ui.json");
+                store.Select(store.LastId);
+                var persistedUi = Json.Read(uiSettings); persistedUi["futureUiSetting"] = new Dictionary<string, object> { { "preserve", 42 } }; Json.Write(uiSettings, persistedUi, null);
+                store.Select(store.LastId);
+                Check(Json.Number(Json.Object(Json.Read(uiSettings)["futureUiSetting"], "UI fixture")["preserve"]) == 42, "Selecting the migrated profile preserves unknown UI settings instead of replacing ui.json");
                 var config = store.Baseline(); config["futureOption"] = new Dictionary<string, object> { { "value", 77 }, { "text", "Grüße \\\" {test} 🛠" } };
                 Mod(config, "inventory", "adjustStackSize")["futureChild"] = 42;
                 string unicode = Json.Encode(config);
@@ -575,8 +584,11 @@ class Stub { static int Main(string[] args) {
                 ui.ChooseCategory("player"); ui.Find<TextBox>("Search").Text = "adjustSkillPointsPerLevel";
                 ui.Find<TextBox>("GamePath").Text = fakeServer;
                 var skillElements = LogicalDescendants(ui.Find<StackPanel>("OptionsPanel")).ToList();
+                Check(skillElements.OfType<Button>().Any(b => Convert.ToString(b.Tag) == "ApplyClientSkillPoints") && skillElements.OfType<Button>().Any(b => Convert.ToString(b.Tag) == "InspectSkillPoints"), "Skill-point card offers direct client application and installed archive inspection");
                 var targetHint = skillElements.OfType<TextBlock>().FirstOrDefault(t => t.Text.StartsWith("Du bearbeitest den Dedicated Server.", StringComparison.Ordinal));
                 Check(ui.Toggles.Count == 1 && ui.Toggles.ContainsKey("player.adjustSkillPointsPerLevel") && targetHint != null && targetHint.Text.IndexOf("Spielclient", StringComparison.OrdinalIgnoreCase) >= 0 && skillElements.OfType<Button>().Any(b => Convert.ToString(b.Content).IndexOf("Profil für Spielclient", StringComparison.OrdinalIgnoreCase) >= 0) && skillElements.OfType<TextBlock>().Any(t => t.Text.IndexOf("noch keine Spieldateien geändert", StringComparison.OrdinalIgnoreCase) >= 0), "Skill-point card contains dedicated-client guidance and the explicit client-profile action without opening a file dialog");
+                var clientActions = skillElements.OfType<StackPanel>().First(p => Convert.ToString(p.Tag) == "SkillClientActions");
+                Check(clientActions.Visibility == Visibility.Collapsed && targetHint.Text.Contains("nicht unterstützt"), "Server skill card explicitly rejects global server-only support and hides client application actions");
                 string serverHint = targetHint.Text;
                 ui.Find<TextBox>("GamePath").Text = game;
                 bool refreshedClient = targetHint.Text.StartsWith("Du bearbeitest den Spielclient.", StringComparison.Ordinal) && targetHint.Text != serverHint;

@@ -1,0 +1,69 @@
+ENSHROUDED MOD STUDIO 0.4.10 — TOOL-UPDATES UND DATENUEBERNAHME
+
+ERSTER WECHSEL VON 0.4.9
+Die bereits veröffentlichte Version 0.4.9 kann neue Veröffentlichungen prüfen,
+installiert sie aber noch nicht selbst. Für den ersten Wechsel:
+1. Die neue vollständige Studio-ZIP im Browser herunterladen.
+2. Das alte Studio schließen und das Paket in einen neuen Ordner entpacken.
+3. Die neue Anwendung starten und „Altes Setup übernehmen“ auswählen.
+4. Den bisherigen vollständigen Studio-Ordner angeben und das Profil prüfen.
+Der alte Ordner bleibt erhalten. Der manuelle Import übernimmt Profile,
+passende aktive Archivbasen und fehlende geprüfte Laufzeitdateien; alte
+Sicherungen und die vollständige Vorgangshistorie im alten Ordner aufbewahren.
+Alte Engine-Ordner nicht über die neue Version kopieren.
+
+AUTOMATISCHE TOOL-UPDATES AB 0.4.10
+Die neue Updatefunktion kann eine neuere angebotene Studio-Version nach
+Bestätigung übernehmen. Die Versionsprüfung liest die neueste stabile
+Veröffentlichung des konfigurierten öffentlichen GitHub-Repositorys.
+Das passende vollständige ZIP wird geprüft und in einem neuen Nachbarordner
+eingerichtet. Die neue Anwendung startet mit den übernommenen Daten; erst
+nach ihrer Bestätigung der geladenen Profile schließt das bisherige Studio.
+Das laufende Programm wird nicht überschrieben. Der alte Ordner bleibt als
+Rückfall erhalten. Eine fehlgeschlagene Prüfung bestätigt nicht, dass die
+installierte Version aktuell ist.
+
+DATEN UND LAUFZEIT
+Bei diesem automatischen Vorgang werden das gesamte Data-Verzeichnis,
+Profile mit ihren bisherigen IDs und Einstellungen, Profilwahl, Sicherungen,
+Archivbasen und Wiederherstellungsinformationen übernommen. Die bereits
+vorhandene private Patcher-/Parser-Laufzeit und engine/config.json werden
+nicht durch leere öffentliche Paketdateien ersetzt.
+Alte Vorschauverweise werden als Originaldateien unter Data/updates
+archiviert. Vor dem nächsten Anwenden wird eine neue Vorschau erstellt.
+
+Nach bestätigter Übergabe leitet ein alter Startlink auf die neue Anwendung
+weiter. Dazu speichert das bisherige Studio Ziel und Prüfsumme unter
+Data/installed-tool-update.json; die Weiterleitung gilt nur für eine neuere
+Version mit unveränderter EXE. Den alten Ordner zunächst aufbewahren.
+
+Das öffentliche ZIP enthält die eigene Studio-Anwendung und eigene Quellen.
+Die ursprüngliche Patcher-/Parser-Laufzeit wird aus einer vorhandenen
+vollständigen Installation übernommen und anhand ihrer erwarteten Hashes
+geprüft. Bei einer fehlenden oder inkompatiblen Laufzeit ist eine manuelle
+Übernahme erforderlich. Es wird keine allgemeine Weitergabeerlaubnis für
+diese Fremdkomponenten behauptet; siehe THIRD-PARTY.md.
+
+FEHLER UND WIEDERHERSTELLUNG
+Eine laufende Patch- oder Basisoperation muss vor einem Tool-Update
+abgeschlossen sein. Während des Tool-Updates auf dessen Abschluss warten.
+Bei einer Fehlermeldung den angegebenen Wiederherstellungshinweis und das
+Protokoll verwenden. Daten und Sicherungen nicht löschen oder durch leere
+Ordner ersetzen. Das bisherige Paket bei einem manuellen Wechsel behalten.
+
+KEIN SPIELPATCH DURCH DAS TOOL-UPDATE
+Ein Studio-Update wendet kein Modprofil an und ändert keine Spielarchive.
+„Speichern“ bleibt eine lokale Profilsicherung. Erst „Patch anwenden /
+aktualisieren“ übernimmt Einstellungen in die ausgewählte Spielinstallation.
+Nach einem Enshrouded-Spielupdate weiterhin den gesonderten Basiswechsel
+verwenden. Eine frühere Archivbasis nicht auf eine neue Spielversion spielen.
+
+QUELLE
+https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/latest
+
+BISHERIGE VERSION GEZIELT STARTEN
+Nach einer erfolgreichen Übergabe leiten alte Startlinks zur neuen Version.
+Für den Rückfall die EXE im alten Ordner mit dem Parameter
+--previous-version starten. Dieser explizite Start umgeht die Weiterleitung
+und verwendet die dort erhaltene Data-Kopie. Danach nicht gleichzeitig in
+beiden Versionen unterschiedliche Profile anwenden.

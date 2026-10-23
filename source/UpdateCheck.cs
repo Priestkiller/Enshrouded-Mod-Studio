@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,13 +19,18 @@ namespace EnshroudedStudio
         public Version LatestVersion;
         public string ReleaseTag;
         public string DownloadUrl;
+        public string AssetName;
+        public long AssetSize;
+        public string Sha256;
+        public string InstallUnavailableReason;
+        public bool AutomaticInstallAvailable { get { return AssetSize > 0 && AssetSize <= UpdateInstaller.MaximumArchiveBytes && Sha256 != null && Regex.IsMatch(Sha256, @"^[a-f0-9]{64}\z"); } }
         public bool NoRelease;
         public bool IsNewer { get { return LatestVersion != null && LatestVersion > InstalledVersion; } }
     }
 
     public static class UpdateCheck
     {
-        public const string InstalledVersion = "0.4.9";
+        public const string InstalledVersion = "0.4.10";
         public const int TimeoutMilliseconds = 10000;
         public const int MaximumResponseBytes = 1024 * 1024;
         private static readonly Regex RepositoryPattern = new Regex(@"^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}/[A-Za-z0-9][A-Za-z0-9_.-]{0,99}\z", RegexOptions.CultureInvariant);
@@ -74,7 +80,7 @@ namespace EnshroudedStudio
             catch (InvalidDataException) { return false; }
         }
 
-        private static string RepositoryFromPackage(string appRoot)
+        public static string RepositoryFromPackage(string appRoot)
         {
             string file = Path.Combine(appRoot, "assets", "update.json");
             if (!File.Exists(file)) throw new InvalidDataException("Die Updateadresse fehlt im Paket. Bitte das vollständige Mod-Studio-ZIP entpacken.");
@@ -122,9 +128,16 @@ namespace EnshroudedStudio
                 if (!asset.TryGetValue("browser_download_url", out value) || !(value is string) || !IsAllowedAssetUrl(repository, tag, expectedName, (string)value))
                     throw new InvalidDataException("Die Downloadadresse passt nicht zur vorgesehenen GitHub-Version.");
                 download = (string)value;
+                result.AssetName = expectedName;
+                long size;
+                if (asset.TryGetValue("size", out value) && (value is int || value is long) && (size = Convert.ToInt64(value)) > 0 && size <= UpdateInstaller.MaximumArchiveBytes)
+                    result.AssetSize = size;
+                if (asset.TryGetValue("digest", out value) && value is string && Regex.IsMatch((string)value, @"^sha256:[a-fA-F0-9]{64}\z"))
+                    result.Sha256 = ((string)value).Substring(7).ToLowerInvariant();
             }
             if (download == null) throw new InvalidDataException("Die neue Version enthält noch kein passendes vollständiges ZIP. Bitte später erneut prüfen.");
             result.DownloadUrl = download;
+            if (!result.AutomaticInstallAvailable) result.InstallUnavailableReason = "GitHub liefert für dieses ZIP noch keine gültige SHA256-Prüfsumme und Dateigröße. Die automatische Installation ist deshalb nicht verfügbar.";
             return result;
         }
 
@@ -189,6 +202,12 @@ namespace EnshroudedStudio
         {
             if (!result.IsNewer || !IsAllowedAssetUrl(result.Repository, result.ReleaseTag, ExpectedAssetName(result.ReleaseTag), result.DownloadUrl))
                 throw new InvalidDataException("Es liegt kein geprüfter Download für eine neue Version vor.");
+            if (!result.AutomaticInstallAvailable)
+            {
+                if (MessageBox.Show(owner, result.InstallUnavailableReason + "\n\nDas ZIP stattdessen im Browser öffnen und manuell in einen neuen Ordner entpacken? Anschließend ‚Altes Setup übernehmen‘ verwenden.", "Automatische Installation nicht verfügbar", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    Process.Start(new ProcessStartInfo(result.DownloadUrl) { UseShellExecute = true });
+                return false;
+            }
             var dialog = new Window { Owner = owner, Title = "Neue Mod-Studio-Version", Width = 540, SizeToContent = SizeToContent.Height,
                 ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 Background = new SolidColorBrush(Color.FromRgb(20, 31, 45)), Foreground = Brushes.White,
@@ -197,10 +216,10 @@ namespace EnshroudedStudio
             var panel = new StackPanel { Margin = new Thickness(24) };
             panel.Children.Add(new TextBlock { Text = "Ein Update ist verfügbar", FontSize = 21, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 17) });
             panel.Children.Add(new TextBlock { Text = "Installiert: " + DisplayVersion(result.InstalledVersion) + "\nVerfügbar: " + DisplayVersion(result.LatestVersion), LineHeight = 24, Margin = new Thickness(0, 0, 0, 17) });
-            panel.Children.Add(new TextBlock { Text = "Der Download öffnet das Studio-ZIP im Browser. Entpacke es vollständig in einen neuen Ordner und starte die neue Version. Mit ‚Altes Setup übernehmen‘ kannst du anschließend Profile, Sicherungen und benötigte Laufzeitdateien aus deinem bisherigen Studio-Ordner übernehmen.\n\nDas Tool installiert oder überschreibt dabei selbst keine Dateien.", TextWrapping = TextWrapping.Wrap, LineHeight = 23 });
+            panel.Children.Add(new TextBlock { Text = "Das Studio lädt und prüft das ZIP und richtet die neue Version in einem eigenen Ordner ein. Deine Profile, Einstellungen, Sicherungen und geprüften Laufzeitdateien werden automatisch übernommen.\n\nDer bisherige Ordner bleibt erhalten. Die neue Version wird erst nach erfolgreicher Prüfung gestartet; die alte schließt erst, wenn der neue Start bestätigt wurde.", TextWrapping = TextWrapping.Wrap, LineHeight = 23 });
             var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0, 22, 0, 0) };
             var cancel = new Button { Content = "Später", IsCancel = true, Margin = new Thickness(0, 0, 10, 0) };
-            var open = new Button { Content = "Download öffnen", IsDefault = true };
+            var open = new Button { Content = "Jetzt installieren", IsDefault = true };
             open.Click += delegate { dialog.DialogResult = true; };
             buttons.Children.Add(cancel); buttons.Children.Add(open); panel.Children.Add(buttons); dialog.Content = panel;
             return dialog.ShowDialog() == true;
@@ -210,7 +229,7 @@ namespace EnshroudedStudio
         {
             return Json.Serializer().Serialize(new Dictionary<string, object> {
                 { "tag_name", tag }, { "draft", false }, { "prerelease", false },
-                { "assets", new object[] { new Dictionary<string, object> { { "name", ExpectedAssetName(tag) }, { "browser_download_url", url } } } }
+                { "assets", new object[] { new Dictionary<string, object> { { "name", ExpectedAssetName(tag) }, { "browser_download_url", url }, { "size", 12345 }, { "digest", "sha256:" + new string('a', 64) } } } }
             });
         }
 
@@ -223,12 +242,12 @@ namespace EnshroudedStudio
         public static void SelfTest(Action<bool, string> check)
         {
             const string repo = "Priestkiller/Enshrouded-Mod-Studio";
-            const string tag = "v0.4.10";
+            const string tag = "v0.4.11";
             string zip = ExpectedAssetName(tag), url = "https://github.com/" + repo + "/releases/download/" + tag + "/" + zip;
             check(ParseVersion("v0.4.9") == ParseVersion("0.4.9.0"), "Updater normalisiert drei- und vierteilige Versionsnummern");
             var newer = ParseRelease(Fixture(tag, repo, url), repo, InstalledVersion);
-            check(newer.IsNewer && newer.DownloadUrl == url, "Updater findet das vollständige ZIP einer neueren stabilen Version");
-            check(!ParseRelease("{\"tag_name\":\"v0.4.9\",\"draft\":false,\"prerelease\":false}", repo, InstalledVersion).IsNewer, "Updater benötigt bei identischer Version keinen neuen ZIP-Download");
+            check(newer.IsNewer && newer.DownloadUrl == url && newer.AutomaticInstallAvailable && newer.AssetSize == 12345 && newer.Sha256 == new string('a',64), "Updater findet das vollständige ZIP einer neueren stabilen Version");
+            check(!ParseRelease("{\"tag_name\":\"v0.4.10\",\"draft\":false,\"prerelease\":false}", repo, InstalledVersion).IsNewer, "Updater benötigt bei identischer Version keinen neuen ZIP-Download");
             check(!ParseRelease("{\"tag_name\":\"v0.4.8\",\"draft\":false,\"prerelease\":false}", repo, InstalledVersion).IsNewer, "Updater bietet keine ältere Version an");
             string valid = Fixture(tag, repo, url);
             check(Rejected(delegate { ParseRelease(valid.Replace("\"draft\":false", "\"draft\":true"), repo, InstalledVersion); }) && Rejected(delegate { ParseRelease(valid.Replace("\"prerelease\":false", "\"prerelease\":true"), repo, InstalledVersion); }), "Updater weist Entwürfe und Vorabversionen ab");
@@ -236,8 +255,8 @@ namespace EnshroudedStudio
                 !IsAllowedAssetUrl(repo, tag, zip, url.Replace(repo, "Other/Repository")) &&
                 !IsAllowedAssetUrl(repo, tag, zip, url + "?download=1") && !IsAllowedAssetUrl(repo, tag, zip, url + "#download") &&
                 !IsAllowedAssetUrl(repo, tag, zip, url.Replace("https:", "http:")) &&
-                !IsAllowedAssetUrl(repo, tag, zip, url.Replace("/" + tag + "/", "/v0.4.11/")), "Updater bindet HTTPS-Download exakt an Host, Repository, Tag und ZIP ohne Zusätze");
-            check(Rejected(delegate { ParseRelease("{\"tag_name\":\"v0.4.10\",\"draft\":false,\"prerelease\":false,\"assets\":[]}", repo, InstalledVersion); }), "Updater weist fehlendes vollständiges Versions-ZIP ab");
+                !IsAllowedAssetUrl(repo, tag, zip, url.Replace("/" + tag + "/", "/v0.4.12/")), "Updater bindet HTTPS-Download exakt an Host, Repository, Tag und ZIP ohne Zusätze");
+            check(Rejected(delegate { ParseRelease("{\"tag_name\":\"v0.4.11\",\"draft\":false,\"prerelease\":false,\"assets\":[]}", repo, InstalledVersion); }), "Updater weist fehlendes vollständiges Versions-ZIP ab");
             check(Rejected(delegate { ParseVersion("v0.4.10-beta"); }) && Rejected(delegate { ParseVersion("v0.4.10\n"); }) &&
                 Rejected(delegate { ValidateRepository("Priestkiller/../Other"); }) && Rejected(delegate { ValidateRepository(repo + "\n"); }) &&
                 Rejected(delegate { ParseRelease("kein JSON", repo, InstalledVersion); }), "Updater weist ungültige Versions-, Repository- und Antwortformate ab");

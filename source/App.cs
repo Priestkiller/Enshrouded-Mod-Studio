@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,6 +15,7 @@ using System.Windows.Automation;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 
 namespace EnshroudedStudio
@@ -36,6 +37,7 @@ namespace EnshroudedStudio
         private bool loading;
         private bool patcherRunning;
         private bool checkingUpdates;
+        private bool installingUpdate;
         private bool windowClosed;
         private bool testMode;
         private int runtimeMissingCount;
@@ -51,6 +53,7 @@ namespace EnshroudedStudio
         private CheckBox onlyActive;
         private TextBlock notice, status, gameStatus;
         private TextBlock skillTargetHint;
+        private StackPanel skillClientActions;
         private string selected = "inventory";
         private Grid optionsGrid;
         private int cardRow;
@@ -147,12 +150,13 @@ namespace EnshroudedStudio
                     "Die erste Basis entspricht den aktuellen Dateien. Vorhandene ältere Mods sind darin enthalten. Für einen sauberen Anfang zuerst die Steam-Dateiprüfung verwenden. Nach Spielupdates eine neue Basis wählen; alte Backups bleiben erhalten.\n\n" +
                     "Spätere Profile werden aus derselben gespeicherten Basis erstellt. Alle Mods aus bereitet diese Basis vor. Gespeicherte Basis wiederherstellen nimmt die Änderungen dieses Tools zurück.\n\n" +
                     "Serverwerte prüfen liest enshrouded_server.json. Bereits gespeicherte 1000%-Werte werden nicht automatisch zurückgesetzt.\n\n" +
-                    "Nach einem Tool-Update: ‚Altes Setup übernehmen‘ kopiert Profile und geprüfte Archivbasen aus dem vorherigen Studio-Ordner. Für Steam-Spielupdates die Erklärung unter Werkzeuge lesen.\n\n" +
+                    "‚Update prüfen‘ installiert neuere Tool-Versionen und übernimmt Profile, Einstellungen und Sicherungen automatisch. Das bisherige Studio bleibt als Rückfall erhalten. Beim erstmaligen Wechsel von einer älteren Version ‚Altes Setup übernehmen‘ verwenden. Für Steam-Spielupdates die Erklärung unter Werkzeuge lesen.\n\n" +
                     "Profile/Sicherungen: Data\\profiles, Data\\backups. Archivbasis und Prüfprotokolle: Data\\patches. Engine: 1.2.3 mit Mod-Studio-Ergänzungen. Die Spielwirkung einzelner Optionen bleibt live zu prüfen.",
                     "Hinweise zu Enshrouded Mod Studio", MessageBoxButton.OK, MessageBoxImage.Information);
             };
             Window.Closing += delegate(object sender, System.ComponentModel.CancelEventArgs e)
             {
+                if (installingUpdate) { e.Cancel = true; return; }
                 if (patcherRunning && directUpdate) { e.Cancel = true; if (!testMode) MessageBox.Show(Window, "Der Patch wird noch verarbeitet. Bitte auf das Ergebnis warten. Du kannst das Fenster minimieren.", "Aktualisierung läuft"); return; }
                 if (!testMode && !MayLeave()) e.Cancel = true;
             };
@@ -220,10 +224,18 @@ namespace EnshroudedStudio
                     status.Text = "Update verfügbar: " + UpdateCheck.DisplayVersion(result.LatestVersion);
                     if (UpdateCheck.ShowDownloadDialog(Window, result))
                     {
-                        if (!UpdateCheck.IsAllowedAssetUrl(result.Repository, result.ReleaseTag, UpdateCheck.ExpectedAssetName(result.ReleaseTag), result.DownloadUrl))
-                            throw new InvalidDataException("Die Downloadadresse konnte nicht bestätigt werden.");
-                        Process.Start(new ProcessStartInfo(result.DownloadUrl) { UseShellExecute = true });
-                        notice.Text = "ZIP-Download im Browser geöffnet. Vollständig in einen neuen Ordner entpacken und dort ‚Altes Setup übernehmen‘ verwenden.";
+                        SaveCurrent();
+                        if (Store.LoadErrors.Count > 0) throw new InvalidDataException("Einige Profile konnten nicht geladen werden. Bitte diese vor dem automatischen Update korrigieren: " + string.Join(" · ", Store.LoadErrors));
+                        installingUpdate = true; SetLocked(true);
+                        var bar = Find<ProgressBar>("PatchProgress"); bar.Visibility = Visibility.Visible; bar.IsIndeterminate = false; bar.Value = 0;
+                        var reporter = new Progress<UpdateInstallProgress>(delegate(UpdateInstallProgress value) {
+                            if (windowClosed) return; status.Text = value.Message; bar.Value = value.Percent;
+                            notice.Text = "Neue Tool-Version wird installiert. Profile, Einstellungen und Archivbasen werden automatisch übernommen. Das bisherige Studio bleibt als Sicherung erhalten.";
+                        });
+                        var installed = await UpdateInstaller.InstallAsync(result, Store.AppRoot, Store.DataRoot, reporter);
+                        status.Text = "Neue Version starten und Profile prüfen …";
+                        await ToolHandoff.StartAndConfirmAsync(installed, Store);
+                        installingUpdate = false; Dirty = false; Window.Close();
                     }
                 }
             }
@@ -231,18 +243,18 @@ namespace EnshroudedStudio
             {
                 if (!windowClosed && !patcherRunning)
                 {
-                    status.Text = "Updateprüfung nicht möglich";
+                    status.Text = installingUpdate ? "Tool-Update nicht abgeschlossen" : "Updateprüfung nicht möglich";
                     MessageBox.Show(Window, ex.Message, "Update prüfen", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            finally { checkingUpdates = false; if (!windowClosed) UpdateCheckButtonState(); }
+            finally { bool wasInstalling = installingUpdate; installingUpdate = false; checkingUpdates = false; if (!windowClosed) { if (wasInstalling) SetLocked(false); UpdateCheckButtonState(); } }
         }
         private void UpdateCheckButtonState()
         {
             var button = Find<Button>("CheckUpdates");
             if (button == null) return;
             button.IsEnabled = !patcherRunning && !checkingUpdates;
-            button.Content = checkingUpdates ? "Update wird geprüft …" : "Update prüfen · " + UpdateCheck.InstalledVersion;
+            button.Content = installingUpdate ? "Update wird installiert …" : checkingUpdates ? "Update wird geprüft …" : "Update prüfen · " + UpdateCheck.InstalledVersion;
         }
         public bool MayLeave()
         {
@@ -309,7 +321,7 @@ namespace EnshroudedStudio
             if (result.EndsWith("erkannt")) Find<TextBlock>("InstallationHelp").Text += PatchBasis.Exists(Store.DataRoot, (string)Config["gameDirectory"]) ? " Patch-Basis vorhanden." : " Noch keine Basis: bei vorherigem Patch altes Setup übernehmen.";
             if (!testMode && runtimeMissingCount > 0) Find<TextBlock>("InstallationHelp").Text += " Programm-Runtime fehlt: über ‚Altes Setup übernehmen‘ aus einem vollständigen bisherigen Studioordner ergänzen.";
             Find<TextBlock>("GamePathHint").Visibility = string.IsNullOrWhiteSpace(gamePath.Text) ? Visibility.Visible : Visibility.Collapsed;
-            Find<Button>("LaunchPatcher").IsEnabled = !patcherRunning && result.EndsWith("erkannt") && (testMode || runtimeMissingCount == 0);
+            Find<Button>("LaunchPatcher").IsEnabled = !patcherRunning && !installingUpdate && result.EndsWith("erkannt") && (testMode || runtimeMissingCount == 0);
             Find<Button>("LaunchPatcher").ToolTip = patcherRunning ? "Aktualisierung läuft. Bitte auf das Ergebnis warten." : !testMode && runtimeMissingCount > 0 ? "Programm-Runtime fehlt. Zuerst ‚Altes Setup übernehmen‘ verwenden." : result.EndsWith("erkannt") ? "Profil speichern und in der angezeigten Zielinstallation anwenden." : "Zuerst den vollständigen Client- oder Serverordner wählen.";
             UpdateSkillTargetHint();
         }
@@ -431,10 +443,33 @@ namespace EnshroudedStudio
         {
             if (skillTargetHint == null || Config == null) return;
             string target = StudioStore.CheckGame((string)Config["gameDirectory"]);
+            if (skillClientActions != null) skillClientActions.Visibility = target == "Steam-Client erkannt" ? Visibility.Visible : Visibility.Collapsed;
             skillTargetHint.Text = target == "Dedicated Server erkannt" ?
-                "Du bearbeitest den Dedicated Server. Dadurch bleiben die Dateien auf deinem Spiel-PC unverändert. Für den nächsten kontrollierten Test zusätzlich den gleichen Punktewert im Spielclient anwenden. Der Knopf unten legt dafür eine Profilkopie an." :
+                "Du bearbeitest den Dedicated Server. Diese Option überträgt den Punktewert NICHT automatisch an alle Spieler. Eine ausschließlich serverseitige Vergabe zusätzlicher Levelpunkte ist mit diesem Archivpatcher nicht unterstützt. Ein bestätigter Server-Archivwert ist kein Nachweis für die Punktevergabe im Spielclient." :
                 target == "Steam-Client erkannt" ? "Du bearbeitest den Spielclient. Hier muss der gewünschte Punktewert ebenfalls angewendet und danach im Spiel geprüft werden. Im Mehrspieler denselben Wert auch auf dem Server und den anderen Clients einstellen. Nach dem Anwenden das Spiel neu starten und einen Levelaufstieg prüfen." :
                 "Nur den Dedicated Server zu patchen ändert keine Clientdateien. Für diese Option auch die lokale Clientinstallation mit demselben Punktewert bearbeiten. Wähle dafür die enshrouded.exe des Spielclients.";
+        }
+        private void ApplyClientSkillPoints()
+        {
+            if (patcherRunning || installingUpdate) return;
+            SaveCurrent();
+            if (StudioStore.CheckGame((string)Config["gameDirectory"]) == "Steam-Client erkannt")
+            {
+                Json.Object(Json.Object(Config["player"], "Spieler")["adjustSkillPointsPerLevel"], "Fertigkeitspunkte")["enabled"] = true;
+                MarkDirty(); Render(); UpdatePatch(); return;
+            }
+            var dialog = new OpenFileDialog { Title = "Fertigkeitspunkte direkt im Spielclient anwenden – enshrouded.exe wählen", Filter = "Enshrouded-Spielclient|enshrouded.exe", FileName = "enshrouded.exe", CheckFileExists = true };
+            var clients = Store.Profiles.Where(p => StudioStore.CheckGame((string)p.Config["gameDirectory"]) == "Steam-Client erkannt").ToList();
+            if (clients.Count > 0) dialog.InitialDirectory = (string)clients[0].Config["gameDirectory"];
+            if (dialog.ShowDialog(Window) != true) return;
+            var copy = ClientProfiles.CreatePointsOnly(Store, Config, Path.GetDirectoryName(dialog.FileName));
+            RefreshProfiles(copy);
+            UpdatePatch();
+        }
+        private void ReviewSkillPoints()
+        {
+            if (patcherRunning || installingUpdate) return;
+            EnsureValid(); SkillReview.Open(Store, Config, Window);
         }
         private void UpdatePatch()
         {
@@ -541,7 +576,7 @@ namespace EnshroudedStudio
         }
         private void SetLocked(bool locked)
         {
-            foreach (string control in new[] { "Profiles", "CopyProfile", "SaveProfile", "BrowseGame", "ImportConfig", "ExportConfig", "GamePath", "OptionsScroll", "TransferSetup", "ChangeBasis" })
+            foreach (string control in new[] { "Profiles", "CopyProfile", "SaveProfile", "BrowseGame", "ImportConfig", "ExportConfig", "GamePath", "OptionsScroll", "TransferSetup", "ChangeBasis", "ServerCheck" })
                 Find<UIElement>(control).IsEnabled = !locked;
             Find<Button>("CheckUpdates").IsEnabled = !locked && !checkingUpdates;
             UpdateGame();
@@ -555,7 +590,7 @@ namespace EnshroudedStudio
         public void Render()
         {
             if (Config == null) return;
-            options.Children.Clear(); Toggles.Clear(); Fields.Clear(); Details.Clear(); skillTargetHint = null; UpdateCount();
+            options.Children.Clear(); Toggles.Clear(); Fields.Clear(); Details.Clear(); skillTargetHint = null; skillClientActions = null; UpdateCount();
             string query = search.Text.Trim();
             var category = Store.Schema.First(c => c.Key == selected);
             Find<TextBlock>("CategoryTitle").Text = query.Length == 0 ? category.Title : "Suchergebnisse";
@@ -639,9 +674,16 @@ namespace EnshroudedStudio
             {
                 var targetHelp = new StackPanel();
                 skillTargetHint = Readable("", 14, "#F1D1A0"); UpdateSkillTargetHint(); targetHelp.Children.Add(skillTargetHint);
+                skillClientActions = new StackPanel { Tag = "SkillClientActions", Visibility = StudioStore.CheckGame((string)Config["gameDirectory"]) == "Steam-Client erkannt" ? Visibility.Visible : Visibility.Collapsed };
+                targetHelp.Children.Add(skillClientActions);
                 var clientProfile = new Button { Content = "Gleiches Profil für Spielclient anlegen …", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 12, 0, 0), Padding = new Thickness(13, 9, 13, 9) };
-                clientProfile.Click += delegate { Act(CreateSkillClientProfile); }; targetHelp.Children.Add(clientProfile);
-                targetHelp.Children.Add(Readable("Kopiert alle Einstellungen des aktuellen Profils in ein neues Client-Profil und aktiviert dort die Fertigkeitspunkte-Option. Es werden dabei noch keine Spieldateien geändert.", 13, "#C6D4E3"));
+                clientProfile.Click += delegate { Act(CreateSkillClientProfile); }; skillClientActions.Children.Add(clientProfile);
+                skillClientActions.Children.Add(Readable("Kopiert alle Einstellungen des aktuellen Profils in ein neues Client-Profil und aktiviert dort die Fertigkeitspunkte-Option. Es werden dabei noch keine Spieldateien geändert.", 13, "#C6D4E3"));
+                var applyPoints = new Button { Content = "Punkte auf diesem Spiel-PC anwenden …", Tag = "ApplyClientSkillPoints", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 12, 0, 0), Padding = new Thickness(13, 9, 13, 9) };
+                applyPoints.Click += delegate { Act(ApplyClientSkillPoints); }; skillClientActions.Children.Add(applyPoints);
+                skillClientActions.Children.Add(Readable("Übernimmt den Punktewert und startet den Patch für die gewählte enshrouded.exe. Ein vorhandenes eindeutiges Client-Profil bleibt mit seinen übrigen Einstellungen erhalten. Ohne Client-Profil wird nur die Punkteoption aktiviert. Dies ist keine ausschließlich serverseitige Lösung; die Wirkung im Mehrspieler muss im Spiel geprüft werden.", 13, "#C6D4E3"));
+                var inspectPoints = new Button { Content = "Installierte Fähigkeitspunkte prüfen …", Tag = "InspectSkillPoints", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 10, 0, 0), Padding = new Thickness(13, 9, 13, 9) };
+                inspectPoints.Click += delegate { Act(ReviewSkillPoints); }; targetHelp.Children.Add(inspectPoints);
                 auxiliary.Children.Add(new Border { Child = targetHelp, Background = Brush("#20303D"), BorderBrush = Brush("#7D694A"), BorderThickness = new Thickness(1), Padding = new Thickness(14), CornerRadius = new CornerRadius(6), Margin = new Thickness(0, 13, 0, 0) });
             }
             var editable = new List<Control>();
@@ -844,6 +886,7 @@ namespace EnshroudedStudio
             try
             {
                 string root = AppDomain.CurrentDomain.BaseDirectory;
+                if (args.Length == 0 && ToolHandoff.TryForward(root)) return 0;
                 if (args.Length > 0 && args[0] == "--self-test") return SelfTests.Run(root, args.Length > 1 ? args[1] : Path.Combine(root, "test-report.txt"));
                 bool preview = args.Length > 0 && args[0] == "--preview";
                 if (preview && args.Length < 2) throw new ArgumentException("--preview benötigt einen PNG-Pfad.");
@@ -851,6 +894,12 @@ namespace EnshroudedStudio
                 var store = new StudioStore(root, data); store.Load();
                 var app = new Application();
                 var ui = new StudioWindow(store, preview);
+                if (args.Length > 0 && args[0] == "--update-startup")
+                {
+                    if (args.Length != 2) throw new ArgumentException("Startbestätigung fehlt.");
+                    if (store.LoadErrors.Count > 0) throw new InvalidDataException("Übernommene Profile sind nicht vollständig lesbar: " + string.Join(" · ", store.LoadErrors));
+                    ui.Window.Loaded += delegate { ToolHandoff.AwaitAcceptance(store, args[1], ui.Window); };
+                }
                 if (preview)
                 {
                     if (args.Length < 2) throw new ArgumentException("--preview benötigt einen PNG-Pfad.");

@@ -299,7 +299,11 @@ namespace EnshroudedStudio
             }, BackupRoot);
         }
         public void Select(string id)
-        { Json.Write(Path.Combine(DataRoot, "ui.json"), new Dictionary<string, object> { { "lastProfile", id } }, null); LastId = id; }
+        {
+            string file = Path.Combine(DataRoot, "ui.json");
+            var settings = File.Exists(file) ? Json.Read(file) : new Dictionary<string, object>();
+            settings["lastProfile"] = id; Json.Write(file, settings, null); LastId = id;
+        }
         public int Active(Dictionary<string, object> config)
         { return Schema.SelectMany(c => c.Mods.Select(m => new { Cat = c.Key, Mod = m.Key })).Count(x => (bool)Json.Object(Json.Object(config[x.Cat], x.Cat)[x.Mod], x.Mod)["enabled"]); }
         public static string CheckGame(string path)
@@ -423,6 +427,14 @@ namespace EnshroudedStudio
             var info = StackInspectionLaunchInfo(statusFile);
             ExportEngine(config);
             return Process.Start(info);
+        }
+        public Process LaunchSkillInspection(Dictionary<string, object> config, string statusFile)
+        {
+            if (!CheckGame((string)config["gameDirectory"]).EndsWith("erkannt")) throw new InvalidDataException("Bitte eine vollständige Client- oder Serverinstallation wählen.");
+            if (Process.GetProcessesByName("enshrouded-patcher").Length > 0) throw new InvalidOperationException("Bitte den laufenden Patcher zuerst schließen.");
+            var info = StackInspectionLaunchInfo(statusFile);
+            info.Arguments = info.Arguments.Replace("--inspect-stacks", "--inspect-skill-points");
+            ExportEngine(config); return Process.Start(info);
         }
     }
 }

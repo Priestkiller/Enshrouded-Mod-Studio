@@ -1,3 +1,25 @@
+ENSHROUDED MOD STUDIO 0.4.10 — 23. Oktober 2026
+
+NUR SERVER / ALLE SPIELER: NICHT UNTERSTUETZT
+Der vorhandene Archivpatcher kann zusätzliche Punkte je Level nicht allein
+über den Server automatisch an alle Spieler übertragen. Archivwertänderungen
+sind kein globaler Punkte-Fix. Für eine echte Serverlösung fehlen ein
+geprüfter Synchronisationsmechanismus und ein Mehrspielernachweis.
+
+
+- Update installieren: SHA256/Größe prüfen, ZIP sicher entpacken, alle Data-
+  Dateien und geprüfte Runtime automatisch übernehmen und neue Version starten.
+  Profil-IDs und Auswahl bleiben erhalten; alte Version bleibt als Rückfall.
+  Alte Verknüpfungen leiten nach erfolgreichem Update zur neueren Version weiter.
+- Fertigkeitspunkte: tatsächlichen installierten Tabellenwert lesen; den
+  Punktewert direkt im Spielclient anwenden. Vorhandene Client-Einstellungen
+  erhalten und bei mehreren passenden Profilen keine Auswahl erraten.
+- Frische Reflection, Ressourcenidentität und Punktewert nach Repack prüfen.
+  Server-Anwendung bestätigt ausschließlich den Serverwert, keine Clientwirkung.
+- Bestehende 44 Optionen und numerische Standardwerte bleiben erhalten.
+
+BISHERIGE VEROEFFENTLICHUNGEN
+
 ENSHROUDED MOD STUDIO 0.4.9 — EIN ERFOLGREICHER ZAEHMUNGSSCHRITT
 22. Oktober 2026 · Engine 1.2.3 · Revision 1273043
 

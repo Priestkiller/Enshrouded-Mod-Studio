@@ -1,21 +1,13 @@
-ENSHROUDED MOD STUDIO 0.4.9 — OEFFENTLICHER PRUEFUMFANG
+ENSHROUDED MOD STUDIO 0.4.10 — OEFFENTLICHER PRUEFUMFANG
 
-PASS 166 GUI-, Konfigurations-, Profil-, Update- und Laufzeitimportprüfungen.
-PASS 47 gezielte Zähmungsmodulprüfungen auf Speicherfixtures und Originalexporten.
-PASS 24 Backend-Rollenregressionen; 5 Status-/Abschlussprüfungen.
-PASS Client: 15 geänderte Tierressourcen gepackt und erneut ausgelesen;
-     19136 Deskriptoren gegen Original plus Solländerungen verglichen.
-     Die Client-Quelldateien blieben unverändert.
-PASS Server: 15 geänderte Tierressourcen gepackt und erneut ausgelesen;
-     19129 Deskriptoren gegen Original plus Solländerungen verglichen.
-PASS Ausschalten und Aktualisieren auf separater Testinstallation:
-     Originalarchive exakt wiederhergestellt, verwaltete Zusatzdateien entfernt.
+PASS 209 GUI-/Konfigurations-/Updateprüfungen.
+PASS 32 gezielte Skillpunkte-/Backend-Regressionsprüfungen.
+PASS 4 gezielte Archivprüfungen an Kopien (2→4 mit Rücklesen).
+44 Profiloptionen und ihre Standardwerte gegenüber 0.4.9 unverändert.
+39 Engine-Manifesthashes geprüft. Die frühere Vendor-Laufzeit bleibt getrennt.
 
-44 Optionen; bestehende 43 Optionen bleiben unverändert.
-Zähmung: 18 passende Tier-Vorlagen, 15 Änderungen, drei bereits auf eins.
-Revision 1273043; erforderliche ursprüngliche Patcher-Laufzeit 1.2.3.
-
-Kein Live-Spieltest der Zähmung oder Besitzübernahme. Ein erfolgreicher
-Archivtest bestätigt die Daten, nicht deren Wirkung bei einem verbundenen
-Spieler. Private Profile, Sicherungen und vollständige Rohberichte werden
-aus dem öffentlichen Paket ausgeschlossen.
+Automatische Update-Fixtures prüfen den Wechsel zum neuen Tool-Ordner und die Erhaltung
+von Daten; sie sind keine Spieltests. Die tatsächliche Wirkung von Zähmung,
+Besitzerwechsel und anderen Modoptionen bleibt nach deren Prüfhinweisen offen.
+Private Profile, Sicherungen, lokale Quelldateipfade und Rohberichte sind
+aus diesem öffentlichen Paket ausgeschlossen.

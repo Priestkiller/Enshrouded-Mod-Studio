@@ -27,6 +27,7 @@ function parser(binary,command,t,out,log,types=TYPES){const args=[command,'--gam
 function nearlyEqual(a,b){if(typeof a==='number'&&typeof b==='number')return Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=Math.max(1e-6,Math.abs(a)*1e-6);if(a===b)return true;if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;const aa=Object.keys(a),bb=Object.keys(b);return aa.length===bb.length&&aa.every(k=>Object.prototype.hasOwnProperty.call(b,k)&&nearlyEqual(a[k],b[k]));}
 function applyMods(config,input,output,log,role='unknown',reflection=null){
  if(config.inventory?.adjustStackSize?.enabled)require('./stack-check').assertSchema(reflection);
+ if(config.player?.adjustSkillPointsPerLevel?.enabled)require('./skill-points-check').assertSchema(reflection);
  const clientLimits=config.gameplay?.enableUncapClientSettings,skipClientLimits=role==='server'&&clientLimits?.enabled===true;
  const sharedStorageEnabled=config.world?.adjustFactoryInventoryAccess?.enabled===true;
  const singleStepTamingEnabled=config.world?.enableSingleStepTaming?.enabled===true;
@@ -47,7 +48,7 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  if(sharedStorageEnabled)log('Herstellungsbestand: '+sharedStorage.normalChests+' normale Kisten und '+sharedStorage.stations+' Stationsinventare erkannt; '+sharedStorage.added+' neue Kennzeichnungen, '+sharedStorage.alreadyPresent+' bereits vorhanden. Materialtransfer im Spiel noch ungeprüft.');
  const taming=require('./single-step-taming').apply({enabled:singleStepTamingEnabled,reflection,role,logger:ctx.logger,track:ctx.track},input,output);
  if(singleStepTamingEnabled)log('Zähmung: '+taming.targets+' zähmbare Vorlagen geprüft; '+taming.filesChanged+' Dateien geändert. Benötigte erfolgreiche Schritte: 1. Zähmung und Besitzübernahme im Spiel noch ungeprüft.');
- const skillPoints=require('./skill-points-check').check({config,role,logger:ctx.logger},input,output);
+ const skillPoints=require('./skill-points-check').check({config,role,reflection,logger:ctx.logger},input,output);
  const stacks=require('./stack-check').check({config,role,reflection,logger:ctx.logger},input,output);
  return {vendor:result,loot,limits,sharedStorage,taming,skillPoints,stacks,extraChanges:changes.length,warnings};
 }
@@ -105,6 +106,34 @@ function inspectStacks(options){
   write(path.join(work,'report.json'),result);progress(options,'inspected-stacks','Aktuelle Stapelwerte gelesen; die Spieldateien wurden nicht verändert.',95);return result;
  }finally{
   if(work)for(const name of ['game','bin','unpacked']){const directory=within(work,path.join(work,name));try{if(fs.existsSync(directory))fs.rmSync(directory,{recursive:true,force:true});}catch(error){if(options.log)options.log('Stapelprüfung: Arbeitskopie konnte nicht vollständig aufgeräumt werden: '+error.message);}}
+  unlock();
+ }
+}
+
+function inspectSkillPoints(options){
+ const root=path.resolve(options.root),data=path.resolve(options.data),config=read(options.configPath),t=target(config),option=config.player?.adjustSkillPointsPerLevel;
+ if(!option||typeof option.enabled!=='boolean'||!require('./skill-points-check').positiveUint32(option.value))throw Error('Skillpunkte-Prüfung: Der Profilwert muss eine positive uint32-Ganzzahl sein.');
+ verifyEngine(root);const unlock=lockTarget(data,t);let work=null;
+ try{
+  ensureNoUnfinished(data,t);progress(options,'inspect-skill-points','Aktuelle Installationsdateien für die Punkteprüfung kopieren …',8);
+  const fp=fingerprint(t),checks=path.join(data,'jobs','checks');
+  work=within(checks,path.join(checks,Date.now()+'-'+crypto.randomBytes(6).toString('hex')));
+  const stage=path.join(work,'game'),bin=path.join(work,'bin'),input=path.join(work,'unpacked');
+  for(const dir of [stage,bin,input])fs.mkdirSync(dir,{recursive:true});
+  const log=message=>{fs.appendFileSync(path.join(work,'parser.log'),String(message)+'\n');if(options.log)options.log(message);};
+  for(const name of [t.exe,...t.archives])fs.copyFileSync(path.join(t.dir,name),path.join(stage,name));
+  fs.copyFileSync(path.join(root,'bin','kfc-parser.exe'),path.join(bin,'kfc-parser.exe'));
+  const staged={...t,dir:stage};
+  if(stableHash(fingerprint(staged))!==stableHash(fp)||stableHash(fingerprint(t))!==stableHash(fp))throw Error('Skillpunkte-Prüfung: Die aktuellen Spieldateien wurden beim Kopieren verändert. Erneut prüfen.');
+  progress(options,'inspect-skill-points','Punktewert mit frischer Spielstruktur aus der Archivkopie lesen …',30);
+  parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,input,log,['keen::BalancingTable']);
+  const reflection=read(path.join(bin,'reflection_data.json'));
+  const summary=require('./skill-points-check').inspect({requested:option.value,role:t.server?'server':'client',reflection},input);
+  if(stableHash(fingerprint(staged))!==stableHash(fp)||stableHash(fingerprint(t))!==stableHash(fp))throw Error('Skillpunkte-Prüfung: EXE oder Archive wurden während der Prüfung verändert. Das Ergebnis wurde verworfen; erneut prüfen.');
+  const result={operation:'inspect-skill-points',targetDir:t.dir,targetId:t.id,targetRole:t.server?'server':'client',build:reflection.version,currentFingerprint:fp,enabled:option.enabled,requested:option.value,tableCount:summary.tableCount,matchingRequested:summary.matchingRequested,allMatch:summary.allMatch,distribution:summary.distribution,resources:summary.resources,warnings:summary.warnings,applied:false,readOnly:true,gameplayVerified:false};
+  write(path.join(work,'report.json'),result);progress(options,'inspected-skill-points','Installierten Punktewert gelesen; die Spieldateien wurden nicht verändert.',95);return result;
+ }finally{
+  if(work)for(const name of ['game','bin','unpacked']){const directory=within(work,path.join(work,name));try{if(fs.existsSync(directory))fs.rmSync(directory,{recursive:true,force:true});}catch(error){if(options.log)options.log('Skillpunkte-Prüfung: Arbeitskopie konnte nicht vollständig aufgeräumt werden: '+error.message);}}
   unlock();
  }
 }
@@ -171,6 +200,12 @@ async function prepare(options){progress(options,'validate','Profil und Installa
  if(outputs.length){progress(options,'repack','Geänderte Daten in die Archivkopie packen …',58);log('3/4 Geänderte Daten in die Archivkopie packen …');parser(path.join(bin,'kfc-parser.exe'),'repack',staged,modified,log);log('4/4 Archivkopie erneut auslesen und Änderungen vergleichen …');progress(options,'verify','Gepackte Archive erneut lesen und alle Änderungen prüfen …',72);parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,verify,log);for(const original of files(input).filter(p=>p.endsWith('.json'))){const rel=path.relative(input,original),change=within(modified,path.join(modified,rel)),actual=within(verify,path.join(verify,rel));const desired=fs.existsSync(change)?change:original;if(!fs.existsSync(actual)||!nearlyEqual(read(desired),read(actual)))throw Error('Archivprüfung fehlgeschlagen: '+rel+'. Spielarchive wurden nicht geändert.');if(fs.existsSync(change))verified++;}if(verified!==outputs.length)throw Error('Die Zahl der erneut gelesenen Änderungen stimmt nicht.');}
  else log('Keine geänderten Ressourcendateien: die gespeicherte Basis wird vorbereitet.');
  if(mods.taming?.enabled){mods.taming.archiveReadbackValidated=outputs.length>0&&verified===outputs.length;if(mods.taming.archiveReadbackValidated)log('Zähmung nach Archiv-Readback bestätigt: ein benötigter Erfolg in '+mods.taming.targets+' geprüften zähmbaren Vorlagen. Spieltest offen.');}
+ if(config.player.adjustSkillPointsPerLevel.enabled){
+  if(!outputs.length){progress(options,'verify-skill-points','Punktewert erneut aus der Archivkopie prüfen …',75);parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,verify,log,['keen::BalancingTable']);}
+  mods.skillPoints=require('./skill-points-check').check({config,role:t.server?'server':'client',reflection:ref},input,verify);
+  mods.skillPoints.archiveReadbackValidated=true;
+  log('Fertigkeitspunkte nach Archiv-Readback: '+mods.skillPoints.requested+' in '+mods.skillPoints.tablesChecked+' geprüften BalancingTable-Ressourcen. Spieltest offen.');
+ }
  if(config.inventory.adjustStackSize.enabled){
   if(!outputs.length){progress(options,'verify-stacks','Unveränderte Stapelwerte erneut aus der Archivkopie prüfen …',75);parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,verify,log,['keen::ItemInfo']);}
   mods.stacks=require('./stack-check').check({config,role:t.server?'server':'client',reflection:ref,complete:true,logger:{warn:message=>{mods.warnings.push(String(message));log('HINWEIS: '+message);},info:log,debug:()=>{},success:log}},input,verify);
@@ -210,4 +245,4 @@ function resetBasis(options){return renewBasis(options);}
 function recover(options){const t=target(read(options.configPath)),unlock=lockTarget(options.data,t);try{noGameRunning();const renewed=recoverBasisRenewals(options.data,t),pending=unfinished(options.data,t);for(const file of pending){const j=read(file),job=path.dirname(file);within(path.join(options.data,'jobs'),job);const m=j.metadata;if(m){within(path.join(options.data,'targets',t.id),m.stateFile);if(!m.previousState||typeof m.previousState!=='object')throw Error('Vorherige Zustandsdaten fehlen.');if(m.planFile){within(job,m.planFile);if(!m.previousPlan||typeof m.previousPlan!=='object')throw Error('Vorherige Vorschaudaten fehlen.');}}for(const e of j.entries){validArtifact(t,path.basename(e.destination));if(path.resolve(e.destination)!==path.join(t.dir,path.basename(e.destination)))throw Error('Ungültiges Wiederherstellungsziel.');within(job,e.backup);if(e.old&&!fs.existsSync(e.backup))throw Error('Wiederherstellungskopie fehlt.');if(e.source)within(job,e.source);if(fs.existsSync(e.destination)){const current=hash(e.destination),old=e.old?hash(e.backup):null,newHash=e.source&&fs.existsSync(e.source)?hash(e.source):null;if(current!==old&&current!==newHash)throw Error('Extern veränderte Datei: '+e.destination);}}
  for(const e of j.entries.slice().reverse()){if(e.old)atomicCopy(e.backup,e.destination);else if(fs.existsSync(e.destination))fs.unlinkSync(e.destination);}if(m){write(m.stateFile,m.previousState);if(m.planFile)write(m.planFile,m.previousPlan);}j.status='rolled-back-recovered';write(file,j);}return renewed+pending.length;}finally{unlock();}}
 async function update(options){const plan=await prepare(options);const state=applyPlan(options,plan);return {plan,state};}
-module.exports={update,progress,checkedAdded,ENGINE_SHA,PARSER_SHA,TYPES,hash,read,write,files,within,target,fingerprint,validate,verifyEngine,nearlyEqual,applyMods,prepare,latest,applyPlan,restore,resetBasis,recover,atomicCopy,commitFiles,lockTarget,noGameRunning,inspectBasis,inspectStacks,renewBasis,pendingBasisRenewals,basisDescription,recoverBasisRenewals};
+module.exports={update,progress,checkedAdded,ENGINE_SHA,PARSER_SHA,TYPES,hash,read,write,files,within,target,fingerprint,validate,verifyEngine,nearlyEqual,applyMods,prepare,latest,applyPlan,restore,resetBasis,recover,atomicCopy,commitFiles,lockTarget,noGameRunning,inspectBasis,inspectStacks,inspectSkillPoints,renewBasis,pendingBasisRenewals,basisDescription,recoverBasisRenewals};

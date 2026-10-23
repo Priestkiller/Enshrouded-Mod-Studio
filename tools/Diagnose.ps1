@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param([string]$AppRoot, [switch]$OpenReport)
 $ErrorActionPreference = 'Stop'
 
