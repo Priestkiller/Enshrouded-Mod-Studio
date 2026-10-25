@@ -1,21 +1,19 @@
-## Automatische Clientpakete nach erfolgreichem Patch
+## Stapelgr��en und eigene Begleiterzauber gemeinsam patchen
 
-Das Mod Studio erstellt jetzt nach einem erfolgreich angewendeten und überprüften Patch automatisch ein passendes Clientpaket für den Servermanager.
+Die Stapelpr�fung hat die sechs vom Studio neu angelegten Begleiterzauber als unbekannte Gegenst�nde abgewiesen. Dadurch wurde der gesamte Vorgang gestoppt. Version 0.4.23 erkennt ausschlie�lich die nachweislich von dieser Funktion erzeugten Zaubergegenst�nde. Die Pr�fungen f�r normale Gegenst�nde, Stapellimits und ver�nderte Archivdateien bleiben aktiv.
 
-- Einmalige Einrichtung unter **Werkzeuge → Clientpaket für Servermanager**: Ausgabeordner und für Serverpatches eine vollständige Clientbasis mit demselben Spielbuild wählen. Diese Clientinstallation wird nur gelesen.
-- Geprüfte Dateiänderungen mit SHA-256, Inhaltsrevision und dokumentierter Übergabedatei `current.json`.
-- Passende vorhandene Server-Clientpakete werden erneut geprüft und wiederverwendet. Aktuelles Paket und ein vorheriger Stand bleiben erhalten; temporäre Kopien werden bereinigt.
-- Fehlende/falsche Basis und Paketfehler werden getrennt vom bereits erfolgreichen Spielpatch gemeldet. Eine Wiederherstellung oder ein Basiswechsel sperrt den alten Export.
-- **122 Hintergrundprüfungen bestanden**, einschließlich echter Client-/Serverpatches auf isolierten Kopien und exakter Rekonstruktion der erzeugten Clientdateien. Kein Spiel- oder Desktopstart.
+Nach einem erfolgreichen Patch wird das passende Clientpaket weiterhin automatisch erstellt. F�r die Verteilung **UGSM Manager 0.15.24** und **Spielerclient 0.16.9** verwenden; Studio 0.4.22 bleibt im Manager und Client unterst�tzt.
 
-**Noch nicht angeschlossen:** Der UGSM-Servermanager und Spielerclient benötigen den Adapter zum Einlesen, Bereitstellen und Anwenden dieser Pakete. Dieses Release verteilt noch keine Mods automatisch an Mitspieler.
+1. Die beteiligten Programme aktualisieren und das Spiel schlie�en.
+2. Im Studio **Patch anwenden / aktualisieren** ausf�hren und die Fertigstellung des Clientpakets abwarten.
+3. Im Spielerclient **Synchronisieren & Spielen** w�hlen.
 
-[Einrichtung](https://github.com/Priestkiller/Enshrouded-Mod-Studio/blob/v0.4.22/CLIENTPAKETE.txt) · [Schnittstelle für den Servermanager](https://github.com/Priestkiller/Enshrouded-Mod-Studio/blob/v0.4.22/SERVERMANAGER-CLIENTPAKETE.md)
+Getestet im Hintergrund: 35 gezielte Regressionstests und 103 Pr�fungen mit echten Server-/Clientdateien auf isolierten Kopien, einschlie�lich Stapelgr��e 65.000, sechs eigenen Begleiterzaubern, Archivpr�fung und Clientpaket. Der Go-Client hat anschlie�end alle 75 erzeugten Dateien aus 260 gepr�ften Datenbl�cken exakt rekonstruiert. Kein Spiel oder Desktopfenster wurde gestartet.
 
 ## Download und Update
 
-Windows x64 mit .NET Framework 4.8. Auf dem Server das ZIP in einen neuen beschreibbaren Ordner entpacken und **Altes Setup übernehmen** wählen; den bisherigen vollständigen Mod-Studio-Ordner angeben. Ab Studio 0.4.10 ist alternativ **Update prüfen** verfügbar. Profile, Einstellungen und passende Sicherungen werden übernommen. Das Toolupdate selbst verändert keine Spielarchive.
+Windows x64 mit .NET Framework 4.8. Ab Studio 0.4.10 **Update pr�fen** verwenden. Profile und Einstellungen werden �bernommen. F�r eine manuelle Installation das vollst�ndige ZIP entpacken und **Altes Setup �bernehmen** w�hlen.
 
-Das öffentliche Paket enthält Anwendung, eigene Quellen und EMM mit Lizenz und zugehörigem Quelltext. Die ursprüngliche Patcher-Laufzeit und der Legacy-Parser werden aus einer vorhandenen vollständigen Installation übernommen. Ohne diese Runtime lässt sich die Oberfläche öffnen, aber kein Spielpatch anwenden.
+Das �ffentliche Paket enth�lt Anwendung, eigene Quellen und EMM mit Lizenz und zugeh�rigem Quelltext. Die urspr�ngliche Patcher-Laufzeit und der Legacy-Parser werden aus einer vorhandenen vollst�ndigen Installation �bernommen.
 
-Die Verteilung behebt keine bisher offenen Spielmechaniken: Lagerzugriff aus normalen Kisten/Werkbänken und zusätzliche Fähigkeitspunkte ausschließlich über den Server gelten weiterhin nicht als gelöst. Ein echter Mehrspieler-Spieltest der Begleiter bleibt offen.
+Die Pr�fungen best�tigen die installierten Dateien. Zus�tzliche F�higkeitspunkte ausschlie�lich �ber den Server, Lagerzugriff aus normalen Kisten/Werkb�nken und der echte Multiplayer-Spieltest der Begleiter sind dadurch weiterhin nicht als gel�st nachgewiesen.
