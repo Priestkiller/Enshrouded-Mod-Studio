@@ -1,6 +1,26 @@
-﻿$ErrorActionPreference = 'Stop'
+﻿param([switch]$QuarantineOnly)
+$ErrorActionPreference = 'Stop'
 $releaseRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
 $releaseSpec = Get-Content -LiteralPath (Join-Path $releaseRoot '.github\release.json') -Raw | ConvertFrom-Json
+if ($QuarantineOnly) {
+    if (-not $releaseSpec.repair -or $releaseSpec.repairTag -ne ('v' + $releaseSpec.version)) { return }
+    if ($env:GITHUB_REPOSITORY -ne 'Priestkiller/Enshrouded-Mod-Studio') { throw 'Unexpected repair repository.' }
+    $raw = & gh api ('repos/' + $env:GITHUB_REPOSITORY + '/releases/' + $releaseSpec.expectedReleaseId)
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect repair release.' }
+    $repair = $raw | ConvertFrom-Json
+    if ($repair.tag_name -ne $releaseSpec.repairTag -or $repair.target_commitish -ne $releaseSpec.expectedReleaseCommit) { throw 'Repair release identity mismatch.' }
+    if ($repair.draft) { Write-Output 'Repair draft already quarantined.'; return }
+    $asset = @($repair.assets | Where-Object { $_.name -eq ('Enshrouded-Mod-Studio-' + $releaseSpec.version + '.zip') })
+    if ($asset.Count -ne 1 -or $asset[0].digest -ne $releaseSpec.expectedOldDigest) { Write-Output 'Published asset already differs; no quarantine performed.'; return }
+    $out = Join-Path $releaseRoot 'artifacts'
+    New-Item -ItemType Directory -Path $out -Force | Out-Null
+    $patch = Join-Path $out 'quarantine.json'
+    [IO.File]::WriteAllText($patch,(@{draft=$true;make_latest='false'} | ConvertTo-Json),[Text.UTF8Encoding]::new($false))
+    $null = & gh api --method PATCH ('repos/' + $env:GITHUB_REPOSITORY + '/releases/' + $repair.id) --input $patch
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot quarantine invalid package.' }
+    Write-Output 'The just-created invalid package is a draft until rebuilt and verified.'
+    return
+}
 $releaseProof = Get-Content -LiteralPath (Join-Path $releaseRoot 'artifacts\package.json') -Raw | ConvertFrom-Json
 if ($env:GITHUB_REPOSITORY -ne 'Priestkiller/Enshrouded-Mod-Studio' -or $releaseSpec.version -ne $releaseProof.version) { throw 'Unexpected repository or version.' }
 $releaseRepo = $env:GITHUB_REPOSITORY
@@ -18,7 +38,7 @@ function GetRelease {
 }
 $current = GetRelease
 if ($null -ne $current -and -not $current.draft) { Write-Output ('Release already published: ' + $current.html_url); exit 0 }
-if ($null -ne $current -and $current.target_commitish -ne $env:GITHUB_SHA) { throw 'Existing draft points to another commit.' }
+if ($null -ne $current -and $current.target_commitish -ne $env:GITHUB_SHA -and -not ($releaseSpec.repair -and $current.id -eq $releaseSpec.expectedReleaseId -and $current.tag_name -eq $releaseSpec.repairTag -and $current.target_commitish -eq $releaseSpec.expectedReleaseCommit)) { throw 'Existing draft points to another commit.' }
 if ($null -eq $current) {
     & gh release create $releaseTag --repo $releaseRepo --target $env:GITHUB_SHA --draft --title $releaseSpec.name --notes-file (Join-Path $releaseRoot '.github\release-notes.md')
     if ($LASTEXITCODE -ne 0) { throw 'Cannot create release draft.' }

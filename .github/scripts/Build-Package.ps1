@@ -38,11 +38,40 @@ foreach ($forbidden in @('Data','PreviousSetups','Pruefungen','engine\config.jso
 foreach ($required in @('ThirdParty\kfc-parser-GPL-3.0.txt','ThirdParty\kfc-parser-source-1670859.zip','ThirdParty\EMM-HERKUNFT.txt','README.md','THIRD-PARTY.md')) {
     if (-not (Test-Path -LiteralPath (Join-Path $releaseStage $required))) { throw ('Required notice/source missing: ' + $required) }
 }
+Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $releaseName = 'Enshrouded-Mod-Studio-' + $releaseSpec.version + '.zip'
 $releaseZip = Join-Path $releaseOutput $releaseName
 if (Test-Path -LiteralPath $releaseZip) { throw 'Release archive already exists.' }
-[IO.Compression.ZipFile]::CreateFromDirectory($releaseStage,$releaseZip,[IO.Compression.CompressionLevel]::Optimal,$false)
+$releaseArchive = [IO.Compression.ZipFile]::Open($releaseZip,[IO.Compression.ZipArchiveMode]::Create)
+try {
+    foreach ($file in Get-ChildItem -LiteralPath $releaseStage -File -Recurse | Sort-Object FullName) {
+        $relative = $file.FullName.Substring($releaseStage.Length + 1).Replace('\','/')
+        [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($releaseArchive,$file.FullName,$relative,[IO.Compression.CompressionLevel]::Optimal) | Out-Null
+    }
+} finally { $releaseArchive.Dispose() }
+# Check actual entry spellings with the genuine legacy updater. Python's
+# ZipInfo.filename normalizes Windows slashes and cannot prove this contract.
+$legacyZip = Join-Path $releaseOutput 'old-updater.zip'
+Invoke-WebRequest -Uri 'https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/download/v0.4.10/Enshrouded-Mod-Studio-0.4.10.zip' -OutFile $legacyZip -UseBasicParsing
+if ((Get-FileHash -LiteralPath $legacyZip -Algorithm SHA256).Hash.ToLowerInvariant() -ne '306b93ab7d94133349055143a9712f133c584d41f7ec9716e6b3ffa7a5bf3a1c') { throw 'Legacy updater checksum mismatch.' }
+$legacyRoot = Join-Path $releaseOutput 'old-updater'
+[IO.Compression.ZipFile]::ExtractToDirectory($legacyZip,$legacyRoot)
+$legacyExe = @(Get-ChildItem -LiteralPath $legacyRoot -Filter 'Enshrouded Mod Studio.exe' -File -Recurse)
+if ($legacyExe.Count -ne 1) { throw 'Legacy updater executable missing.' }
+$legacyAssembly = [Reflection.Assembly]::LoadFrom($legacyExe[0].FullName)
+if ($legacyAssembly.GetName().Version.ToString() -ne '0.4.10.0') { throw 'Wrong legacy updater version.' }
+$legacyInstaller = $legacyAssembly.GetType('EnshroudedStudio.UpdateInstaller')
+$legacyFlags = [Reflection.BindingFlags]'Static,NonPublic'
+$archiveCheck = [IO.Compression.ZipFile]::OpenRead($releaseZip)
+try {
+    if (@($archiveCheck.Entries | Where-Object { $_.FullName.Contains('\') }).Count -ne 0) { throw 'ZIP contains backslash entry names.' }
+    $null = $legacyInstaller.GetMethod('InspectZip',$legacyFlags).Invoke($null,@($archiveCheck,[string](Join-Path $releaseOutput 'legacy-inspection')))
+} finally { $archiveCheck.Dispose() }
+$legacyResult = [Activator]::CreateInstance($legacyAssembly.GetType('EnshroudedStudio.UpdateResult'))
+$legacyResult.Repository = 'Priestkiller/Enshrouded-Mod-Studio'
+$legacyResult.LatestVersion = $legacyAssembly.GetType('EnshroudedStudio.UpdateCheck').GetMethod('ParseVersion').Invoke($null,@([string]$releaseSpec.version))
+$null = $legacyInstaller.GetMethod('ValidatePackage',$legacyFlags).Invoke($null,@([string]$releaseStage,$legacyResult,$false))
 $releaseHash = (Get-FileHash -LiteralPath $releaseZip -Algorithm SHA256).Hash.ToLowerInvariant()
 [IO.File]::WriteAllText(($releaseZip + '.sha256'),($releaseHash + '  ' + $releaseName + [Environment]::NewLine),[Text.UTF8Encoding]::new($false))
 $releaseProof = [ordered]@{version=$releaseSpec.version;archive=$releaseName;sha256=$releaseHash;bytes=(Get-Item -LiteralPath $releaseZip).Length;legacyRuntimeIncluded=$false;emmIncluded=$true;sourceIncluded=$true}
