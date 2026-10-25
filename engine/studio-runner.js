@@ -132,7 +132,7 @@ async function runAutomatic(parsed, configuredOptions = options, api = backend, 
   } finally { process.stdout.write = originalWrite; }
 }
 async function interactive(configuredOptions = options) {
-  console.log('\nENSHROUDED MOD STUDIO 0.4.23-Test · LOKALE TESTVERSION · Engine 1.2.3\n');
+  console.log('\nENSHROUDED MOD STUDIO 0.4.24 · Engine 1.2.3\n');
   backend.verifyEngine(configuredOptions.root);
   const config = backend.read(configuredOptions.configPath), target = backend.target(config);
   backend.validate(config, configuredOptions.root);

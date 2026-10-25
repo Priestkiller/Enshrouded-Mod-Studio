@@ -1,6 +1,6 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.23",
+  "studio": "0.4.24",
   "files": {
     "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
@@ -11,7 +11,7 @@
     "skill-points-check.js": "111417ab8f8d6b35d2d28c9ab93196f212d3294037078b6e58d112441163aa19",
     "stack-check.js": "175d4ccc3435efb2678e05389289f44e8aac38d639a719504bd41f91a7f9efd9",
     "studio-backend.js": "38183a3c29ddc7587774d38740c2385206a0808d365edb86bc535d51616b299c",
-    "studio-runner.js": "77fc08c179f6068735fafc1466ed4f9fc77d6ad2194cbf13109391c7cc028488",
+    "studio-runner.js": "42142865e157fe3e4bab608ede9dd305c70fb31aea23d6ffcf8a66a1e9b98011",
     "summoned-companions.js": "c0eb99596d9f790733dc02acf02998f18879256b4b6b99a600d9c37ea6b05328",
     "vendor/config/loader.js.bytecode": "98f1a99f8746a854822e673d6af3fbd76c173738c894fe093b31abad0235b2c0",
     "vendor/core/file-ops.js.bytecode": "53961f724c80ceba06e7e03359e0575c0f06167291c7257377adf7808e952858",
@@ -43,7 +43,7 @@
     "vendor/utils/kfc-version-checker.js.bytecode": "45b9752b88efa1ad8d3ca84054551bc21451e42819242ef7e843fa851e22b5f3",
     "vendor/utils/logger.js.bytecode": "ecbadf12b46c505293bfac71b77f41202889dc68b6241ff7099b17c92b71ebbd",
     "vendor-loader.js": "3e0110ea0750eda82f5f845f250b5b57aeb3011da67fd89122847cb2ba0d63e1",
-    "custom-skeleton-items.js": "043d8ac7492ee7897806e3d919183e296ca5cb4c40156d89aa5beacb9bc323eb",
+    "custom-skeleton-items.js": "d0e1e7dd8dd56fdc54701011a305ffb3efedacbdd361a371a27cafe4773895dd",
     "skeleton-spell-definitions.json": "4431ad547440c5fa56f47c9f1de756ef06b3e23938030e7dde997547c1cd8b0a",
     "skeleton-spells.js": "a4ed62e6f6fc4a31b30a7a7d669181b65d917e22e726c6721d8c05064f9d48b9",
     "skeleton-spell-localization.js": "c488c44f67727834b386f850a34f343742ee0a2e4dac7e7cdeddb67afe71c1e9",

@@ -1,19 +1,13 @@
-## Stapelgr��en und eigene Begleiterzauber gemeinsam patchen
+## Begleiterzauber mit geänderter Zauberzeit
 
-Die Stapelpr�fung hat die sechs vom Studio neu angelegten Begleiterzauber als unbekannte Gegenst�nde abgewiesen. Dadurch wurde der gesamte Vorgang gestoppt. Version 0.4.23 erkennt ausschlie�lich die nachweislich von dieser Funktion erzeugten Zaubergegenst�nde. Die Pr�fungen f�r normale Gegenst�nde, Stapellimits und ver�nderte Archivdateien bleiben aktiv.
+Der Patch konnte beim Kontrolllesen eigener Skelettzauber abbrechen, wenn gleichzeitig die Zauberzeit verändert wurde. Beispiel: Faktor 0,2 erzeugt 0,4 Sekunden; das native Archiv speichert diesen Float32-Wert als 0,4000000059604645. Unsere exakte Inhaltsprüfung behandelte diese normale Rundung als Fehler.
 
-Nach einem erfolgreichen Patch wird das passende Clientpaket weiterhin automatisch erstellt. F�r die Verteilung **UGSM Manager 0.15.24** und **Spielerclient 0.16.9** verwenden; Studio 0.4.22 bleibt im Manager und Client unterst�tzt.
+Version 0.4.24 schreibt die betroffenen Werte neuer Begleiterzauber bereits vor dem Packen im nachgewiesenen nativen Format. Inhaltsprüfsummen, GUIDs, Ganzzahlen und Stapelprüfungen bleiben unverändert streng. Einstellungen müssen nicht zurückgesetzt werden.
 
-1. Die beteiligten Programme aktualisieren und das Spiel schlie�en.
-2. Im Studio **Patch anwenden / aktualisieren** ausf�hren und die Fertigstellung des Clientpakets abwarten.
-3. Im Spielerclient **Synchronisieren & Spielen** w�hlen.
+Für die automatische Verteilung Manager 0.15.25 und Spielerclient 0.16.10 verwenden. Die bisherigen Studio-Versionen 0.4.22 und 0.4.23 bleiben unterstützt. Profile, Einstellungen und Einladungen bleiben erhalten.
 
-Getestet im Hintergrund: 35 gezielte Regressionstests und 103 Pr�fungen mit echten Server-/Clientdateien auf isolierten Kopien, einschlie�lich Stapelgr��e 65.000, sechs eigenen Begleiterzaubern, Archivpr�fung und Clientpaket. Der Go-Client hat anschlie�end alle 75 erzeugten Dateien aus 260 gepr�ften Datenbl�cken exakt rekonstruiert. Kein Spiel oder Desktopfenster wurde gestartet.
+Nach dem Update den bisherigen Patch erneut anwenden, die Clientpaketerstellung abwarten und im Spielerclient Synchronisieren & Spielen verwenden. Für diesen Fehler ist kein neuer Spielstand und kein Basiswechsel erforderlich.
 
-## Download und Update
+Prüfungen: 21 gezielte Regressionstests unter Node 18 und Node 24 sowie 103 Prüfungen eines vollständigen Server-/Client-Patchlaufs auf isolierten Kopien. Das nach dem Protokoll rekonstruierte Profil umfasst 38 aktive Optionen einschließlich Dezimalfaktoren, Tieroptionen, Stapelgröße 65.000 und sechs Begleiterzaubern. Alle erzeugten Clientdateien wurden aus dem Paket exakt rekonstruiert; die Originaldateien blieben unverändert. Kein Spiel oder Desktopfenster wurde gestartet.
 
-Windows x64 mit .NET Framework 4.8. Ab Studio 0.4.10 **Update pr�fen** verwenden. Profile und Einstellungen werden �bernommen. F�r eine manuelle Installation das vollst�ndige ZIP entpacken und **Altes Setup �bernehmen** w�hlen.
-
-Das �ffentliche Paket enth�lt Anwendung, eigene Quellen und EMM mit Lizenz und zugeh�rigem Quelltext. Die urspr�ngliche Patcher-Laufzeit und der Legacy-Parser werden aus einer vorhandenen vollst�ndigen Installation �bernommen.
-
-Die Pr�fungen best�tigen die installierten Dateien. Zus�tzliche F�higkeitspunkte ausschlie�lich �ber den Server, Lagerzugriff aus normalen Kisten/Werkb�nken und der echte Multiplayer-Spieltest der Begleiter sind dadurch weiterhin nicht als gel�st nachgewiesen.
+Windows x64 mit .NET Framework 4.8. Das öffentliche Paket übernimmt die ursprüngliche Patcher-Laufzeit aus einer vorhandenen vollständigen Installation. Die Korrektur bestätigt die verarbeiteten Dateien; bisher offene Spielmechaniken werden dadurch nicht als im Spiel funktionierend bestätigt.
