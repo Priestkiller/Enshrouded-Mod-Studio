@@ -1,55 +1,47 @@
-# Enshrouded Mod Studio
+# Enshrouded Mod Studio 0.4.21
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
 
 **[Aktuelle Windows-Version herunterladen](https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/latest)**
 
-## Zum ersten Mal starten
+## Start und Einrichtung
 
-1. Das vollständige Studio-ZIP in einen neuen, beschreibbaren Ordner entpacken.
-2. `Enshrouded Mod Studio.exe` starten. Benötigt Windows x64 mit .NET Framework 4.8.
-3. **Altes Setup übernehmen** wählen und den bisherigen vollständigen Mod-Studio-Ordner auswählen. Profile, passende aktive Archivbasen und fehlende geprüfte Laufzeitdateien werden übernommen. Der alte Ordner bleibt erhalten.
-4. Den richtigen Spielclient- oder Dedicated-Serverordner wählen.
-5. Optionen einstellen, Spiel bzw. Server schließen und **Patch anwenden / aktualisieren** drücken.
+1. Das vollständige Studio-ZIP in einen neuen, beschreibbaren Ordner entpacken. Benötigt Windows x64 mit .NET Framework 4.8.
+2. `Enshrouded Mod Studio.exe` starten und **Altes Setup übernehmen** wählen. Den bisherigen vollständigen Mod-Studio-Ordner angeben; Profile, passende aktive Archivbasen und fehlende geprüfte Laufzeitdateien werden übernommen. Den alten Ordner mit seinen Sicherungen behalten.
+3. Den richtigen Spielclient- oder Dedicated-Serverordner wählen, die Einstellungen prüfen und Spiel bzw. Server schließen.
+4. **Patch anwenden / aktualisieren** ausführen. **Speichern** allein sichert nur das Profil.
 
-Das öffentliche Paket enthält die Studio-Anwendung und unseren Quellcode. Die Laufzeitdateien des ursprünglichen Patchers 1.2.3 werden aus einer vorhandenen Installation übernommen und anhand ihrer erwarteten Prüfsummen kontrolliert. Sie liegen diesem öffentlichen Download nicht bei. Ohne passende Laufzeit kann die Oberfläche geöffnet, aber kein Spielpatch angewendet werden.
+Das öffentliche Paket enthält die Studio-Anwendung, eigene Quellen und das getrennte Offline-Sprachwerkzeug EMM samt Lizenz und zugehörigem Quelltext. Die ursprüngliche Patcher-EXE, deren Bytecode und der bisher verwendete Legacy-Parser werden aus einer vorhandenen vollständigen Installation übernommen und anhand erwarteter Dateihashes kontrolliert. Ohne diese passende Laufzeit lässt sich die Oberfläche öffnen, aber kein Spielpatch anwenden. Herkunft und Paketgrenzen: [THIRD-PARTY.md](THIRD-PARTY.md).
 
-## Von 0.4.9 auf 0.4.10 wechseln
+## Auf 0.4.21 aktualisieren
 
-Version 0.4.9 besitzt noch keine automatische Installation. Dort **Update prüfen** verwenden, das ZIP im Browser herunterladen und das Studio schließen. Version 0.4.10 vollständig in einen neuen Ordner entpacken und **Altes Setup übernehmen** ausführen. Den alten Ordner mit seinen Sicherungen behalten. Alte Engine-Ordner nicht über die neue Version kopieren.
+Ab Version 0.4.10 **Update prüfen** wählen und die angebotene Installation bestätigen. Das Studio prüft ZIP-Größe und SHA256, richtet die neue Version in einem eigenen Nachbarordner ein und übernimmt Profile mit IDs, Auswahl und Einstellungen sowie das gesamte `Data`-Verzeichnis mit Archivbasen, Sicherungen und Historie. Erst nach bestätigtem Start der neuen Anwendung schließt die bisherige Version. Der alte Ordner bleibt als Rückfall erhalten; bestehende Startlinks können nach erfolgreicher Übergabe zur neuen Version weiterleiten.
 
-## Automatische Tool-Updates ab 0.4.10
+Version 0.4.9 lädt das ZIP über den Browser. Das alte Studio schließen, 0.4.21 vollständig in einen neuen Ordner entpacken und **Altes Setup übernehmen** ausführen. Alte Engine-Ordner nicht über die neue Version kopieren. Neue Optionen werden bei übernommenen Profilen ausgeschaltet ergänzt. Ein Tool-Update wendet kein Modprofil an und verändert keine Spielarchive. Nach dem Update die gewünschten neuen Optionen einstellen und erneut patchen. Einzelheiten: [UPDATES.txt](UPDATES.txt).
 
-Ab 0.4.10 kann eine angebotene neuere Studio-Version nach Bestätigung automatisch übernommen werden. Das Tool prüft die neueste stabile GitHub-Veröffentlichung und das passende vollständige ZIP. Es richtet die neue Version in einem eigenen Nachbarordner ein, übernimmt die vorhandenen Daten und startet sie. Erst wenn die neue Anwendung ihre geladenen Profile bestätigt, schließt das bisherige Studio.
+## Neu seit 0.4.11
 
-Profile, das gesamte `Data`-Verzeichnis, Archivbasen, Sicherungen und die bereits vorhandene geprüfte private Laufzeit werden übernommen. Der alte Ordner bleibt als Rückfall erhalten. Ein alter Startlink leitet nach erfolgreicher Übergabe auf die neuere Anwendung weiter, sofern deren gespeicherte Prüfsumme noch stimmt. Eine Tool-Aktualisierung wendet kein Modprofil an und ändert keine Spielarchive. Bei einem Fehler sind Wiederherstellung und Protokoll maßgeblich; eine fehlgeschlagene Prüfung bedeutet nicht, dass die installierte Version aktuell ist. Einzelheiten: [UPDATES.txt](UPDATES.txt).
+- **Sechs Begleiterzauber hinzufügen**: Zauberskelett, Skelettkrieger, Eliteskelett, erloschener Magier, Skeletthund und Säbelzahntiger bei Alden Crowley. Gemeinsames Grundlimit, Dauer und Stärke; eigenes Tiger-Symbol. Für Mehrspieler müssen der Server und **alle** Spielclients denselben Spielbuild, Toolstand und dieselben Begleiterwerte anwenden. MP-Kennungen vergleichen. Der Server verteilt keine Dateien. Ein echter Mehrspielertest mit verbundenen Spielern steht aus. [Anleitung](MEHRSPIELER-BEGLEITER.txt).
+- **Nutztier-Zucht beschleunigen**: Zuchttempo von 1 bis 20 und getrennte Basischance von 0 bis 100 Prozent; 0 behält die Originalchance. Die Funktion wurde vom Benutzer im Spiel bestätigt. Partner, Futter, Betten, Weltlimit und sonstige Zuchtregeln bleiben erforderlich. [Details](TIERZUCHT.txt).
+- Speicherprüfung vor Vorbereitung und Archivtausch sowie Bereinigung großer abgeschlossener Arbeitskopien. Aktive Vorschauen und Wiederherstellungsdaten bleiben geschützt. [Details](SPEICHERPLATZ.txt).
+- Rein lesende Lagerdiagnose für Serverarchive. Die Diagnose behebt den gemeldeten Materialzugriff nicht. [Anleitung](LAGER-DIAGNOSE-ANLEITUNG.txt).
 
-## Fertigkeitspunkte nur über den Server
+## Prüfstand und offene Punkte
 
-**Eine automatische Vergabe an alle Spieler ausschließlich durch einen Serverpatch ist mit diesem Tool nicht unterstützt.** Der Archivwert ist keine bestätigte globale Spielwirkung. Die vorhandene Server-Settings-Struktur bietet dafür keinen Wert. [Offizielle FAQ](https://enshrouded.zendesk.com/hc/en-us/articles/16056312924957-Dedicated-Server-FAQ): Charakterfortschritt wird auf Clients gespeichert. Ein neuer nativer Synchronisationsmechanismus wäre gesondert zu entwickeln und im Mehrspieler zu prüfen.
+88 gezielte Prüfungen zur Begleiteränderung bestanden. Zusätzlich wurden echte Client- und Serverarchive auf eigenen Arbeitskopien gepackt und zurückgelesen: neun gemeinsame neue Ressourcen sind auf beiden Rollen identisch; Clientmenü, Texte und Symbole sind separat geprüft. Das bestätigt den erstellten Datenstand. Besitzerzuordnung, Folge-KI, Zielwahl, Schaden, Gruppenlimit und Reconnect mit mehreren Spielern bleiben im laufenden Mehrspieler zu prüfen. [Prüfbericht](PRUEFBERICHT.txt).
 
-## Funktionen
+Der gemeldete **Lagerzugriff aus normalen Kisten und Stationsinventaren ist weiterhin nicht behoben**. Vorhandene Archivmarker beweisen keinen funktionierenden Materialverbrauch. [Befund](LAGERZUGRIFF.txt).
 
-- 44 Optionen mit Erklärungen, Beispielen und Grenzen direkt an der Einstellung.
-- Profile, Suche, Schalter und Validierung von Zahlenwerten.
-- Fertigkeitspunkte: den tatsächlichen Wert der gewählten Clientdateien prüfen; ein Serverpatch verändert keine entfernte Clientinstallation.
-- **Tiere beim ersten Erfolg zähmen** unter **Welt & Bauen** setzt die benötigte Zahl erfolgreicher Zähmungsschritte auf einen. Passender Köder, Annäherung und ein vollständiger erfolgreicher Vorgang bleiben erforderlich.
-- Vorbereitung aus einer gespeicherten Ausgangsbasis, Rücklesen der gepackten Änderungen und geführter Basiswechsel nach einem Enshrouded-Spielupdate.
+**Ein Servermod, der allen Spielern mit unveränderten Clients automatisch vier Fertigkeitspunkte je Level vergibt, ist nicht enthalten.** Die bestehende Archivoption und ihre Prüffunktionen bleiben verfügbar. Ein Serverarchivwert belegt keine Verteilung an entfernte Clients. [Fertigkeitsbefund](PUNKTE-SERVERMOD.txt).
 
-Die Prüfhinweise jeder Option sind maßgeblich. Archivprüfungen, Berechnungen und automatische Oberflächentests ersetzen keine Spieltests. Die tatsächliche Zähmung samt Besitzübertragung und Multiplayer-Abgleich bleibt ungeprüft.
+Weitere Profiloptionen umfassen Tierproduktion, einen erfolgreichen Zähmungsschritt, Spieler- und Gegenstandswerte sowie Komforteinstellungen. Erklärungen, Beispiele und Grenzen stehen an den Einstellungen und in [EINSTELLUNGEN.txt](EINSTELLUNGEN.txt). Prüfhinweise jeder Option gelten weiterhin; Archivprüfungen ersetzen keine Spieltests.
 
-## Bauen
+## Selbst bauen
 
 ```powershell
 ./source/build.ps1
 ```
 
-Der Build verwendet den Windows-Compiler für .NET Framework 4.8. Auch für einen selbst erstellten Build ist die externe Patcher-Laufzeit separat erforderlich. Private Profile, Spielarchive, Sicherungen und exportierte Spielressourcen werden nicht im Repository gespeichert.
+Der Build verwendet den Windows-Compiler für .NET Framework 4.8. Auch ein selbst erstellter Build benötigt die getrennte Patcher-Laufzeit. Profile, Spielarchive, Spielstände, Sicherungen und exportierte Spielressourcen gehören nicht in das Repository oder öffentliche Paket.
 
-## Hinweise
-
-- **Speichern** sichert das Profil. **Patch anwenden / aktualisieren** ändert die ausgewählte Spielinstallation.
-- Ein Server auf einem anderen Rechner muss dort gepatcht werden. Ein lokaler Clientpatch verändert keine entfernten Serverdateien.
-- Ein Tool-Update und ein Enshrouded-Spielupdate sind getrennte Vorgänge. Bei einer neuen Spielversion weiterhin eine passende Ausgangsbasis wählen.
-- Dies ist ein unabhängiges Projekt. Enshrouded und die Fremdwerkzeuge gehören ihren jeweiligen Rechteinhabern.
-- Für fremde EXE-/Bytecode-Dateien wird keine Weitergabe- oder Lizenzberechtigung behauptet. Herkunft und Grenzen: [THIRD-PARTY.md](THIRD-PARTY.md).
+Dies ist ein unabhängiges Projekt. Enshrouded und die Fremdwerkzeuge gehören ihren jeweiligen Rechteinhabern. Nach einem Enshrouded-Spielupdate weiterhin den geführten Basiswechsel verwenden; eine frühere Archivbasis nicht auf eine neue Spielversion spielen.

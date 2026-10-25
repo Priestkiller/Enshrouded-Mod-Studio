@@ -1,4 +1,4 @@
-ENSHROUDED MOD STUDIO 0.4.10 — TOOL-UPDATES UND DATENUEBERNAHME
+ENSHROUDED MOD STUDIO 0.4.21 — TOOL-UPDATES UND DATENUEBERNAHME
 
 ERSTER WECHSEL VON 0.4.9
 Die bereits veröffentlichte Version 0.4.9 kann neue Veröffentlichungen prüfen,
@@ -27,7 +27,7 @@ DATEN UND LAUFZEIT
 Bei diesem automatischen Vorgang werden das gesamte Data-Verzeichnis,
 Profile mit ihren bisherigen IDs und Einstellungen, Profilwahl, Sicherungen,
 Archivbasen und Wiederherstellungsinformationen übernommen. Die bereits
-vorhandene private Patcher-/Parser-Laufzeit und engine/config.json werden
+vorhandene geprüfte Patcher-/Parser-Laufzeit und engine/config.json werden
 nicht durch leere öffentliche Paketdateien ersetzt.
 Alte Vorschauverweise werden als Originaldateien unter Data/updates
 archiviert. Vor dem nächsten Anwenden wird eine neue Vorschau erstellt.
@@ -37,7 +37,8 @@ weiter. Dazu speichert das bisherige Studio Ziel und Prüfsumme unter
 Data/installed-tool-update.json; die Weiterleitung gilt nur für eine neuere
 Version mit unveränderter EXE. Den alten Ordner zunächst aufbewahren.
 
-Das öffentliche ZIP enthält die eigene Studio-Anwendung und eigene Quellen.
+Das öffentliche ZIP enthält die eigene Studio-Anwendung, eigene Quellen und
+das getrennte Offline-Sprachwerkzeug EMM samt GPL-Lizenz und Quelltext.
 Die ursprüngliche Patcher-/Parser-Laufzeit wird aus einer vorhandenen
 vollständigen Installation übernommen und anhand ihrer erwarteten Hashes
 geprüft. Bei einer fehlenden oder inkompatiblen Laufzeit ist eine manuelle
@@ -67,3 +68,11 @@ Für den Rückfall die EXE im alten Ordner mit dem Parameter
 --previous-version starten. Dieser explizite Start umgeht die Weiterleitung
 und verwendet die dort erhaltene Data-Kopie. Danach nicht gleichzeitig in
 beiden Versionen unterschiedliche Profile anwenden.
+
+VERSION 0.4.21
+Neue Optionen werden bei vorhandenen Profilen ausgeschaltet ergänzt.
+Sechs Begleiterzauber benötigen im Mehrspieler denselben Patchstand und
+dieselben Begleiterwerte auf Server und allen Spielclients; MP-Kennung
+vergleichen. Der Server verteilt keine Dateien. Nach dem Tool-Update die
+gewünschten Optionen einstellen und erneut patchen. Der Updatevorgang selbst
+schaltet keine Mods ein und ändert keine Spielarchive.

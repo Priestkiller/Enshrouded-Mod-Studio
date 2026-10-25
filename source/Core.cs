@@ -10,6 +10,11 @@ using System.Security.Cryptography;
 
 namespace EnshroudedStudio
 {
+    public class FieldChoiceDef
+    {
+        public long Value { get; set; }
+        public string Label { get; set; }
+    }
     public class FieldDef
     {
         public string Key { get; set; }
@@ -19,6 +24,7 @@ namespace EnshroudedStudio
         public bool Integer { get; set; }
         public double Minimum { get; set; }
         public double Maximum { get; set; }
+        public List<FieldChoiceDef> Choices { get; set; }
     }
     public class ModDef
     {
@@ -31,6 +37,9 @@ namespace EnshroudedStudio
         public string Status { get; set; }
         public string WhenToUse { get; set; }
         public string Scope { get; set; }
+        public bool ServerOnly { get; set; }
+        public bool ClientOnly { get; set; }
+        public bool KnownTargetOnly { get; set; }
         public List<FieldDef> Fields { get; set; }
     }
     public class CategoryDef
@@ -136,6 +145,33 @@ namespace EnshroudedStudio
                 CultureInfo.InvariantCulture, out value) && !double.IsNaN(value) && !double.IsInfinity(value);
         }
     }
+    public static class CompanionSpellUi
+    {
+        public const string Key = "enableSkeletonSummoningSpells";
+        public const string Requirements = "Für Mehrspieler Server UND ALLE Spielclients mit demselben Spielbuild sowie gleichem Grundlimit, gleicher Dauer und gleichem Stärkefaktor patchen. Eigene Items, Symbole und Namen benötigen passende Dateien auf jedem Spielclient. Der Server verteilt keine Dateien an Clients.";
+        public const string TestStatus = "Mehrspieler-Spieltest offen. Der Magier verwendet Eisgeschosse und beschwört zunächst keine Totenköpfe.";
+
+        public static string TargetHint(string target, bool blocked)
+        {
+            if (blocked)
+                return "Für die sechs Begleiterzauber zuerst einen vollständigen, eindeutig erkannten Spielclient- oder getrennten Dedicated-Serverordner wählen. Unbekannte und gemischte Ziele sind gesperrt. Eine bereits aktive Profiloption lässt sich ausschalten. " + Requirements + " " + TestStatus;
+            string role = target == "Steam-Client erkannt"
+                ? "Spielclient erkannt: gemeinsame Spieldaten sowie UI, Symbole und Namen werden lokal gepatcht. Solo-Spiel und LAN-Host verwenden diesen gepatchten Spielclient. "
+                : "Dedicated Server erkannt: gemeinsame Item-, Rezept-, Zauber- und Begleiterdaten werden gepatcht. Die UI-, Symbol- und Namensdateien werden zusätzlich auf jedem Spielclient benötigt. ";
+            return role + Requirements + " " + TestStatus;
+        }
+
+        public static string ToolTip(string target, bool blocked)
+        {
+            if (blocked) return TargetHint(target, true);
+            return "Sechs Begleiterzauber auf diesem " + (target == "Steam-Client erkannt" ? "Spielclient" : "Dedicated Server") + " aktivieren. " + Requirements + " " + TestStatus;
+        }
+
+        public static string ActivationNotice(string title)
+        {
+            return title + ": eingeschaltet. Unten auf diese Installation anwenden. " + Requirements + " " + TestStatus;
+        }
+    }
     public class StudioStore
     {
         public readonly string AppRoot;
@@ -196,6 +232,8 @@ namespace EnshroudedStudio
                             double n = Json.Number(value);
                             if (n < field.Minimum || n > field.Maximum || (field.Integer && n != Math.Truncate(n)))
                                 errors.Add(mod.Title + ": " + field.Label + " muss " + (field.Integer ? "ganzzahlig " : "") + "zwischen " + field.Minimum.ToString("G", CultureInfo.GetCultureInfo("de-DE")) + " und " + field.Maximum.ToString("G", CultureInfo.GetCultureInfo("de-DE")) + " liegen.");
+                            if (field.Choices != null && field.Choices.Count > 0 && !field.Choices.Any(choice => choice.Value == n))
+                                errors.Add(mod.Title + ": " + field.Label + " benötigt eine der angebotenen Varianten.");
                         }
                         catch { errors.Add(mod.Title + ": " + field.Label + " ist keine gültige Zahl."); }
                     }
@@ -242,6 +280,15 @@ namespace EnshroudedStudio
                 }
             }
             catch { /* Missing or malformed fields are already reported by the schema checks. */ }
+            try
+            {
+                var ownSkeletonWorld = Json.Object(config["world"], "Welt");
+                var ownSkeletons = Json.Object(ownSkeletonWorld["enableSkeletonSummoningSpells"], "Eigene Skelettzauber");
+                var legacySkeletons = Json.Object(ownSkeletonWorld["adjustSummonedCompanions"], "Beschworene Begleiter");
+                if ((bool)ownSkeletons["enabled"] && (bool)legacySkeletons["enabled"])
+                    errors.Add("Für die eigenen Begleiterzauber die vorhandene Option „Beschworene Begleiter anpassen“ ausschalten. Beide Varianten können nicht gleichzeitig angewendet werden.");
+            }
+            catch { /* Schema validation reports malformed values. */ }
             return errors;
         }
         public void Load()
@@ -315,6 +362,34 @@ namespace EnshroudedStudio
             if (client) return "Steam-Client erkannt";
             if (server) return "Dedicated Server erkannt";
             return "Kein vollständiger Spielordner: passende EXE, KFC und kfc_resources werden benötigt.";
+        }
+        public static bool AllowsTarget(ModDef mod, string target)
+        {
+            if (mod.ClientOnly) return !mod.ServerOnly && target == "Steam-Client erkannt";
+            if (mod.ServerOnly) return target == "Dedicated Server erkannt";
+            return !mod.KnownTargetOnly || target == "Steam-Client erkannt" || target == "Dedicated Server erkannt";
+        }
+        public string RestrictedTargetError(Dictionary<string, object> config)
+        {
+            string target = CheckGame(config["gameDirectory"] as string);
+            var serverOnly = new List<string>();
+            var clientOnly = new List<string>();
+            var knownTargetOnly = new List<string>();
+            foreach (var category in Schema)
+            {
+                foreach (var mod in category.Mods.Where(definition => definition.ServerOnly || definition.ClientOnly || definition.KnownTargetOnly))
+                {
+                    var values = Json.Object(Json.Object(config[category.Key], category.Title)[mod.Key], mod.Title);
+                    object enabled;
+                    if (values.TryGetValue("enabled", out enabled) && enabled is bool && (bool)enabled && !AllowsTarget(mod, target))
+                        (mod.ClientOnly ? clientOnly : mod.ServerOnly ? serverOnly : knownTargetOnly).Add(mod.Title);
+                }
+            }
+            var errors = new List<string>();
+            if (clientOnly.Count > 0) errors.Add(string.Join(", ", clientOnly) + ": Diese Testfunktion benötigt den vollständigen lokalen Spielordner für Singleplayer. Einen Ordner mit enshrouded.exe wählen oder die Option ausschalten.");
+            if (serverOnly.Count > 0) errors.Add(string.Join(", ", serverOnly) + ": Hierfür einen vollständigen, getrennten Dedicated-Serverordner wählen oder die Option ausschalten.");
+            if (knownTargetOnly.Count > 0) errors.Add(string.Join(", ", knownTargetOnly) + ": Hierfür einen eindeutig erkannten, vollständigen Steam-Spielordner für Singleplayer oder einen getrennten Dedicated-Serverordner wählen. Unbekannte und gemischte Ziele sind gesperrt; eine aktive Option lässt sich ausschalten.");
+            return errors.Count == 0 ? null : string.Join(Environment.NewLine, errors) + " Die Wirkung im Spiel ist noch ungeprüft.";
         }
         public string ExportEngine(Dictionary<string, object> config)
         {
@@ -390,6 +465,7 @@ namespace EnshroudedStudio
         }
         public Process Launch(Dictionary<string, object> config)
         {
+            string roleError = RestrictedTargetError(config); if (roleError != null) throw new InvalidDataException(roleError);
             string path = (string)config["gameDirectory"];
             if (!CheckGame(path).EndsWith("erkannt")) throw new InvalidDataException(CheckGame(path));
             foreach (string process in new[] { "enshrouded", "enshrouded_server", "enshrouded-patcher" })
@@ -400,6 +476,7 @@ namespace EnshroudedStudio
         }
         public Process LaunchUpdate(Dictionary<string, object> config, string statusFile)
         {
+            string roleError = RestrictedTargetError(config); if (roleError != null) throw new InvalidDataException(roleError);
             string path = (string)config["gameDirectory"];
             if (!CheckGame(path).EndsWith("erkannt")) throw new InvalidDataException(CheckGame(path));
             foreach (string process in new[] { "enshrouded", "enshrouded_server", "enshrouded-patcher" })

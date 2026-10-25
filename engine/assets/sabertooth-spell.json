@@ -1,0 +1,18 @@
+{
+  "width": 512,
+  "height": 512,
+  "format": "R8G8B8A8_unorm",
+  "levelCount": 1,
+  "rawSha256": "1fe2545fefe0c77e5cd023233c39010ad9a349081a748c64265eccb7f54dace3",
+  "rawSize": 1048576,
+  "sourceSha256": "096fa4bf143e2ae4690103d431d36c84f0ba6a54b6e205c631dccc28cb16d3b2",
+  "contentHash": {
+    "size": 1048576,
+    "hash0": 2438857045,
+    "hash1": 4226182760,
+    "hash2": 1991838756
+  },
+  "itemGuid": "27345127-fcfc-5380-8879-3c659f48334a",
+  "debugName": "EMS_Summon_Sabertooth_icon",
+  "bootstrapEmmSha256": "b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305"
+}

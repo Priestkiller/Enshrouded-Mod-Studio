@@ -411,12 +411,12 @@
       {
         "Key": "adjustFactoryInventoryAccess",
         "Title": "Normale Kisten und Stationslager verknüpfen",
-        "Description": "Erweitert den Herstellungsbestand um erkannte normale Kisten und Inventare von Produktionsstationen.",
+        "Description": "Kennzeichnet normale Kisten und Stationsinventare als mögliche Materialquellen. Der tatsächliche Materialzugriff wurde als fehlerhaft gemeldet und ist unbestätigt.",
         "Fields": [],
         "Effect": "Ergänzt bei passenden Kisten und Produktionsstationen die Kennzeichnung als Herstellungsbestand. Neue Einträge erlauben zusätzlich Umgebungseinlagerung. Bereits vorhandene Lagerkennzeichnungen und dynamische Einstellungen bleiben erhalten.",
         "Example": "Eine normale platzierbare Kiste und ein erfasstes Stationsinventar erhalten dieselbe Bestandskennzeichnung wie eine magische Kiste. Auch das zuvor übersehene Butterfass wird über seine Stationskomponenten erkannt.",
-        "Notes": "Das ist ein Datenpatch für zusätzliche Materialquellen und Umgebungseinlagerung. Automatische Nachversorgung von Produktionswarteschlangen, unbegrenzte Reichweite und erfolgreiche Materialübertragung sind damit nicht bestätigt. Stationen ohne eigenes Inventar bieten keinen zusätzlichen Vorrat. Die Behandlung bereits platzierter Lager bleibt im Spiel zu prüfen.",
-        "Status": "Datenpatch erweitert · Spieltest offen",
+        "Notes": "Der Nutzer meldet fehlenden Materialzugriff auch bei neu platzierten Kisten und Stationen. Die bisher ergänzte Bestandskennzeichnung ist deshalb kein belegter Funktionsfix. Bei neuen Profilen bleibt diese Option bewusst ausgeschaltet; eine vorhandene eingeschaltete Profileinstellung wird erhalten. Crafting-Materialbestand, Umgebungseinlagerung und automatische Versorgung laufender Stationswarteschlangen sind getrennte Vorgänge. Weder der Zugriff beim Herstellen noch ein automatischer Materialtransport sind bestätigt.",
+        "Status": "Fehler gemeldet · Materialzugriff unbestätigt",
         "WhenToUse": "Wenn neben magischen Kisten auch normale Kisten und vorhandene Stationsvorräte als Materialquellen dienen sollen.",
         "Scope": "Erkannte normale platzierbare Kisten und eigenständige Produktionsstationen mit Inventar. Zufallsbeute, Spieler-/NPC-Inventare, Gräber, Ausstellungsinventare und bepflanzte Ernteobjekte werden nicht zu Lagerquellen umgebaut. Für den kontrollierten Mehrspielertest denselben Patch auf Server und Clients anwenden; Abgleich und Bedienung sind noch nicht live bestätigt."
       },
@@ -517,6 +517,181 @@
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn du im Miasma eine andere Sicht oder eine andere Nebeloptik möchtest.",
         "Scope": "Darstellung auf dem Client. Für sichtbare Änderungen die Client-Spieldateien bearbeiten. Server-Spielregeln und Server-JSON bleiben unverändert."
+      },
+      {
+        "Key": "adjustAnimalProduction",
+        "Title": "Tierproduktion anpassen",
+        "Description": "Bestimmt, wie viel unterstützte gezähmte Nutztiere pro Runde produzieren und wie häufig sie neue Waren bereitstellen.",
+        "Fields": [
+          {
+            "Key": "quantityFactor",
+            "Label": "Menge pro Produktionsrunde",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 20,
+            "Help": "Faktor auf die ursprüngliche Menge: 1 bleibt normal, 2 liefert doppelt so viele Waren pro Runde. Auch die zugehörige Sammelgrenze wächst mit, damit die zusätzliche Menge Platz hat."
+          },
+          {
+            "Key": "speedFactor",
+            "Label": "Produktionsgeschwindigkeit",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 20,
+            "Help": "1 behält den normalen Abstand bei. 2 halbiert die Wartezeit und erzeugt Waren doppelt so häufig. Dieser Faktor wirkt zusätzlich zum Mengenfaktor."
+          }
+        ],
+        "WhenToUse": "Wenn gezähmte Nutztiere mehr ihrer bisherigen Produkte liefern oder du weniger lange zwischen zwei Produktionsrunden warten möchtest.",
+        "Scope": "Serverseitige Produktionsdaten unterstützter Tier-Vorlagen. Für den Dedicated Server dessen Installationsordner wählen. Multiplayer mit unveränderten Spielclients ist noch im Spiel zu prüfen.",
+        "Effect": "Erhöht die Warenmenge je Nachfüllrunde und die zugehörige Sammelgrenze proportional. Die Produktionsgeschwindigkeit verkürzt unabhängig davon die ursprüngliche Wartezeit. Nur vorhandene Tierprodukte werden geändert.",
+        "Example": "Ein Tier erzeugt ursprünglich 1 Ei alle 10 Minuten und hält höchstens 8 bereit. Menge 2 und Geschwindigkeit 1 hinterlegen 2 Eier je 10 Minuten, höchstens 16. Menge 2 und Geschwindigkeit 2 hinterlegen 2 Eier je 5 Minuten.",
+        "Notes": "Beide Faktoren wirken zusammen. Menge 2 und Geschwindigkeit 2 entsprechen rechnerisch der vierfachen Produktion pro Zeit, solange das Tier regulär produzieren kann. Futter, Zähmung und sonstige Produktionsbedingungen bleiben erforderlich. Keine sofortige Befüllung und keine Spielstandänderung. Tiere ohne vorhandene Warenproduktion erhalten keine neue Produktion. Ab wann bereits gespeicherte Tiere neue Werte verwenden, bleibt live zu prüfen.",
+        "Status": "Serverdaten und Archivwerte geprüft · Spieltest offen"
+      },
+      {
+        "Key": "adjustAnimalBreeding",
+        "Title": "Nutztier-Zucht beschleunigen",
+        "Description": "Lässt unterstützte Nutztiere häufiger auf Nachwuchs prüfen. Die Erfolgschance kannst du unabhängig davon festlegen.",
+        "KnownTargetOnly": true,
+        "Fields": [
+          {
+            "Key": "speedFactor",
+            "Label": "Zuchttempo (Faktor)",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 20,
+            "Help": "1 behält den ursprünglichen Prüfungsabstand bei. 2 halbiert ihn, 5 teilt ihn durch fünf. Das beschleunigt die Versuche; es garantiert keine feste Zahl an Jungtieren."
+          },
+          {
+            "Key": "chancePercent",
+            "Label": "Erfolgschance je Versuch (%) · 0 = Original",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 0,
+            "Maximum": 100,
+            "Help": "0 behält die ursprüngliche Chance der Tierart bei. 1 bis 100 setzt die Basischance in Prozent; 100 bedeutet höchstmögliche Basischance, nicht garantierten Nachwuchs. Weltlimit und übrige Zuchtbedingungen gelten weiterhin. In den geprüften Nutztier-Vorlagen liegt die Originalchance bereits bei 100 Prozent; ein kleinerer Wert verringert sie."
+          }
+        ],
+        "WhenToUse": "Wenn du bei bereits züchtbaren Nutztieren kürzer auf Nachwuchs warten möchtest. Die Warenproduktion bleibt eine separate Einstellung.",
+        "Scope": "Singleplayer: lokalen Spielordner wählen. Dedicated Server: dessen eigenen Installationsordner wählen. Die Fortpflanzungsdaten sind serverseitig markiert; der Betrieb mit unveränderten Clients ist noch im Spiel zu bestätigen.",
+        "Effect": "Verkürzt den Abstand zwischen Fortpflanzungsprüfungen und setzt auf Wunsch die Basiserfolgschance. Verändert nur vorhandene Zuchtparameter unterstützter Nutztiere. Fische, Katzen, Hunde und andere ausgeschlossene Haustiere werden nicht bearbeitet.",
+        "Example": "Ein ursprünglicher Prüfungsabstand von 30 Minuten wird mit Faktor 5 zu 6 Minuten. Chance 0 behält den Originalwert bei; Chance 75 hinterlegt 75 Prozent Basischance je geeignetem Versuch.",
+        "Notes": "Ein passender Partner, Nahrung, geschützte freie Schlafplätze und das Weltlimit bleiben erforderlich. Beim Erreichen des Weltlimits kann die wirksame Chance bis auf null sinken. Keine neuen Tiere ohne vorhandene Fortpflanzung und keine direkten Spielstandänderungen. Bereits laufende, gespeicherte Timer können zunächst weiterlaufen. Ab wann vorhandene Tiere neue Werte übernehmen und wie sich die Zucht im Spiel verhält, muss getestet werden. Wüstengürteltiere werden wegen abweichender Gegnerkomponenten vorerst ausgeschlossen.",
+        "Status": "Datenpatch · Spieltest offen"
+      },
+      {
+        "Key": "adjustSummonedCompanions",
+        "Title": "Beschworene Begleiter anpassen",
+        "Description": "Skeletttyp, gemeinsames Grundlimit, Dauer und Stärke einstellen. Im Modus „Im Spiel per Zauber wählen“ kannst du unterschiedliche Typen über die vorhandenen Skelettzauber beschwören. Für Singleplayer und Dedicated Server zum Testen freigegeben.",
+        "ServerOnly": false,
+        "Fields": [
+          {
+            "Key": "maxCompanions",
+            "Label": "Beschwörungs-Grundlimit",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 8,
+            "Help": "Absolutes Grundlimit vor zusätzlichen Talenten. Vorgabe 4 ist keine Garantie für genau vier aktive Begleiter: Talente und ein gemeinsamer 12er-Pool können die tatsächliche Endzahl beeinflussen."
+          },
+          {
+            "Key": "durationSeconds",
+            "Label": "Dauer in Sekunden",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 3600,
+            "Help": "Absolute hinterlegte Dauer, kein Faktor. 120 Sekunden sind 2 Minuten, 3600 Sekunden sind 1 Stunde. Vorzeitiger Tod und andere Spielregeln werden dadurch nicht ausgeschlossen."
+          },
+          {
+            "Key": "strengthFactor",
+            "Label": "Stärkefaktor",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 20,
+            "Help": "Multipliziert den vorgesehenen DamageMod und passt die HP-Levelskalierung der Begleiter an. 1 lässt die zusätzliche Stärkeskalierung unverändert. 2 verspricht weder doppelte sichtbare Lebenspunkte noch einen im Spiel gemessenen doppelten Schaden."
+          },
+          {
+            "Key": "companionVariant",
+            "Label": "Begleitervariante",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 0,
+            "Maximum": 3,
+            "Choices": [
+              {
+                "Value": 0,
+                "Label": "Zauberskelett (Original)"
+              },
+              {
+                "Value": 1,
+                "Label": "Skelettkrieger"
+              },
+              {
+                "Value": 2,
+                "Label": "Eliteskelett"
+              },
+              {
+                "Value": 3,
+                "Label": "Im Spiel per Zauber wählen"
+              }
+            ],
+            "Help": "Für eine gemischte Gruppe „Im Spiel per Zauber wählen“ einstellen: Itemlevel 17/44 → Original; ewiger Zauber mit Itemlevel 28 → Krieger; ewiger Zauber mit Itemlevel 45 → Elite. Im Spiel den entsprechenden vorhandenen Zauber auswählen und neu beschwören. Die Zuordnungen 0–2 legen einen festen Typ für alle vier Zauber fest. Bereits beschworene Skelette werden vom Datenpatch nicht beim Ausrüsten eines anderen Zaubers umgewandelt. Praktischer Gruppentest steht aus."
+          }
+        ],
+        "WhenToUse": "Für Tests einzelner Skeletttypen oder einer gemischten Skelettgruppe im Singleplayer; auch für weitere Dedicated-Server-Tests verfügbar.",
+        "Scope": "Singleplayer: den vollständigen Spielordner mit enshrouded.exe wählen. Dedicated Server: den vollständigen Serverordner mit enshrouded_server.exe wählen. Unbekannte oder zusammengelegte Installationen bleiben gesperrt. Die praktische Wirkung ist noch im Spiel zu prüfen; insbesondere der Serverbetrieb mit unveränderten Clients ist nicht bestätigt.",
+        "Effect": "Vier vorhandene Skelettzauber werden vorbereitet. Bei einer festen Begleitervariante beschwören alle vier denselben Typ. „Im Spiel per Zauber wählen“ ordnet den Zaubern unterschiedliche Typen zu, die denselben Skeleton-Pool und dasselbe Grundlimit nutzen. Die Dateien enthalten keine Umwandlung bereits aktiver Begleiter beim Zauberwechsel. Ob eine gemischte Gruppe korrekt folgt, kämpft und das Limit einhält, muss praktisch getestet werden.",
+        "Example": "Gemischte Gruppe: „Im Spiel per Zauber wählen“ einstellen und anwenden. Im Spiel zuerst den ewigen Skelettzauber mit Itemlevel 28 für einen Krieger verwenden. Danach zum ewigen Skelettzauber mit Itemlevel 45 wechseln und ein Eliteskelett beschwören. Mit dem Zauber mit Itemlevel 17 oder 44 kommt das Original hinzu. Grundlimit 4 gilt gemeinsam für die Gruppe, vor zusätzlichen Talenten.",
+        "Notes": "Der Typ wird durch den ausgewählten vorhandenen Zaubergegenstand bestimmt. Namen, Symbole, Rezepte und Freischaltungen dieser Zauber bleiben erhalten. Besitzt du erst einen Skelettzauber, kannst du mit einer festen Variante zunächst dessen Krieger- oder Elitezuordnung testen; zum Wechseln im Spiel brauchst du die unterschiedlichen Zaubergegenstände. Ein zusätzliches Auswahlmenü ist nicht enthalten. Krieger und Elite teilen Vorlagen mit Nekromantie-Edelsteinbegleitern, die ebenfalls Dauer, Stärke und Skeleton-Pool übernehmen. Die tatsächliche gemischte Gruppe und effektive Kampfwerte sind noch nicht im Spiel bestätigt. Für die neue Option „Sechs Begleiterzauber hinzufügen“ diesen alten Variantenmodus ausschalten.",
+        "Status": "Lokale Testfunktion · Spieltest offen",
+        "KnownTargetOnly": true
+      },
+      {
+        "Key": "enableSkeletonSummoningSpells",
+        "Title": "Sechs Begleiterzauber hinzufügen",
+        "Description": "Eigene ewige Zauber für das einfache Skelett, den Skelettkrieger, das Eliteskelett, einen erloschenen Magier, einen Skeletthund und einen Säbelzahntiger. Wähle und mische sie direkt über die normale Zauberauswahl im Spiel. Mehrspieler-Test mit passend gepatchtem Server und allen Spielclients; Spieltest offen.",
+        "ClientOnly": false,
+        "KnownTargetOnly": true,
+        "ServerOnly": false,
+        "Fields": [
+          {
+            "Key": "maxCompanions",
+            "Label": "Gemeinsames Beschwörungs-Grundlimit",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 8,
+            "Help": "Absolutes Grundlimit vor zusätzlichen Talenten. Vorgabe 4 ist keine Garantie für genau vier aktive Begleiter: Talente und ein gemeinsamer 12er-Pool können die tatsächliche Endzahl beeinflussen."
+          },
+          {
+            "Key": "durationSeconds",
+            "Label": "Dauer in Sekunden",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 3600,
+            "Help": "Absolute hinterlegte Dauer, kein Faktor. 120 Sekunden sind 2 Minuten, 3600 Sekunden sind 1 Stunde. Vorzeitiger Tod und andere Spielregeln werden dadurch nicht ausgeschlossen."
+          },
+          {
+            "Key": "strengthFactor",
+            "Label": "Stärkefaktor",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 20,
+            "Help": "Multipliziert den vorgesehenen DamageMod und passt die HP-Levelskalierung der Begleiter an. 1 lässt die zusätzliche Stärkeskalierung unverändert. 2 verspricht weder doppelte sichtbare Lebenspunkte noch einen im Spiel gemessenen doppelten Schaden."
+          }
+        ],
+        "WhenToUse": "Zum Test einer gemischten Begleitergruppe im Solo-Spiel, als LAN-Host oder im Mehrspieler mit passend gepatchtem Server und allen Spielclients. Die drei neuen Kreaturen sind eigene Kopien vorhandener Gegner, mit verbündeter Fraktion und Folge-KI vorbereitet.",
+        "Scope": "Für eindeutig erkannte, vollständige Spielclient- und Dedicated-Serverordner freigegeben. Für Mehrspieler den Server UND ALLE Spielclients mit demselben Spielbuild sowie gleichem Grundlimit, gleicher Dauer und gleichem Stärkefaktor patchen. Eigene Items, Symbole und Namen brauchen die passenden Dateien auf jedem Spielclient. Der Serverpatch verteilt keine Dateien an Clients. Solo-Spiel und LAN-Host verwenden den gepatchten Spielclient. Unbekannte oder gemischte Installationsordner bleiben gesperrt.",
+        "Effect": "Ergänzt sechs benannte ewige Zauber bei Alden Crowley unter Munition — Spezial, jeweils für 5 Knochen und 1 Ektoplasma-Fragment. Alle sechs teilen das eingestellte Grundlimit, die Dauer und den Stärkefaktor. Server und Spielclient erhalten die gemeinsamen Item-, Rezept-, Zauber- und Begleiterdaten; jeder Spielclient erhält zusätzlich die UI-, Symbol- und Namensdateien. Die neuen Zauber verwenden zunächst das vorhandene Skelettzauber-Symbol.",
+        "Example": "Bei Alden einen Skeletthund-Zauber und einen Säbelzahntiger-Zauber herstellen und im Inventar behalten. Einen Zauberstab auswählen, mit rechter Maustaste zielen, den gewünschten Zauber mit Mausrad oder E wechseln und mit linker Maustaste beschwören. Danach den anderen Zauber wählen, um eine gemischte Gruppe zu testen.",
+        "Notes": "Mehrspieler-Teststand; Verhalten im laufenden Spiel, Synchronisation und Kampfverhalten sind noch zu prüfen. Ein erfolgreicher Datenpatch bestätigt keine funktionierende Mehrspielerpartie. Der Magier behält sein Eisgeschoss, beschwört aber zunächst keine zusätzlichen Totenköpfe. Seine ursprüngliche feindliche Beschwörung und Wiederbelebung sind in einer eigenen Angriffsvorlage entfernt. Hund und Tiger sind Kampfbegleiter auf Zeit, keine dauerhaft gezähmten Tiere. Weltgegner werden nicht umgestellt. Die drei Grundskelette teilen weiterhin Vorlagen mit vorhandenen Zaubern und Nekromantie-Edelsteinen. Die alte Option „Beschworene Begleiter anpassen“ ausschalten. Vor dem Deaktivieren auf allen beteiligten Installationen eigene Zaubergegenstände aus Inventar und Lagern entfernen und die passenden Patchstände gemeinsam zurücknehmen.",
+        "Status": "Client + Server · Mehrspieler-Spieltest offen"
       }
     ]
   },

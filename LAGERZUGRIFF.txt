@@ -1,48 +1,59 @@
-﻿LAGERZUGRIFF — NORMALE KISTEN UND STATIONSINVENTARE
-Enshrouded Mod Studio 0.4.7 · Revision 1273043
+LAGERZUGRIFF — GEMELDETER FUNKTIONSFEHLER
+Stand 0.4.21 / untersuchte Revision 1273043
 
-VERWENDUNG
-1. Das vollständige Toolpaket entpacken und bei Bedarf über „Altes Setup
-   übernehmen“ die bisherigen Profile und passenden Sicherungen übernehmen.
-2. Unter Welt & Bauen „Normale Kisten und Stationslager verknüpfen“ einschalten.
-   Der bisherige Schalter adjustFactoryInventoryAccess wird weiterverwendet;
-   ein bereits aktivierter Schalter bleibt beim Setup-Import eingeschaltet.
-3. Spiel/Server schließen und „Spiel aktualisieren“ ausführen. Für einen
-   kontrollierten Mehrspielertest die Option auf Server und Clients anwenden.
-4. Neu starten. Zunächst mit einer neuen normalen Kiste und einem erfassten
-   Stationsinventar prüfen, ob der Herstellungsdialog die Materialien anbietet.
+ZIEL
+Normale Kisten und Stationsinventare sollen wie magische Truhen als gemeinsame
+Materialquellen dienen. Dieses gewünschte Verhalten ist derzeit nicht als
+funktionierender Serverpatch bestätigt. Auch neu platzierte Objekte haben laut
+Rückmeldung keine Abhilfe gebracht.
 
-WAS DER DATENPATCH ERWEITERT
-Sechs normale platzierbare Kistenvarianten und 30 eigenständige
-Produktionsstationen erhalten die Bestandskennzeichnung InventoryCraftingStock.
-Bei neu ergänzten Kennzeichnungen ist canReceiveAreaDeposit=true, wie bei
-den originalen magischen Kisten. Das erlaubt im Datensatz zusätzlich
-Umgebungseinlagerung; diese ist von der Nutzung als Materialquelle zu trennen.
-Vorhandene Bestandskennzeichnungen und dynamische Einlagerungsoptionen werden
-bewahrt. Die frühere Option änderte nur 29 Stationen. Das neue Verfahren
-erfasst auch das bisher wegen der Namensschreibung übersehene Butterfass.
+WAS DER BISHERIGE DATENPATCH MACHT
+Sechs normale Kisten und 30 Produktionsstationen erhalten die Komponente
+InventoryCraftingStock. Ihr Feld canReceiveAreaDeposit erlaubt die Einlagerung
+aus der Umgebung; dieses bool-Feld ist kein eigener Schalter für das Entnehmen
+von Herstellungsmaterial. Der Name der Komponente allein ist kein Beleg für
+einen funktionierenden Herstellungszugriff.
 
-ABGRENZUNG
-Inventarinhalte, Platzanzahl, Rezeptkosten und Zugriffsrechte werden durch
-diesen Patch nicht umgeschrieben. Magische Kisten bleiben erhalten.
-Zufallsbeute, Spieler-/NPC-Inventare, Gräber, Ausstellungsständer, Futtertröge
-und bepflanzte Ernteobjekte werden nicht zu zusätzlichen Quellen umgebaut.
-Eine deaktivierte alte 16er-Kiste ohne gültigen Rezept-Platzierungsbeleg
-bleibt ausgenommen. Drei Stationsfälle (Force Generator, Farmbed,
-Grindstones) sind durch Komponenten belegt; ihre heutige Spielerreichbarkeit
-ist nicht bestätigt. 27 der 30 Stationen besitzen zusätzlich Rezeptbelege.
+Die statische Komponente ist spielstandsrelevant und nicht als server_only
+gekennzeichnet. Dass der Server sie erhält, beweist nicht, dass unveränderte
+Clients sie in ihren Quelllisten berücksichtigen. Eine zusätzliche fehlende
+Komponente oder eine zuverlässige native Quellabfrage wurde nicht identifiziert.
 
-WAS OFFEN BLEIBT
-Der Patch kennzeichnet mögliche Quellen. Erfolgreicher Materialtransfer,
-Reichweite, Verhalten bestehender platzierter Lager und der Client-/Server-
-Abgleich müssen im Spiel bestätigt werden. Eine automatische Nachversorgung
-laufender Produktionswarteschlangen ist damit nicht implementiert oder
-nachgewiesen. Der Serverstart ersetzt diesen Spieltest nicht.
+AKTUELLER BEFUND
+Die tatsächlich installierten lokalen Clientarchive wurden ausschließlich
+gelesen. Eine geprüfte magische Kiste hat den Marker; eine normale Kiste und
+der Hochofen haben ihn nicht. Die Clientdateien blieben dabei bytegleich.
+Das belegt den Clientdatenstand, nicht den Stand des entfernten Servers.
+Die Ursache des gesamten Materialzugriffs ist damit noch nicht bewiesen.
 
-AKTUALISIEREN UND AUSSCHALTEN
-Bei Änderungen denselben Schalter im vorhandenen Profil ändern und erneut
-„Spiel aktualisieren“ verwenden. Die passende Originalbasis wird verwendet;
-es wird nicht wiederholt auf bereits veränderte Daten multipliziert.
-Auf der separaten Testinstallation wurde auch Ausschalten plus Aktualisieren
-geprüft: Originalarchive exakt wiederhergestellt, verwaltete Zusatzdateien
-entfernt. Das bearbeitet keine bestehenden Welt-Spielstände.
+STATUS IM TOOL
+Der Schalter trägt den Status „Fehler gemeldet · Materialzugriff unbestätigt“.
+In neuen Profilen ist er ausgeschaltet. Eine ausdrücklich eingeschaltete
+Einstellung aus einem vorhandenen Profil wird beim Übernehmen nicht gelöscht.
+Diese Version enthält keinen als funktionierend bestätigten neuen Fix.
+
+Ein erfolgreicher Archivvergleich oder Serverstart ersetzt keinen Test, bei
+dem tatsächlich Material aus Kisten oder Stationsinventaren verbraucht wird.
+Umgebungseinlagerung, Materialquellen und automatische Nachversorgung laufender
+Produktionswarteschlangen sind unterschiedliche Vorgänge.
+
+AKTUELLE LOKALE SERVERDIAGNOSE
+Lager-Diagnose.cmd im Toolordner liest die 6 bekannten normalen Kisten,
+30 Produktionsstationen und eine magische Kontrollkiste aus der tatsächlichen
+Serverinstallation. Ein eindeutig erkannter laufender Server hat Vorrang vor
+einem möglicherweise veralteten gespeicherten Toolpfad. Der Bericht vergleicht
+außerdem Archivprüfsummen mit dem gespeicherten Patchstand. Keine Spielarchive,
+Serverkonfigurationen oder Spielstände werden verändert; kein Serverprozess
+wird gestartet oder beendet. Anleitung: LAGER-DIAGNOSE-ANLEITUNG.txt.
+GELIEFERTER BEFUND DES TATSÄCHLICHEN SERVERS
+Der Diagnosebericht vom 23.10.2026 bestätigt am untersuchten laufenden Server:
+6/6 normale Kisten und 30/30 Stationen besitzen den korrekt strukturierten
+InventoryCraftingStock-Baustein. Magische Kontrollkiste: 1/1. Profil- und
+Toolpfad stimmen mit dem laufenden Prozess überein. Die Archivprüfsummen passen
+zum gespeicherten Patchstand. Beide Archive wurden vor dem Prozessstart
+geschrieben; EXE und Archive blieben während der Diagnose unverändert.
+Damit sind ein falscher Zielordner und ein fehlender Marker für diesen
+untersuchten Stand keine passende Erklärung. Die Rückmeldung bleibt: Auch
+neue Kisten und Stationen funktionieren nicht als Materialquellen.
+Die Laufzeitübernahme und die native Materialquellenauswahl bleiben ungeklärt.
+Es ist weiterhin kein funktionierender serverseitiger Lagerfix enthalten.

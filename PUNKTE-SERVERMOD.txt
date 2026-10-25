@@ -1,0 +1,96 @@
+ENSHROUDED MOD STUDIO 0.4.11 — PUNKTE-SERVERMOD
+
+FERTIGKEITSPUNKTE: NUR DEN SERVER ÄNDERN
+Stand: Mod Studio 0.4.11 / untersuchte Spielrevision 1273043
+
+Gewünschtes Ergebnis
+Alle Spieler sollen nach einem Levelaufstieg vier statt zwei frei verteilbare
+Fertigkeitspunkte erhalten. Ihre Spielclients sollen unverändert bleiben.
+
+Aktueller Stand
+Dieses Ergebnis ist mit Mod Studio derzeit NICHT als funktionierende reine
+Servermod umgesetzt oder im Spiel bestätigt. Die Einstellung im Patcher ändert
+einen Datenwert. Sie ist kein belegter Mechanismus, mit dem ein Server diesen
+Wert automatisch an unveränderte Clients überträgt.
+
+Was die Untersuchung konkret gezeigt hat
+- Der untersuchte Dedicated Server berechnet und prüft beim Freischalten von
+  Talenten ein Punktebudget. Es verwendet den Level, den Datenwert für Punkte
+  pro Level und bereits freigeschaltete Wissensbelohnungen.
+- Auch der untersuchte Client berechnet dieses Budget. In seinem Code gibt es
+  eine lokale Ablehnung, wenn vorhandene und neue Talentkosten das berechnete
+  Budget überschreiten. Es geht deshalb nicht nur um eine falsche Zahl im Text.
+- Im untersuchten Budgetpfad gilt:
+  Gesamtbudget = (Level - 1) x Punktewert + bekannte Wissensbelohnungen.
+  Der verwendete Level ist durch die zugehörige Level-Attributdefinition
+  belegt. Ein weiterer frei einstellbarer Bonusbetrag kommt in dieser
+  Berechnung nicht vor.
+- Die 78 vorhandenen Punktebelohnungen sind Ja/Nein-Wissenseinträge mit festen
+  Beträgen von 1 oder 3, insgesamt 114 Punkte. Höhere Zählerstände vervielfachen
+  diese Beträge nicht. Solche Einträge als Levelbonus vorab freizuschalten würde
+  bestehende Weltbelohnungen vorwegnehmen und erfüllt die gewünschte Lösung
+  nicht. Diese Zahlen beschreiben die untersuchten Daten, keinen Charakter.
+- Die gespeicherten Talent-Ränge steuern bereits gekaufte Fähigkeiten und
+  deren verbrauchte Kosten. Sie sind kein zusätzliches freies Guthaben.
+- Die geprüften Strukturen enthalten Talentfreischaltungen und Leveldaten.
+  Ein frei setzbarer, bereits unterstützter zusätzlicher Punktezähler wurde in
+  diesem begrenzten Untersuchungspfad nicht gefunden.
+- Die geprüften reflektierten Adminaktionen bieten unter anderem das Ändern
+  des Charakterlevels, aber keine eigene Vergabe freier Fertigkeitspunkte.
+  Die gefundenen Wissensaktionen ändern vorhandene Wissenseinträge. Ein
+  akzeptierter Übertragungsweg für eine serverseitige Überschreibung der
+  Punkte- oder Wissensressourcen im unveränderten Client ist nicht belegt.
+- Die untersuchten EML- und Shroudtopia-Schnittstellen bieten keine fertige
+  Funktion zum Vergeben und Synchronisieren solcher Punkte. Ein nativer
+  DLL-Loader allein stellt diese Spielfunktion nicht bereit.
+
+Zur Fehlermeldung „Server auf 4, im Talentbaum trotzdem nur 2“
+Ein gespeicherter Profilwert von 4 beweist noch nicht, dass die vom tatsächlich
+laufenden Server verwendeten Archive diesen Wert enthalten. Das müsste direkt
+an genau diesen Serverdateien geprüft werden. Selbst ein dort bestätigter Wert
+von 4 belegt noch keine Verteilung zusätzlicher Punkte an unveränderte Clients.
+Nur die Anzeige eines Levelaufstiegs zu prüfen reicht ebenfalls nicht: Die
+zusätzlichen Punkte müssen im Talentbaum tatsächlich ausgebbar sein.
+
+Was für eine echte Servermod noch fehlt
+Benötigt wird ein zuverlässig identifizierter serverseitiger Vergabe- und
+Synchronisierungspfad, den unveränderte Clients akzeptieren. Danach muss ein
+Spieltest mit mindestens zwei unveränderten Clients zeigen, dass beide nach
+einem neuen Levelaufstieg vier Punkte ausgeben können und diese nach erneutem
+Verbinden erhalten bleiben. Diese Bestätigung liegt nicht vor.
+
+Es wird daher keine unbestätigte DLL als Lösung mitgeliefert. Bestehende
+Weltbelohnungen werden nicht zweckentfremdet und die Erfahrungspunkte werden
+nicht stellvertretend erhöht. Dass ein Charakter lokal gespeichert wird, ist
+für sich genommen kein Beweis, dass eine echte Servermod unmöglich wäre.
+
+Primärquellen und Einordnung
+EML 0.2.0 / Quellcode des Laufzeitteils:
+https://github.com/Brabb3l/kfc-parser/releases/tag/v0.2.0
+https://raw.githubusercontent.com/Brabb3l/kfc-parser/v0.2.0/crates/mod-loader-runtime/src/lib.rs
+Die dortige DLL-Ladeschleife ist auskommentiert; daraus ergibt sich keine
+implementierte Spieler-, Levelaufstiegs- oder Punktevergabe-API.
+
+Shroudtopia / untersuchter öffentlicher Quellstand:
+https://github.com/s0t7x/shroudtopia
+Der untersuchte SDK-Stand stellt allgemeine Mod-, Speicher- und
+Konfigurationsfunktionen bereit. Er enthält keine fertige Punktevergabe-API;
+die dortige CreateDetour-Funktion ist in diesem Stand ein Stub.
+
+EMBER / Antworten des Modautors:
+https://www.nexusmods.com/enshrouded/mods/79?tab=posts
+Am 2. Oktober 2026 erklärte der Autor zu einem vergleichbaren Dedicated-Server-
+Punkteproblem, dass der Server einen anderen Verarbeitungspfad benötigt und
+der betreffende Modteil umgeschrieben werden müsste. Am 17. Oktober war die
+Anpassung an 1.0/KFC4 laut Autor noch offen. Die allgemeine Beschreibung dieser
+Mod ist deshalb kein Nachweis einer funktionierenden aktuellen Punktevergabe.
+
+Offizielle Angaben zur Trennung von Charakteren und Serverwelt:
+https://enshrouded.zendesk.com/hc/en-us/articles/16056312924957-Dedicated-Server-FAQ
+Diese Speicheraufteilung ersetzt keinen Nachweis über die tatsächliche
+Zuständigkeit bei Talentfreischaltungen.
+
+Die Codeprüfung erfolgte an Kopien. Es wurden dafür keine produktiven
+Spielarchive, Spielstände oder Charakterdateien geändert und keine Spiele oder
+Server gestartet. Die Aussagen gelten für die untersuchte Revision, nicht
+automatisch für spätere Spielupdates.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,6 +32,7 @@ namespace EnshroudedStudio
         public Dictionary<string, string> InputErrors = new Dictionary<string, string>();
         public Dictionary<string, CheckBox> Toggles = new Dictionary<string, CheckBox>();
         public Dictionary<string, TextBox> Fields = new Dictionary<string, TextBox>();
+        public Dictionary<string, ComboBox> ChoiceFields = new Dictionary<string, ComboBox>();
         public Dictionary<string, Expander> Details = new Dictionary<string, Expander>();
         public HashSet<string> OpenDetails = new HashSet<string>();
         private bool loading;
@@ -53,6 +54,7 @@ namespace EnshroudedStudio
         private CheckBox onlyActive;
         private TextBlock notice, status, gameStatus;
         private TextBlock skillTargetHint;
+        private readonly Dictionary<string, Action> targetRoleUpdates = new Dictionary<string, Action>();
         private StackPanel skillClientActions;
         private string selected = "inventory";
         private Grid optionsGrid;
@@ -321,8 +323,10 @@ namespace EnshroudedStudio
             if (result.EndsWith("erkannt")) Find<TextBlock>("InstallationHelp").Text += PatchBasis.Exists(Store.DataRoot, (string)Config["gameDirectory"]) ? " Patch-Basis vorhanden." : " Noch keine Basis: bei vorherigem Patch altes Setup übernehmen.";
             if (!testMode && runtimeMissingCount > 0) Find<TextBlock>("InstallationHelp").Text += " Programm-Runtime fehlt: über ‚Altes Setup übernehmen‘ aus einem vollständigen bisherigen Studioordner ergänzen.";
             Find<TextBlock>("GamePathHint").Visibility = string.IsNullOrWhiteSpace(gamePath.Text) ? Visibility.Visible : Visibility.Collapsed;
-            Find<Button>("LaunchPatcher").IsEnabled = !patcherRunning && !installingUpdate && result.EndsWith("erkannt") && (testMode || runtimeMissingCount == 0);
-            Find<Button>("LaunchPatcher").ToolTip = patcherRunning ? "Aktualisierung läuft. Bitte auf das Ergebnis warten." : !testMode && runtimeMissingCount > 0 ? "Programm-Runtime fehlt. Zuerst ‚Altes Setup übernehmen‘ verwenden." : result.EndsWith("erkannt") ? "Profil speichern und in der angezeigten Zielinstallation anwenden." : "Zuerst den vollständigen Client- oder Serverordner wählen.";
+            string roleError = Store.RestrictedTargetError(Config);
+            Find<Button>("LaunchPatcher").IsEnabled = !patcherRunning && !installingUpdate && roleError == null && result.EndsWith("erkannt") && (testMode || runtimeMissingCount == 0);
+            Find<Button>("LaunchPatcher").ToolTip = patcherRunning ? "Aktualisierung läuft. Bitte auf das Ergebnis warten." : roleError ?? (!testMode && runtimeMissingCount > 0 ? "Programm-Runtime fehlt. Zuerst ‚Altes Setup übernehmen‘ verwenden." : result.EndsWith("erkannt") ? "Profil speichern und in der angezeigten Zielinstallation anwenden." : "Zuerst den vollständigen Client- oder Serverordner wählen.");
+            foreach (var refresh in targetRoleUpdates.Values) refresh();
             UpdateSkillTargetHint();
         }
         public void EnsureValid()
@@ -590,7 +594,7 @@ namespace EnshroudedStudio
         public void Render()
         {
             if (Config == null) return;
-            options.Children.Clear(); Toggles.Clear(); Fields.Clear(); Details.Clear(); skillTargetHint = null; skillClientActions = null; UpdateCount();
+            options.Children.Clear(); Toggles.Clear(); Fields.Clear(); ChoiceFields.Clear(); Details.Clear(); targetRoleUpdates.Clear(); skillTargetHint = null; skillClientActions = null; UpdateCount();
             string query = search.Text.Trim();
             var category = Store.Schema.First(c => c.Key == selected);
             Find<TextBlock>("CategoryTitle").Text = query.Length == 0 ? category.Title : "Suchergebnisse";
@@ -663,6 +667,12 @@ namespace EnshroudedStudio
             switchRow.Children.Add(state); switchRow.Children.Add(toggle); Grid.SetColumn(switchRow, 1); top.Children.Add(switchRow);
             body.Children.Add(top); Toggles[prefix] = toggle;
             var summary = Readable(mod.Description, 15, "#D4E1ED"); summary.Margin = new Thickness(0, 9, 0, 0); body.Children.Add(summary);
+            TextBlock roleHint = null;
+            if (mod.ServerOnly || mod.ClientOnly || mod.KnownTargetOnly)
+            {
+                roleHint = Readable("", 14, "#F1D1A0"); roleHint.Tag = prefix + ".TargetRoleHint";
+                body.Children.Add(new Border { Child = roleHint, Background = Brush("#20303D"), BorderBrush = Brush("#7D694A"), BorderThickness = new Thickness(1), Padding = new Thickness(12), CornerRadius = new CornerRadius(6), Margin = new Thickness(0, 12, 0, 0) });
+            }
             var auxiliary = new StackPanel();
             if (cat.Key == "inventory" && mod.Key == "adjustStackSize")
             {
@@ -704,6 +714,27 @@ namespace EnshroudedStudio
                     flag.Unchecked += delegate { data[field.Key] = false; MarkDirty(); };
                     inputArea.Children.Add(flag); editable.Add(flag);
                 }
+                else if (field.Choices != null && field.Choices.Count > 0)
+                {
+                    inputArea.Children.Add(Readable(field.Label, 14, "#E0EAF4"));
+                    var label = new FrameworkElementFactory(typeof(TextBlock));
+                    label.SetBinding(TextBlock.TextProperty, new Binding("Label")); label.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+                    label.SetValue(TextBlock.MaxWidthProperty, 140.0); label.SetValue(TextBlock.LineHeightProperty, 20.0);
+                    var input = new ComboBox { ItemsSource = field.Choices, SelectedValuePath = "Value", SelectedValue = checked((long)Json.Number(data[field.Key])),
+                        ItemTemplate = new DataTemplate { VisualTree = label }, FontSize = 14, Width = 190, MinHeight = 38,
+                        HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 7, 0, 0), IsEnabled = toggle.IsChecked == true };
+                    AutomationProperties.SetName(input, mod.Title + ": " + field.Label);
+                    input.SelectionChanged += delegate
+                    {
+                        var choice = input.SelectedItem as FieldChoiceDef;
+                        if (choice == null) return;
+                        data[field.Key] = choice.Value; Drafts.Remove(key); InputErrors.Remove(key); MarkDirty();
+                        notice.Text = mod.Title + ": " + choice.Label + " gewählt. Die Wirkung im Spiel bleibt ungeprüft.";
+                        if (mod.Key == "adjustSummonedCompanions" && field.Key == "companionVariant" && choice.Value == 3)
+                            notice.Text = mod.Title + ": Im Spiel die vorhandenen Zaubervarianten nacheinander verwenden, um eine Mischgruppe zu testen. Die tatsächliche Spielwirkung bleibt offen.";
+                    };
+                    inputArea.Children.Add(input); editable.Add(input); ChoiceFields[key] = input;
+                }
                 else
                 {
                     inputArea.Children.Add(Readable(field.Label, 14, "#E0EAF4"));
@@ -731,6 +762,11 @@ namespace EnshroudedStudio
                 explanation.Children.Add(Readable(field.Help, 14, "#CBD9E8"));
                 var original = Json.Object(Json.Object(Store.Defaults[cat.Key], cat.Key)[mod.Key], mod.Key)[field.Key];
                 string defaultText = field.Boolean ? ((bool)original ? "Ein" : "Aus") : Json.Number(original).ToString("R", CultureInfo.GetCultureInfo("de-DE"));
+                if (field.Choices != null && field.Choices.Count > 0)
+                {
+                    var originalChoice = field.Choices.FirstOrDefault(choice => choice.Value == Json.Number(original));
+                    if (originalChoice != null) defaultText = originalChoice.Label;
+                }
                 var defaultLabel = Readable("Patch-Vorgabe: " + defaultText + " · kein ausgelesener Spielwert", 12, "#ADC4D8"); defaultLabel.Margin = new Thickness(0, 5, 0, 0); explanation.Children.Add(defaultLabel);
                 Grid.SetColumn(explanation, 1); row.Children.Add(explanation); fields.Children.Add(row);
             }
@@ -744,6 +780,7 @@ namespace EnshroudedStudio
             details.Collapsed += delegate { OpenDetails.Remove(prefix); };
             Details[prefix] = details; body.Children.Add(details);
             var card = new Border { Child = body, Background = Brush("#1B293A"), BorderBrush = Brush(toggle.IsChecked == true ? "#66AAA5" : "#41566C"), BorderThickness = new Thickness(1), Padding = new Thickness(18), CornerRadius = new CornerRadius(7), Margin = new Thickness(0, 0, 0, 12) };
+            Action refreshTarget = null;
             RoutedEventHandler changed = delegate
             {
                 data["enabled"] = toggle.IsChecked == true;
@@ -752,10 +789,40 @@ namespace EnshroudedStudio
                 editHint.Visibility = toggle.IsChecked == true ? Visibility.Collapsed : Visibility.Visible;
                 state.Text = toggle.IsChecked == true ? "Aktiv" : "Inaktiv";
                 card.BorderBrush = Brush(toggle.IsChecked == true ? "#5A9B9D" : "#445D76"); MarkDirty();
-                notice.Text = toggle.IsChecked == true ? mod.Title + ": eingeschaltet. Unten anwenden, um die Spieldateien zu aktualisieren." : mod.Title + ": ausgeschaltet. Beim nächsten Anwenden wird diese Änderung aus dem Patch entfernt.";
+                if (refreshTarget != null) { refreshTarget(); UpdateGame(); }
+                notice.Text = toggle.IsChecked == true ? (mod.ServerOnly || mod.ClientOnly || mod.KnownTargetOnly ? mod.Title + (StudioStore.CheckGame(Config["gameDirectory"] as string) == "Steam-Client erkannt" ? ": Singleplayer-Test eingeschaltet. Unten auf die lokalen Spieldaten anwenden; die Spielwirkung bleibt ungeprüft." : ": lokale Testfunktion eingeschaltet. Datenpatch vorbereiten; die Spielwirkung im Multiplayer bleibt ungeprüft.") : mod.Title + ": eingeschaltet. Unten anwenden, um die Spieldateien zu aktualisieren.") : mod.Title + ": ausgeschaltet. Beim nächsten Anwenden wird diese Änderung aus dem Patch entfernt.";
+                if (toggle.IsChecked == true && mod.Key == CompanionSpellUi.Key)
+                    notice.Text = CompanionSpellUi.ActivationNotice(mod.Title);
                 if (onlyActive.IsChecked == true) Window.Dispatcher.BeginInvoke(new Action(Render));
             };
             toggle.Checked += changed; toggle.Unchecked += changed;
+            if (mod.ServerOnly || mod.ClientOnly || mod.KnownTargetOnly)
+            {
+                refreshTarget = delegate
+                {
+                    string target = StudioStore.CheckGame(Config["gameDirectory"] as string);
+                    bool blocked = !StudioStore.AllowsTarget(mod, target);
+                    bool clientTarget = target == "Steam-Client erkannt";
+                    toggle.IsEnabled = (!brokenServerLimits || toggle.IsChecked == true) && (!blocked || toggle.IsChecked == true);
+                    foreach (var input in editable) input.IsEnabled = toggle.IsChecked == true && !blocked;
+                    state.Text = blocked ? (toggle.IsChecked == true ? "Im Profil aktiv · Ziel gesperrt" : mod.ClientOnly ? "Nur Singleplayer" : mod.ServerOnly ? "Nur Server" : "Ordner wählen") : toggle.IsChecked == true ? "Aktiv" : "Inaktiv";
+                    if (blocked)
+                    {
+                        roleHint.Text = mod.ClientOnly ? "Diese neue Testfunktion ist nur für Singleplayer freigegeben. Wähle den vollständigen lokalen Spielordner mit enshrouded.exe. Eine bereits aktive Profiloption lässt sich ausschalten." : mod.ServerOnly ? (clientTarget ? "Spielclient erkannt: Diese Server-Testversion ist hier gesperrt. Wähle den Dedicated-Serverordner. Eine bereits aktive Profiloption lässt sich ausschalten." : "Für diese lokale Server-Testversion zuerst einen vollständigen, getrennten Dedicated-Serverordner wählen. Unbekannte und gemischte Ziele sind gesperrt.") : "Für diese lokale Testfunktion einen vollständigen, eindeutig erkannten Steam-Spielordner für Singleplayer oder einen getrennten Dedicated-Serverordner wählen. Unbekannte und gemischte Ziele sind gesperrt. Eine bereits aktive Profiloption lässt sich ausschalten.";
+                    }
+                    else roleHint.Text = clientTarget ? "Singleplayer-Test: lokaler Spielordner erkannt. Der Patch ändert die Spieldaten dieser Installation; die Spielwirkung ist noch ungeprüft." : "Dedicated Server erkannt · lokale Testfunktion. Der Patch ändert Serverdaten; die Wirkung mit unveränderten Spielclients im Multiplayer ist noch ungeprüft.";
+                    if (mod.Key == CompanionSpellUi.Key)
+                        roleHint.Text = CompanionSpellUi.TargetHint(target, blocked);
+                    if (!blocked && mod.Key == "adjustSummonedCompanions")
+                        roleHint.Text += " Mit „Im Spiel per Zauber wählen“ die vorhandenen Zaubervarianten für eine Mischgruppe wechseln; der tatsächliche Spieltest steht noch aus.";
+                    toggle.ToolTip = blocked ? roleHint.Text : clientTarget ? "Lokale Testfunktion für Singleplayer aktivieren. Die Spielwirkung bleibt ungeprüft." : "Lokale Testfunktion für den Dedicated Server aktivieren. Die Spielwirkung im Multiplayer bleibt ungeprüft.";
+                    if (mod.Key == CompanionSpellUi.Key)
+                        toggle.ToolTip = CompanionSpellUi.ToolTip(target, blocked);
+                    editHint.Text = blocked ? (mod.ClientOnly ? "Für diesen Singleplayer-Test einen vollständigen lokalen Spielordner wählen oder die Option ausschalten." : mod.ServerOnly ? "Werte werden für dieses Ziel nicht bearbeitet oder angewendet. Serverordner wählen oder die Option ausschalten." : "Werte werden für dieses Ziel nicht bearbeitet oder angewendet. Getrennten Spiel- oder Serverordner wählen oder die Option ausschalten.") : "Zum Bearbeiten einschalten. Ausgeschaltet gilt nach dem Anwenden die gespeicherte Ausgangsbasis.";
+                    editHint.Visibility = blocked || toggle.IsChecked != true ? Visibility.Visible : Visibility.Collapsed;
+                };
+                targetRoleUpdates[prefix] = refreshTarget; refreshTarget();
+            }
             optionsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             Grid.SetRow(card, cardRow++); Grid.SetColumnSpan(card, 2); optionsGrid.Children.Add(card);
         }
@@ -824,6 +891,9 @@ namespace EnshroudedStudio
             panel.Children.Add(new TextBlock { Text = "Server und Gegnerschaden", FontSize = 21, FontWeight = FontWeights.SemiBold });
             var serverHelp = Readable("Prüft die gespeicherten Faktoren für Gegner- und Bossschaden, Spielerleben und Angriffshäufigkeit. Die Prüfung liest enshrouded_server.json; sie ändert keine Serverwerte.", 15, "#D1DFED"); serverHelp.Margin = new Thickness(0, 9, 0, 12); panel.Children.Add(serverHelp);
             var server = new Button { Content = "Serverwerte prüfen …", HorizontalAlignment = HorizontalAlignment.Left }; server.Click += delegate { Act(ReviewServer); }; panel.Children.Add(server);
+            panel.Children.Add(new TextBlock { Text = "Speicherort", FontSize = 21, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 30, 0, 10) });
+            panel.Children.Add(Readable(Store.DataRoot, 15, "#D1DFED"));
+            panel.Children.Add(Readable("Hier liegen Profile, Originalbasen und Arbeitskopien. Alte Arbeitsdaten werden automatisch bereinigt; Profile, passende Basen und offene Wiederherstellungsvorgänge bleiben geschützt.", 15, "#C8D8E8"));
             panel.Children.Add(new TextBlock { Text = "Dateien nach dem Patchen", FontSize = 21, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 30, 0, 10) });
             var settings = Json.Object(Config["settings"], "Werkzeuge");
             foreach (var entry in new[] {

@@ -1,0 +1,35 @@
+ENSHROUDED MOD STUDIO 0.4.21 — LAGERDIAGNOSE
+
+1. Auf DEM SERVERRECHNER das vollständige Studio einrichten und die passende
+   Laufzeit übernehmen. Lager-Diagnose.cmd und Lager-Diagnose.js
+   liegen danach neben der Mod-Studio-EXE, nicht im Ordner engine.
+2. Lager-Diagnose.cmd doppelklicken. Ein eindeutig erkannter laufender
+   enshrouded_server.exe hat Vorrang vor dem gespeicherten Tool-Pfad.
+   Ist der Server aus, den SERVERORDNER auf Lager-Diagnose.cmd ziehen;
+   alternativ wird engine/config.json verwendet.
+3. Den angezeigten Ordner unter Data\diagnostics\storage-... oeffnen.
+   LAGER-DIAGNOSE.txt ist lesbarer Bericht, LAGER-DIAGNOSE.json der genaue
+   Datenbeleg. Fuer die Auswertung beide Berichte zurueckgeben.
+
+Server und Spiel bleiben laufen, falls sie laufen. Die Diagnose startet oder
+beendet sie nicht und aendert keine Spielarchive oder Spielstaende.
+Nur 37 ausgewaehlte statische Vorlagen werden gelesen. Parserkopie, frische
+Reflection, Exporte und Bericht bleiben ausschliesslich unter Data\diagnostics.
+Eine bekannte Engine-/Parser-Pruefsumme und Serverbuild1273043 sind Pflicht.
+Andere oder mehrere unterschiedliche laufende Serverinstallationen werden
+bei unklarer Zuordnung nicht auf Verdacht untersucht.
+
+Ausgabe: Stock-Marker fuer6 normale Kisten und30 Produktionsstationen sowie
+eine magische Kontrollkiste; Vergleich zum gespeicherten Tool-/Profilpfad und
+zum lokalen letzten Patchstand; SHA256 vor und nach dem Lesen.
+Wenn Dateien nach Serverstart geaendert wurden, erscheint ein Hinweis.
+Der Bericht liest keine Server-JSON, Verbindungsdaten, Passwoerter,
+Spielernamen oder Spielstaende.
+
+Das ist KEIN Lagerfix und kein Spieltest. Vorhandene Archivmarker beweisen
+weder den Laufzeitzustand gespeicherter Objekte noch funktionierenden Zugriff
+beim Herstellen oder automatische Nachversorgung von Stationswarteschlangen.
+
+Lokaler Referenztest: unveraenderte Serverarchive1273043 ergeben0/6 und0/30
+Stock-Marker, waehrend die magische Kontrollkiste1/1 besitzt. Fuer den echten
+Server ist das Ergebnis erst nach dortigem Diagnoselauf bekannt.

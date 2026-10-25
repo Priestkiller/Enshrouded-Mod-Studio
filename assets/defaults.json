@@ -90,7 +90,7 @@
       "description": "Make harvestable plants regrowable"
     },
     "adjustFactoryInventoryAccess": {
-      "enabled": true,
+      "enabled": false,
       "description": "Normale Kisten und Stationsinventare als zusätzlichen Herstellungsbestand kennzeichnen."
     },
     "enableAllMarkerFastTravel": {
@@ -120,6 +120,32 @@
     "enableSingleStepTaming": {
       "enabled": false,
       "description": "Benötigte erfolgreiche Zähmungsschritte unterstützter Tiere auf 1 setzen."
+    },
+    "adjustAnimalProduction": {
+      "enabled": false,
+      "description": "Menge und Produktionsgeschwindigkeit unterstützter gezähmter Nutztiere anpassen.",
+      "quantityFactor": 2,
+      "speedFactor": 1
+    },
+    "adjustSummonedCompanions": {
+      "enabled": false,
+      "description": "Lokale Testfunktion für Grundlimit, Dauer, Stärke und Skelettvariante im Singleplayer oder auf einem Dedicated Server.",
+      "maxCompanions": 4,
+      "durationSeconds": 120,
+      "strengthFactor": 1,
+      "companionVariant": 0
+    },
+    "enableSkeletonSummoningSpells": {
+      "enabled": false,
+      "description": "Six named companion spells; matching server and all client patches required; multiplayer test pending.",
+      "maxCompanions": 4,
+      "durationSeconds": 120,
+      "strengthFactor": 1
+    },
+    "adjustAnimalBreeding": {
+      "enabled": false,
+      "speedFactor": 2,
+      "chancePercent": 0
     }
   },
   "gameplay": {

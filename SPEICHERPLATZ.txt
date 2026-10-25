@@ -1,0 +1,19 @@
+ENSHROUDED MOD STUDIO 0.4.21 — SPEICHERPLATZ
+
+Den vollständigen Toolordner auf einem beschreibbaren Laufwerk mit genügend
+freiem Platz betreiben. Profile, passende Archivbasen, Jobs und Rücksicherungen
+liegen im Unterordner Data auf demselben Laufwerk. Relative Ausgabeordner
+beziehen sich auf engine. Ein neu entpacktes Paket verschiebt ältere
+Toolordner oder deren Daten nicht automatisch; dafür die Setup-Übernahme nutzen.
+
+Das Studio prüft freien Speicher vor der Vorbereitung und erneut vor dem
+Austausch der Spielarchive. Große temporäre Jobdaten werden nach einem
+erfolgreichen Lauf bei ausgeschaltetem „Entpackte Dateien behalten“ entfernt.
+Auch Sprach-Arbeitskopien werden aufgeräumt. Aktive Vorschauen und offene
+Wiederherstellungsvorgänge sind vor automatischer Bereinigung geschützt.
+Profile und passende Originalbasen werden nicht automatisch gelöscht.
+
+Bei fehlendem Speicher den gemeldeten Status und Wiederherstellungshinweis
+beachten. Ein Abbruch während der Vorbereitung erfordert nicht grundsätzlich
+einen Basisreset. Vorhandene Sicherungen und Wiederherstellungsdaten behalten;
+erst nach geklärtem Zustand erneut „Patch anwenden / aktualisieren“ nutzen.

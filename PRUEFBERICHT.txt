@@ -1,13 +1,49 @@
-ENSHROUDED MOD STUDIO 0.4.10 — OEFFENTLICHER PRUEFUMFANG
+PRÜFBERICHT 0.4.21 — BEGLEITERZAUBER FÜR SERVER UND CLIENTS
+Prüfstand der Begleiteränderung: fensterlose Tests und eigene Archivkopien.
+Kein Spiel-/Serverstart und kein Desktop-Test für diese Prüfung.
 
-PASS 209 GUI-/Konfigurations-/Updateprüfungen.
-PASS 32 gezielte Skillpunkte-/Backend-Regressionsprüfungen.
-PASS 4 gezielte Archivprüfungen an Kopien (2→4 mit Rücklesen).
-44 Profiloptionen und ihre Standardwerte gegenüber 0.4.9 unverändert.
-39 Engine-Manifesthashes geprüft. Die frühere Vendor-Laufzeit bleibt getrennt.
+88 gezielte Prüfungen bestanden,0 Fehler:
+-30 native Shared-Core-Prüfungen, Node18.5.0: Client15/Server9 neue Ressourcen,
+  identische gemeinsame Daten, bisherige Client-Ausgaben erhalten, Idempotenz,
+  atomare Fehler, Rollenfälschung in allen Teilberichten, Fraktions-/Spawn-/
+  Arsenalguards und Zurückweisung veränderter Readback-Daten.
+-45 fensterlose C#-Prüfungen: Server-/Client-Freigabe, unbekannte/gemischte
+  Ziele weiter gesperrt, andere Rollensperren unverändert, gültige Werte,
+  Exklusivität des alten Begleitermodus, Texte/Hilfen, drei Profile unverändert.
+-13 MP-Kennungs-/Backend-/Statusprüfungen: gleiche Kennung für beide Rollen,
+  Abweichungen in Build oder einem Begleiterwert erkannt, Kennungsfälschung
+  verworfen,9/15Create-Freigaben, Serverfilter ohne Clientdarstellung,
+  vollständige Abschlussmeldung mit Kennung und weiterhin offener Spielwirkung.
 
-Automatische Update-Fixtures prüfen den Wechsel zum neuen Tool-Ordner und die Erhaltung
-von Daten; sie sind keine Spieltests. Die tatsächliche Wirkung von Zähmung,
-Besitzerwechsel und anderen Modoptionen bleibt nach deren Prüfhinweisen offen.
-Private Profile, Sicherungen, lokale Quelldateipfade und Rohberichte sind
-aus diesem öffentlichen Paket ausgeschlossen.
+ZWEI ECHTE BACKEND-VORSCHAUEN AUF EIGENEN ARBEITSKOPIEN
+Server: Originalbasis43939 Ressourcen, danach43948, davon9 neue.
+18 geänderte Ressourcen gepackt und alle19141 exportierten Ressourcen erneut
+verglichen. Server-Reflection enthält tatsächlich keinen UiTextureResource-Typ;
+UI,Icons und Sprach-Import werden serverseitig vollständig ausgelassen.
+Client: Originalbasis91812 Ressourcen, danach91827, davon15 neue.
+26 geänderte Ressourcen gepackt und alle24854 exportierten Ressourcen erneut
+verglichen. Sechs Alden-Menüeinträge, sechs eigene Item-Texturen, zwölf Texte
+in Deutsch/Englisch/Fallback und exakt gleiche Tiger-Bildbytes bestätigt.
+Alle neun gemeinsamen neu angelegten Ressourcen sind nach realem Packen/
+Readback auf beiden Archivtypen vollständig identisch. Alle ursprünglichen
+Ressourcen bleiben erhalten; nicht bearbeitete Archiv-Einträge unverändert.
+
+Beide Archive: Build1273043|release_1.0|2026-10-20T14:55:29.904125Z.
+MP-Kennung des geprüften Standardstands(4/120/1): EE36BCC07E25EABE.
+Die Kennung umfasst Spielbuild,Toolstand,gemeinsamen Patchcode und die drei
+Begleiterwerte; keine automatische Dateiübertragung oder Netzwerkprüfung.
+
+Die komplette Vorschau lief mit unveränderten Parser-/Readback-Prüfungen.
+Nur die globale Prozessauflistung wurde für die garantiert eigenen Kopien
+im Test ersetzt, damit ein laufendes echtes Spiel nicht geschlossen werden muss.
+Keine Live-Spielarchive,Spielstände oder Spielerprofile geändert.
+Quellarchive per SHA256 unverändert; Vorschauen ausdrücklich nicht angewendet.
+
+Dies bestätigt korrekt erstellte Server-/Clientdaten, keine erfolgreiche
+Live-Netzwerksynchronisierung. Besitzerzuordnung, Folge-KI, Zielwahl, Schaden,
+Gruppenlimit, mehrere Spieler und Reconnect müssen noch im Spiel getestet werden.
+Server und ALLE Clients benötigen denselben passenden Patchstand.
+Die bestehende Nutztier-Zucht wurde in dieser Änderung nicht umgebaut.
+Die Test-Arbeitsdaten und exportierten Spielressourcen gehören nicht zum
+öffentlichen Download. Dieser Bericht fasst die vorhandenen Nachweise zusammen.
+Die Nutztier-Zucht wurde unabhängig davon vom Benutzer im Spiel bestätigt.

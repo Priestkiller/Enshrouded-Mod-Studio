@@ -1,4 +1,5 @@
 Data/
+PreviousSetups/
 engine/config.json
 engine/enshrouded-patcher.exe
 engine/bin/
@@ -6,6 +7,8 @@ engine/vendor/
 *.exe
 *.bytecode
 *.zip
+!ThirdParty/kfc-parser-source-1670859.zip
 Pruefungen/
+artifacts/
 outputs/
 work/

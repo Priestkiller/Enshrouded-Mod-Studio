@@ -57,7 +57,7 @@ function planSummary(plan, operation, applied) {
   const firstBasisInfo = plan.firstBasis ? 'Die erste Basis entspricht den aktuellen Archivdateien. Bereits enthaltene Mods sind Teil dieser Basis.' : 'Die unveränderte gespeicherte Basis dieser Spielversion wurde verwendet.';
   const warnings = [...(plan.mods?.warnings || [])];
   if (plan.firstBasis) warnings.unshift(firstBasisInfo);
-  return { operation, applied, planId: plan.id, job: plan.job, target: plan.target.dir, build: plan.build, modifiedFiles: plan.modifiedFiles, verifiedFiles: plan.verifiedFiles, removedDataFiles: (plan.removedArtifacts || []).length, firstBasis: plan.firstBasis, firstBasisInfo, skillPoints: plan.mods?.skillPoints || null, stacks: plan.mods?.stacks || null, sharedStorage: plan.mods?.sharedStorage || null, taming: plan.mods?.taming || null, warnings };
+  return { operation, applied, planId: plan.id, job: plan.job, target: plan.target.dir, build: plan.build, modifiedFiles: plan.modifiedFiles, verifiedFiles: plan.verifiedFiles, removedDataFiles: (plan.removedArtifacts || []).length, firstBasis: plan.firstBasis, firstBasisInfo, skillPoints: plan.mods?.skillPoints || null, stacks: plan.mods?.stacks || null, sharedStorage: plan.mods?.sharedStorage || null, taming: plan.mods?.taming || null, animalProduction: plan.mods?.animalProduction || null, animalBreeding: plan.mods?.animalBreeding || null, summonedCompanions: plan.mods?.summonedCompanions || null, skeletonSpells: plan.mods?.skeletonSpells || null, warnings };
 }
 async function runAutomatic(parsed, configuredOptions = options, api = backend, emit) {
   if (parsed.statusFile && path.resolve(parsed.statusFile).toLowerCase() === path.resolve(configuredOptions.configPath).toLowerCase()) throw Error('Die Statusdatei darf nicht die Profilkonfiguration überschreiben.');
@@ -82,7 +82,15 @@ async function runAutomatic(parsed, configuredOptions = options, api = backend, 
       const stackInfo = stacks?.enabled && stacks.validated === true && stacks.archiveReadbackValidated === true ? ' Stapelgrößen (' + (stacks.role === 'server' ? 'Server' : stacks.role === 'client' ? 'Client' : 'gewählter Ordner') + '): ' + stacks.requested + ' je Stapel bei ' + stacks.stackableItems + ' stapelbaren Items im Archiv bestätigt.' : '';
       const taming = finalResult.taming;
       const tamingInfo = taming?.enabled && taming.archiveReadbackValidated === true ? ' Zähmung: 1 benötigter Erfolg bei ' + taming.targets + ' Tier-Vorlagen im Archiv bestätigt.' : '';
-      report({ stage: 'complete', message: 'Geprüfte Archivdateien angewendet.' + pointsInfo + stackInfo + tamingInfo + ' Ein Test im Spiel steht noch aus.' + (plan.firstBasis ? ' ' + finalResult.firstBasisInfo : ''), progress: 100, outcome: 'success', result: finalResult });
+      const production=finalResult.animalProduction;
+      const productionInfo=production?.enabled && production.archiveReadbackValidated === true ? ' Tierproduktion: Menge ×'+production.quantityFactor+', Tempo ×'+production.speedFactor+' bei '+production.targets+' Vorlagen im Archiv bestätigt.' : '';
+      const breeding=finalResult.animalBreeding;
+      const breedingInfo=breeding?.enabled && breeding.archiveReadbackValidated===true ? ' Nutztier-Zucht: Prüfungs-Tempo ×'+breeding.speedFactor+', Basischance '+(breeding.chancePercent===0?'Original':breeding.chancePercent+' %')+' bei '+breeding.targets+' Vorlagen im Archiv bestätigt.' : '';
+      const companions=finalResult.summonedCompanions;
+      const companionInfo=companions?.enabled && companions.archiveReadbackValidated===true ? ' Beschwörungen: '+(companions.role==='client'?'Clientdaten':'Serverdaten')+' im Archiv bestätigt; Grundlimit '+companions.maxCompanions+', Dauer '+companions.durationSeconds+' s. Wirkung im Spiel unbestätigt.' : '';
+      const ownSpells=finalResult.skeletonSpells;
+      const ownSpellInfo=ownSpells?.enabled && ownSpells.archiveReadbackValidated===true ? ' Sechs Begleiterzauber ('+(ownSpells.role==='server'?'Serverteil':'Clientteil')+'): Archivdaten bestätigt. MP-Kennung '+ownSpells.multiplayer.shortId+'. Server und alle Clients passend patchen; Multiplayer-Spieltest offen.' : '';
+      report({ stage: 'complete', message: 'Geprüfte Archivdateien angewendet.' + pointsInfo + stackInfo + tamingInfo + productionInfo + breedingInfo + companionInfo + ownSpellInfo + ' Ein Test im Spiel steht noch aus.' + (plan.firstBasis ? ' ' + finalResult.firstBasisInfo : ''), progress: 100, outcome: 'success', result: finalResult });
     } else if (parsed.mode === 'preview') {
       const plan = await api.prepare(operationOptions);
       finalResult = planSummary(plan, 'preview', false);
@@ -122,7 +130,7 @@ async function runAutomatic(parsed, configuredOptions = options, api = backend, 
   } finally { process.stdout.write = originalWrite; }
 }
 async function interactive(configuredOptions = options) {
-  console.log('\nENSHROUDED MOD STUDIO 0.4.10 · Engine 1.2.3\n');
+  console.log('\nENSHROUDED MOD STUDIO 0.4.21 · LOKALE TESTVERSION · Engine 1.2.3\n');
   backend.verifyEngine(configuredOptions.root);
   const config = backend.read(configuredOptions.configPath), target = backend.target(config);
   backend.validate(config, configuredOptions.root);

@@ -1,20 +1,49 @@
-ENSHROUDED MOD STUDIO 0.4.10 — OEFFENTLICHES STUDIO-PAKET
+ENSHROUDED MOD STUDIO 0.4.21
+Windows x64 mit .NET Framework 4.8. Das ZIP vollständig in einen neuen,
+beschreibbaren Ordner entpacken und Enshrouded Mod Studio.exe starten.
 
-Windows x64 mit .NET Framework 4.8. ZIP vollständig entpacken.
+EINRICHTEN UND AKTUALISIEREN
+Die ursprüngliche Patcher-Laufzeit und der Legacy-Parser sind nicht im
+öffentlichen Download enthalten. „Altes Setup übernehmen“ wählen und den
+bisherigen vollständigen Mod-Studio-Ordner angeben. Passende Profile, aktive
+Archivbasen und geprüfte Laufzeitdateien werden übernommen; den alten Ordner
+mit seinen Sicherungen behalten. Eigene neue Studio-Module bleiben erhalten.
+EMM für Sprachinhalte liegt separat mit GPL-Lizenz und Quelltext bei.
+Herkunft und Ausschlüsse: THIRD-PARTY.md.
 
-Von 0.4.9: ZIP manuell in einen neuen Ordner entpacken, neue Anwendung starten
-und „Altes Setup übernehmen“ mit dem bisherigen vollständigen Studioordner.
-Der alte Ordner bleibt erhalten. Details: README.md und UPDATES.txt.
+Ab 0.4.10 kann „Update prüfen“ die angebotene neuere Version automatisch in
+einem neuen Nachbarordner installieren und das gesamte Data-Verzeichnis
+übernehmen. Von 0.4.9 das ZIP manuell entpacken und „Altes Setup übernehmen“
+verwenden. Keine alten Engine-Ordner über die neue Version kopieren.
+Ein Tool-Update schaltet keine neue Option ein und patcht kein Spiel.
+Die gewünschten Einstellungen prüfen und anschließend erneut
+„Patch anwenden / aktualisieren“ ausführen. Siehe UPDATES.txt.
 
-Ab 0.4.10 können spätere Tool-Updates nach Bestätigung automatisch übernommen
-werden. Profile, Data und vorhandene geprüfte private Runtime bleiben erhalten.
-Das Tool-Update wendet kein Profil an und ändert keine Spielarchive.
+SECHS BEGLEITERZAUBER
+Unter Welt & Bauen „Beschworene Begleiter anpassen“ ausschalten und
+„Sechs Begleiterzauber hinzufügen“ einschalten. Zauberskelett, Krieger,
+Eliteskelett, Magier, Hund und Tiger teilen Grundlimit, Dauer und Stärke.
+Herstellung bei Alden Crowley unter Munition — Spezial: je 5 Knochen und
+1 Ektoplasma-Fragment. Der Tiger hat ein eigenes Symbol.
+Für Mehrspieler Server UND ALLE Clients passend patchen und MP-Kennungen
+vergleichen. Der Server verteilt keine Dateien. Echte Mehrspielerwirkung,
+Besitzerzuordnung und Kampfverhalten sind noch nicht im Spiel bestätigt.
+Vollständige Anleitung: MEHRSPIELER-BEGLEITER.txt.
 
-Die ursprüngliche Patcher-/Parser-Runtime liegt diesem öffentlichen ZIP nicht
-bei. Sie wird aus einer vorhandenen vollständigen Installation übernommen und
-anhand der erwarteten Hashes geprüft. Ohne sie ist noch kein Spielpatch möglich.
-Keine Weitergabe- oder Lizenzberechtigung für Fremdkomponenten wird behauptet.
+NUTZTIER-ZUCHT
+Zuchttempo 1–20, Basischance 0–100 Prozent; 0 behält die Originalchance.
+Die Funktion wurde vom Benutzer im Spiel bestätigt. Partner, Futter,
+freie geschützte Betten und Weltlimit bleiben erforderlich. TIERZUCHT.txt.
 
-44 Optionen; bestehende Einstellungen bleiben erhalten. Für Zähmung und
-andere Einzelwirkungen gelten die sichtbaren Prüfhinweise; Datenbelege sind
-keine Bestätigung im laufenden Spiel. Details: EINSTELLUNGEN.txt.
+OFFENE PUNKTE
+Der gemeldete Materialzugriff aus normalen Kisten und Stationsinventaren
+ist nicht behoben. Auch ein nativer Servermod für automatisch vier
+Fertigkeitspunkte je Level mit unveränderten Clients ist nicht enthalten.
+Siehe LAGERZUGRIFF.txt und PUNKTE-SERVERMOD.txt.
+
+BEDIENUNG
+„Speichern“ sichert das Profil. „Patch anwenden / aktualisieren“ ändert die
+gewählte Spielinstallation; dafür Spiel bzw. Server vorher schließen.
+Ein Server auf einem anderen Rechner muss dort gepatcht werden.
+Nach einem Spielupdate eine passende neue Ausgangsbasis wählen.
+Details und Prüfgrenzen: README.md, EINSTELLUNGEN.txt und PRUEFBERICHT.txt.

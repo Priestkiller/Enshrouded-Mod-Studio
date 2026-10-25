@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -94,13 +94,121 @@ namespace EnshroudedStudio
                 ui.Window.Width = oldWidth; ui.Window.Height = oldHeight; ui.Window.Left = oldLeft; ui.Window.Top = oldTop;
             }
         }
+        private static void ExerciseSummonPrototype(StudioWindow ui, StudioStore store, string sandbox, string report)
+        {
+            string key = "world.adjustSummonedCompanions";
+            var previous = ui.Current; string server = Path.Combine(sandbox, "summon-server"), client = Path.Combine(sandbox, "summon-client"), mixed = Path.Combine(sandbox, "summon-mixed"), unknown = Path.Combine(sandbox, "summon-unknown");
+            Directory.CreateDirectory(server); Directory.CreateDirectory(client); Directory.CreateDirectory(mixed); Directory.CreateDirectory(unknown);
+            foreach (string suffix in new[] { ".exe", ".kfc", ".kfc_resources" })
+            {
+                File.WriteAllText(Path.Combine(server, "enshrouded_server" + suffix), "HARMLESS SERVER FIXTURE"); File.WriteAllText(Path.Combine(client, "enshrouded" + suffix), "HARMLESS CLIENT FIXTURE");
+                File.WriteAllText(Path.Combine(mixed, "enshrouded_server" + suffix), "HARMLESS SERVER FIXTURE"); File.WriteAllText(Path.Combine(mixed, "enshrouded" + suffix), "HARMLESS CLIENT FIXTURE");
+            }
+            var baseline = store.Baseline(); baseline["gameDirectory"] = ""; baseline["singleplayerUnknown"] = 73;
+            var profile = store.NewProfile("Lokaler Test Beschwörungen", baseline);
+            Func<string> roleHint = delegate { return LogicalDescendants(ui.Find<StackPanel>("OptionsPanel")).OfType<TextBlock>().Single(text => Convert.ToString(text.Tag) == key + ".TargetRoleHint").Text; };
+            try
+            {
+                ui.LoadProfile(profile); ui.ChooseCategory("world");
+                Check(!ui.Toggles[key].IsEnabled && !ui.Toggles[key].IsChecked.Value && !ui.ChoiceFields[key + ".companionVariant"].IsEnabled, "Summon prototype cannot be activated for an unknown target");
+                ui.Find<TextBox>("GamePath").Text = client;
+                Check(ui.Toggles[key].IsEnabled && !ui.Fields[key + ".maxCompanions"].IsEnabled && !ui.ChoiceFields[key + ".companionVariant"].IsEnabled && ui.Find<Button>("LaunchPatcher").IsEnabled && store.RestrictedTargetError(ui.Config) == null, "Recognized Steam client unlocks the singleplayer summon switch while inactive fields remain disabled");
+                Check(roleHint().Contains("Singleplayer-Test: lokaler Spielordner") && !roleHint().Contains("Dedicated Server erkannt"), "Client role hint explicitly describes the unverified local singleplayer test");
+                ui.Toggles[key].IsChecked = true;
+                Check(ui.Fields[key + ".maxCompanions"].IsEnabled && ui.ChoiceFields[key + ".companionVariant"].IsEnabled && ui.Find<Button>("LaunchPatcher").IsEnabled && store.RestrictedTargetError(ui.Config) == null, "A singleplayer summon prototype can be activated and edited without blocking the recognized client patch action");
+                ui.Fields[key + ".maxCompanions"].Text = "6"; ui.Fields[key + ".durationSeconds"].Text = "180"; ui.Fields[key + ".strengthFactor"].Text = "2";
+                ui.ChoiceFields[key + ".companionVariant"].SelectedValue = 2L; ui.SaveCurrent();
+                var saved = Mod(profile.Config, "world", "adjustSummonedCompanions");
+                Check((bool)saved["enabled"] && Json.Number(saved["maxCompanions"]) == 6 && Json.Number(saved["durationSeconds"]) == 180 && Json.Number(saved["strengthFactor"]) == 2 && Json.Number(saved["companionVariant"]) == 2 && store.RestrictedTargetError(ui.Config) == null, "Singleplayer prototype saves absolute limit, seconds, strength and numeric elite variant independently");
+                var reloaded = new StudioStore(store.AppRoot, store.DataRoot); reloaded.Load();
+                var persisted = reloaded.Profiles.Single(item => item.Id == profile.Id);
+                Check(reloaded.LoadErrors.Count == 0 && (string)persisted.Config["gameDirectory"] == client && (bool)Mod(persisted.Config, "world", "adjustSummonedCompanions")["enabled"] && Json.Number(Mod(persisted.Config, "world", "adjustSummonedCompanions")["companionVariant"]) == 2 && Json.Number(persisted.Config["singleplayerUnknown"]) == 73, "A saved active singleplayer profile reloads from disk with its target, variant, identity and unknown settings intact");
+                ui.LoadProfile(profile); ui.ChooseCategory("world");
+                Check(Json.Number(ui.ChoiceFields[key + ".companionVariant"].SelectedValue) == 2 && ((FieldChoiceDef)ui.ChoiceFields[key + ".companionVariant"].SelectedItem).Label == "Eliteskelett", "Named summon variant survives a full profile roundtrip as numeric value2");
+                for (long variant = 0; variant <= 3; variant++)
+                {
+                    ui.ChoiceFields[key + ".companionVariant"].SelectedValue = variant; ui.SaveCurrent(); ui.LoadProfile(profile); ui.ChooseCategory("world");
+                    Check(Json.Number(Mod(profile.Config, "world", "adjustSummonedCompanions")["companionVariant"]) == variant && Json.Number(ui.ChoiceFields[key + ".companionVariant"].SelectedValue) == variant && (bool)Mod(profile.Config, "world", "adjustSummonedCompanions")["enabled"] && (string)profile.Config["gameDirectory"] == client, "Singleplayer profile retains exact numeric summon variant " + variant + " through save, normalize and reload");
+                }
+                Check(((FieldChoiceDef)ui.ChoiceFields[key + ".companionVariant"].SelectedItem).Label == "Im Spiel per Zauber wählen", "In-game spell selection keeps its existing label on the singleplayer profile");
+                ui.Find<TextBox>("GamePath").Text = server;
+                Check(ui.Toggles[key].IsEnabled && ui.Toggles[key].IsChecked == true && ui.Fields[key + ".maxCompanions"].IsEnabled && ui.ChoiceFields[key + ".companionVariant"].IsEnabled && ui.Find<Button>("LaunchPatcher").IsEnabled && store.RestrictedTargetError(ui.Config) == null, "Changing an active singleplayer profile to a recognized dedicated server keeps the option and patch action enabled");
+                Check(roleHint().Contains("Dedicated Server erkannt") && roleHint().Contains("Multiplayer") && !roleHint().Contains("Singleplayer-Test"), "Server role hint refreshes immediately and preserves the unverified multiplayer limitation");
+                ui.Find<TextBox>("GamePath").Text = client;
+                Check(ui.Fields[key + ".maxCompanions"].IsEnabled && ui.Find<Button>("LaunchPatcher").IsEnabled && roleHint().Contains("Singleplayer-Test"), "Switching back to the client refreshes enabled controls and the singleplayer hint without rebuilding the card");
+                ui.Find<TextBox>("GamePath").Text = unknown;
+                Check(ui.Toggles[key].IsEnabled && ui.Toggles[key].IsChecked == true && !ui.Fields[key + ".maxCompanions"].IsEnabled && !ui.ChoiceFields[key + ".companionVariant"].IsEnabled && !ui.Find<Button>("LaunchPatcher").IsEnabled && store.RestrictedTargetError(ui.Config) != null, "An active summon profile blocks editing and patching on an unknown target while keeping its off-switch available");
+                ui.SaveCurrent();
+                Check(store.Validate(profile.Config).Count == 0 && (bool)Mod(profile.Config, "world", "adjustSummonedCompanions")["enabled"], "An active restricted profile remains locally saveable on an unknown target without losing its settings");
+                ui.Find<TextBox>("Search").Text = "adjustSummonedCompanions"; ui.Screenshot(Path.Combine(Path.GetDirectoryName(report), "tested-summons-unknown-blocked.png"));
+                ui.Toggles[key].IsChecked = false;
+                Check(!ui.Toggles[key].IsEnabled && !ui.Find<Button>("LaunchPatcher").IsEnabled && store.RestrictedTargetError(ui.Config) == null, "Turning the prototype off clears its role error but does not permit an incomplete target or reactivation there");
+                ui.Find<TextBox>("GamePath").Text = client; ui.Toggles[key].IsChecked = true;
+                ui.Find<TextBox>("GamePath").Text = mixed;
+                Check(ui.Toggles[key].IsEnabled && ui.Toggles[key].IsChecked == true && !ui.ChoiceFields[key + ".companionVariant"].IsEnabled && !ui.Find<Button>("LaunchPatcher").IsEnabled && store.RestrictedTargetError(ui.Config) != null && roleHint().Contains("gemischte"), "A mixed client/server folder blocks the active prototype and refreshes its hint while preserving the off-switch");
+                ui.Toggles[key].IsChecked = false;
+                Check(!ui.Toggles[key].IsEnabled && store.RestrictedTargetError(ui.Config) == null, "A disabled prototype cannot be reactivated on a mixed client/server target");
+                var serverOnly = new ModDef { ServerOnly = true };
+                Check(StudioStore.AllowsTarget(serverOnly, "Dedicated Server erkannt") && !StudioStore.AllowsTarget(serverOnly, "Steam-Client erkannt") && !StudioStore.AllowsTarget(serverOnly, "Spielordner auswählen.") && !StudioStore.AllowsTarget(new ModDef { ServerOnly = true, KnownTargetOnly = true }, "Steam-Client erkannt"), "The shared target gate retains the stronger legacy ServerOnly restriction including when both flags are present");
+                ui.Find<TextBox>("GamePath").Text = server; ui.Toggles[key].IsChecked = true;
+                ui.Fields[key + ".maxCompanions"].Text = "9"; bool rejected = false; try { ui.SaveCurrent(); } catch (InvalidDataException) { rejected = true; }
+                Check(rejected, "Summon base-limit above8 is rejected before a profile save or any patch process");
+                ui.Fields[key + ".maxCompanions"].Text = "4"; ui.Fields[key + ".durationSeconds"].Text = "120"; ui.Fields[key + ".strengthFactor"].Text = "1"; ui.ChoiceFields[key + ".companionVariant"].SelectedValue = 0L;
+                ui.SaveCurrent(); ui.Screenshot(Path.Combine(Path.GetDirectoryName(report), "tested-summons-server.png"));
+                ui.Find<TextBox>("GamePath").Text = client; ui.SaveCurrent();
+                ui.Screenshot(Path.Combine(Path.GetDirectoryName(report), "tested-summons-singleplayer.png"));
+                ui.ChoiceFields[key + ".companionVariant"].ApplyTemplate(); ui.Window.UpdateLayout();
+                var combo = ui.ChoiceFields[key + ".companionVariant"];
+                Check(combo.ActualWidth == 190 && combo.ActualHeight >= 38 && ((FieldChoiceDef)combo.SelectedItem).Label == "Zauberskelett (Original)", "Original summon label uses the bounded wrapping dropdown rather than an unexplained number or clipped fixed-height field");
+                combo.SelectedValue = 3L; ui.Window.UpdateLayout();
+                Check(combo.ActualWidth == 190 && combo.ActualHeight >= 38 && ((FieldChoiceDef)combo.SelectedItem).Label == "Im Spiel per Zauber wählen", "In-game selection remains inside the same wrapping dropdown width");
+                combo.BringIntoView(); ui.Window.UpdateLayout();
+                ui.Screenshot(Path.Combine(Path.GetDirectoryName(report), "tested-summons-ingame-selection.png"));
+            }
+            finally { ui.Find<TextBox>("Search").Clear(); ui.LoadProfile(previous); }
+        }
+        private static void ExerciseOwnSkeletonSpells(StudioWindow ui, StudioStore store, string sandbox, string report)
+        {
+            const string key = "world.enableSkeletonSummoningSpells";
+            var previous = ui.Current;
+            string client = Path.Combine(sandbox, "own-spells-client"), server = Path.Combine(sandbox, "own-spells-server");
+            Directory.CreateDirectory(client); Directory.CreateDirectory(server);
+            foreach (string name in new[] { "enshrouded.exe", "enshrouded.kfc", "enshrouded.kfc_resources" }) File.WriteAllText(Path.Combine(client, name), "UI fixture");
+            foreach (string name in new[] { "enshrouded_server.exe", "enshrouded_server.kfc", "enshrouded_server.kfc_resources" }) File.WriteAllText(Path.Combine(server, name), "UI fixture");
+            try
+            {
+                var config = store.Baseline(); config["gameDirectory"] = client;
+                var profile = store.NewProfile("Eigene Skelettzauber Test", config);
+                ui.LoadProfile(profile); ui.ChooseCategory("world");
+                Check(ui.Toggles[key].IsEnabled && !ui.Fields[key + ".durationSeconds"].IsEnabled, "Own skeleton spells can be enabled on a complete singleplayer client while inactive values stay disabled");
+                ui.Toggles[key].IsChecked = true;
+                ui.Fields[key + ".maxCompanions"].Text = "5"; ui.Fields[key + ".durationSeconds"].Text = "180"; ui.Fields[key + ".strengthFactor"].Text = "2";
+                ui.SaveCurrent(); ui.LoadProfile(profile); ui.ChooseCategory("world");
+                var values = Mod(profile.Config, "world", "enableSkeletonSummoningSpells");
+                Check((bool)values["enabled"] && Json.Number(values["maxCompanions"]) == 5 && Json.Number(values["durationSeconds"]) == 180 && Json.Number(values["strengthFactor"]) == 2 && ui.Find<Button>("LaunchPatcher").IsEnabled, "Own spell settings survive profile save and reload and allow client patching");
+                ui.Find<TextBox>("Search").Text = "enableSkeletonSummoningSpells";
+                ui.Screenshot(Path.Combine(Path.GetDirectoryName(report), "tested-own-skeleton-spells.png"));
+                ui.Find<TextBox>("GamePath").Text = server;
+                Check(ui.Toggles[key].IsEnabled && ui.Toggles[key].IsChecked == true && ui.Fields[key + ".maxCompanions"].IsEnabled && ui.Find<Button>("LaunchPatcher").IsEnabled && store.RestrictedTargetError(ui.Config) == null, "Own spell prototypes allow editing and patching a recognized dedicated server");
+                ui.Toggles[key].IsChecked = false;
+                Check(ui.Toggles[key].IsEnabled && ui.Find<Button>("LaunchPatcher").IsEnabled, "Disabled own spells allow ordinary server patching and remain available for reactivation there");
+                ui.Find<TextBox>("GamePath").Text = client; ui.Toggles[key].IsChecked = true;
+                Mod(ui.Config, "world", "adjustSummonedCompanions")["enabled"] = true;
+                Check(store.Validate(ui.Config).Any(error => error.Contains("nicht gleichzeitig")), "Legacy and own-skeleton modes conflict explicitly before a patch launch");
+                Mod(ui.Config, "world", "adjustSummonedCompanions")["enabled"] = false;
+                var clientOnly = new ModDef { ClientOnly = true, KnownTargetOnly = true };
+                Check(StudioStore.AllowsTarget(clientOnly, "Steam-Client erkannt") && !StudioStore.AllowsTarget(clientOnly, "Dedicated Server erkannt") && !StudioStore.AllowsTarget(clientOnly, "Spielordner auswählen.") && !StudioStore.AllowsTarget(new ModDef { ClientOnly = true, ServerOnly = true }, "Steam-Client erkannt"), "ClientOnly accepts exactly the known singleplayer client and rejects contradictory target flags");
+            }
+            finally { ui.Find<TextBox>("Search").Clear(); ui.LoadProfile(previous); }
+        }
         private static void ExerciseLayoutRegressions(StudioWindow ui, StudioStore store)
         {
             var scroll = ui.Find<ScrollViewer>("OptionsScroll");
             foreach (var category in store.Schema.Where(c => c.Mods.Count > 0))
             {
                 ui.ChooseCategory(category.Key); ui.Window.UpdateLayout();
-                Check(ui.Toggles.Count == category.Mods.Count && ui.Fields.Count == category.Mods.Sum(m => m.Fields.Count(f => !f.Boolean)) && ui.Fields.Values.All(f => { Rect r = f.TransformToAncestor(scroll).TransformBounds(new Rect(0, 0, f.ActualWidth, f.ActualHeight)); return f.ActualWidth > 0 && r.Left >= 0 && r.Right <= scroll.ActualWidth; }), "All switches and numeric fields fit the visible width in category " + category.Key);
+                var numericControls = ui.Fields.Values.Cast<Control>().Concat(ui.ChoiceFields.Values.Cast<Control>()).ToList();
+                Check(ui.Toggles.Count == category.Mods.Count && numericControls.Count == category.Mods.Sum(m => m.Fields.Count(f => !f.Boolean)) && numericControls.All(f => { Rect r = f.TransformToAncestor(scroll).TransformBounds(new Rect(0, 0, f.ActualWidth, f.ActualHeight)); return f.ActualWidth > 0 && r.Left >= 0 && r.Right <= scroll.ActualWidth; }), "All switches, numeric fields and variant choices fit the visible width in category " + category.Key);
             }
             ui.ChooseCategory("inventory"); scroll.ScrollToVerticalOffset(200); ui.Window.UpdateLayout();
             ui.Find<TextBox>("Search").Text = "adjustStackSize"; ui.Window.UpdateLayout();
@@ -316,9 +424,12 @@ namespace EnshroudedStudio
             try
             {
                 var store = new StudioStore(appRoot, Path.Combine(sandbox, "Data")); store.Load();
-                Check(store.Schema.Sum(c => c.Mods.Count) == 44, "All 44 engine and Studio options represented");
+                Check(store.Schema.Sum(c => c.Mods.Count) == 47, "All 47 engine and Studio options represented");
                 Check(store.Schema.SelectMany(c => c.Mods).Sum(m => m.Fields.Count) == store.Defaults.Where(k => new[] { "player", "inventory", "world", "gameplay" }.Contains(k.Key)).Sum(k => Json.Object(k.Value, k.Key).Sum(m => Json.Object(m.Value, m.Key).Count(p => p.Key != "enabled" && p.Key != "description"))), "Every backend option field represented");
                 Check(store.Validate(store.Defaults).Count == 0, "Actual engine defaults satisfy schema");
+                var storageDefinition = store.Schema.Single(category => category.Key == "world").Mods.Single(mod => mod.Key == "adjustFactoryInventoryAccess");
+                var previousStorageProfile = store.Baseline(); Mod(previousStorageProfile, "world", "adjustFactoryInventoryAccess")["enabled"] = true;
+                Check(!(bool)Mod(store.Defaults, "world", "adjustFactoryInventoryAccess")["enabled"] && (bool)Mod(store.Normalize(previousStorageProfile), "world", "adjustFactoryInventoryAccess")["enabled"] && storageDefinition.Status == "Fehler gemeldet · Materialzugriff unbestätigt", "Reported storage failure changes the new default to off while preserving an existing explicitly enabled profile");
                 UpdateCheck.SelfTest(Check);
                 RuntimeImport.SelfTest(Check, sandbox);
                 UpdateInstaller.SelfTest(Check, appRoot, sandbox);
@@ -328,8 +439,16 @@ namespace EnshroudedStudio
                 var oldTamingConfig = store.Baseline(); Json.Object(oldTamingConfig["world"], "world").Remove("enableSingleStepTaming");
                 var migratedTamingConfig = store.Normalize(oldTamingConfig);
                 Check(!(bool)Mod(migratedTamingConfig, "world", "enableSingleStepTaming")["enabled"], "An older profile receives the new taming option disabled without enabling other mods");
+                var oldProductionConfig = store.Baseline(); Json.Object(oldProductionConfig["world"], "world").Remove("adjustAnimalProduction");
+                var migratedProduction = Mod(store.Normalize(oldProductionConfig), "world", "adjustAnimalProduction");
+                Check(!(bool)migratedProduction["enabled"] && Json.Number(migratedProduction["quantityFactor"]) == 2 && Json.Number(migratedProduction["speedFactor"]) == 1, "Existing profiles receive configurable animal production disabled with separate amount and speed defaults");
+                var oldSummonConfig = store.Baseline(); Json.Object(oldSummonConfig["world"], "world").Remove("adjustSummonedCompanions"); oldSummonConfig["summonMigrationUnknown"] = 73;
+                var normalizedSummons = store.Normalize(oldSummonConfig); var migratedSummons = Mod(normalizedSummons, "world", "adjustSummonedCompanions");
+                Check(!(bool)migratedSummons["enabled"] && Json.Number(migratedSummons["maxCompanions"]) == 4 && Json.Number(migratedSummons["durationSeconds"]) == 120 && Json.Number(migratedSummons["strengthFactor"]) == 1 && Json.Number(migratedSummons["companionVariant"]) == 0 && Json.Number(normalizedSummons["summonMigrationUnknown"]) == 73, "Older profiles receive the local summon prototype disabled with exact defaults and retain unknown settings");
+                var summonDefinition = store.Schema.Single(category => category.Key == "world").Mods.Single(mod => mod.Key == "adjustSummonedCompanions");
+                Check(!summonDefinition.ServerOnly && summonDefinition.KnownTargetOnly && store.Schema.SelectMany(category => category.Mods).Count(mod => mod.KnownTargetOnly) == 2 && store.Schema.SelectMany(category => category.Mods).All(mod => !mod.ServerOnly) && summonDefinition.Status == "Lokale Testfunktion · Spieltest offen" && summonDefinition.Fields.Single(field => field.Key == "companionVariant").Choices.Select(choice => choice.Value).SequenceEqual(new long[] {0,1,2,3}), "The existing summon prototype retains its recognized client or server targets alongside the new singleplayer-only option and retains its exact numeric variants0to3");
                 Check(store.Schema.SelectMany(c => c.Mods).All(m => !string.IsNullOrWhiteSpace(m.Effect) && !string.IsNullOrWhiteSpace(m.Example) && !string.IsNullOrWhiteSpace(m.Notes) && !string.IsNullOrWhiteSpace(m.Status)), "Every option has effect, example, audit status and limitations");
-                Check(store.Schema.SelectMany(c => c.Mods).All(m => !string.IsNullOrWhiteSpace(m.WhenToUse) && !string.IsNullOrWhiteSpace(m.Scope)), "All 44 options explain when to use them and where they apply");
+                Check(store.Schema.SelectMany(c => c.Mods).All(m => !string.IsNullOrWhiteSpace(m.WhenToUse) && !string.IsNullOrWhiteSpace(m.Scope)), "All 46 options explain when to use them and where they apply");
                 Check(PatchBasis.TargetId(@"D:\SteamLibrary\steamapps\common\Enshrouded") == "0f22d9dfcb5704d13687" && PatchBasis.TargetId(@"C:\Games Test\Enshrouded\") == "276ba4b311d6d8f195ce", "GUI basis lookup matches independent Node target IDs including spaces and trailing separators");
                 Check(store.Schema.SelectMany(c => c.Mods).SelectMany(m => m.Fields).All(f => !string.IsNullOrWhiteSpace(f.Help) && f.Label != "Wert"), "Every option field has a specific label and explanation");
                 int awareness;
@@ -481,6 +600,16 @@ class Stub { static int Main(string[] args) {
                 ui.Toggles[singleStepKey].IsChecked = true; ui.SaveCurrent();
                 Check((bool)Mod(ui.Current.Config, "world", "enableSingleStepTaming")["enabled"] && !ui.Fields.Keys.Any(k => k.StartsWith(singleStepKey + ".")), "Single-success taming is a persistable boolean switch with no confusing numeric fields");
                 ui.Toggles[singleStepKey].IsChecked = false; ui.SaveCurrent();
+                string productionKey = "world.adjustAnimalProduction";
+                ui.Toggles[productionKey].IsChecked = true; ui.Fields[productionKey + ".quantityFactor"].Text = "3"; ui.Fields[productionKey + ".speedFactor"].Text = "2"; ui.SaveCurrent();
+                Check(Json.Number(Mod(ui.Current.Config, "world", "adjustAnimalProduction")["quantityFactor"]) == 3 && Json.Number(Mod(ui.Current.Config, "world", "adjustAnimalProduction")["speedFactor"]) == 2, "Animal production saves independently adjustable amount and speed in a profile");
+                ui.Fields[productionKey + ".quantityFactor"].Text = "21"; bool productionBlocked = false; try { ui.SaveCurrent(); } catch (InvalidDataException) { productionBlocked = true; }
+                Check(productionBlocked, "Animal production rejects an out-of-range factor before saving or patching");
+                ui.Fields[productionKey + ".quantityFactor"].Text = "2"; ui.Fields[productionKey + ".speedFactor"].Text = "1"; ui.Toggles[productionKey].IsChecked = false; ui.SaveCurrent();
+                ui.Find<TextBox>("Search").Text = "Tierproduktion"; ui.Screenshot(Path.Combine(Path.GetDirectoryName(report), "tested-animal-production.png")); ui.Find<TextBox>("Search").Clear();
+                ExerciseSummonPrototype(ui, store, sandbox, report);
+                ExerciseOwnSkeletonSpells(ui, store, sandbox, report);
+
                 var slotsDefinition = store.Schema.SelectMany(c => c.Mods).First(m => m.Key == "adjustSlotCount");
                 var rootDefinition = store.Schema.SelectMany(c => c.Mods).First(m => m.Key == "adjustSkillPointsPerRoot");
                 Check(slotsDefinition.Fields.First(f => f.Key == "cap").Maximum == 255 && rootDefinition.Fields.First(f => f.Key == "factor").Integer && rootDefinition.Fields.First(f => f.Key == "factor").Maximum == 85, "Storage and root-point boundaries match the current uint8 game fields");

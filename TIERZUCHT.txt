@@ -1,0 +1,48 @@
+ENSHROUDED MOD STUDIO 0.4.21 — NUTZTIER-ZUCHT
+Funktion vom Benutzer im Spiel bestätigt.
+
+EINRICHTEN
+Unter Welt & Bauen „Nutztier-Zucht beschleunigen“ einschalten.
+Singleplayer: den lokalen Spielordner wählen.
+Dedicated Server: ausschließlich dessen eigenen Installationsordner wählen.
+Spiel bzw. Server vor dem Patch schließen, „Patch anwenden / aktualisieren“
+ausführen und anschließend neu starten. Ein Client-Patch verändert nicht die
+Fortpflanzung auf einem fremden Dedicated Server.
+
+ZUCHTTEMPO (FAKTOR 1–20)
+1 behält den ursprünglichen Abstand zwischen Zuchtprüfungen bei.
+2 halbiert ihn: bei den geprüften Vorlagen 15 statt 30 Minuten.
+5 verkürzt ihn auf 6 Minuten, 10 auf 3 Minuten.
+Standard ist 2. Diese Werte sind Prüfungsabstände, keine garantierten
+Geburtsintervalle. Fehlende Voraussetzungen können jeden Versuch verhindern.
+
+ERFOLGSCHANCE JE VERSUCH (0–100)
+0 bedeutet Originalchance behalten und ist die Empfehlung.
+1–100 setzt die Basischance in Prozent. In den 17 unterstützten nativen
+Vorlagen liegt die Originalchance bereits bei 100 Prozent. Ein kleinerer Wert
+senkt sie daher. Auch 100 Prozent garantiert keine Geburt: Weltlimit, Partner,
+Futter, freies geschütztes Bett und weitere Spielregeln bleiben wirksam.
+Die Chance wird laut Datendefinition beim Erreichen des Weltlimits abgesenkt.
+
+WAS GEÄNDERT WIRD
+Nur bestehende Fortpflanzungswerte erwachsener, bereits züchtbarer Nutztiere:
+17 Vorlagen, davon 8 gezähmte Platzierungsvorlagen und 9 zähmbare Wildvorlagen.
+Wüstengürteltiere sind wegen abweichender Gegnerkomponenten vorerst ausgeschlossen.
+Fische, Katzen/Hunde, Babys, Gegner, Test-/Basisvorlagen werden nicht bearbeitet.
+Keine neue Fortpflanzung für Arten ohne passende Babyvorlage.
+
+Tierproduktion (Warenmenge/Produktionszeit) und einfache Zähmung bleiben eigene
+Optionen und lassen sich zusammen mit der Zucht aktivieren. Zuchttempo ändert
+weder Wachstumsgeschwindigkeit noch Futterverbrauch oder Schlafzeiten.
+Bestehende gespeicherte Timer können zunächst weiterlaufen; wann bereits
+platzierte Tiere die neuen Werte übernehmen, ist im Spiel zu prüfen.
+Es werden keine Spielstände oder bereits gespeicherten Timer umgeschrieben.
+
+PRÜFSTATUS
+Die Funktion wurde vom Benutzer im Spiel bestätigt. Zusätzlich wurden die
+serverseitige Datenklassifikation sowie Client- und Serverdaten im Hintergrund
+geprüft. Automatische Modul-, Profil-/UI-Modell- und Pack-/Readback-Prüfungen
+belegen die hinterlegten Datenänderungen. Die Rückmeldung ist kein Nachweis
+für jede Tierart, jeden gespeicherten Timer oder jede Mehrspielerumgebung.
+Profile und vorhandene Einstellungen bleiben beim Tool-Update erhalten;
+die neue Zuchteinstellung bleibt bei übernommenen Profilen ausgeschaltet.

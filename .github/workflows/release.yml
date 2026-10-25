@@ -1,0 +1,26 @@
+name: Publish Mod Studio
+on:
+  push:
+    branches: [main]
+    paths: [.github/release.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: studio-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.repository == 'Priestkiller/Enshrouded-Mod-Studio'
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Build and validate public package
+        shell: powershell
+        run: ./.github/scripts/Build-Package.ps1
+      - name: Upload, verify and publish release
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./.github/scripts/Publish-Release.ps1

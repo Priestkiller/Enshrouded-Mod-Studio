@@ -1,7 +1,8 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.10",
+  "studio": "0.4.21",
   "files": {
+    "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
     "loot-source-slots.js": "f421c2b6aa54b53c603dfbae9c2aaadad8934ac4438846ea0269ca48f7fdb81e",
     "processor-fixes.js": "8ca1a805da10672202235f2bd546c735ae95643d09add944e3d8738b75016560",
@@ -9,8 +10,9 @@
     "single-step-taming.js": "f8c22848e29bcd04e71a38bcb4c0e2e007d6c964160f93813ccbd0694334ec67",
     "skill-points-check.js": "111417ab8f8d6b35d2d28c9ab93196f212d3294037078b6e58d112441163aa19",
     "stack-check.js": "70db0aaf1f3852c2abc87d791744689ddecdffdb7e2c86526ed30f9510627899",
-    "studio-backend.js": "a8a673456c74a7860d3d27fb1a0d135bfc1a78ab64198117bb6c95f3eb0dfeb2",
-    "studio-runner.js": "c8dec1718133867d49184212e017baf1996d45101c46fd954b4dd2e23fc799d7",
+    "studio-backend.js": "7438d7450b95994eece43b80715a632aab4a1576b26c053021c20ae0c5a7770a",
+    "studio-runner.js": "89e313d725ffea43327766b997383c97fca862852238128a58e1b65c1c292ddc",
+    "summoned-companions.js": "c0eb99596d9f790733dc02acf02998f18879256b4b6b99a600d9c37ea6b05328",
     "vendor/config/loader.js.bytecode": "98f1a99f8746a854822e673d6af3fbd76c173738c894fe093b31abad0235b2c0",
     "vendor/core/file-ops.js.bytecode": "53961f724c80ceba06e7e03359e0575c0f06167291c7257377adf7808e952858",
     "vendor/core/pipeline.js.bytecode": "8a34062557234842fb8eec5fe5e60e67e8f4d3ea0f645f39dd4735a17c82fe95",
@@ -40,6 +42,22 @@
     "vendor/utils/kfc-parser-wrapper.js.bytecode": "97913d534c20ddbc352bf302b11b68005a51cd02dc01b7b6d194067afb380672",
     "vendor/utils/kfc-version-checker.js.bytecode": "45b9752b88efa1ad8d3ca84054551bc21451e42819242ef7e843fa851e22b5f3",
     "vendor/utils/logger.js.bytecode": "ecbadf12b46c505293bfac71b77f41202889dc68b6241ff7099b17c92b71ebbd",
-    "vendor-loader.js": "3e0110ea0750eda82f5f845f250b5b57aeb3011da67fd89122847cb2ba0d63e1"
+    "vendor-loader.js": "3e0110ea0750eda82f5f845f250b5b57aeb3011da67fd89122847cb2ba0d63e1",
+    "custom-skeleton-items.js": "043d8ac7492ee7897806e3d919183e296ca5cb4c40156d89aa5beacb9bc323eb",
+    "skeleton-spell-definitions.json": "4431ad547440c5fa56f47c9f1de756ef06b3e23938030e7dde997547c1cd8b0a",
+    "skeleton-spells.js": "a4ed62e6f6fc4a31b30a7a7d669181b65d917e22e726c6721d8c05064f9d48b9",
+    "skeleton-spell-localization.js": "c488c44f67727834b386f850a34f343742ee0a2e4dac7e7cdeddb67afe71c1e9",
+    "skeleton-spell-localization.lua": "8f3ecc2d9db1d39316c8eb0431e2a28e6f36b7d2a4cf61f13433c508fc529d0e",
+    "bin/emm.exe": "b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305",
+    "storage-maintenance.js": "f869145c4aaa7df8eaaa5416a50775ec4e7c4441a7e2b1a05e8ac8af7781e7b7",
+    "skeleton-recipe-ui.js": "f2908718db7ab14a4bb838a4ea6692f6659aa2c23b79bcd868867998c3bc3b4a",
+    "skeleton-item-icons.js": "1d1e44d60bfc892b099f689dd0667d0e1a83d4bbbe4da37e7a14f77c24bcd3bd",
+    "advanced-companions.js": "3ead49f114b08c42139cb972b57d2e8f57a1d72039d1e645ccb9f5567ad9f6d7",
+    "custom-summon-icon.js": "a75d050f9a935a1716b7b9e5daabbf80ffdcfcbf6ea4616cc67b6fc331f2103d",
+    "custom-summon-icon.lua": "73f0794d4acaea46b784af067b774f3d7a186071a7c940e5098789e9555d223c",
+    "assets/sabertooth-spell.rgba": "1fe2545fefe0c77e5cd023233c39010ad9a349081a748c64265eccb7f54dace3",
+    "assets/sabertooth-spell.json": "21c945404fd5e983d87d9b86676597adca74b95858f99b2013e072bb68c3f8cc",
+    "animal-breeding.js": "f0d541869645d27d043d16d60c6b8635e3c8850aef5bb00d9f8f3a9ca4b55b00",
+    "summon-multiplayer.js": "0dda0d7ac0d8652119d29bfb83e6e943201d6da7aa982b261dfd713b07823a8c"
   }
 }

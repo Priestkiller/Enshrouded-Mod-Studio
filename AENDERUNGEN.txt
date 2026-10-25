@@ -1,3 +1,68 @@
+ENSHROUDED MOD STUDIO 0.4.21 — 24. Oktober 2026
+
+- Sechs eigene Begleiterzauber für Spielclients und Dedicated Server vorbereitet:
+  Zauberskelett, Krieger, Elite, erloschener Magier, Skeletthund und Säbelzahntiger.
+  Eigene Gegenstände, Rezepte, Namen und Menüeinträge; Tiger mit eigenem Symbol.
+- Server und ALLE Clients benötigen denselben Spielbuild, Toolstand und dieselben
+  Begleiterwerte. MP-Kennung vergleichen; der Server verteilt keine Dateien.
+  Solo und ein LAN-/Koop-Host verwenden den gepatchten Spielclient.
+- Client ergänzt Menü, Texte und Symbole; Server erhält gemeinsame Spieldaten.
+  88 gezielte Prüfungen und zwei echte Archivvorschauen mit Pack-/Readback bestanden.
+  Neun neue gemeinsame Ressourcen sind auf beiden Rollen vollständig identisch.
+  Ein echter Mehrspieler-Spieltest mit verbundenen Spielern steht weiterhin aus.
+- Nutztier-Zucht seit 0.4.20: Tempo 1–20 und unabhängige Basischance 0–100 Prozent,
+  0 behält die Originalchance. Vom Benutzer im Spiel bestätigt. Keine neue Zucht
+  für ausgeschlossene Arten; Partner, Futter, Betten und Weltlimit gelten weiter.
+- Öffentliche Paketgrenzen: Studio und eigener Quellcode sowie separates EMM mit
+  GPL-Lizenz und zugehörigem Quelltext. Ursprünglicher Patcher, Vendor-Bytecode
+  und Legacy-Parser bleiben außerhalb des Downloads und werden geprüft aus
+  einer vorhandenen vollständigen Installation übernommen. Siehe THIRD-PARTY.md.
+- 48 Optionen mit 76 Feldern. Profile und Einstellungen bleiben erhalten;
+  neue Optionen werden bei übernommenen Profilen ausgeschaltet ergänzt.
+  Das Tool-Update selbst patcht kein Spiel. Gewünschte Optionen erneut anwenden.
+- Lager-Materialzugriff bleibt fehlerhaft/unbestätigt; vier Fertigkeitspunkte
+  allein durch einen Servermod mit unveränderten Clients bleiben ungelöst.
+  Kein entsprechender Funktionsfix wird mit dieser Version behauptet.
+
+ENTWICKLUNGSSTÄNDE 0.4.12 BIS 0.4.20
+
+0.4.20: Nutztier-Zuchttempo und Basischance getrennt einstellbar.
+0.4.19: Magier, Skeletthund und Säbelzahntiger ergänzen die drei Skelettzauber;
+         eigene Magier-Angriffsvorlage ohne feindliche Beschwörung/Wiederbelebung.
+0.4.18: Fehlende UiTextureResource-Einträge für eigene Item-Kennungen ergänzt;
+         originale Bildbytes beim ersten Skelettsymbol beibehalten.
+0.4.17: Eigene Rezepte in Aldens vorhandene Liste „Munition — Spezial“ eingefügt;
+         bestehende Einträge erhalten und Menüzuordnung nach Packen geprüft.
+0.4.16: Freien Speicher vor Vorbereitung und Archivtausch prüfen, große temporäre
+         Sprach-Arbeitskopien nach Erfolg entfernen, Recoverydaten schützen.
+0.4.15: Drei eigene ewige Skelettzauber statt Umleitung vorhandener Level-Zauber;
+         Herstellung bei Alden für jeweils 5 Knochen und 1 Ektoplasma-Fragment.
+0.4.14: Bisherigen Skelettvariantenmodus für erkannte Spielclients freigegeben;
+         unbekannte oder zusammengelegte Installationsziele bleiben gesperrt.
+0.4.13: Vier vorhandene Skelettzauber als Auswahl verschiedener Typen vorbereitet;
+         rein lesende Lagerdiagnose ergänzt.
+0.4.12: Gemeinsame Anzahl, Dauer und Stärke des bisherigen Begleitermodus;
+         Lagerzugriff als gemeldeten Fehler markiert und in neuen Profilen aus.
+
+Diese Entwicklungsstände lieferten Datenprüfungen und Prototypen. Ihre damaligen
+Spieltestgrenzen bleiben in den Funktionshinweisen beschrieben; 0.4.21 erweitert
+die sechs eigenen Zauber auf passend gepatchte Server und Clients.
+
+BISHERIGE VEROEFFENTLICHUNGEN
+
+ENSHROUDED MOD STUDIO 0.4.11 — 23. Oktober 2026
+
+- Neue 45. Option: Tierproduktion anpassen. Warenmenge und Tempo separat
+  einstellbar; Menge skaliert auch die zugehörige Sammelgrenze.
+- Frische Spielstruktur und konkrete Tier-/Produktidentitäten vor Änderung
+  prüfen; nach dem Packen die tatsächlichen Ressourcen erneut zurücklesen.
+- Bisherige44 Optionen und ihre Standardwerte erhalten. Neue Funktion bei
+  übernommenen Profilen ausgeschaltet; automatische Tool-Updates bleiben aktiv.
+- Native Punkteprüfung dokumentiert: Server und Client prüfen das Talentbudget
+  selbst. Kein neuer funktionsloser Server-DLL-Patch als globale Lösung.
+
+BISHERIGE VEROEFFENTLICHUNGEN
+
 ENSHROUDED MOD STUDIO 0.4.10 — 23. Oktober 2026
 
 NUR SERVER / ALLE SPIELER: NICHT UNTERSTUETZT
@@ -99,7 +164,7 @@ ENSHROUDED MOD STUDIO 0.4.6 — SEPARATER SERVERSCHNELLTEST
 22. Oktober 2026 · Engine 1.2.3
 
 - Echten Dedicated Server separat über Steam installiert und vor/nach dem
-  Patch mit neuen Testwelten gestartet. Details: Pruefungen/HINTERGRUNDTEST.txt.
+  Patch mit neuen Testwelten gestartet. Die damaligen Detailnachweise sind nicht Teil dieses öffentlichen Pakets.
 - Fehler behoben: Die Client-Menügrenzen-Option verlangte auf einem Dedicated
   Server nicht vorhandene UI-Ressourcen und brach den gesamten Patch ab.
   Sie wird dort jetzt mit einem Hinweis übersprungen. Die separate

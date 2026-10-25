@@ -1,0 +1,8 @@
+Unverändertes Offline-Sprachwerkzeug EMM v0.2.0 von Brabb3l/kfc-parser.
+Quelle: https://github.com/Brabb3l/kfc-parser/releases/tag/v0.2.0
+Commit: 16708594d686b030d909f2d835b199d879ea9ad8
+Binary: engine/bin/emm.exe
+SHA256: b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305
+Lizenz und zugehöriger unveränderter Quelltext liegen daneben bei.
+EMM wird ausschließlich als separater Offline-Prozess auf Arbeitskopien benutzt.
+Es wird keine Runtime-DLL aus diesem Projekt ins Spiel installiert.

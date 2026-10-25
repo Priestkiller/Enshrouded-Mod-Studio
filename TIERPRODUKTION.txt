@@ -1,0 +1,52 @@
+ENSHROUDED MOD STUDIO 0.4.11 — TIERPRODUKTION
+
+UNTER WELT & BAUEN: TIERPRODUKTION ANPASSEN
+Die Option ist zunächst ausgeschaltet. Bei einem Dedicated Server dessen
+vollständigen Installationsordner wählen und das Profil dort anwenden.
+Die geänderte Produktionskomponente ist im aktuellen Spiel ausdrücklich
+serverseitig. Eine zusätzliche Clientinstallation ist für diesen Datenansatz
+nicht vorgesehen; die praktische Erzeugung und Abholung im Mehrspieler
+bleiben im Spiel zu prüfen.
+
+ZWEI GETRENNTE EINSTELLUNGEN
+Menge pro Produktionsrunde: ganze Zahl 1 bis 20. 1 entspricht der bisherigen
+Menge, 2 verdoppelt die Menge je Runde. Die Sammelgrenze wird im selben
+Verhältnis erhöht, damit die zusätzlichen Waren Platz haben.
+
+Produktionsgeschwindigkeit: ganze Zahl 1 bis 20. 1 behält den bisherigen
+Abstand bei, 2 halbiert die Wartezeit. Der Mengenfaktor bleibt unabhängig.
+Die neue Wartezeit wird auf ganze Spielzeiteinheiten aufgerundet.
+
+Beispiel: Normal 1 Ei je 10 Minuten, höchstens 8 Eier.
+Menge 2 / Tempo 1: 2 Eier je 10 Minuten, höchstens 16 Eier.
+Menge 1 / Tempo 2: 1 Ei je 5 Minuten, höchstens 8 Eier.
+Menge 2 / Tempo 2: 2 Eier je 5 Minuten, höchstens 16 Eier.
+Solange die Produktionsbedingungen erfüllt sind, bedeutet2/2 rechnerisch
+viermal so viele Waren pro Zeit. Dieser Rechenvergleich ist kein Spieltest.
+
+UNTERSTUETZTE TIERE
+In den geprüften Daten der Revision 1273043: Ziege, Katzhirsch, Bergziege,
+Truthahn, Wüstenvogel, Yak, Sanddigger und Capybara. Ihre bisherigen Produkte
+sind Milch, Eier, Federn, Wolle, Schuppen beziehungsweise Borsten.
+16 Vorlagen umfassen die zähmbaren Ausgangstiere sowie gezähmte
+Platzierungsvarianten. Basis-, unfertige und veraltete Vorlagen bleiben aus.
+Tiere ohne bestehende Warenproduktion bekommen keine erfundenen Produkte.
+
+WAS GEANDERT WIRD
+Nur Menge, Sammelgrenze und Wartezeit des Nachfüllens. Futter, Zähmung,
+Besitz, Wachstumsbedingungen und sonstige Regeln bleiben erhalten.
+Es gibt keine sofortige Befüllung und keinen Eingriff in Charakter- oder
+Weltspielstände. Bei vorhandenen Tieren und laufenden Timern muss im Spiel
+geprüft werden, ab welchem Produktionszyklus die neuen Werte gelten.
+
+ANWENDEN, AKTUALISIEREN UND AUSSCHALTEN
+Server schließen, gewünschte Faktoren einstellen und Patch anwenden /
+aktualisieren drücken. Das Tool baut immer aus derselben gespeicherten
+Ausgangsbasis auf; Faktoren werden beim erneuten Anwenden nicht gestapelt.
+Zum Zurücknehmen die Option ausschalten und erneut anwenden.
+Nach Steam-Spielupdates eine neue passende Basis wählen.
+
+PRUEFGRENZE
+Struktur-, Ressourcen-, Faktor-, Archiv- und Serverstartprüfungen werden
+getrennt von einer echten Tierproduktion mit Spielern bewertet.
+Die genaue aktuelle Prüfsumme und der Umfang stehen im Prüfbericht.

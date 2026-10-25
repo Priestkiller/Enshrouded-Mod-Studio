@@ -1,0 +1,78 @@
+ENSHROUDED MOD STUDIO 0.4.21 — SECHS BEGLEITERZAUBER IM MEHRSPIELER
+Öffentlicher Datenpatch; echter Mehrspieler-Spieltest weiterhin offen.
+
+SERVER UND ALLE SPIELCLIENTS PATCHEN
+Der Dedicated Server erhält Gegenstände, Rezepte, Knowledge, Begleiter-Vorlagen,
+Kampfwerte und Arsenal. Die Clients erhalten dieselben gemeinsamen Daten sowie
+zusätzlich Aldens Herstellungsmenü, Namen/Beschreibungen und die sechs Symbole.
+Der Server verteilt keine Dateien. Jeder Mitspieler muss seinen Spielclient
+passend patchen, auch wenn er selbst keinen Begleiterzauber verwenden möchte.
+Solo und ein LAN-/Koop-Host verwenden den gepatchten Spielclient.
+
+EINRICHTEN
+1. Auf dem Server Version 0.4.21 des Tools benutzen, Server schließen und dessen
+   eigenen Ordner mit enshrouded_server.exe wählen. Unter Welt & Bauen
+   „Beschworene Begleiter anpassen“ ausschalten und „Sechs Begleiterzauber
+   hinzufügen“ einschalten. Grundlimit, Dauer und Stärke festlegen, anschließend
+   „Patch anwenden / aktualisieren“ ausführen.
+2. Auf ALLEN Spielrechnern dieselbe Toolversion benutzen. Spiel schließen,
+   jeweils den lokalen Ordner mit enshrouded.exe wählen und dieselbe Option
+   mit genau denselben drei Werten anwenden. Server- und Clientordner getrennt
+   halten. Bereits gepatchte Installationen über ihre passende Basis aktualisieren.
+3. Die MP-Kennung aus der erfolgreichen Abschlussmeldung vergleichen: Sie muss
+   auf dem Server und allen Clients gleich sein. Sie umfasst Spielbuild,
+   Toolstand und Einstellungen dieser Begleiterfunktion. Sie ist kein
+   automatischer Netzwerktest und umfasst nicht alle sonstigen Mods.
+4. Server und Spielclients neu starten und erst dann verbinden.
+
+Alte Profile bleiben erhalten. Die Solo-Sperre dieser Funktion ist entfernt;
+unbekannte und zusammengelegte Installationsziele bleiben gesperrt.
+Der frühere Begleiter-Modus und die sechs eigenen Zauber schließen sich weiter aus.
+
+ZAUBER UND BEDIENUNG
+Bei Alden Crowley, dem Sammler, unter Munition – Spezial vorgesehen:
+- Zauberskelett beschwören
+- Skelettkrieger beschwören
+- Eliteskelett beschwören
+- Erloschenen Magier beschwören
+- Skeletthund beschwören
+- Säbelzahntiger beschwören (eigenes Symbol)
+Jeder ewige Zaubergegenstand kostet 5 Knochen und 1 Ektoplasma-Fragment.
+Alden muss gerettet und sein Herstellungsplatz geschützt sein.
+Gewünschte Zauber ins Inventar nehmen und einen Stab für Zauberladungen wählen.
+Bei Standardbelegung rechts zum Zielen halten, per Mausrad oder E die Zauberauswahl
+wechseln und links wirken. Verschiedene Typen nacheinander beschwören.
+Eigene Tastenbelegung im Spiel beachten.
+
+GRENZEN
+Das Grundlimit ist gemeinsam für die Begleitertypen und gilt vor weiteren
+Talenten und Spielregeln. Der native Zwölf-Plätze-Speicher kann die Endzahl
+beeinflussen. Dauer und Stärke sind die hinterlegten Patchwerte; effektive
+Kampfwerte hängen zusätzlich von kopierten Spielerattributen ab.
+Der Magier nutzt zunächst nur Eisgeschosse, keine Totenköpfe/Wiederbelebung.
+Es gibt weiterhin keine bestätigte native Skelett-Bogenschützen-Vorlage.
+Die neuen Gegnerbegleiter haben eigene Template-Kennungen; ursprüngliche
+Weltgegner und deren Arsenal bleiben erhalten. Krieger/Elite teilen wie bisher
+Vorlagen mit vorhandenen Nekromantie-Begleitern.
+
+SPIELTEST DURCH DEN BENUTZER
+Daten-, Menü-, Bild-, Rollen- und Archivprüfungen sind bestanden. Ein echter
+Mehrspielertest mit mehreren verbundenen Spielern steht aus. Zu prüfen sind
+Beschwören/Wechseln, Besitzerzuordnung, Folgen, Zielwahl, Magier-Treffer,
+gemischte Gruppen, Limit/Dauer, andere Spieler sowie erneutes Verbinden.
+Diese Version behauptet keine bestätigte Netzwerksynchronisierung.
+
+AKTUALISIEREN/ENTFERNEN
+Werte auf Server und allen Clients gemeinsam ändern und jeweils erneut anwenden.
+Vor dem Entfernen eigene Zaubergegenstände aus Charakteren und Lagern entfernen;
+danach Server und Clients passend zurückstellen. Das Tool bereinigt keine Saves.
+Ein reines Tool-Update verändert noch keine installierten Spielarchive.
+
+MIT FREUNDEN TEILEN
+Das öffentliche Studio-ZIP enthält keine persönlichen Profile, aktiven
+Einstellungen, Sicherungen oder Spielarchive. Vollständig in einen eigenen
+Ordner entpacken und die passende ursprüngliche Laufzeit über
+„Altes Setup übernehmen“ aus einer vorhandenen vollständigen Installation
+übernehmen. Server und jeder Spielclient werden danach jeweils lokal gepatcht.
+Herkunft der Fremdwerkzeuge: THIRD-PARTY.md. EMM liegt mit GPL-Lizenz und
+zugehörigem Quelltext bei; ursprünglicher Patcher und Legacy-Parser nicht.

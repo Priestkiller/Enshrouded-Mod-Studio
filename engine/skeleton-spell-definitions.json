@@ -1,0 +1,172 @@
+{
+  "formatVersion": 1,
+  "sourceBuild": "1273043",
+  "itemLevel": 1,
+  "sourceItem": {
+    "guid": "4147dce3-27fd-406f-9937-29b478a94046",
+    "debugName": "Ammo_T5_Spell_Skeleton_lvl28_Eternal",
+    "itemId": 3759493341
+  },
+  "sourceRecipe": {
+    "guid": "3273a1b6-afb9-415c-ab41-a63b14a3ec8a",
+    "debugName": "Ammo_Spell_T3_Skeleton",
+    "recipeId": 2933402986,
+    "workshopId": 2906865252,
+    "unlockQueryId": 2185886291
+  },
+  "registries": {
+    "items": "3064d35d-7342-40ca-bdc9-aad58f83bf45",
+    "recipes": "5e57de0f-280c-4559-8191-f02c1ba656e2",
+    "knowledge": "cb1eeb8b-f58a-4785-bf0f-6dd5437e9a5b"
+  },
+  "items": [
+    {
+      "key": "arcane",
+      "guid": "15b3baff-466a-42d8-8e07-686eb2d17b94",
+      "debugName": "EMS_Summon_ArcaneSkeleton",
+      "itemId": 40249057,
+      "recipeGuid": "baa3fee8-a70f-4cc1-a9b6-6b47b56d79f1",
+      "recipeDebugName": "EMS_Recipe_EMS_Summon_ArcaneSkeleton",
+      "recipeId": 3700999304,
+      "nameGuid": "f01d5d21-cb1c-47b2-965b-7bcd1deacc65",
+      "descriptionGuid": "506dda1e-2318-49ea-9acb-140f533f0952",
+      "nameDe": "Zauberskelett beschwören",
+      "nameEn": "Summon Arcane Skeleton",
+      "descriptionDe": "Beschwört das ursprüngliche verbündete Zauberskelett. Ewiger Zaubergegenstand; benötigt Mana. Alle beschworenen Begleiter teilen sich das Begleiterlimit. Zum Mischen der Gruppe den aktiven Zauber wechseln.",
+      "descriptionEn": "Summons the original allied arcane skeleton. Eternal spell item; requires mana. All summoned companions share the companion limit. Switch the active spell to mix the group.",
+      "target": "3fce9d9b-fc72-4400-afbe-d966a062b27d",
+      "targetName": "Player_Companion_Lesser_Skeleton_Weakling_Necromancy_Spell_1",
+      "iconImage": "f0f9c309-ccfa-4e05-83e9-d0c6bc67ec61"
+    },
+    {
+      "key": "warrior",
+      "guid": "17b45050-cb0d-400a-9b19-850c27b3b343",
+      "debugName": "EMS_Summon_SkeletonWarrior",
+      "itemId": 2642289223,
+      "recipeGuid": "02102513-a22e-40ba-8a80-705c814087b9",
+      "recipeDebugName": "EMS_Recipe_EMS_Summon_SkeletonWarrior",
+      "recipeId": 3400502174,
+      "nameGuid": "2a29e996-d999-4d5a-9856-b1061ef89e97",
+      "descriptionGuid": "f129293f-eea0-4363-ab7f-eebe519816b6",
+      "nameDe": "Skelettkrieger beschwören",
+      "nameEn": "Summon Skeleton Warrior",
+      "descriptionDe": "Beschwört einen verbündeten Skelettkrieger für den Nahkampf. Ewiger Zaubergegenstand; benötigt Mana. Alle beschworenen Begleiter teilen sich das Begleiterlimit. Zum Mischen der Gruppe den aktiven Zauber wechseln.",
+      "descriptionEn": "Summons an allied skeleton warrior for melee combat. Eternal spell item; requires mana. All summoned companions share the companion limit. Switch the active spell to mix the group.",
+      "target": "10f892be-2374-4d31-ae27-85e0a36f3853",
+      "targetName": "Player_Companion_Skeleton_Melee_GemOfNecromancy",
+      "iconImage": "aff2b4a7-7680-4d76-a084-5999f1cb5543"
+    },
+    {
+      "key": "elite",
+      "guid": "a4f09943-be6a-4ab0-95fe-7fc0e8256a79",
+      "debugName": "EMS_Summon_EliteSkeleton",
+      "itemId": 2023595169,
+      "recipeGuid": "30fe8c93-35d2-4dc8-9d4d-494b9557fbb9",
+      "recipeDebugName": "EMS_Recipe_EMS_Summon_EliteSkeleton",
+      "recipeId": 3066138204,
+      "nameGuid": "9dadc7d5-fad2-431e-afb7-791d43405c02",
+      "descriptionGuid": "bc993e87-e992-4130-88ae-47a951123afe",
+      "nameDe": "Eliteskelett beschwören",
+      "nameEn": "Summon Elite Skeleton",
+      "descriptionDe": "Beschwört ein verbündetes Eliteskelett für den Nahkampf. Ewiger Zaubergegenstand; benötigt Mana. Alle beschworenen Begleiter teilen sich das Begleiterlimit. Zum Mischen der Gruppe den aktiven Zauber wechseln.",
+      "descriptionEn": "Summons an allied elite skeleton for melee combat. Eternal spell item; requires mana. All summoned companions share the companion limit. Switch the active spell to mix the group.",
+      "target": "ef0c170d-0653-4517-88a7-0c4c9aba8139",
+      "targetName": "Player_Companion_Skeleton_Elite_Melee_GemOfGreaterNecromancy",
+      "iconImage": "27e011ac-89e3-4b1e-8aa6-d69aedac1a2d"
+    },
+    {
+      "key": "mage",
+      "guid": "ed0b6b28-e9d9-5af6-9baf-388bd560943a",
+      "debugName": "EMS_Summon_HollowMage",
+      "itemId": 12087798,
+      "recipeGuid": "814733d3-be46-5cfc-893f-d1ceb5bcbc6a",
+      "recipeDebugName": "EMS_Recipe_Summon_HollowMage",
+      "recipeId": 352751219,
+      "nameGuid": "57dd1632-1a3d-52ff-afd7-5191427b678b",
+      "descriptionGuid": "449bf48e-2e50-5771-b6cf-f05a9135961c",
+      "nameDe": "Erloschenen Magier beschwören",
+      "nameEn": "Summon Hollow Mage",
+      "descriptionDe": "Fernkämpfer mit Eisgeschoss. Dieser erste Prototyp beschwört keine zusätzlichen Totenköpfe. Ewiger Zaubergegenstand; benötigt Mana. Alle Begleiter teilen das eingestellte Limit. Mehrspieler-Test: Server und alle Clients passend patchen. Spieltest offen.",
+      "descriptionEn": "Ranged ally with an ice bolt. This initial prototype does not summon additional skulls. Eternal spell item; requires mana. All companions share the configured limit. Multiplayer test: matching server and client patches required. Gameplay test pending.",
+      "target": "a0599ff0-5c70-48e6-8d91-64c367870b26",
+      "targetName": "EMS_Companion_HollowMage",
+      "sourceTemplateGuid": "e092e507-3bc0-4538-8fdc-a73f96de95e6",
+      "sourceTemplateName": "Enemy_Skeleton_Mage01_Dungeon",
+      "iconImage": "f0f9c309-ccfa-4e05-83e9-d0c6bc67ec61"
+    },
+    {
+      "key": "hound",
+      "guid": "9cf7c87e-8cf2-5b6d-93a0-7b00f5da0955",
+      "debugName": "EMS_Summon_HollowHound",
+      "itemId": 3656393303,
+      "recipeGuid": "28b58b52-a7c4-5365-89e1-f7b2695e892f",
+      "recipeDebugName": "EMS_Recipe_Summon_HollowHound",
+      "recipeId": 786548558,
+      "nameGuid": "3bffb646-610e-5b86-977d-eb931e00ea0d",
+      "descriptionGuid": "6ce490e2-f536-55c6-a03f-f5cf086588aa",
+      "nameDe": "Skeletthund beschwören",
+      "nameEn": "Summon Hollow Hound",
+      "descriptionDe": "Verbündeter Skeletthund für den Nahkampf. Ewiger Zaubergegenstand; benötigt Mana. Alle Begleiter teilen das eingestellte Limit. Mehrspieler-Test: Server und alle Clients passend patchen. Spieltest offen.",
+      "descriptionEn": "Allied skeletal hound for melee combat. Eternal spell item; requires mana. All companions share the configured limit. Multiplayer test: matching server and client patches required. Gameplay test pending.",
+      "target": "bff03c68-c726-4f84-a515-94598f3c421d",
+      "targetName": "EMS_Companion_HollowHound",
+      "sourceTemplateGuid": "cd8d28ed-0d6d-46ac-991e-a0480bf2d352",
+      "sourceTemplateName": "Enemy_Skeleton_Hound_Dungeon",
+      "iconImage": "f0f9c309-ccfa-4e05-83e9-d0c6bc67ec61"
+    },
+    {
+      "key": "sabertooth",
+      "guid": "27345127-fcfc-5380-8879-3c659f48334a",
+      "debugName": "EMS_Summon_Sabertooth",
+      "itemId": 2560188019,
+      "recipeGuid": "7d5bebd6-813d-59c2-8383-7915e12f0ca8",
+      "recipeDebugName": "EMS_Recipe_Summon_Sabertooth",
+      "recipeId": 4134578209,
+      "nameGuid": "2b841eec-ac3c-553a-929a-dae046e52689",
+      "descriptionGuid": "7a1fe053-ea90-5544-b422-f5b0762becd0",
+      "nameDe": "Säbelzahntiger beschwören",
+      "nameEn": "Summon Sabertooth",
+      "descriptionDe": "Verbündeter Säbelzahntiger für den Nahkampf. Ewiger Zaubergegenstand; benötigt Mana. Alle Begleiter teilen das eingestellte Limit. Mehrspieler-Test: Server und alle Clients passend patchen. Spieltest offen.",
+      "descriptionEn": "Allied sabertooth for melee combat. Eternal spell item; requires mana. All companions share the configured limit. Multiplayer test: matching server and client patches required. Gameplay test pending.",
+      "target": "c9fcc4f8-de5c-4484-ac28-883b7f297b9b",
+      "targetName": "EMS_Companion_Sabertooth",
+      "sourceTemplateGuid": "50b96064-3ffc-47a2-8c7d-1d592a3c459c",
+      "sourceTemplateName": "Enemy_Wildbeast_Sabertooth",
+      "iconImage": "f0f9c309-ccfa-4e05-83e9-d0c6bc67ec61"
+    }
+  ],
+  "workshop": {
+    "guid": "0b966715-c5c9-435d-b727-4c24b4ff7e67",
+    "id": 2906865252,
+    "name": "Alden Crowley",
+    "npcItemGuid": "48aee0f0-ba8f-4045-9595-42b0723d67a2",
+    "npcTemplateGuid": "b61da3e5-b8f2-4933-84f8-48e7ecfcba39",
+    "unlockKnowledgeId": 146824705,
+    "requiresSheltered": true
+  },
+  "recipeUnlock": {
+    "knowledgeOrQueryId": {
+      "value": 146824705
+    },
+    "compareValue": 1,
+    "compareOperator": "Equals",
+    "type": "SimpleBool",
+    "isExplicitPlayerKnowledgeQuery": false
+  },
+  "ingredients": [
+    {
+      "guid": "af6a8201-7081-4178-8097-4c24ad976769",
+      "itemId": 2053375978,
+      "count": 5,
+      "debugName": "Material_T1_Bones",
+      "nameDe": "Knochen"
+    },
+    {
+      "guid": "271fcfca-920d-451e-81dd-adb5d07479b0",
+      "itemId": 2617088387,
+      "count": 1,
+      "debugName": "Material_T1-T2_Green_Essence",
+      "nameDe": "Ektoplasma-Fragment"
+    }
+  ]
+}
