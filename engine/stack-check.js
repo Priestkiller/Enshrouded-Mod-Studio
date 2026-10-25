@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const TYPE = 'keen::ItemInfo';
 const FIELD = 'maxStackSize';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -78,6 +79,43 @@ function sampleRows(rows) {
     return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi) || a.name.localeCompare(b.name);
   }).slice(0, 10);
 }
+function canonical(value) {
+  if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+  if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
+  return JSON.stringify(value);
+}
+function createdSpellItems(options, schema, originals, modified) {
+  const proof = options.skeletonSpells;
+  if (!proof || proof.enabled !== true) return new Map();
+  const itemsProof = proof.items, role = roleOf(options.role);
+  if (options.config?.world?.enableSkeletonSummoningSpells?.enabled !== true || role === 'unknown' || proof.role !== role || proof.prototype !== true || proof.gameplayVerified !== false ||
+      itemsProof?.enabled !== true || itemsProof.role !== role || itemsProof.build !== schema.build || itemsProof.prototype !== true || itemsProof.gameplayVerified !== false || itemsProof.itemCount !== 6 ||
+      !Array.isArray(itemsProof.resources) || itemsProof.resources.length !== 9)
+    fail('Die Prüfliste der neu angelegten Begleiterzauber ist unvollständig oder gehört zu einer anderen Rolle/Spielversion.');
+  const own = require('./custom-skeleton-items');
+  const definitions = own.assertDefinitions();
+  if (canonical(itemsProof.createdResources) !== canonical(own.CREATED_RESOURCES)) fail('Die neuen Begleiter-Itemidentitäten sind nicht freigegeben.');
+  const createdRows = itemsProof.resources.filter(row => row?.created === true);
+  if (createdRows.length !== definitions.items.length) fail('Die Prüfliste enthält nicht genau die sechs neuen Begleitergegenstände.');
+  const sourceId = definitions.sourceItem.guid + ':0', native = modified.get(sourceId) || originals.get(sourceId);
+  if (!native || native.document[FIELD] !== 1) fail('Die ewige Itembasis der Begleiter ist nicht als Einzelgegenstand bestätigt.');
+  const originalsByGuid = new Set([...originals.values()].map(row => row.document.$guid.toLowerCase()));
+  const originalIds = new Set([...originals.values()].map(row => row.document.itemId?.value));
+  const created = new Map();
+  for (const definition of definitions.items) {
+    const id = definition.guid + ':0', row = modified.get(id), expectedFile = definition.guid + '_' + schema.resourceTypeHash + '_0.json';
+    const claims = createdRows.filter(claim => claim.guid === definition.guid);
+    if (originalsByGuid.has(definition.guid) || originalIds.has(definition.itemId)) fail('Eine neue Begleiteridentität kollidiert mit der Ausgangsbasis.');
+    if (claims.length !== 1 || !row) fail('Ein freigegebener neuer Begleitergegenstand fehlt oder ist doppelt.');
+    const claim = claims[0], document = row.document;
+    if (claim.directory !== 'ItemInfo' || claim.type !== TYPE || claim.part !== 0 || claim.file !== expectedFile || !/^[a-f0-9]{64}$/.test(claim.sha256 || '') ||
+        document.objectId !== definition.guid || document.itemId?.value !== definition.itemId || document.debugName !== definition.debugName || document[FIELD] !== 1 ||
+        canonical(document.flags) !== canonical(native.document.flags) || crypto.createHash('sha256').update(canonical(document)).digest('hex') !== claim.sha256)
+      fail('Ein neuer Begleitergegenstand widerspricht seiner geprüften Einzelgegenstand-Ausgabe: ' + path.basename(row.file));
+    created.set(id, row);
+  }
+  return created;
+}
 function inspect(options, directory) {
   const schema = assertSchema(options.reflection), requested = requestedValue(options.requested);
   const source = items(directory, schema, true), rows = [];
@@ -100,10 +138,11 @@ function check(options, input, output) {
   if (!option || option.enabled !== true) return { enabled: false, role: roleOf(options.role), validated: false, warnings: [] };
   const schema = assertSchema(options.reflection), requested = requestedValue(option.value);
   const originals = items(input, schema, true), modified = items(output, schema, false), rows = [];
-  for (const [id, row] of modified) if (!originals.has(id)) fail('Ausgabe enthält eine unbekannte ItemInfo-Ressource: ' + path.basename(row.file));
-  if (options.complete === true && (modified.size !== originals.size || [...originals.keys()].some(id => !modified.has(id))))
+  const created = createdSpellItems(options, schema, originals, modified);
+  for (const [id, row] of modified) if (!originals.has(id) && !created.has(id)) fail('Ausgabe enthält eine unbekannte ItemInfo-Ressource: ' + path.basename(row.file));
+  if (options.complete === true && (modified.size !== originals.size + created.size || [...originals.keys()].some(id => !modified.has(id))))
     fail('Der erneute Export enthält nicht alle ursprünglichen ItemInfo-Ressourcen.');
-  let changed = 0, singletonItems = 0;
+  let changed = 0, singletonItems = created.size;
   for (const [id, { document: before, file }] of originals) {
     rejectPersistentStack(before, file);
     const change = modified.get(id), after = change ? change.document : before;
@@ -123,7 +162,7 @@ function check(options, input, output) {
   if (!rows.length) fail('Keine stapelbaren Gegenstände gefunden. Die aktuelle Spielversion benötigt eine Prüfung.');
   const result = {
     enabled: true, validated: true, role: roleOf(options.role), requested, build: schema.build, schema,
-    totalItems: originals.size, checkedItems: originals.size, stackableItems: rows.length, singletonItems,
+    totalItems: originals.size + created.size, checkedItems: originals.size + created.size, stackableItems: rows.length, singletonItems,
     matchingItems: rows.length, mismatchingItems: 0, changedItems: changed, samples: sampleRows(rows), warnings: []
   };
   if (options.logger && typeof options.logger.info === 'function')

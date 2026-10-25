@@ -105,7 +105,7 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  const skeletonSpells=require('./skeleton-spells').apply({...ownOption,enabled:ownOption?.enabled===true,existingCompanionsEnabled:companionOption?.enabled===true,reflection,role,logger:ctx.logger,track:ctx.track},input,output);
  if(skeletonSpells.enabled){skeletonSpells.multiplayer=require('./summon-multiplayer').create({...ownOption,role,build:reflection.version});log('Sechs Begleiterzauber: '+(role==='server'?'Serverteil':'Clientteil')+' vorbereitet. MP-Kennung '+skeletonSpells.multiplayer.shortId+'. Server und alle Clients benötigen denselben Stand; Multiplayer-Spieltest offen.');}
  const skillPoints=require('./skill-points-check').check({config,role,reflection,logger:ctx.logger},input,output);
- const stacks=require('./stack-check').check({config,role,reflection,logger:ctx.logger},input,output);
+ const stacks=require('./stack-check').check({config,role,reflection,skeletonSpells,logger:ctx.logger},input,output);
  return {vendor:result,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,skillPoints,stacks,extraChanges:changes.length,warnings};
 }
 function currentState(data,t){const dir=path.join(data,'targets',t.id);const active=path.join(dir,'state.json');return {dir,active,state:fs.existsSync(active)?read(active):null};}
@@ -302,7 +302,7 @@ async function prepare(options){progress(options,'validate','Profil und Installa
  }
  if(config.inventory.adjustStackSize.enabled){
   if(!outputs.length){progress(options,'verify-stacks','Unveränderte Stapelwerte erneut aus der Archivkopie prüfen …',75);parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,verify,log,['keen::ItemInfo']);}
-  mods.stacks=require('./stack-check').check({config,role:t.server?'server':'client',reflection:ref,complete:true,logger:{warn:message=>{mods.warnings.push(String(message));log('HINWEIS: '+message);},info:log,debug:()=>{},success:log}},input,verify);
+  mods.stacks=require('./stack-check').check({config,role:t.server?'server':'client',reflection:ref,complete:true,skeletonSpells:mods.skeletonSpells,logger:{warn:message=>{mods.warnings.push(String(message));log('HINWEIS: '+message);},info:log,debug:()=>{},success:log}},input,verify);
   mods.stacks.archiveReadbackValidated=true;
   log('Stapelprüfung nach Archiv-Readback: '+mods.stacks.stackableItems+' stapelbare Items mit Zielwert '+mods.stacks.requested+'.');
  }

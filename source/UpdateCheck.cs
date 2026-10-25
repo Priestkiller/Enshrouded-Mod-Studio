@@ -30,7 +30,7 @@ namespace EnshroudedStudio
 
     public static class UpdateCheck
     {
-        public const string InstalledVersion = "0.4.22";
+        public const string InstalledVersion = "0.4.23";
         public const int TimeoutMilliseconds = 10000;
         public const int MaximumResponseBytes = 1024 * 1024;
         private static readonly Regex RepositoryPattern = new Regex(@"^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}/[A-Za-z0-9][A-Za-z0-9_.-]{0,99}\z", RegexOptions.CultureInvariant);
@@ -242,7 +242,7 @@ namespace EnshroudedStudio
         public static void SelfTest(Action<bool, string> check)
         {
             const string repo = "Priestkiller/Enshrouded-Mod-Studio";
-            const string tag = "v0.4.22";
+            const string tag = "v0.4.23";
             string zip = ExpectedAssetName(tag), url = "https://github.com/" + repo + "/releases/download/" + tag + "/" + zip;
             check(ParseVersion("v0.4.9") == ParseVersion("0.4.9.0"), "Updater normalisiert drei- und vierteilige Versionsnummern");
             var newer = ParseRelease(Fixture(tag, repo, url), repo, InstalledVersion);
@@ -256,7 +256,7 @@ namespace EnshroudedStudio
                 !IsAllowedAssetUrl(repo, tag, zip, url + "?download=1") && !IsAllowedAssetUrl(repo, tag, zip, url + "#download") &&
                 !IsAllowedAssetUrl(repo, tag, zip, url.Replace("https:", "http:")) &&
                 !IsAllowedAssetUrl(repo, tag, zip, url.Replace("/" + tag + "/", "/v0.4.23/")), "Updater bindet HTTPS-Download exakt an Host, Repository, Tag und ZIP ohne Zusätze");
-            check(Rejected(delegate { ParseRelease("{\"tag_name\":\"v0.4.22\",\"draft\":false,\"prerelease\":false,\"assets\":[]}", repo, InstalledVersion); }), "Updater weist fehlendes vollständiges Versions-ZIP ab");
+            check(Rejected(delegate { ParseRelease("{\"tag_name\":\"v0.4.23\",\"draft\":false,\"prerelease\":false,\"assets\":[]}", repo, InstalledVersion); }), "Updater weist fehlendes vollständiges Versions-ZIP ab");
             check(Rejected(delegate { ParseVersion("v0.4.10-beta"); }) && Rejected(delegate { ParseVersion("v0.4.10\n"); }) &&
                 Rejected(delegate { ValidateRepository("Priestkiller/../Other"); }) && Rejected(delegate { ValidateRepository(repo + "\n"); }) &&
                 Rejected(delegate { ParseRelease("kein JSON", repo, InstalledVersion); }), "Updater weist ungültige Versions-, Repository- und Antwortformate ab");

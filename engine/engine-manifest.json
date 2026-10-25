@@ -1,6 +1,6 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.22",
+  "studio": "0.4.23",
   "files": {
     "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
@@ -9,9 +9,9 @@
     "shared-crafting-storage.js": "4147f0ef8aa2bcd78ba9c407586b9cb5592cda4e9cd68ac059cf957a784d862d",
     "single-step-taming.js": "f8c22848e29bcd04e71a38bcb4c0e2e007d6c964160f93813ccbd0694334ec67",
     "skill-points-check.js": "111417ab8f8d6b35d2d28c9ab93196f212d3294037078b6e58d112441163aa19",
-    "stack-check.js": "70db0aaf1f3852c2abc87d791744689ddecdffdb7e2c86526ed30f9510627899",
-    "studio-backend.js": "9ebd6514fb6834a763e7d51cd07ff593835ffd2616bc5364056719757da50fb0",
-    "studio-runner.js": "cfbdf5e8a617923cd5be07d7120a627d37b5c9c273369c13c1bbd505f0c4a2ef",
+    "stack-check.js": "175d4ccc3435efb2678e05389289f44e8aac38d639a719504bd41f91a7f9efd9",
+    "studio-backend.js": "38183a3c29ddc7587774d38740c2385206a0808d365edb86bc535d51616b299c",
+    "studio-runner.js": "77fc08c179f6068735fafc1466ed4f9fc77d6ad2194cbf13109391c7cc028488",
     "summoned-companions.js": "c0eb99596d9f790733dc02acf02998f18879256b4b6b99a600d9c37ea6b05328",
     "vendor/config/loader.js.bytecode": "98f1a99f8746a854822e673d6af3fbd76c173738c894fe093b31abad0235b2c0",
     "vendor/core/file-ops.js.bytecode": "53961f724c80ceba06e7e03359e0575c0f06167291c7257377adf7808e952858",
