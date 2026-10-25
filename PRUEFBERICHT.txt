@@ -1,49 +1,35 @@
-PRÜFBERICHT 0.4.21 — BEGLEITERZAUBER FÜR SERVER UND CLIENTS
-Prüfstand der Begleiteränderung: fensterlose Tests und eigene Archivkopien.
-Kein Spiel-/Serverstart und kein Desktop-Test für diese Prüfung.
+PRÜFBERICHT 0.4.22 – AUTOMATISCHE CLIENTPAKETE
+Hintergrundprüfung vor Releasefreigabe; kein Upload durch diese Tests.
 
-88 gezielte Prüfungen bestanden,0 Fehler:
--30 native Shared-Core-Prüfungen, Node18.5.0: Client15/Server9 neue Ressourcen,
-  identische gemeinsame Daten, bisherige Client-Ausgaben erhalten, Idempotenz,
-  atomare Fehler, Rollenfälschung in allen Teilberichten, Fraktions-/Spawn-/
-  Arsenalguards und Zurückweisung veränderter Readback-Daten.
--45 fensterlose C#-Prüfungen: Server-/Client-Freigabe, unbekannte/gemischte
-  Ziele weiter gesperrt, andere Rollensperren unverändert, gültige Werte,
-  Exklusivität des alten Begleitermodus, Texte/Hilfen, drei Profile unverändert.
--13 MP-Kennungs-/Backend-/Statusprüfungen: gleiche Kennung für beide Rollen,
-  Abweichungen in Build oder einem Begleiterwert erkannt, Kennungsfälschung
-  verworfen,9/15Create-Freigaben, Serverfilter ohne Clientdarstellung,
-  vollständige Abschlussmeldung mit Kennung und weiterhin offener Spielwirkung.
+122 Hintergrundprüfungen bestanden, 0 offene Fehler:
+- 19 Delta-/Rekonstruktionsprüfungen, tatsächliche Node-18.5-Runtime.
+- 36 Paket-, Sicherheits-, Revisions- und Cacheprüfungen.
+- 18 fensterlose C#-Prüfungen für Einrichtung und Status; Build erfolgreich.
+- 7 Prüfungen der Aufbewahrung gekoppelter Clientvorschauen.
+- 42 Prüfungen mit echten Spieldaten auf isolierten H:-Kopien.
 
-ZWEI ECHTE BACKEND-VORSCHAUEN AUF EIGENEN ARBEITSKOPIEN
-Server: Originalbasis43939 Ressourcen, danach43948, davon9 neue.
-18 geänderte Ressourcen gepackt und alle19141 exportierten Ressourcen erneut
-verglichen. Server-Reflection enthält tatsächlich keinen UiTextureResource-Typ;
-UI,Icons und Sprach-Import werden serverseitig vollständig ausgelassen.
-Client: Originalbasis91812 Ressourcen, danach91827, davon15 neue.
-26 geänderte Ressourcen gepackt und alle24854 exportierten Ressourcen erneut
-verglichen. Sechs Alden-Menüeinträge, sechs eigene Item-Texturen, zwölf Texte
-in Deutsch/Englisch/Fallback und exakt gleiche Tiger-Bildbytes bestätigt.
-Alle neun gemeinsamen neu angelegten Ressourcen sind nach realem Packen/
-Readback auf beiden Archivtypen vollständig identisch. Alle ursprünglichen
-Ressourcen bleiben erhalten; nicht bearbeitete Archiv-Einträge unverändert.
+ECHTER BACKEND-ABLAUF AUF KOPIEN
+Spielbuild: 1273043|^/game38/branches/release_1.0|2026-10-20T14:55:29.904125Z
+Clientpatch und Dedicated-Serverpatch mit passenden Clientdaten angewendet.
+Jeweils 2267 geänderte Ressourcen geprüft und zurückgelesen.
+Beide Archive und 9 neue Datendateien aus den jeweiligen Paketen exakt rekonstruiert.
+Beispiel-Paket: 9,968,878 Bytes, statt vollständiger Archive.
+Erneuter Serverpatch: geprüftes Clientpaket wiederverwendet, Revision unverändert.
+Wiederherstellung: Export ungültig; konfigurierte Clientinstallation unverändert.
+Originale Eingabedateien per SHA-256 vor/nach dem Test unverändert bestätigt.
 
-Beide Archive: Build1273043|release_1.0|2026-10-20T14:55:29.904125Z.
-MP-Kennung des geprüften Standardstands(4/120/1): EE36BCC07E25EABE.
-Die Kennung umfasst Spielbuild,Toolstand,gemeinsamen Patchcode und die drei
-Begleiterwerte; keine automatische Dateiübertragung oder Netzwerkprüfung.
+Der native Packer kann gleiche Ressourcen binär verschieden anordnen. Deshalb
+prüft der Cache Version, EXE, Ausgangsarchive, Optionen, Engine und Paketinhalt.
+Bei Clientpatches muss auch das vollständige Ergebnisinventar exakt passen.
 
-Die komplette Vorschau lief mit unveränderten Parser-/Readback-Prüfungen.
-Nur die globale Prozessauflistung wurde für die garantiert eigenen Kopien
-im Test ersetzt, damit ein laufendes echtes Spiel nicht geschlossen werden muss.
-Keine Live-Spielarchive,Spielstände oder Spielerprofile geändert.
-Quellarchive per SHA256 unverändert; Vorschauen ausdrücklich nicht angewendet.
+Fehlerfälle: falscher Build, fehlende Basis, beschädigtes Manifest/Payload,
+geänderte Ausgangsdateien, geänderte Einrichtung, unerlaubte Pfade, defekte
+Vorschau, deaktivierter Export und veraltete Bereitschaftsmeldungen abgedeckt.
+Paketerstellungsfehler werden getrennt vom bereits angewendeten Patch gemeldet.
 
-Dies bestätigt korrekt erstellte Server-/Clientdaten, keine erfolgreiche
-Live-Netzwerksynchronisierung. Besitzerzuordnung, Folge-KI, Zielwahl, Schaden,
-Gruppenlimit, mehrere Spieler und Reconnect müssen noch im Spiel getestet werden.
-Server und ALLE Clients benötigen denselben passenden Patchstand.
-Die bestehende Nutztier-Zucht wurde in dieser Änderung nicht umgebaut.
-Die Test-Arbeitsdaten und exportierten Spielressourcen gehören nicht zum
-öffentlichen Download. Dieser Bericht fasst die vorhandenen Nachweise zusammen.
-Die Nutztier-Zucht wurde unabhängig davon vom Benutzer im Spiel bestätigt.
+GRENZEN
+Kein Spiel-, Server- oder Desktopstart. Keine Änderung echter Spielinstallationen
+oder Spielstände. Keine Bestätigung der Spielwirkung aller Modoptionen.
+Kein Upload und noch keine Netzwerkverbindung zum UGSM-Servermanager.
+Dessen Adapter muss den beschriebenen Paketvertrag erst integrieren.
+Details: CLIENTPAKETE.txt und SERVERMANAGER-CLIENTPAKETE.md.

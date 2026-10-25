@@ -1,10 +1,5 @@
 {
-  "version": "0.4.21",
-  "name": "Enshrouded Mod Studio 0.4.21",
-  "prerelease": false,
-  "repair": true,
-  "repairTag": "v0.4.21",
-  "expectedReleaseId": 423288024,
-  "expectedReleaseCommit": "4ebb2b05736bad67fa756445401fbdbb8fe72970",
-  "expectedOldDigest": "sha256:bf8751af6f05212b0b824a0da7608d081b6023c4f71d5967eec6881a6993dc8e"
+  "version": "0.4.22",
+  "name": "Enshrouded Mod Studio 0.4.22",
+  "prerelease": false
 }

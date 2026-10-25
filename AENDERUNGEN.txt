@@ -1,54 +1,102 @@
-ENSHROUDED MOD STUDIO 0.4.21 — 24. Oktober 2026
+0.4.22 – Automatische Clientpakete
+Nach erfolgreichem Patch automatisch versionsgebundene Clientänderungen mit
+SHA-256-Prüfung für den künftigen Servermanager-Adapter erstellen.
+Einrichtung unter Werkzeuge: Clientbasis für Serverpatches und Ausgabeordner.
+Getrennte Clientvorbereitung mit Archiv-Readback; keine Serverarchive als Clientdaten.
+Wiederverwendung passender geprüfter Pakete, begrenzte Aufbewahrung und klare Fehler.
+Kein Upload; Servermanager-/Spielerclient-Adapter noch nicht angeschlossen.
+Profile und Einstellungen bleiben erhalten. Anleitung: CLIENTPAKETE.txt.
 
-- Sechs eigene Begleiterzauber für Spielclients und Dedicated Server vorbereitet:
-  Zauberskelett, Krieger, Elite, erloschener Magier, Skeletthund und Säbelzahntiger.
-  Eigene Gegenstände, Rezepte, Namen und Menüeinträge; Tiger mit eigenem Symbol.
-- Server und ALLE Clients benötigen denselben Spielbuild, Toolstand und dieselben
-  Begleiterwerte. MP-Kennung vergleichen; der Server verteilt keine Dateien.
-  Solo und ein LAN-/Koop-Host verwenden den gepatchten Spielclient.
-- Client ergänzt Menü, Texte und Symbole; Server erhält gemeinsame Spieldaten.
-  88 gezielte Prüfungen und zwei echte Archivvorschauen mit Pack-/Readback bestanden.
-  Neun neue gemeinsame Ressourcen sind auf beiden Rollen vollständig identisch.
-  Ein echter Mehrspieler-Spieltest mit verbundenen Spielern steht weiterhin aus.
-- Nutztier-Zucht seit 0.4.20: Tempo 1–20 und unabhängige Basischance 0–100 Prozent,
-  0 behält die Originalchance. Vom Benutzer im Spiel bestätigt. Keine neue Zucht
-  für ausgeschlossene Arten; Partner, Futter, Betten und Weltlimit gelten weiter.
-- Öffentliche Paketgrenzen: Studio und eigener Quellcode sowie separates EMM mit
-  GPL-Lizenz und zugehörigem Quelltext. Ursprünglicher Patcher, Vendor-Bytecode
-  und Legacy-Parser bleiben außerhalb des Downloads und werden geprüft aus
-  einer vorhandenen vollständigen Installation übernommen. Siehe THIRD-PARTY.md.
-- 48 Optionen mit 76 Feldern. Profile und Einstellungen bleiben erhalten;
-  neue Optionen werden bei übernommenen Profilen ausgeschaltet ergänzt.
-  Das Tool-Update selbst patcht kein Spiel. Gewünschte Optionen erneut anwenden.
-- Lager-Materialzugriff bleibt fehlerhaft/unbestätigt; vier Fertigkeitspunkte
-  allein durch einen Servermod mit unveränderten Clients bleiben ungelöst.
-  Kein entsprechender Funktionsfix wird mit dieser Version behauptet.
+0.4.21 — Begleiterzauber für passend gepatchten Multiplayer
+Sechs eigene Begleiterzauber jetzt auf Dedicated Server und Spielclients
+anwendbar. Server und ALLE Clients benötigen denselben Stand und dieselben
+Begleiterwerte; MP-Kennung vergleichen. Server verteilt keine Dateien.
+Client ergänzt Menü,Namen und Symbole; Server erhält nur gemeinsame Spieldaten.
+Private Testversion, echter Multiplayer-Spieltest offen. Profile bleiben erhalten.
+Anleitung: MEHRSPIELER-BEGLEITER.txt. Nach Tool-Update Patch erneut anwenden.
 
-ENTWICKLUNGSSTÄNDE 0.4.12 BIS 0.4.20
+0.4.20 — Nutztier-Zucht beschleunigen
+Neue Option unter Welt & Bauen: Zuchttempo 1–20 und Basischance 0–100 %.
+0 = Originalchance behalten. Alte Profile erhalten die neue Option ausgeschaltet.
+Nur unterstützte Nutztiere, keine Fische. Details: TIERZUCHT.txt.
+Private Version, Spieltest offen, keine Veröffentlichung. Patch erneut anwenden.
 
-0.4.20: Nutztier-Zuchttempo und Basischance getrennt einstellbar.
-0.4.19: Magier, Skeletthund und Säbelzahntiger ergänzen die drei Skelettzauber;
-         eigene Magier-Angriffsvorlage ohne feindliche Beschwörung/Wiederbelebung.
-0.4.18: Fehlende UiTextureResource-Einträge für eigene Item-Kennungen ergänzt;
-         originale Bildbytes beim ersten Skelettsymbol beibehalten.
-0.4.17: Eigene Rezepte in Aldens vorhandene Liste „Munition — Spezial“ eingefügt;
-         bestehende Einträge erhalten und Menüzuordnung nach Packen geprüft.
-0.4.16: Freien Speicher vor Vorbereitung und Archivtausch prüfen, große temporäre
-         Sprach-Arbeitskopien nach Erfolg entfernen, Recoverydaten schützen.
-0.4.15: Drei eigene ewige Skelettzauber statt Umleitung vorhandener Level-Zauber;
-         Herstellung bei Alden für jeweils 5 Knochen und 1 Ektoplasma-Fragment.
-0.4.14: Bisherigen Skelettvariantenmodus für erkannte Spielclients freigegeben;
-         unbekannte oder zusammengelegte Installationsziele bleiben gesperrt.
-0.4.13: Vier vorhandene Skelettzauber als Auswahl verschiedener Typen vorbereitet;
-         rein lesende Lagerdiagnose ergänzt.
-0.4.12: Gemeinsame Anzahl, Dauer und Stärke des bisherigen Begleitermodus;
-         Lagerzugriff als gemeldeten Fehler markiert und in neuen Profilen aus.
+0.4.19 — Private Begleiter-Testversion
+Sechs benannte Beschwörungszauber bei Alden Crowley; neu Magier (Eisgeschoss),
+Skeletthund und Säbelzahntiger. Tiger mit eigenem transparentem Inventarsymbol.
+Werte gemeinsam einstellbar. Singleplayer-Prototyp, Spieltest offen.
+Anleitung: BESCHWOERUNGEN-TEST.txt. Nach Tool-Update Patch erneut anwenden.
+Hintergrundtests und Archiv-Readback bestanden; keine Veröffentlichung.
 
-Diese Entwicklungsstände lieferten Datenprüfungen und Prototypen. Ihre damaligen
-Spieltestgrenzen bleiben in den Funktionshinweisen beschrieben; 0.4.21 erweitert
-die sechs eigenen Zauber auf passend gepatchte Server und Clients.
+0.4.19 — DREI WEITERE BEGLEITER
+- Erloschener Magier mit Eisgeschoss, Skeletthund und Säbelzahntiger als eigene Vorlagen.
+- Eigene Zauber, Alden-Rezepte, Menüliste, Namen, Knowledge und Item-Icons.
+- Gemeinsame Anzahl, Dauer und Stärkeskalierung; Weltgegner unverändert.
+- Eigene Magier-Angriffsvorlage ohne feindliche Schädel-Beschwörung/Wiederbelebung.
+- Singleplayer-Prototyp. Spieltest offen, nichts veröffentlicht.
 
-BISHERIGE VEROEFFENTLICHUNGEN
+0.4.18 — FEHLENDE ITEM-ICONS
+- Absturzbericht: corrupted game ui texture unter neuer Item-GUID.
+- Drei native UiTextureResource-Kopien unter den drei eigenen Item-GUIDs anlegen.
+- Vorhandenes Skelettsymbol unverändert wiederverwenden; keine neue Bilddatei.
+- Alle sechs neuen Ressourcen und die originalen Bildbytes vor Anwendung prüfen.
+- Menükorrektur aus 0.4.17 bleibt erhalten. Keine Veröffentlichung.
+
+0.4.17 — SKELETTZAUBER IM ALDEN-MENÜ
+- Drei neue Rezept-IDs in Aldens vorhandene UI-Liste „Munition — Spezial“ eintragen.
+- Originale Rezepte, Gruppen, Reihenfolge und sonstige UI-Einstellungen bewahren.
+- Fehlende, doppelte oder falsch zugeordnete UI-Einträge vor dem Anwenden ablehnen.
+- Menü-Zuordnung nach dem Packen erneut aus dem Archiv prüfen.
+- Private Testversion. Kein Spielstart und keine Veröffentlichung.
+
+0.4.16 — SPEICHERPLATZ UND BEREINIGUNG
+- Aktives Setup dieses PCs einschließlich Profilen und Basis auf H verlegt.
+- Freien Platz vor der Vorbereitung und vor dem Archivtausch prüfen.
+- Große temporäre Sprach-Arbeitskopien nach erfolgreichem Anwenden entfernen.
+- Veraltete Jobdaten begrenzt aufbewahren; aktive Daten und Recovery schützen.
+- Zauber- und Rezeptdaten unverändert. Keine Veröffentlichung.
+
+0.4.15 — PRIVATE SINGLEPLAYER-TESTVERSION
+- Drei eigene Skelettzauber mit getrennten Kennungen, Namen, Beschreibungen,
+  Symbolen und Rezepten statt Umleitung verschiedener Level-Zauber ergänzt.
+- Gemeinsame Anzahl, Dauer und Stärke; Auswahl über das normale Zaubersystem.
+- Herstellung bei Alden Crowley, jeweils 5 Knochen und 1 Ektoplasma-Fragment.
+  Alte Zaubergegenstände bleiben erhalten.
+- Deutsche und englische Texte samt Fallback als echte Sprachinhalte gepackt.
+- Neue Registrierungen und Wissenseinträge vor/nach dem Packen geprüft.
+- Eigene Zauber nur für Singleplayer; Konflikt mit bisherigem Variantenmodus
+  verhindert. Bestehende Profile aktivieren die neue Funktion nicht automatisch.
+- Spieltest offen. Kein behaupteter Lager- oder serverseitiger Punktefix.
+- Keine Veröffentlichung.
+
+0.4.14 — LOKALE SINGLEPLAYER- UND SERVER-TESTVERSION
+- Skelettoption auch für vollständige lokale Spielordner freigegeben.
+- UI unterscheidet Singleplayer-Test und Dedicated-Server-Test; unbekannte
+  oder gemischte Installationen bleiben gesperrt.
+- Anleitung für die gemischte Gruppe durch Wechsel vorhandener Skelettzauber.
+- Vier Varianten und gespeicherte Profileinstellungen bleiben erhalten.
+- Kein neues Ingame-Menü, kein bestätigter Lagerfix oder Server-Punktefix.
+- Praktische Spielwirkung weiterhin offen. Keine Veröffentlichung.
+
+0.4.13 — NUR LOKALE SERVER-TESTVERSION, NICHT VERÖFFENTLICHT
+- Neue Begleitervariante „Im Spiel per Zauber wählen“: vier vorhandene
+  Skelettzaubergegenstände werden zwei ursprünglichen Skeletten, Krieger
+  und Elite zugeordnet. Anzahl, Dauer und Stärke gelten gemeinsam.
+- Bestehende Varianten 0/1/2 und Profilvorgaben bleiben erhalten; neue Profile
+  schalten die Beschwörungsoption weiterhin nicht automatisch ein.
+- Rein lesende Lager-Diagnose für die tatsächliche Serverinstallation ergänzt.
+- Kein bestätigter Lagerfix und kein Fix für serverseitige Fähigkeitspunkte.
+- Die tatsächliche Wirkung mit unveränderten Clients ist noch nicht bestätigt.
+
+0.4.12 — LOKALE TESTVERSION, NICHT VERÖFFENTLICHT
+- Neue Server-Testoption für vorhandene Skelettzauber: Grundlimit, Dauer,
+  Stärkefaktor und Auswahl Original/Skelettkrieger/Eliteskelett.
+- Vier bekannte Zauberverknüpfungen; zusätzliche Typen teilen ihre Vorlage mit
+  Nekromantie-Edelsteinen und verändern auch deren Begleiter.
+- Client-/unbekannte Ordner gesperrt; ältere Profile ergänzen die Option aus.
+- Lagerzugriff als gemeldeter Fehler gekennzeichnet, neue Profile mit Schalter
+  aus; bestehende explizite Werte bleiben erhalten. Kein neuer bestätigter Fix.
+- 46 Optionen / 71 Felder. Vier serverseitige Levelpunkte bleiben ungelöst.
 
 ENSHROUDED MOD STUDIO 0.4.11 — 23. Oktober 2026
 
@@ -164,7 +212,7 @@ ENSHROUDED MOD STUDIO 0.4.6 — SEPARATER SERVERSCHNELLTEST
 22. Oktober 2026 · Engine 1.2.3
 
 - Echten Dedicated Server separat über Steam installiert und vor/nach dem
-  Patch mit neuen Testwelten gestartet. Die damaligen Detailnachweise sind nicht Teil dieses öffentlichen Pakets.
+  Patch mit neuen Testwelten gestartet. Details: Pruefungen/HINTERGRUNDTEST.txt.
 - Fehler behoben: Die Client-Menügrenzen-Option verlangte auf einem Dedicated
   Server nicht vorhandene UI-Ressourcen und brach den gesamten Patch ab.
   Sie wird dort jetzt mit einem Hinweis übersprungen. Die separate

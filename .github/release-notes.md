@@ -1,26 +1,21 @@
-## Sechs Begleiterzauber für passend gepatchten Multiplayer
+## Automatische Clientpakete nach erfolgreichem Patch
 
-Die bisherige Singleplayer-Sperre ist aufgehoben. Dedicated Server erhalten Gegenstände, Rezepte und Begleiterdaten; Spielclients zusätzlich Herstellungsmenü, Namen und Icons. **Server und ALLE Spielclients müssen dieselbe passende Version und dieselben Begleiterwerte anwenden.** Der Server verteilt keine Dateien. Die neue MP-Kennung hilft beim Vergleich.
+Das Mod Studio erstellt jetzt nach einem erfolgreich angewendeten und überprüften Patch automatisch ein passendes Clientpaket für den Servermanager.
 
-Bei Alden Crowley: Zauberskelett, Skelettkrieger, Eliteskelett, erloschener Magier, Skeletthund und Säbelzahntiger. Jeweils 5 Knochen und 1 Ektoplasma-Fragment; Wechsel über die normale Zauberauswahl. Anzahl, Dauer und Stärke einstellbar. Der Magier nutzt zunächst Eisgeschosse, keine eigenen Totenkopf-Beschwörungen. Der Tiger hat ein eigenes Inventarsymbol.
+- Einmalige Einrichtung unter **Werkzeuge → Clientpaket für Servermanager**: Ausgabeordner und für Serverpatches eine vollständige Clientbasis mit demselben Spielbuild wählen. Diese Clientinstallation wird nur gelesen.
+- Geprüfte Dateiänderungen mit SHA-256, Inhaltsrevision und dokumentierter Übergabedatei `current.json`.
+- Passende vorhandene Server-Clientpakete werden erneut geprüft und wiederverwendet. Aktuelles Paket und ein vorheriger Stand bleiben erhalten; temporäre Kopien werden bereinigt.
+- Fehlende/falsche Basis und Paketfehler werden getrennt vom bereits erfolgreichen Spielpatch gemeldet. Eine Wiederherstellung oder ein Basiswechsel sperrt den alten Export.
+- **122 Hintergrundprüfungen bestanden**, einschließlich echter Client-/Serverpatches auf isolierten Kopien und exakter Rekonstruktion der erzeugten Clientdateien. Kein Spiel- oder Desktopstart.
 
-## Weitere Änderungen seit 0.4.10
+**Noch nicht angeschlossen:** Der UGSM-Servermanager und Spielerclient benötigen den Adapter zum Einlesen, Bereitstellen und Anwenden dieser Pakete. Dieses Release verteilt noch keine Mods automatisch an Mitspieler.
 
-- Tierproduktion mit getrennten Mengen- und Tempofaktoren.
-- Nutztier-Zucht mit einstellbarem Prüfungsabstand und optionaler Basischance. Die beschleunigte Zucht wurde vom Benutzer im Spiel bestätigt. Fische und vorerst Wüstengürteltiere sind ausgeschlossen.
-- Korrigierte Registrierung der Item-Texturen und Alden-Rezepte; ausführlichere Beschreibungen.
-- Archivprüfung, sichere Basis-/Updateverwaltung und Bereinigung temporärer Arbeitsdaten.
+[Einrichtung](https://github.com/Priestkiller/Enshrouded-Mod-Studio/blob/v0.4.22/CLIENTPAKETE.txt) · [Schnittstelle für den Servermanager](https://github.com/Priestkiller/Enshrouded-Mod-Studio/blob/v0.4.22/SERVERMANAGER-CLIENTPAKETE.md)
 
-## Installation und Update
+## Download und Update
 
-ZIP vollständig entpacken. Bestehende Installationen können über den Update-Button aktualisieren oder **Altes Setup übernehmen** verwenden; Profile und passende Einstellungen/Basen werden übernommen. **Danach den Spielpatch auf Server und allen Clients erneut anwenden.**
+Windows x64 mit .NET Framework 4.8. Auf dem Server das ZIP in einen neuen beschreibbaren Ordner entpacken und **Altes Setup übernehmen** wählen; den bisherigen vollständigen Mod-Studio-Ordner angeben. Ab Studio 0.4.10 ist alternativ **Update prüfen** verfügbar. Profile, Einstellungen und passende Sicherungen werden übernommen. Das Toolupdate selbst verändert keine Spielarchive.
 
-Das öffentliche Paket enthält das Studio, eigene Quellen/Assets sowie EMM mit GPL-Lizenz und zugehörigem Quelltext. Die ursprüngliche Patcher-EXE, deren Bytecode und der bisherige Parser bleiben ausgenommen und werden aus einer vorhandenen vollständigen Studio-Installation anhand ihrer Prüfsummen übernommen. Details in `THIRD-PARTY.md`.
+Das öffentliche Paket enthält Anwendung, eigene Quellen und EMM mit Lizenz und zugehörigem Quelltext. Die ursprüngliche Patcher-Laufzeit und der Legacy-Parser werden aus einer vorhandenen vollständigen Installation übernommen. Ohne diese Runtime lässt sich die Oberfläche öffnen, aber kein Spielpatch anwenden.
 
-## Prüfstatus und Grenzen
-
-88 gezielte Modul-, Rollen-, Profil-, UI-Modell- und Kennungsprüfungen bestanden. Echte Backend-Vorschauen auf nativen Server- und Clientarchiven: 18 beziehungsweise 26 geänderte Ressourcen gepackt und erneut gelesen; alle neun gemeinsamen neuen Ressourcen identisch. Quellen und Benutzerprofile blieben unverändert.
-
-**Ein echter Multiplayer-Spieltest mit mehreren verbundenen Spielern steht noch aus.** Archivtests bestätigen keine Netzwerksynchronisierung, Besitzerzuordnung, Kampf-KI oder gemischte Gruppen. Es wurden weder Spiel noch Server automatisch gestartet.
-
-Lagerzugriff aus allen normalen Kisten/Werkbänken bleibt ungelöst. Eine zusätzliche Fähigkeitspunktevergabe an alle Spieler ausschließlich über den Server ist weiterhin nicht unterstützt. Profile, Sicherungen, Spielarchive und persönliche Prüfberichte sind nicht Bestandteil der Veröffentlichung.
+Die Verteilung behebt keine bisher offenen Spielmechaniken: Lagerzugriff aus normalen Kisten/Werkbänken und zusätzliche Fähigkeitspunkte ausschließlich über den Server gelten weiterhin nicht als gelöst. Ein echter Mehrspieler-Spieltest der Begleiter bleibt offen.

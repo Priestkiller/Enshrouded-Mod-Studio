@@ -1,0 +1,73 @@
+CLIENTPAKETE FÜR DEN SERVERMANAGER
+Version 0.4.22 – lokale Paketerstellung für den Servermanager
+
+Was das Mod Studio jetzt vorbereitet
+Nach einem erfolgreich angewendeten und überprüften Patch erstellt das Tool
+automatisch ein passendes Clientpaket. Das Paket enthält die Dateiänderungen,
+die ein Spielerclient für den gewünschten Modstand benötigt. Die eigentlichen
+Spielarchive werden nicht einfach vom Server auf den Client kopiert.
+
+Die Erstellung erfolgt lokal. Der jetzige UGSM-Spielerclient kann dieses neue
+Paketformat erst nach Einbau des passenden Adapters herunterladen und anwenden.
+Das Mod Studio lädt nichts hoch und veröffentlicht keine neue Modrevision im
+Servermanager. Die technische Übergabe steht in SERVERMANAGER-CLIENTPAKETE.md.
+
+Einmal einrichten
+1. Im Mod Studio „Werkzeuge“ öffnen.
+2. Unter „Clientpaket für Servermanager“ die automatische Erstellung einschalten.
+   Sie ist standardmäßig aktiv.
+3. Für Serverpatches einen passenden Spielclient als Clientbasis auswählen.
+   Der Ordner benötigt enshrouded.exe, enshrouded.kfc und
+   enshrouded.kfc_resources. Server und Client müssen denselben Spielbuild haben.
+   Der ausgewählte Spielclient wird nur gelesen; gepatcht werden Arbeitskopien.
+   Bei einem Clientpatch verwendet das Tool dessen passende gesicherte Basis.
+4. Den Paket-Ausgabeordner wählen. Standard ist Data\client-packages neben den
+   vorhandenen Profildaten. Bei einem auf H: installierten Tool liegt er auf H:.
+   Der Ausgabeordner darf nicht in der Spielinstallation liegen.
+5. „Paketeinrichtung speichern“ drücken. Diese Einrichtung gilt für das Tool,
+   unabhängig vom gerade gewählten Modprofil.
+
+Danach wie gewohnt „Patch anwenden / aktualisieren“ benutzen.
+Eine Vorschau oder das bloße Speichern eines Profils erstellt noch kein fertiges
+Paket. Erst ein bestätigter, angewendeter Patch gibt das Paket frei.
+
+Ergebnis und Fehler
+Der Paketstatus erscheint unter Werkzeuge und in der Abschlussmeldung.
+Fehlt eine passende Clientbasis, bleibt der Spielpatch möglich; die Meldung
+erklärt, warum das Clientpaket nicht erstellt werden konnte. Ein Paketfehler
+bedeutet nicht automatisch, dass der bereits bestätigte Spielpatch fehlgeschlagen
+ist. Nach Korrektur der Einrichtung erneut patchen.
+
+Ein Paket für einen früheren Modstand wird bei einem neuen, aber nicht erfolgreich
+abgeschlossenen Paketbau nicht als aktuell ausgegeben. Wiederherstellen und ein
+Basiswechsel machen den Paketstatus ebenfalls ungültig.
+
+Wo die Daten liegen
+<Paket-Ausgabeordner>\<Installationskennung>\current.json
+<Paket-Ausgabeordner>\<Installationskennung>\packages\<Revision>\manifest.json
+<Paket-Ausgabeordner>\<Installationskennung>\packages\<Revision>\blobs\...
+
+current.json ist die maßgebliche Übergabedatei für den späteren Servermanager-
+Adapter. Bei unveränderter Serverkonfiguration, Engine und geprüfter Clientbasis
+wird ein vorhandenes geprüftes Paket ohne erneutes Clientpacken wiederverwendet.
+Das vermeidet Downloads allein wegen unterschiedlicher interner Archivreihenfolge.
+Ein Clientpatch verwendet nur bei identischen Ergebnisdateien das vorhandene Paket.
+Ein unverändertes Paket behält dieselbe Inhaltsrevision. Die Erstellung
+hält das aktuelle und höchstens ein vorheriges eigenes Paket vor. Unveränderte
+Dateiblöcke werden aus der passenden Clientbasis wiederverwendet; neue Blöcke
+sind über SHA-256-Prüfsummen adressiert. Vollständige Archivpakete sind deshalb
+nicht bei jeder Änderung nötig. Die tatsächliche Paketgröße hängt vom Patch ab.
+
+Die gespeicherte Basis ist an Datei-Prüfsummen gebunden. Das Tool kann daraus
+allein nicht unabhängig beweisen, dass sie unveränderte Steam-Originaldateien
+enthält. Bei unklaren Ausgangsdateien zuerst Steam-Dateiprüfung und Basiswechsel
+verwenden. Alte Archive nicht über eine neuere Spielversion zurückspielen.
+
+Was damit nicht automatisch behoben wird
+Eine geprüfte Dateiverteilung beweist keine Wirkung im laufenden Spiel. Der
+Lagerzugriff aus normalen Kisten und Werkbänken sowie zusätzliche Fähigkeitspunkte
+ausschließlich über den Server gelten dadurch nicht als gelöst.
+
+Tests
+Der Testumfang wird separat im Prüfbericht dokumentiert. Diese Anleitung
+behauptet keinen Spiel- oder Multiplayer-Test. Die Hintergrundtests führten keine Veröffentlichung aus. Die Paketerstellung selbst lädt nichts hoch.

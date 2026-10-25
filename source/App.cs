@@ -54,6 +54,7 @@ namespace EnshroudedStudio
         private CheckBox onlyActive;
         private TextBlock notice, status, gameStatus;
         private TextBlock skillTargetHint;
+        private Action refreshClientPackageStatus;
         private readonly Dictionary<string, Action> targetRoleUpdates = new Dictionary<string, Action>();
         private StackPanel skillClientActions;
         private string selected = "inventory";
@@ -327,6 +328,7 @@ namespace EnshroudedStudio
             Find<Button>("LaunchPatcher").IsEnabled = !patcherRunning && !installingUpdate && roleError == null && result.EndsWith("erkannt") && (testMode || runtimeMissingCount == 0);
             Find<Button>("LaunchPatcher").ToolTip = patcherRunning ? "Aktualisierung läuft. Bitte auf das Ergebnis warten." : roleError ?? (!testMode && runtimeMissingCount > 0 ? "Programm-Runtime fehlt. Zuerst ‚Altes Setup übernehmen‘ verwenden." : result.EndsWith("erkannt") ? "Profil speichern und in der angezeigten Zielinstallation anwenden." : "Zuerst den vollständigen Client- oder Serverordner wählen.");
             foreach (var refresh in targetRoleUpdates.Values) refresh();
+            if (refreshClientPackageStatus != null) refreshClientPackageStatus();
             UpdateSkillTargetHint();
         }
         public void EnsureValid()
@@ -594,7 +596,7 @@ namespace EnshroudedStudio
         public void Render()
         {
             if (Config == null) return;
-            options.Children.Clear(); Toggles.Clear(); Fields.Clear(); ChoiceFields.Clear(); Details.Clear(); targetRoleUpdates.Clear(); skillTargetHint = null; skillClientActions = null; UpdateCount();
+            options.Children.Clear(); Toggles.Clear(); Fields.Clear(); ChoiceFields.Clear(); Details.Clear(); targetRoleUpdates.Clear(); skillTargetHint = null; skillClientActions = null; refreshClientPackageStatus = null; UpdateCount();
             string query = search.Text.Trim();
             var category = Store.Schema.First(c => c.Key == selected);
             Find<TextBlock>("CategoryTitle").Text = query.Length == 0 ? category.Title : "Suchergebnisse";
@@ -873,6 +875,8 @@ namespace EnshroudedStudio
         private void RenderSettings()
         {
             var panel = new StackPanel();
+            panel.Children.Add(new TextBlock { Text = "Clientpaket für Servermanager", FontSize = 21, FontWeight = FontWeights.SemiBold });
+            panel.Children.Add(ClientPackageUi.Build(Store, Window, delegate { return Config["gameDirectory"] as string; }, Act, delegate(string message) { notice.Text = message; }, out refreshClientPackageStatus));
             panel.Children.Add(new TextBlock { Text = "Bereits gepatcht? Einfach aktualisieren.", FontSize = 21, FontWeight = FontWeights.SemiBold });
             var updateHelp = Readable("Schalter oder Werte ändern und unten ‚Patch anwenden / aktualisieren‘ drücken. Das Tool erstellt die gewünschten Änderungen jedes Mal aus seiner gespeicherten Basis neu. Ein Faktor 2 bleibt deshalb auch nach mehreren Aktualisierungen Faktor 2. Ausgeschaltete Mods werden aus dem neuen Patch entfernt.", 15, "#D1DFED"); updateHelp.Margin = new Thickness(0, 9, 0, 12); panel.Children.Add(updateHelp);
             var transfer = new Button { Content = "Altes Setup übernehmen …", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 0, 0, 12) }; transfer.Click += delegate { Act(TransferSetup); }; panel.Children.Add(transfer);

@@ -26,6 +26,7 @@ $studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateCheck.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateInstaller.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'RuntimeImport.cs')
 $studioCompileArgs += @((Join-Path $PSScriptRoot 'ToolHandoff.cs'), (Join-Path $PSScriptRoot 'SkillReview.cs'))
+$studioCompileArgs += (Join-Path $PSScriptRoot 'ClientPackages.cs')
 & $studioCompiler @studioCompileArgs
 if ($LASTEXITCODE -ne 0) { throw 'Kompilieren fehlgeschlagen.' }
 Write-Output 'Enshrouded Mod Studio.exe erstellt.'
