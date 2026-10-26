@@ -1,49 +1,48 @@
-ENSHROUDED MOD STUDIO 0.4.21
-Windows x64 mit .NET Framework 4.8. Das ZIP vollständig in einen neuen,
-beschreibbaren Ordner entpacken und Enshrouded Mod Studio.exe starten.
+﻿0.4.21 — Begleiterzauber für passend gepatchten Multiplayer
+Sechs eigene Begleiterzauber jetzt auf Dedicated Server und Spielclients
+anwendbar. Server und ALLE Clients benötigen denselben Stand und dieselben
+Begleiterwerte; MP-Kennung vergleichen. Server verteilt keine Dateien.
+Client ergänzt Menü,Namen und Symbole; Server erhält nur gemeinsame Spieldaten.
+Private Testversion, echter Multiplayer-Spieltest offen. Profile bleiben erhalten.
+Anleitung: MEHRSPIELER-BEGLEITER.txt. Nach Tool-Update Patch erneut anwenden.
 
-EINRICHTEN UND AKTUALISIEREN
-Die ursprüngliche Patcher-Laufzeit und der Legacy-Parser sind nicht im
-öffentlichen Download enthalten. „Altes Setup übernehmen“ wählen und den
-bisherigen vollständigen Mod-Studio-Ordner angeben. Passende Profile, aktive
-Archivbasen und geprüfte Laufzeitdateien werden übernommen; den alten Ordner
-mit seinen Sicherungen behalten. Eigene neue Studio-Module bleiben erhalten.
-EMM für Sprachinhalte liegt separat mit GPL-Lizenz und Quelltext bei.
-Herkunft und Ausschlüsse: THIRD-PARTY.md.
+0.4.20 — Nutztier-Zucht beschleunigen
+Neue Option unter Welt & Bauen: Zuchttempo 1–20 und Basischance 0–100 %.
+0 = Originalchance behalten. Alte Profile erhalten die neue Option ausgeschaltet.
+Nur unterstützte Nutztiere, keine Fische. Details: TIERZUCHT.txt.
+Private Version, Spieltest offen, keine Veröffentlichung. Patch erneut anwenden.
 
-Ab 0.4.10 kann „Update prüfen“ die angebotene neuere Version automatisch in
-einem neuen Nachbarordner installieren und das gesamte Data-Verzeichnis
-übernehmen. Von 0.4.9 das ZIP manuell entpacken und „Altes Setup übernehmen“
-verwenden. Keine alten Engine-Ordner über die neue Version kopieren.
-Ein Tool-Update schaltet keine neue Option ein und patcht kein Spiel.
-Die gewünschten Einstellungen prüfen und anschließend erneut
-„Patch anwenden / aktualisieren“ ausführen. Siehe UPDATES.txt.
+0.4.19 — Private Begleiter-Testversion
+Sechs benannte Beschwörungszauber bei Alden Crowley; neu Magier (Eisgeschoss),
+Skeletthund und Säbelzahntiger. Tiger mit eigenem transparentem Inventarsymbol.
+Werte gemeinsam einstellbar. Singleplayer-Prototyp, Spieltest offen.
+Anleitung: BESCHWOERUNGEN-TEST.txt. Nach Tool-Update Patch erneut anwenden.
+Hintergrundtests und Archiv-Readback bestanden; keine Veröffentlichung.
 
-SECHS BEGLEITERZAUBER
-Unter Welt & Bauen „Beschworene Begleiter anpassen“ ausschalten und
-„Sechs Begleiterzauber hinzufügen“ einschalten. Zauberskelett, Krieger,
-Eliteskelett, Magier, Hund und Tiger teilen Grundlimit, Dauer und Stärke.
-Herstellung bei Alden Crowley unter Munition — Spezial: je 5 Knochen und
-1 Ektoplasma-Fragment. Der Tiger hat ein eigenes Symbol.
-Für Mehrspieler Server UND ALLE Clients passend patchen und MP-Kennungen
-vergleichen. Der Server verteilt keine Dateien. Echte Mehrspielerwirkung,
-Besitzerzuordnung und Kampfverhalten sind noch nicht im Spiel bestätigt.
-Vollständige Anleitung: MEHRSPIELER-BEGLEITER.txt.
+ENSHROUDED MOD STUDIO 0.4.19 — PRIVATE SINGLEPLAYER-PROTOTYPEN
+Neu: Erloschenen Magier, Skeletthund und Säbelzahntiger als eigene Zauber.
+Einfaches Skelett, Skelettkrieger und Eliteskelett bleiben erhalten.
 
-NUTZTIER-ZUCHT
-Zuchttempo 1–20, Basischance 0–100 Prozent; 0 behält die Originalchance.
-Die Funktion wurde vom Benutzer im Spiel bestätigt. Partner, Futter,
-freie geschützte Betten und Weltlimit bleiben erforderlich. TIERZUCHT.txt.
+Welt & Bauen: „Sechs Begleiterzauber hinzufügen“ einschalten, die alte Option
+„Beschworene Begleiter anpassen“ ausschalten. Bei geschlossenem Spiel erneut
+„Patch anwenden / aktualisieren“ nutzen. Kein Basisreset nötig.
+Bei Alden Crowley unter „Munition — Spezial“: je 5 Knochen und 1 Ektoplasma-
+Fragment für einen ewigen Zauber. Die Zauber im Inventar behalten und wie
+normale Stab-Zauberladungen wechseln, um verschiedene Begleiter zu mischen.
 
-OFFENE PUNKTE
-Der gemeldete Materialzugriff aus normalen Kisten und Stationsinventaren
-ist nicht behoben. Auch ein nativer Servermod für automatisch vier
-Fertigkeitspunkte je Level mit unveränderten Clients ist nicht enthalten.
-Siehe LAGERZUGRIFF.txt und PUNKTE-SERVERMOD.txt.
+Alle sechs teilen Grundlimit, Dauer und Stärkefaktor aus dem Tool. Die neuen
+Kreaturen sind eigene Kopien; originale Weltgegner bleiben unverändert.
+Der Magier verwendet zunächst nur sein Eisgeschoss, ohne zusätzliche
+Totenköpfe und ohne Wiederbelebung. Hund und Tiger sind Begleiter auf Zeit,
+keine dauerhaft gezähmten Haustiere. Ein exakter zusätzlicher „Reaper“-Typ
+ist nicht eindeutig belegt; der vorhandene Elitekämpfer bleibt verfügbar.
+Die sechs Zauber verwenden vorerst das vorhandene Skelettzauber-Symbol.
 
-BEDIENUNG
-„Speichern“ sichert das Profil. „Patch anwenden / aktualisieren“ ändert die
-gewählte Spielinstallation; dafür Spiel bzw. Server vorher schließen.
-Ein Server auf einem anderen Rechner muss dort gepatcht werden.
-Nach einem Spielupdate eine passende neue Ausgangsbasis wählen.
-Details und Prüfgrenzen: README.md, EINSTELLUNGEN.txt und PRUEFBERICHT.txt.
+Nur lokaler Spielclient. Gameplay, Zielauswahl, Nachlaufen, Schaden und
+gemischte Gruppen prüft der Benutzer selbst. Kein Desktop-/Spielstart durch
+Codex, keine Veröffentlichung. Profile und vorhandene Basis bleiben erhalten.
+
+AUTOMATISCHE MANAGERÜBERGABE
+StudioPatch → Manager übernimmt → Spielerclient synchronisiert.
+Vorhandene lokale Clientbasis erforderlich; kein Upload von Spielerdateien.
+Manager 0.15.26 und Spielerclient 0.16.11 verwenden. Siehe CLIENTPAKETE.txt.

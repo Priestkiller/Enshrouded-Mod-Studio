@@ -1,7 +1,7 @@
-ENSHROUDED MOD STUDIO 0.4.21 — LAGERDIAGNOSE
+Enshrouded - Lagerdiagnose als lokales Zusatzpaket
 
-1. Auf DEM SERVERRECHNER das vollständige Studio einrichten und die passende
-   Laufzeit übernehmen. Lager-Diagnose.cmd und Lager-Diagnose.js
+1. Auf DEM SERVERRECHNER die ZIP direkt in den vorhandenen Mod-Studio-Ordner
+   0.4.10, 0.4.12 oder diese lokale 0.4.13 entpacken. Lager-Diagnose.cmd und Lager-Diagnose.js
    liegen danach neben der Mod-Studio-EXE, nicht im Ordner engine.
 2. Lager-Diagnose.cmd doppelklicken. Ein eindeutig erkannter laufender
    enshrouded_server.exe hat Vorrang vor dem gespeicherten Tool-Pfad.

@@ -58,10 +58,17 @@ auf Server und Clients ist der nächste kontrollierte Test, kein garantierter Fi
 Die neue Funktion wurde nicht durch einen Spieler im laufenden Spiel bestätigt.
 
 BELEGE UND QUELLEN
-Die damaligen Test-Arbeitsdaten sind nicht Bestandteil dieses öffentlichen Pakets.
+Pruefungen/Zaehmung-Datenbelege-0.4.9.json
+Pruefungen/Zaehmung-Zusammenfassung-0.4.9.json
+Pruefungen/Zaehmung-Befund-0.4.9.txt
+Pruefungen/Zaehmung-Belegpruefung-0.4.9.json
+Pruefungen/Zaehmung-Tests-0.4.9.json
+Pruefungen/Zaehmung-Clientvorschau-0.4.9.json
+Pruefungen/Zaehmung-Serverpatch-0.4.9.json
+Pruefungen/Zaehmung-Server-Aus-0.4.9.json
 
 Quelle der Schrittzahl: lokale Reflection und exportierte Tier-/Futterdaten
-der Revision 1273043.
+der Revision 1273043; die konkreten JSON-Pointer stehen in den Datenbelegen.
 Der eigene Ergänzungshandler liegt offen unter engine/single-step-taming.js.
 
 Offizielle Serverkonfiguration, hier nur für die getrennte Verlustregel:

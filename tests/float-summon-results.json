@@ -1,0 +1,93 @@
+{
+  "passed": 21,
+  "failed": 0,
+  "node": "v24.19.0",
+  "syntheticOnly": true,
+  "gameStarted": false,
+  "checks": [
+    {
+      "name": "server: fractional cast time is normalized before hashing and survives exact item/stack verification",
+      "passed": true
+    },
+    {
+      "name": "client: fractional cast time is normalized before hashing and survives exact item/stack verification",
+      "passed": true
+    },
+    {
+      "name": "Rejects invalid/overflow FloatImpactConfig value null before creating files",
+      "passed": true
+    },
+    {
+      "name": "Rejects invalid/overflow FloatImpactConfig value \"0.4\" before creating files",
+      "passed": true
+    },
+    {
+      "name": "Rejects invalid/overflow FloatImpactConfig value true before creating files",
+      "passed": true
+    },
+    {
+      "name": "Rejects invalid/overflow FloatImpactConfig value {} before creating files",
+      "passed": true
+    },
+    {
+      "name": "Rejects invalid/overflow FloatImpactConfig value [] before creating files",
+      "passed": true
+    },
+    {
+      "name": "Rejects invalid/overflow FloatImpactConfig value 1e+100 before creating files",
+      "passed": true
+    },
+    {
+      "name": "Rejects invalid/overflow FloatImpactConfig value -1e+100 before creating files",
+      "passed": true
+    },
+    {
+      "name": "Rejects missing FloatImpactConfig payload",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed native primitive",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed native primitive size",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed native impact size",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed native value offset",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed native value type",
+      "passed": true
+    },
+    {
+      "name": "Exact verifier rejects nearby float tampering",
+      "passed": true
+    },
+    {
+      "name": "Exact verifier rejects unrounded value restored",
+      "passed": true
+    },
+    {
+      "name": "Exact verifier rejects integer payload changed",
+      "passed": true
+    },
+    {
+      "name": "Exact verifier rejects native integer ID changed",
+      "passed": true
+    },
+    {
+      "name": "Exact verifier rejects unrelated float changed",
+      "passed": true
+    },
+    {
+      "name": "Exact verifier rejects GUID changed",
+      "passed": true
+    }
+  ]
+}

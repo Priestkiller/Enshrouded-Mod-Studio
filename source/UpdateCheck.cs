@@ -30,7 +30,7 @@ namespace EnshroudedStudio
 
     public static class UpdateCheck
     {
-        public const string InstalledVersion = "0.4.24";
+        public const string InstalledVersion = "0.4.25";
         public const int TimeoutMilliseconds = 10000;
         public const int MaximumResponseBytes = 1024 * 1024;
         private static readonly Regex RepositoryPattern = new Regex(@"^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}/[A-Za-z0-9][A-Za-z0-9_.-]{0,99}\z", RegexOptions.CultureInvariant);

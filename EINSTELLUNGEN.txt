@@ -1,10 +1,19 @@
-ENSHROUDED MOD STUDIO 0.4.21 — EINSTELLUNGEN
-48 Optionen mit 76 Feldern. Maßgeblich sind Zielrolle, Prüfstatus und Grenzen.
-Sechs Begleiterzauber: Server UND ALLE Clients passend patchen, MP-Kennung
-vergleichen. Echter Mehrspieler-Spieltest offen. MEHRSPIELER-BEGLEITER.txt.
-Nutztier-Zucht: vom Benutzer im Spiel bestätigt; siehe TIERZUCHT.txt.
-Lager-Materialzugriff und vier Fertigkeitspunkte nur per Server bleiben ungelöst.
-Neue Optionen werden bei übernommenen Profilen ausgeschaltet ergänzt.
+﻿0.4.21 — Begleiterzauber für passend gepatchten Multiplayer
+Sechs eigene Begleiterzauber jetzt auf Dedicated Server und Spielclients
+anwendbar. Server und ALLE Clients benötigen denselben Stand und dieselben
+Begleiterwerte; MP-Kennung vergleichen. Server verteilt keine Dateien.
+Client ergänzt Menü,Namen und Symbole; Server erhält nur gemeinsame Spieldaten.
+Private Testversion, echter Multiplayer-Spieltest offen. Profile bleiben erhalten.
+Anleitung: MEHRSPIELER-BEGLEITER.txt. Nach Tool-Update Patch erneut anwenden.
+
+0.4.20 — Nutztier-Zucht beschleunigen
+Neue Option unter Welt & Bauen: Zuchttempo 1–20 und Basischance 0–100 %.
+0 = Originalchance behalten. Alte Profile erhalten die neue Option ausgeschaltet.
+Nur unterstützte Nutztiere, keine Fische. Details: TIERZUCHT.txt.
+Private Version, Spieltest offen, keine Veröffentlichung. Patch erneut anwenden.
+
+ENSHROUDED MOD STUDIO 0.4.15 — EINSTELLUNGEN
+Private Testversion. Nicht veröffentlicht.
 
 Spieler
 
@@ -302,20 +311,6 @@ Grenzen: Beide Faktoren wirken zusammen. Menge 2 und Geschwindigkeit 2 entsprech
   - Produktionsgeschwindigkeit
     1 behält den normalen Abstand bei. 2 halbiert die Wartezeit und erzeugt Waren doppelt so häufig. Dieser Faktor wirkt zusätzlich zum Mengenfaktor.
 
-Nutztier-Zucht beschleunigen
-Schlüssel: world.adjustAnimalBreeding
-Status: Vom Benutzer im Spiel bestätigt · automatische Datenprüfungen bestanden
-Beschreibung: Lässt unterstützte Nutztiere häufiger auf Nachwuchs prüfen. Die Erfolgschance kannst du unabhängig davon festlegen.
-Einsatz: Wenn du bei bereits züchtbaren Nutztieren kürzer auf Nachwuchs warten möchtest. Die Warenproduktion bleibt eine separate Einstellung.
-Anwendung: Singleplayer: lokalen Spielordner wählen. Dedicated Server: dessen eigenen Installationsordner wählen. Die Fortpflanzungsdaten sind serverseitig markiert; der Betrieb mit unveränderten Clients ist noch im Spiel zu bestätigen.
-Wirkung: Verkürzt den Abstand zwischen Fortpflanzungsprüfungen und setzt auf Wunsch die Basiserfolgschance. Verändert nur vorhandene Zuchtparameter unterstützter Nutztiere. Fische, Katzen, Hunde und andere ausgeschlossene Haustiere werden nicht bearbeitet.
-Beispiel: Ein ursprünglicher Prüfungsabstand von 30 Minuten wird mit Faktor 5 zu 6 Minuten. Chance 0 behält den Originalwert bei; Chance 75 hinterlegt 75 Prozent Basischance je geeignetem Versuch.
-Grenzen: Ein passender Partner, Nahrung, geschützte freie Schlafplätze und das Weltlimit bleiben erforderlich. Beim Erreichen des Weltlimits kann die wirksame Chance bis auf null sinken. Keine neuen Tiere ohne vorhandene Fortpflanzung und keine direkten Spielstandänderungen. Bereits laufende, gespeicherte Timer können zunächst weiterlaufen. Die Zuchtwirkung wurde vom Benutzer bestätigt; die Rückmeldung belegt nicht jede Tierart und jeden vorhandenen gespeicherten Timer. Wüstengürteltiere werden wegen abweichender Gegnerkomponenten vorerst ausgeschlossen.
-  - Zuchttempo (Faktor)
-    1 behält den ursprünglichen Prüfungsabstand bei. 2 halbiert ihn, 5 teilt ihn durch fünf. Das beschleunigt die Versuche; es garantiert keine feste Zahl an Jungtieren.
-  - Erfolgschance je Versuch (%) · 0 = Original
-    0 behält die ursprüngliche Chance der Tierart bei. 1 bis 100 setzt die Basischance in Prozent; 100 bedeutet höchstmögliche Basischance, nicht garantierten Nachwuchs. Weltlimit und übrige Zuchtbedingungen gelten weiterhin. In den geprüften Nutztier-Vorlagen liegt die Originalchance bereits bei 100 Prozent; ein kleinerer Wert verringert sie.
-
 Beschworene Begleiter anpassen
 Schlüssel: world.adjustSummonedCompanions
 Status: Lokale Testfunktion · Spieltest offen
@@ -324,7 +319,7 @@ Einsatz: Für Tests einzelner Skeletttypen oder einer gemischten Skelettgruppe i
 Anwendung: Singleplayer: den vollständigen Spielordner mit enshrouded.exe wählen. Dedicated Server: den vollständigen Serverordner mit enshrouded_server.exe wählen. Unbekannte oder zusammengelegte Installationen bleiben gesperrt. Die praktische Wirkung ist noch im Spiel zu prüfen; insbesondere der Serverbetrieb mit unveränderten Clients ist nicht bestätigt.
 Wirkung: Vier vorhandene Skelettzauber werden vorbereitet. Bei einer festen Begleitervariante beschwören alle vier denselben Typ. „Im Spiel per Zauber wählen“ ordnet den Zaubern unterschiedliche Typen zu, die denselben Skeleton-Pool und dasselbe Grundlimit nutzen. Die Dateien enthalten keine Umwandlung bereits aktiver Begleiter beim Zauberwechsel. Ob eine gemischte Gruppe korrekt folgt, kämpft und das Limit einhält, muss praktisch getestet werden.
 Beispiel: Gemischte Gruppe: „Im Spiel per Zauber wählen“ einstellen und anwenden. Im Spiel zuerst den ewigen Skelettzauber mit Itemlevel 28 für einen Krieger verwenden. Danach zum ewigen Skelettzauber mit Itemlevel 45 wechseln und ein Eliteskelett beschwören. Mit dem Zauber mit Itemlevel 17 oder 44 kommt das Original hinzu. Grundlimit 4 gilt gemeinsam für die Gruppe, vor zusätzlichen Talenten.
-Grenzen: Der Typ wird durch den ausgewählten vorhandenen Zaubergegenstand bestimmt. Namen, Symbole, Rezepte und Freischaltungen dieser Zauber bleiben erhalten. Besitzt du erst einen Skelettzauber, kannst du mit einer festen Variante zunächst dessen Krieger- oder Elitezuordnung testen; zum Wechseln im Spiel brauchst du die unterschiedlichen Zaubergegenstände. Ein zusätzliches Auswahlmenü ist nicht enthalten. Krieger und Elite teilen Vorlagen mit Nekromantie-Edelsteinbegleitern, die ebenfalls Dauer, Stärke und Skeleton-Pool übernehmen. Die tatsächliche gemischte Gruppe und effektive Kampfwerte sind noch nicht im Spiel bestätigt. Für die neue Option „Sechs Begleiterzauber hinzufügen“ diesen alten Variantenmodus ausschalten.
+Grenzen: Der Typ wird durch den ausgewählten vorhandenen Zaubergegenstand bestimmt. Namen, Symbole, Rezepte und Freischaltungen dieser Zauber bleiben erhalten. Besitzt du erst einen Skelettzauber, kannst du mit einer festen Variante zunächst dessen Krieger- oder Elitezuordnung testen; zum Wechseln im Spiel brauchst du die unterschiedlichen Zaubergegenstände. Ein zusätzliches Auswahlmenü ist nicht enthalten. Krieger und Elite teilen Vorlagen mit Nekromantie-Edelsteinbegleitern, die ebenfalls Dauer, Stärke und Skeleton-Pool übernehmen. Die tatsächliche gemischte Gruppe und effektive Kampfwerte sind noch nicht im Spiel bestätigt. Für die neue Option „Drei eigene Skelettzauber hinzufügen“ diesen alten Variantenmodus ausschalten.
   - Beschwörungs-Grundlimit
     Absolutes Grundlimit vor zusätzlichen Talenten. Vorgabe 4 ist keine Garantie für genau vier aktive Begleiter: Talente und ein gemeinsamer 12er-Pool können die tatsächliche Endzahl beeinflussen.
   - Dauer in Sekunden
@@ -333,17 +328,16 @@ Grenzen: Der Typ wird durch den ausgewählten vorhandenen Zaubergegenstand besti
     Multipliziert den vorgesehenen DamageMod und passt die HP-Levelskalierung der Begleiter an. 1 lässt die zusätzliche Stärkeskalierung unverändert. 2 verspricht weder doppelte sichtbare Lebenspunkte noch einen im Spiel gemessenen doppelten Schaden.
   - Begleitervariante
     Für eine gemischte Gruppe „Im Spiel per Zauber wählen“ einstellen: Itemlevel 17/44 → Original; ewiger Zauber mit Itemlevel 28 → Krieger; ewiger Zauber mit Itemlevel 45 → Elite. Im Spiel den entsprechenden vorhandenen Zauber auswählen und neu beschwören. Die Zuordnungen 0–2 legen einen festen Typ für alle vier Zauber fest. Bereits beschworene Skelette werden vom Datenpatch nicht beim Ausrüsten eines anderen Zaubers umgewandelt. Praktischer Gruppentest steht aus.
-    Auswahl: 0 = Zauberskelett (Original); 1 = Skelettkrieger; 2 = Eliteskelett; 3 = Im Spiel per Zauber wählen
 
-Sechs Begleiterzauber hinzufügen
+Drei eigene Skelettzauber hinzufügen
 Schlüssel: world.enableSkeletonSummoningSpells
-Status: Client + Server · Mehrspieler-Spieltest offen
-Beschreibung: Eigene ewige Zauber für das einfache Skelett, den Skelettkrieger, das Eliteskelett, einen erloschenen Magier, einen Skeletthund und einen Säbelzahntiger. Wähle und mische sie direkt über die normale Zauberauswahl im Spiel. Mehrspieler-Test mit passend gepatchtem Server und allen Spielclients; Spieltest offen.
-Einsatz: Zum Test einer gemischten Begleitergruppe im Solo-Spiel, als LAN-Host oder im Mehrspieler mit passend gepatchtem Server und allen Spielclients. Die drei neuen Kreaturen sind eigene Kopien vorhandener Gegner, mit verbündeter Fraktion und Folge-KI vorbereitet.
-Anwendung: Für eindeutig erkannte, vollständige Spielclient- und Dedicated-Serverordner freigegeben. Für Mehrspieler den Server UND ALLE Spielclients mit demselben Spielbuild sowie gleichem Grundlimit, gleicher Dauer und gleichem Stärkefaktor patchen. Eigene Items, Symbole und Namen brauchen die passenden Dateien auf jedem Spielclient. Der Serverpatch verteilt keine Dateien an Clients. Solo-Spiel und LAN-Host verwenden den gepatchten Spielclient. Unbekannte oder gemischte Installationsordner bleiben gesperrt.
-Wirkung: Ergänzt sechs benannte ewige Zauber bei Alden Crowley unter Munition — Spezial, jeweils für 5 Knochen und 1 Ektoplasma-Fragment. Alle sechs teilen das eingestellte Grundlimit, die Dauer und den Stärkefaktor. Server und Spielclient erhalten die gemeinsamen Item-, Rezept-, Zauber- und Begleiterdaten; jeder Spielclient erhält zusätzlich die UI-, Symbol- und Namensdateien. Der Säbelzahntiger hat ein eigenes Symbol; die übrigen Zauber verwenden das vorhandene Skelettzauber-Symbol.
-Beispiel: Bei Alden einen Skeletthund-Zauber und einen Säbelzahntiger-Zauber herstellen und im Inventar behalten. Einen Zauberstab auswählen, mit rechter Maustaste zielen, den gewünschten Zauber mit Mausrad oder E wechseln und mit linker Maustaste beschwören. Danach den anderen Zauber wählen, um eine gemischte Gruppe zu testen.
-Grenzen: Mehrspieler-Teststand; Verhalten im laufenden Spiel, Synchronisation und Kampfverhalten sind noch zu prüfen. Ein erfolgreicher Datenpatch bestätigt keine funktionierende Mehrspielerpartie. Der Magier behält sein Eisgeschoss, beschwört aber zunächst keine zusätzlichen Totenköpfe. Seine ursprüngliche feindliche Beschwörung und Wiederbelebung sind in einer eigenen Angriffsvorlage entfernt. Hund und Tiger sind Kampfbegleiter auf Zeit, keine dauerhaft gezähmten Tiere. Weltgegner werden nicht umgestellt. Die drei Grundskelette teilen weiterhin Vorlagen mit vorhandenen Zaubern und Nekromantie-Edelsteinen. Die alte Option „Beschworene Begleiter anpassen“ ausschalten. Vor dem Deaktivieren auf allen beteiligten Installationen eigene Zaubergegenstände aus Inventar und Lagern entfernen und die passenden Patchstände gemeinsam zurücknehmen.
+Status: Singleplayer-Test · Spieltest offen
+Beschreibung: Fügt drei getrennte Beschwörungszauber mit eigenen Namen hinzu: Zauberskelett, Skelettkrieger und Eliteskelett. Wähle sie direkt in der normalen Zauberauswahl des Spiels und beschwöre verschiedene Typen nacheinander.
+Einsatz: Für den Singleplayer-Test einer gemischten Skelettgruppe mit drei eigenen Zaubern. Die Zuordnung hängt nicht von verschiedenen Stufen der vorhandenen Skelettzauber ab.
+Anwendung: Nur für den vollständigen lokalen Spielordner mit enshrouded.exe freigegeben. Dedicated Server und unbekannte oder gemischte Ziele bleiben für diese neue Testfunktion gesperrt.
+Wirkung: Ergänzt drei eigene ewige Zaubergegenstände mit getrennten Symbolen, Namen und Beschreibungen auf Deutsch und Englisch. Herstellung bei freigeschaltetem Alden Crowley an einem geschützten Aufstellort für jeweils 5 Knochen und 1 Ektoplasma-Fragment. Die drei Typen teilen sich Grundlimit, Dauer und Stärkefaktor. Die vorhandenen Level-Zauber werden dabei nicht umgeleitet.
+Beispiel: Nach dem Anwenden und Spielneustart bei Alden Crowley die drei Zauber jeweils für 5 Knochen und 1 Ektoplasma-Fragment herstellen und im Inventar behalten. Einen Stab für Zauberladungen auswählen, rechte Maustaste zum Zielen halten und mit Mausrad oder E den gewünschten Zauber wählen; linke Maustaste wirkt ihn. Erst einen Skelettkrieger, danach ein Eliteskelett beschwören. Tatsächliche Freischaltung, Anzeige und gemischte Gruppe müssen noch im Spiel bestätigt werden.
+Grenzen: Die Funktion ist ein lokaler Singleplayer-Prototyp. Die vorhandene Option „Beschworene Begleiter anpassen“ muss dabei ausgeschaltet sein. Die Begleitervorlagen werden mit dem ursprünglichen ersten Skelettzauber und Nekromantie-Edelsteinen geteilt; deren Begleiter übernehmen ebenfalls die geänderten Werte. Das gemeinsame Grundlimit betrifft den nativen Skeleton-Pool. Vor dem späteren Ausschalten eigene Zaubergegenstände aus Charakterinventar und Lagern entfernen; Spielstände werden vom Tool nicht bereinigt. Eine funktionierende Serverübertragung wird nicht behauptet.
   - Gemeinsames Beschwörungs-Grundlimit
     Absolutes Grundlimit vor zusätzlichen Talenten. Vorgabe 4 ist keine Garantie für genau vier aktive Begleiter: Talente und ein gemeinsamer 12er-Pool können die tatsächliche Endzahl beeinflussen.
   - Dauer in Sekunden
@@ -648,4 +642,3 @@ Grenzen: Keine garantierte Verdopplung jeder Itemmenge. Quellen ohne Zufallsplä
     2 verdoppelt passende Zufallsplätze, begrenzt auf 16 und die Truhenkapazität. 1 belässt sie. Über 1 nicht zugleich mit „Zufallsbeute je Truhe festlegen“ verwenden.
 
 Werkzeuge
-
