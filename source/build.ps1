@@ -25,6 +25,7 @@ $studioCompileArgs += @((Join-Path $PSScriptRoot 'StackStatus.cs'), (Join-Path $
 $studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateCheck.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateInstaller.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'RuntimeImport.cs')
+$studioCompileArgs += @((Join-Path $PSScriptRoot 'OriginalRuntimeReader.cs'), (Join-Path $PSScriptRoot 'RuntimeSetup.cs'), (Join-Path $PSScriptRoot 'RuntimeSetupUi.cs'))
 $studioCompileArgs += @((Join-Path $PSScriptRoot 'ToolHandoff.cs'), (Join-Path $PSScriptRoot 'SkillReview.cs'))
 $studioCompileArgs += (Join-Path $PSScriptRoot 'ClientPackages.cs')
 & $studioCompiler @studioCompileArgs

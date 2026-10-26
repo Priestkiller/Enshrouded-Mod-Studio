@@ -1,3 +1,37 @@
+MOD STUDIO 0.4.26 – ERSTEINRICHTUNG UND GESCHÜTZTE ORIGINALBASIS
+
+Neue Installation: Patcher einrichten verwenden. Ein alter Studioordner ist
+nicht erforderlich. Unterstützt wird das selbst beschaffte Originalpaket 1.2.3;
+die Einrichtung liest es als Daten und ergänzt nur geprüfte Runtime-Dateien.
+Ist die Runtime bereits vollständig hashgeprüft vorhanden, ist kein Import nötig.
+Altes Setup übernehmen bleibt eine getrennte, optionale Umzugsfunktion.
+
+Bereits modifizierte Serverarchive dürfen nicht als neue Originalbasis gelten.
+Ohne geeignete Basis stoppt Studio vor dem Modifizieren mit einem klaren Hinweis.
+Eine eigene private Originalreferenz für exakt denselben Serverstand kann nach
+Prüfung von EXE und Archivhashes als Basis übernommen werden. Vorhandener
+Studiozustand bleibt geschützt. Eine alte Basis gilt nicht für eine neue Version.
+Das öffentliche Paket enthält weder RecoveryBases noch Original-Spielarchive.
+Für einen frischen Aufbau saubere Dateien dieser Spielversion oder die eigene
+passende Basis verwenden. Einzelheiten: ERSTINSTALLATION.txt.
+
+Für die automatische lokale Übergabe Studio 0.4.26, UGSM Manager 0.15.28 und
+Spielerclient 0.16.13 verwenden. Weiterhin ist eine vorhandene getrennte lokale
+Clientinstallation desselben Spielbuilds erforderlich; es gibt keinen Upload.
+80 native Hintergrundprüfungen für Abbruch, Basisübernahme und zwei identische
+Vollprofil-Patchläufe bestanden. Kein Spiel oder produktiver Server gestartet.
+
+ERSTINSTALLATION OHNE ALTEN STUDIOORDNER
+Das öffentliche Studio-ZIP vollständig entpacken und Patcher einrichten wählen.
+Unterstützt wird das selbst beschaffte Originalpaket 1.2.3 mit passendem Parser.
+Die EXE wird dabei nur als Daten gelesen; alle Programmdateien werden anhand
+festgelegter Prüfsummen geprüft. Keine Profile oder alten Basen erforderlich.
+Ein bereits vollständig eingerichteter Patcher braucht keinen erneuten Import.
+Altes Setup übernehmen ist nur für vorhandene Profile/Basen beim Umziehen da.
+Aktuelle andere Originalversionen werden nicht ungeprüft akzeptiert.
+
+BISHERIGE UPDATEHINWEISE
+
 ENSHROUDED MOD STUDIO 0.4.11 — TOOL-UPDATES UND DATENUEBERNAHME
 
 ERSTER WECHSEL VON 0.4.9
@@ -38,10 +72,10 @@ Data/installed-tool-update.json; die Weiterleitung gilt nur für eine neuere
 Version mit unveränderter EXE. Den alten Ordner zunächst aufbewahren.
 
 Das öffentliche ZIP enthält die eigene Studio-Anwendung und eigene Quellen.
-Die ursprüngliche Patcher-/Parser-Laufzeit wird aus einer vorhandenen
+Die ursprüngliche Patcher-/Parser-Laufzeit wird mit Patcher einrichten aus dem
+selbst beschafften Originalpaket 1.2.3 ergänzt oder aus einer vorhandenen
 vollständigen Installation übernommen und anhand ihrer erwarteten Hashes
-geprüft. Bei einer fehlenden oder inkompatiblen Laufzeit ist eine manuelle
-Übernahme erforderlich. Es wird keine allgemeine Weitergabeerlaubnis für
+geprüft. Es wird keine allgemeine Weitergabeerlaubnis für
 diese Fremdkomponenten behauptet; siehe THIRD-PARTY.md.
 
 FEHLER UND WIEDERHERSTELLUNG

@@ -4,7 +4,7 @@
 
 Das Repository und das öffentliche Studio-ZIP enthalten weder `engine/enshrouded-patcher.exe` noch die ursprünglichen Module unter `engine/vendor/`. Auch der bisher verwendete `engine/bin/kfc-parser.exe` und seine Kompatibilitätsdatei werden nicht mitgeliefert. Spielarchive, exportierte Spielressourcen, Profile, aktive Einstellungen und Sicherungen sind ausgeschlossen.
 
-Der Studio-Code verwendet diese Werkzeuge als getrennte Prozesse. **Altes Setup übernehmen** und die automatische Updateübernahme kopieren fehlende passende Laufzeitdateien aus einer vorhandenen vollständigen Installation und prüfen die erwarteten Dateihashes. Eigene aktuelle Studio-Module werden dadurch nicht mit älteren Dateien überschrieben. Die Vendor-Prüfsummen bleiben im Manifest enthalten, damit die übernommene Laufzeit geprüft werden kann.
+Der Studio-Code verwendet diese Werkzeuge als getrennte Prozesse. **Patcher einrichten** ergänzt fehlende passende Laufzeitdateien aus dem selbst beschafften geprüften Originalpaket 1.2.3. **Altes Setup übernehmen** und die automatische Updateübernahme können sie aus einer vorhandenen vollständigen Installation übernehmen. Alle Wege prüfen die erwarteten Dateihashes. Eigene aktuelle Studio-Module werden dadurch nicht mit älteren Dateien überschrieben. Die Vendor-Prüfsummen bleiben im Manifest enthalten, damit die übernommene Laufzeit geprüft werden kann.
 
 Dem vorliegenden Original-Patcher-Paket lag kein Lizenztext für dessen EXE oder Bytecode bei. Deshalb wird für diese Dateien keine Lizenz oder allgemeine Weitergabeerlaubnis behauptet und keine öffentliche Kopie bereitgestellt.
 
@@ -19,3 +19,13 @@ Die zugehörige Workspace-Metadatei nennt `GPL-3.0-or-later`. Der Lizenztext lie
 EMM dient ausschließlich als separater Offline-Prozess auf Arbeitskopien für Sprachinhalte. Aus diesem Projekt wird keine Runtime-DLL ins Spiel installiert. Diese Beigabe ändert die oben beschriebenen Ausschlüsse für den ursprünglichen Patcher und den Legacy-Parser nicht.
 
 Die Hinweise übertragen keine Rechte an Enshrouded, dem ursprünglichen Patcher oder anderen Fremdkomponenten.
+
+## Private Originalreferenzen
+
+`RecoveryBases` mit persönlich vorhandenen Original-Spielarchiven ist ausschließlich eine lokale Basisquelle für denselben geprüften Dedicated-Serverstand. Dieser Ordner, seine Referenzbeschreibung und seine Archive gehören weder ins öffentliche Repository noch ins öffentliche ZIP. Der Paketbuild verweigert solche Inhalte. Es wird keine Weitergabeerlaubnis für Spielarchive behauptet.
+
+## Separate lokale Erstinstallation
+
+**Patcher einrichten** liest ein vom Nutzer selbst beschafftes Originalpaket 1.2.3 oder dessen EXE mit passendem Parser. Der PKG-Snapshot wird als Daten gelesen und ausschließlich die bestehenden SHA256-geprüften Runtime-Dateien werden lokal ergänzt. Es werden keine Profile, Basen oder Spielarchive importiert und keine Originalprogramme bei der Einrichtung gestartet.
+
+Die offizielle Herkunft ist [KenUaena: Enshrouded Patcher](https://www.nexusmods.com/enshrouded/mods/91). Die dortigen Berechtigungsangaben erlauben keinen Reupload auf andere Seiten. Das öffentliche Studio-Paket enthält daher weiterhin keine Original-Patcher-EXE, Vendor-Module oder den Legacy-Parser. Die Downloadseite kann eine neuere, noch nicht kompatibel geprüfte Version anbieten; ein automatisches Übernehmen beliebiger aktueller Pakete findet nicht statt.

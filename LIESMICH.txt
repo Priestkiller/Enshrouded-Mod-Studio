@@ -1,48 +1,22 @@
-﻿0.4.21 — Begleiterzauber für passend gepatchten Multiplayer
-Sechs eigene Begleiterzauber jetzt auf Dedicated Server und Spielclients
-anwendbar. Server und ALLE Clients benötigen denselben Stand und dieselben
-Begleiterwerte; MP-Kennung vergleichen. Server verteilt keine Dateien.
-Client ergänzt Menü,Namen und Symbole; Server erhält nur gemeinsame Spieldaten.
-Private Testversion, echter Multiplayer-Spieltest offen. Profile bleiben erhalten.
-Anleitung: MEHRSPIELER-BEGLEITER.txt. Nach Tool-Update Patch erneut anwenden.
+ENSHROUDED MOD STUDIO 0.4.26
 
-0.4.20 — Nutztier-Zucht beschleunigen
-Neue Option unter Welt & Bauen: Zuchttempo 1–20 und Basischance 0–100 %.
-0 = Originalchance behalten. Alte Profile erhalten die neue Option ausgeschaltet.
-Nur unterstützte Nutztiere, keine Fische. Details: TIERZUCHT.txt.
-Private Version, Spieltest offen, keine Veröffentlichung. Patch erneut anwenden.
+Du brauchst keinen alten Studioordner.
+Bei einer öffentlichen Erstinstallation zuerst Patcher einrichten wählen und
+das selbst beschaffte Originalpaket 1.2.3 auswählen. Diese Funktion ergänzt
+nur geprüfte Programmdateien; keine Profile, Basen oder Spieldateien.
+Eine bereits vollständig eingerichtete Runtime benötigt keinen erneuten Import.
 
-0.4.19 — Private Begleiter-Testversion
-Sechs benannte Beschwörungszauber bei Alden Crowley; neu Magier (Eisgeschoss),
-Skeletthund und Säbelzahntiger. Tiger mit eigenem transparentem Inventarsymbol.
-Werte gemeinsam einstellbar. Singleplayer-Prototyp, Spieltest offen.
-Anleitung: BESCHWOERUNGEN-TEST.txt. Nach Tool-Update Patch erneut anwenden.
-Hintergrundtests und Archiv-Readback bestanden; keine Veröffentlichung.
+Spielclient- oder Serverordner wählen, Optionen einstellen, Spiel bzw. Server
+schließen und Patch anwenden / aktualisieren drücken. Beim ersten Patch wird
+die unveränderte aktuelle Ausgangsbasis nach Bestätigung gesichert.
+Bereits modifizierte Archive ohne Originalbasis werden vor dem Modifizieren
+gestoppt. Saubere Dateien derselben Spielversion oder die eigene passende Basis
+verwenden. Eine vorhandene private Originalreferenz wird nur beim exakt
+passenden Dedicated-Serverstand übernommen. Das öffentliche ZIP enthält keine
+Original-Spielarchive oder RecoveryBases.
 
-ENSHROUDED MOD STUDIO 0.4.19 — PRIVATE SINGLEPLAYER-PROTOTYPEN
-Neu: Erloschenen Magier, Skeletthund und Säbelzahntiger als eigene Zauber.
-Einfaches Skelett, Skelettkrieger und Eliteskelett bleiben erhalten.
-
-Welt & Bauen: „Sechs Begleiterzauber hinzufügen“ einschalten, die alte Option
-„Beschworene Begleiter anpassen“ ausschalten. Bei geschlossenem Spiel erneut
-„Patch anwenden / aktualisieren“ nutzen. Kein Basisreset nötig.
-Bei Alden Crowley unter „Munition — Spezial“: je 5 Knochen und 1 Ektoplasma-
-Fragment für einen ewigen Zauber. Die Zauber im Inventar behalten und wie
-normale Stab-Zauberladungen wechseln, um verschiedene Begleiter zu mischen.
-
-Alle sechs teilen Grundlimit, Dauer und Stärkefaktor aus dem Tool. Die neuen
-Kreaturen sind eigene Kopien; originale Weltgegner bleiben unverändert.
-Der Magier verwendet zunächst nur sein Eisgeschoss, ohne zusätzliche
-Totenköpfe und ohne Wiederbelebung. Hund und Tiger sind Begleiter auf Zeit,
-keine dauerhaft gezähmten Haustiere. Ein exakter zusätzlicher „Reaper“-Typ
-ist nicht eindeutig belegt; der vorhandene Elitekämpfer bleibt verfügbar.
-Die sechs Zauber verwenden vorerst das vorhandene Skelettzauber-Symbol.
-
-Nur lokaler Spielclient. Gameplay, Zielauswahl, Nachlaufen, Schaden und
-gemischte Gruppen prüft der Benutzer selbst. Kein Desktop-/Spielstart durch
-Codex, keine Veröffentlichung. Profile und vorhandene Basis bleiben erhalten.
-
-AUTOMATISCHE MANAGERÜBERGABE
-StudioPatch → Manager übernimmt → Spielerclient synchronisiert.
-Vorhandene lokale Clientbasis erforderlich; kein Upload von Spielerdateien.
-Manager 0.15.26 und Spielerclient 0.16.11 verwenden. Siehe CLIENTPAKETE.txt.
+Altes Setup übernehmen ist optional zum Umziehen vorhandener Profile/Basen.
+Weitere Erklärung: ERSTINSTALLATION.txt. Updates: UPDATES.txt.
+Automatische lokale Übergabe: Studio patcht, Manager 0.15.28 übernimmt,
+Spielerclient 0.16.13 synchronisiert. Eine getrennte lokale Clientinstallation
+desselben Spielbuilds bleibt für Serverpakete erforderlich. Kein Upload.

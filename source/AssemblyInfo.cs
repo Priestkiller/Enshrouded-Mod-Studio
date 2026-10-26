@@ -5,6 +5,6 @@ using System.Runtime.Versioning;
 [assembly: AssemblyTitle("Enshrouded Mod Studio")]
 [assembly: AssemblyProduct("Enshrouded Mod Studio")]
 [assembly: AssemblyDescription("Lokale grafische Konfiguration für den mitgelieferten Enshrouded-Patcher.")]
-[assembly: AssemblyVersion("0.4.25.0")]
-[assembly: AssemblyFileVersion("0.4.25.0")]
+[assembly: AssemblyVersion("0.4.26.0")]
+[assembly: AssemblyFileVersion("0.4.26.0")]
 [assembly: ComVisible(false)]

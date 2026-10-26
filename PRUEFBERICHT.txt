@@ -1,3 +1,34 @@
+PRÜFBERICHT 0.4.26 – ERSTEINRICHTUNG UND ORIGINALBASIS
+
+80 native Hintergrundprüfungen mit echten isolierten Serverdatenkopien bestanden:
+- Brandneues Data-Verzeichnis, bereits gepatchte aktuelle Archive, kein Altsetup.
+- Ohne Originalreferenz früher Abbruch unmodified_basis_required vor ApplyMods.
+  Die aktuellen Archive und alle ursprünglichen Testeingaben bleiben unverändert.
+- Mit passender eigener Originalreferenz wird eine geprüfte Basis übernommen.
+  Ein vorhandener Studiozustand wird nicht ersetzt.
+- Vollprofil mit 38 eingeschalteten Einstellungen zweimal erfolgreich angewendet.
+  In jedem Lauf 3661 Änderungen und 3661 Kontrollleseprüfungen bestätigt.
+- Alle 19141 gelesenen Ressourcen zwischen beiden Läufen inhaltlich identisch.
+  Die wiederverwendete Originalbasis verhindert eine Faktorverdopplung.
+- Genau sechs eigene Zauberitems, sechs Rezepte und ein eigenes Magier-Arsenal;
+  keine doppelten eigenen GUIDs oder Registrierungen.
+- Alle 14 ursprünglichen Testeingaben nach den Läufen unverändert.
+- Clientpaketerstellung für diesen gezielten Server-Basistest ausgeschaltet.
+- Kein Desktopfenster, Spiel oder produktiver Server gestartet.
+
+Für die separate Erstinstallation bestanden zuvor 31 Einrichtungsprüfungen
+und 20 Prüfungen des statischen Originalpaket-Lesers: echte lokal vorhandene
+Runtime-Dateien, synthetische Pakete, Pfadschutz, Hashablehnung, Wiederholung,
+vollständige Runtime-Erkennung und frischer Profilspeicher ohne alte Basen.
+Die Original-EXE wurde bei der Einrichtung nur als Daten gelesen.
+
+Diese Nachweise bestätigen Dateiverarbeitung und Wiederholbarkeit. Das Verhalten
+im laufenden Mehrspieler, Besitzerzuordnung, Begleiter-KI und Schaden wurde hier
+nicht getestet. Die offenen Befunde zu Lagerzugriff und rein serverseitigen
+zusätzlichen Fähigkeitspunkten bleiben bestehen.
+
+Historische Prüfläufe der enthaltenen Vorgängerkorrekturen:
+
 PRÜFBERICHT 0.4.25 – AUTOMATISCHE LOKALE MANAGERÜBERGABE
 20 gezielte Studio-Prüfgruppen und 107 Prüfungen des vollständigen
 Server-/Client-Patchlaufs auf isolierten Kopien bestanden. Vier portable

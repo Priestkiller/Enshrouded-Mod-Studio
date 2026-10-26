@@ -1,0 +1,42 @@
+ERSTINSTALLATION – KEIN ALTES STUDIO ERFORDERLICH
+
+1. Das vollständige öffentliche Studio-ZIP in einen beschreibbaren Ordner
+   entpacken und Enshrouded Mod Studio.exe starten.
+2. Links Patcher einrichten wählen. Unterstützt wird das Original-Patcherpaket
+   1.2.3 von KenUaena: ZIP auswählen oder die EXE mit passendem Custom-Parser.
+3. Prüfen & einrichten ergänzt ausschließlich die fest geprüften Programmdateien.
+   Die Original-EXE wird nicht ausgeführt. Profile, Basen und Spieldateien werden
+   nicht aus dem Paket übernommen. Ein altes Studio ist nicht erforderlich.
+4. Spielclient- oder Serverordner auswählen, Optionen einschalten und nach dem
+   Schließen des Spiels bzw. Servers Patch anwenden / aktualisieren drücken.
+
+Ist der Patcher bereits vollständig und hashgeprüft vorhanden, meldet die
+Einrichtung Patcher ist bereits eingerichtet. Kein Originalpaket mehr nötig.
+
+Offizielle Downloadseite:
+https://www.nexusmods.com/enshrouded/mods/91?tab=files
+Benötigt wird die geprüfte Version 1.2.3; der derzeitige aktuelle Download
+1.4.0 wird nicht stillschweigend unterstützt. Andere Versionen brauchen eine
+separate Kompatibilitätsprüfung. Die Dateien werden nicht auf GitHub gespiegelt.
+
+Altes Setup übernehmen bleibt optional zum Umziehen vorhandener Profile und
+Archivbasen. Für frische, unveränderte Spielarchive genügt die neue Einrichtung.
+Beim ersten Patch werden die aktuellen Archive nach Bestätigung als Basis
+gesichert. Bereits vorher modifizierte Spielarchive sind kein sauberer
+Ausgangsstand. Ohne geeignete Originalbasis stoppt Studio vor dem Modifizieren.
+Saubere Dateien derselben Spielversion per Steam-Dateiprüfung bereitstellen
+oder die vorhandene eigene passende Basis übernehmen. Steam kann dabei Mods
+entfernen; vorher Spiel bzw. Server schließen und die eigenen Spielstände sichern.
+
+PRIVATE ORIGINALREFERENZ FÜR DENSELBEN SERVERSTAND
+Eine persönlich vorhandene Originalreferenz im lokalen Ordner
+RecoveryBases/enshrouded_server kann eine neue Studioinstallation ohne alten
+Studiozustand vorbereiten. Die Referenzbeschreibung bindet die Server-EXE,
+den Spielbuild und beide unveränderten Serverarchive mit SHA-256-Prüfsummen.
+Studio prüft die Dateien und übernimmt sie ausschließlich als Arbeitsbasis.
+Aktuelle Spielarchive werden bei dieser Basisübernahme nicht geändert.
+Vorhandener Studiozustand und andere Serverversionen werden nicht überschrieben.
+
+Das öffentliche ZIP enthält keine RecoveryBases und keine Original-Spielarchive.
+Die Funktion ersetzt keine Beschaffung unveränderter Dateien dieser Spielversion.
+Eine alte Referenzbasis niemals auf eine neue Serverversion zurückspielen.

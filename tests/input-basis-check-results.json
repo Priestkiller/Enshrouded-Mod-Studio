@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checks": 8,
+  "tests": [
+    "Clean input remains supported",
+    "Generated server item is rejected before patching",
+    "Disabling new spells cannot turn generated resources into original input",
+    "Client icon marker is detected in client input",
+    "Previously changed Gem pool receives the actionable basis error",
+    "Unrequested legacy Gem modification is left to normal enabled-feature checks",
+    "Native Gem pool is not classified as an EMS input",
+    "Unrelated resource is not mistaken for our generated item"
+  ],
+  "desktopStarted": false,
+  "gameStarted": false
+}
