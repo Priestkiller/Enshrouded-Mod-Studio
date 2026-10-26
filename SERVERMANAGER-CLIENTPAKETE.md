@@ -1,6 +1,14 @@
+# Automatische lokale Übergabe ab 0.4.25
+
+Der vom Manager verwaltete Server-Installationsordner enthält `.ugsm-studio.json`. Studio validiert diese Bindung und verwendet ausschließlich `.ugsm-studio-transfer/output` als reservierte Paketablage. Nach dem erfolgreichen Patch folgen minimale Plan-/Zustandsbelege unter `snapshots/<planId>/proofs/patches`, deren SHA-256-Werte in der atomaren `handoff.json` stehen. Die Quelle der Clientdaten ist eine vorhandene getrennte lokale Clientbasis desselben Spielbuilds; es gibt keine Spieler-Uploads und keine Serverarchiv-Umbenennung.
+
+Manager 0.15.26 liest die gemeinsame Ablage, prüft weiterhin den angewendeten Serverplan und die aktuellen Serverdateien und übernimmt bestätigte Clientpakete. Der Manager benötigt dafür keinen privaten Studio-Datenpfad oder Desktop-Zugriff. Nicht vom Manager verwaltete Installationen können weiterhin den älteren manuellen Vertrag verwenden.
+
+## Bisheriger manueller Vertrag
+
 # Mod-Studio-Clientpakete: Übergabe an den Servermanager
 
-Stand: Mod-Studio-Version 0.4.22. Diese Datei beschreibt die implementierte **lokale Paketerstellung** und den noch anzuschließenden Servermanager-/Spielerclient-Adapter. Es gibt hierdurch weder einen neuen Netzwerkendpunkt noch eine automatische Veröffentlichung. Die bestehende UGSM-Synchronisation kann dieses Paketformat noch nicht unmittelbar installieren.
+Stand: Mod Studio 0.4.25. Dieser Abschnitt beschreibt den weiterhin unterstützten manuellen Übergabevertrag. UGSM Manager 0.15.26 übernimmt und veröffentlicht bestätigte Pakete; Spielerclient 0.16.11 lädt, prüft und installiert sie über die bestehende Synchronisation. Die automatische lokale Bindung ist im vorigen Abschnitt beschrieben.
 
 Die maßgeblichen Implementierungen sind `engine/client-packages.js`, `engine/client-delta.js` und deren Einbindung in `engine/studio-backend.js`. Bei einer Weiterentwicklung muss der Adapter bekannte Formate ausdrücklich unterstützen; unbekannte Pflichtfähigkeiten dürfen nicht stillschweigend ignoriert werden.
 
@@ -10,8 +18,8 @@ Die maßgeblichen Implementierungen sind `engine/client-packages.js`, `engine/cl
 2. Bei einem Serverziel erzeugt es zusätzlich eine Clientvorschau gegen die eingerichtete Clientbasis. Der Client wird dabei nicht installiert oder verändert. `ServerOnly`-Optionen sind im abgeleiteten Clientprofil ausgeschaltet; bekannte Clientoptionen werden anhand des Schemas projiziert.
 3. Client- und Serverbuild müssen übereinstimmen. Bei eigenen Begleiterzaubern muss auch die vorhandene Multiplayer-Kennung übereinstimmen.
 4. Erst nach dem erfolgreichen Dateitausch und dessen Bestätigung wird das Clientpaket fertiggestellt, geprüft und über `current.json` freigegeben.
-5. Erst der spätere Servermanager-Adapter ordnet diese Übergabe einem UGSM-Serverprofil zu, veröffentlicht das benötigte Paket und erhöht gegebenenfalls dessen Veröffentlichungsrevision.
-6. Erst der spätere Spielerclient-Adapter lädt es, rekonstruiert die passenden Clientdateien in einem Arbeitsordner, prüft sie und installiert sie transaktional.
+5. Der implementierte Servermanager-Adapter ordnet diese Übergabe einem UGSM-Serverprofil zu, veröffentlicht das benötigte Paket und erhöht gegebenenfalls dessen Veröffentlichungsrevision.
+6. Der implementierte Spielerclient-Adapter lädt es, rekonstruiert die passenden Clientdateien in einem Arbeitsordner, prüft sie und installiert sie transaktional.
 
 Ein gespeichertes Profil oder eine Vorschau ist keine Bestätigung eines angewendeten Serverpatches. Ein Paketfehler nach erfolgreichem Spielpatch wird separat gemeldet; der bereits angewendete Spielpatch wird dadurch nicht als ungepatcht behandelt.
 
@@ -75,13 +83,13 @@ Relevante Felder eines fertigen Zeigers:
 | `gameBuild` | Build der passenden Clientdateien als Zeichenfolge. |
 | `downloadBytes` | Größe der Manifestdatei plus aller einmalig aufgeführten Payloadblobs. |
 | `previousRevision` | Gegebenenfalls vorherige eigene Paketrevision. |
-| `requiresManagerAdapter` | Aktuell `true`: keine Zusage, dass bestehende Clients dieses Format verstehen. |
+| `requiresManagerAdapter` | Aktuell `true`: Der implementierte UGSM-Adapter und ein kompatibler Spielerclient bleiben erforderlich. |
 | `published` | Aktuell `false`: lokale Erstellung hat nichts hochgeladen. |
 | `updatedAt` | Lokaler Erstellungs-/Aktualisierungszeitpunkt. |
 
 Bei einem neuen erfolgreichen Spielpatch wird der bisherige fertige Zeiger vor dem potenziell fehlschlagenden Paketbau zurückgelegt. Basiswechsel, Wiederherstellung und eine abgeschlossene Reparatur unterbrochener Vorgänge invalidieren die Übergabe.
 
-Für die spätere serverseitige Veröffentlichung muss der Adapter zusätzlich prüfen:
+Für die serverseitige Veröffentlichung prüft der implementierte Adapter zusätzlich:
 
 - Das zugeordnete Serverprofil ist wirklich das konfigurierte Quellziel.
 - `sourceRole` und die gewünschte Veröffentlichung passen zusammen.
@@ -160,7 +168,7 @@ Jede Operation muss innerhalb ihrer Quelle liegen. Die Summe aller Operationslä
 
 Aktuelle Obergrenzen: höchstens 1.000.000 Operationen beziehungsweise Blöcke pro Delta und höchstens 65.536.000.000 Byte pro Datei. Der Manager und der Spielerclient dürfen zusätzliche engere Ressourcenlimits setzen und müssen diese verständlich melden.
 
-Das Format ist ein einfacher fester Blockvergleich, kein garantiert minimaler Binärpatch. Verschobene Inhalte können mehr neue Blöcke erfordern. Es wird nicht versprochen, dass jeder Patch nur einen winzigen Download benötigt. Identische neue Blöcke werden innerhalb eines Pakets dedupliziert; der spätere Clientcache kann dieselben Hashobjekte auch über Revisionen hinweg wiederverwenden.
+Das Format ist ein einfacher fester Blockvergleich, kein garantiert minimaler Binärpatch. Verschobene Inhalte können mehr neue Blöcke erfordern. Es wird nicht versprochen, dass jeder Patch nur einen winzigen Download benötigt. Identische neue Blöcke werden innerhalb eines Pakets dedupliziert; der Clientcache kann dieselben Hashobjekte auch über Revisionen hinweg wiederverwenden.
 
 ## 7. Anforderungen an den Servermanager-Adapter
 
@@ -181,7 +189,7 @@ Die vorhandene Multiplayer-Kennung umfasst die Begleiterkonfiguration und ist ke
 
 Vor einer Installation müssen Paketfähigkeit, Spielbuild, `requiredClientExeSha256`, passende Basisgrößen und Basishashes stimmen. Bei einem bereits verwalteten Modstand darf nicht das aktuell gepatchte Archiv als Originalbasis ausgegeben werden. Eine geeignete, bekannte Basis muss getrennt erhalten beziehungsweise über einen vorgesehenen Wiederherstellungsweg beschafft werden.
 
-Der Adapter rekonstruiert zunächst in einem neuen lokalen Arbeitsordner. Dabei werden sämtliche Blobgrößen/-hashes geprüft und anschließend jede Ergebnisdatei gegen `result` verglichen. Es wird kein vom Server geliefertes JavaScript ausgeführt. `client-delta.js` dokumentiert die Referenzrekonstruktion; der eigentliche Installer muss in den vorhandenen lokalen Transaktions-, Prozessprüfungs- und Wiederherstellungsablauf integriert werden.
+Der Adapter rekonstruiert zunächst in einem neuen lokalen Arbeitsordner. Dabei werden sämtliche Blobgrößen/-hashes geprüft und anschließend jede Ergebnisdatei gegen `result` verglichen. Es wird kein vom Server geliefertes JavaScript ausgeführt. `client-delta.js` dokumentiert die Referenzrekonstruktion; der implementierte Installer verwendet den vorhandenen lokalen Transaktions-, Prozessprüfungs- und Wiederherstellungsablauf.
 
 Erst danach darf der Client die geprüften Ergebnisse bei geschlossenem Spiel austauschen. Vorhandene fremde Dateien oder Mods dürfen nicht stillschweigend überschrieben werden. Die Serverprofilrevision muss vor dem eigentlichen Spielstart erneut geprüft werden.
 
@@ -207,6 +215,6 @@ Der Paketbau prüft vorab Speicherplatz und verwendet dafür eine konservative O
 
 `archiveVerified` bezeichnet die vom Mod Studio geprüften Archivänderungen. Es beweist weder eine Wirkung jeder Option im Spiel noch einen bereits abgeschlossenen Multiplayer-Test. Insbesondere gelten der Lagerzugriff aus normalen Kisten/Werkbänken und zusätzliche Fähigkeitspunkte ausschließlich auf dem Server durch diesen Export nicht als repariert.
 
-Die aktuelle Aufgabe umfasst lokale Hintergrundtests. Der konkrete Testumfang und die Ergebnisse stehen im gesonderten Prüfbericht. Der spätere Integrationsnachweis muss zusätzlich serverseitige Veröffentlichung und Spielerclientinstallation über die tatsächliche Verbindung testen. Ein echter Multiplayer-Spieltest bleibt davon zu unterscheiden.
+Die aktuelle Aufgabe umfasst lokale Hintergrundtests. Der konkrete Testumfang und die Ergebnisse stehen im gesonderten Prüfbericht. Integrationsprüfungen umfassen zusätzlich serverseitige Veröffentlichung und Spielerclientinstallation über lokale TLS-Testverbindungen. Ein echter Multiplayer-Spieltest bleibt davon zu unterscheiden.
 
-Die lokale Paketerstellung veröffentlicht keine Modpakete. Das Tool-Release wird separat über GitHub bereitgestellt.
+Es wurde durch die lokale Paketerstellung nichts veröffentlicht.

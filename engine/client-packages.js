@@ -3,6 +3,7 @@
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const delta = require('./client-delta');
 const storage = require('./storage-maintenance');
+const manager = require('./manager-handoff');
 const FORMAT = 'enshrouded-studio-client-package', VERSION = 1;
 const ID = /^[a-f0-9]{20}$/, SHA = /^[a-f0-9]{64}$/;
 const ARCHIVES = ['enshrouded.kfc', 'enshrouded.kfc_resources'];
@@ -32,13 +33,14 @@ function safePath(value) {
   if (typeof value !== 'string' || !path.isAbsolute(value) || /[\r\n\0]/.test(value)) throw Error('Für Clientpakete einen absoluten lokalen Ordnerpfad verwenden.');
   return path.resolve(value);
 }
-function settings(options) {
+function settings(options, plan = null) {
   const dataRoot = path.dirname(path.resolve(options.data));
   const file = path.join(dataRoot, 'client-packages.json');
   const value = fs.existsSync(file) ? read(file) : { format: 1, enabled: true, clientBasisDirectory: null, outputDirectory: path.join(dataRoot, 'client-packages') };
   if (value.format !== 1 || typeof value.enabled !== 'boolean') throw Error('Ungültige Einrichtung für Clientpakete.');
-  return { format: 1, enabled: value.enabled, clientBasisDirectory: value.clientBasisDirectory ? safePath(value.clientBasisDirectory) : null,
+  const legacy = { format: 1, enabled: value.enabled, clientBasisDirectory: value.clientBasisDirectory ? safePath(value.clientBasisDirectory) : null,
     outputDirectory: safePath(value.outputDirectory || path.join(dataRoot, 'client-packages')) };
+  return plan ? manager.managedSettings(options, plan, legacy) : legacy;
 }
 function statusFile(options, targetId) {
   if (!ID.test(targetId)) throw Error('Ungültige Paket-Zielkennung.');
@@ -71,8 +73,10 @@ function publicOptions(config, schema) {
   return projected;
 }
 function restrictedOutput(output, plan, clientDirectory, data) {
-  // Never put owned exports inside an installation or the auto-cleaned jobs tree.
+  // Only a validated manager binding permits its exact reserved output folder.
+  const managedOutput = manager.allowedOutput(output, plan);
   for (const root of [plan.target.dir, clientDirectory, path.join(data, 'jobs')].filter(Boolean)) {
+    if (managedOutput && path.resolve(root) === path.resolve(plan.target.dir)) continue;
     const rel = path.relative(path.resolve(root), output);
     if (!rel || (rel !== '..' && !rel.startsWith('..' + path.sep) && !path.isAbsolute(rel))) throw Error('Paketordner muss außerhalb von Spielinstallation und temporären Patch-Jobs liegen.');
   }
@@ -131,14 +135,14 @@ function reusePackage(options, sourcePlan, cached, setup) {
 async function prepareForPlan(options, plan, prepare) {
   let setup, clientPlanFile = null;
   try {
-    setup = settings(options);
+    setup = settings(options, plan);
     restrictedOutput(setup.outputDirectory, plan, setup.clientBasisDirectory, options.data);
     if (!setup.enabled) return { status: 'disabled', message: 'Automatische Clientpakete sind ausgeschaltet.', setup };
     if (!plan.target.server) {
       const cached = reusablePackage(options, plan, setup, plan.config, describeClientBasis(options, plan.target.dir));
       return { status: 'prepared', role: 'client', setup, cached };
     }
-    if (!setup.clientBasisDirectory) return { status: 'blocked', message: 'Clientpaket fehlt: Unter Werkzeuge einmal eine passende Clientbasis wählen.', setup };
+    if (!setup.clientBasisDirectory) return { status: manager.bindingFor(plan.target) ? 'waiting-client-basis' : 'blocked', message: manager.bindingFor(plan.target) ? 'Keine eindeutige passende lokale Clientinstallation gefunden. Clientbasis im Studio einmal auswählen; es werden keine Dateien von Spielern hochgeladen.' : 'Clientpaket fehlt: Unter Werkzeuge einmal eine passende Clientbasis wählen.', setup };
     const source = setup.clientBasisDirectory;
     if (!ARCHIVES.every(name => fs.existsSync(path.join(source, name))) || !fs.existsSync(path.join(source, 'enshrouded.exe')) || fs.existsSync(path.join(source, 'enshrouded_server.exe')))
       throw Error('Clientbasis muss eine vollständige, getrennte Spielclient-Installation enthalten.');
@@ -318,7 +322,7 @@ function completeForPlan(options, plan, state) {
         fs.renameSync(oldFile, path.join(oldRoot, 'previous-current.json'));
       }
     }
-    const currentSetup = settings(options);
+    const currentSetup = settings(options, plan);
     restrictedOutput(currentSetup.outputDirectory, plan, currentSetup.clientBasisDirectory, options.data);
     if (!preparation || digest(currentSetup) !== digest(preparation.setup)) throw Error('Paketeinrichtung wurde seit der Vorschau geändert. Erneut patchen.');
     const targetRoot = path.join(currentSetup.outputDirectory, plan.target.id), currentFile = path.join(targetRoot, 'current.json');
@@ -330,7 +334,7 @@ function completeForPlan(options, plan, state) {
     }
     if (preparation.status !== 'prepared') {
       value = report(options, plan, { status: preparation.status, message: preparation.message, revision: null, packageDirectory: null });
-      atomicJson(currentFile, { format: 1, ...value }); return value;
+      atomicJson(currentFile, { format: 1, ...value }); manager.complete(options, plan, state, value); return value;
     }
     if (options.progress) options.progress({ stage: 'client-package', message: 'Clientpaket aus den geprüften Clientdateien erstellen …', progress: 97 });
     const clientPlan = preparation.cached ? null : plan.target.server ? read(preparation.clientPlanFile) : plan;
@@ -344,14 +348,16 @@ function completeForPlan(options, plan, state) {
       requiresManagerAdapter: true, published: false, updatedAt: new Date().toISOString() };
     atomicJson(currentFile, index);
     value = report(options, plan, { status: 'ready', message: built.reused ? 'Unverändertes Clientpaket wiederverwendet; Revision bleibt gleich. Noch nicht veröffentlicht.' : 'Clientpaket lokal erstellt; bereit für den Servermanager. Noch nicht veröffentlicht.', ...built, published: false });
+    manager.complete(options, plan, state, value);
     try { prunePackages(built.targetRoot, built.revision, previous); } catch (error) { if (options.log) options.log('Alte Clientpakete konnten nicht bereinigt werden: ' + error.message); }
     return value;
   } catch (error) {
     value = { status: 'failed', message: 'Patch angewendet, Clientpaket fehlgeschlagen: ' + error.message, revision: null, packageDirectory: null, published: false };
     try {
-      const setup = settings(options); restrictedOutput(setup.outputDirectory, plan, setup.clientBasisDirectory, options.data);
+      const setup = settings(options, plan); restrictedOutput(setup.outputDirectory, plan, setup.clientBasisDirectory, options.data);
       atomicJson(path.join(setup.outputDirectory, plan.target.id, 'current.json'), { format: 1, targetId: plan.target.id, sourcePlanId: plan.id, ...value });
     } catch (failure) { value.message += ' Paketstatus konnte nicht aktualisiert werden: ' + failure.message; }
+    try { manager.complete(options, plan, state, value); } catch (failure) { if (options.log) options.log('Manager-Fehlerstatus konnte nicht geschrieben werden: ' + failure.message); }
     try { return report(options, plan, value); } catch (failure) { value.message += ' Statusdatei konnte nicht geschrieben werden: ' + failure.message; return value; }
   } finally {
     try { cleanupPreview(options, plan); } catch (error) { if (options.log) options.log('Client-Arbeitskopie konnte nicht bereinigt werden: ' + error.message); }
@@ -360,12 +366,13 @@ function completeForPlan(options, plan, state) {
 function invalidate(options, target, reason) {
   const plan = { target, id: null };
   try {
+    manager.receipt(options, plan, 'invalidated', 'Serverbasis geändert oder wiederhergestellt. Ein neuer erfolgreicher Patch ist erforderlich.');
     retireKnownExport(options, plan);
-    const setup = settings(options); restrictedOutput(setup.outputDirectory, plan, setup.clientBasisDirectory, options.data);
+    const setup = settings(options, plan); restrictedOutput(setup.outputDirectory, plan, setup.clientBasisDirectory, options.data);
     const value = report(options, plan, { status: 'invalidated', message: reason, revision: null, packageDirectory: null, published: false });
     atomicJson(path.join(setup.outputDirectory, target.id, 'current.json'), value);
     return value;
   } catch (error) { if (options.log) options.log('Clientpaket-Status konnte nicht zurückgesetzt werden: ' + error.message); return { status: 'failed', message: error.message }; }
 }
 module.exports = { FORMAT, VERSION, canonical, digest, settings, statusFile, report, clientConfiguration, publicOptions, prepareForPlan, validatePlan,
-  verifyPayload, buildPackage, completeForPlan, cleanupPreview, invalidate, atomicJson };
+  verifyPayload, buildPackage, completeForPlan, cleanupPreview, invalidate, atomicJson, restrictedOutput };

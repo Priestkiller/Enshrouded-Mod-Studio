@@ -1,13 +1,17 @@
-## Begleiterzauber mit geänderter Zauberzeit
+## Automatisch vom Studio zum Spielerclient
 
-Der Patch konnte beim Kontrolllesen eigener Skelettzauber abbrechen, wenn gleichzeitig die Zauberzeit verändert wurde. Beispiel: Faktor 0,2 erzeugt 0,4 Sekunden; das native Archiv speichert diesen Float32-Wert als 0,4000000059604645. Unsere exakte Inhaltsprüfung behandelte diese normale Rundung als Fehler.
+Mod Studio 0.4.25 übergibt passende Clientpakete direkt an UGSM Manager 0.15.26. Der Manager benötigt dafür keinen Zugriff auf den privaten Studio- oder Desktopordner. Spielerclient 0.16.11 übernimmt die veröffentlichten Änderungen über die bestehende Verbindung.
 
-Version 0.4.24 schreibt die betroffenen Werte neuer Begleiterzauber bereits vor dem Packen im nachgewiesenen nativen Format. Inhaltsprüfsummen, GUIDs, Ganzzahlen und Stapelprüfungen bleiben unverändert streng. Einstellungen müssen nicht zurückgesetzt werden.
+1. **Studio patcht:** Im Studio den vom Manager verwalteten Server-Installationsordner wählen und **Patch anwenden / aktualisieren** ausführen. Studio erkennt die Managerbindung und baut nach dem erfolgreichen Patch die passenden Clientdaten.
+2. **Manager übernimmt:** Der Manager prüft die lokale Übergabe, den angewendeten Serverplan und die Paketdateien. Server anschließend mit den neuen Daten neu starten.
+3. **Spieler synchronisieren:** Mitspieler wählen **Synchronisieren & Spielen**. Benötigte Clientänderungen werden geprüft, heruntergeladen und mit Sicherung des vorherigen Standes installiert.
 
-Für die automatische Verteilung Manager 0.15.25 und Spielerclient 0.16.10 verwenden. Die bisherigen Studio-Versionen 0.4.22 und 0.4.23 bleiben unterstützt. Profile, Einstellungen und Einladungen bleiben erhalten.
+Studio benötigt eine **bereits auf dem Serverrechner vorhandene, getrennte Clientinstallation desselben Spielbuilds**. Eine gültige bisherige Einstellung hat Vorrang; ansonsten sucht Studio im Benutzerkontext in gespeicherten Profilen und Steam-Bibliotheken. Fehlende oder mehrdeutige Treffer werden klar gemeldet. Es gibt keinen Upload von Spielerdateien zum Server und keine Verteilung umbenannter Serverarchive als Clientdaten.
 
-Nach dem Update den bisherigen Patch erneut anwenden, die Clientpaketerstellung abwarten und im Spielerclient Synchronisieren & Spielen verwenden. Für diesen Fehler ist kein neuer Spielstand und kein Basiswechsel erforderlich.
+Die feste Ablage im verwalteten Installationsordner enthält minimale gehashte Prüfnachweise. Vorbereitung, Fehler, fehlende Basis und Wiederherstellung haben getrennte Statusmeldungen. Aktuelle und vorherige eigene Pakete sowie zwei eigene Prüfnachweise werden aufbewahrt; unbekannte Daten bleiben geschützt. Bisherige manuelle Verbindungen bleiben möglich.
 
-Prüfungen: 21 gezielte Regressionstests unter Node 18 und Node 24 sowie 103 Prüfungen eines vollständigen Server-/Client-Patchlaufs auf isolierten Kopien. Das nach dem Protokoll rekonstruierte Profil umfasst 38 aktive Optionen einschließlich Dezimalfaktoren, Tieroptionen, Stapelgröße 65.000 und sechs Begleiterzaubern. Alle erzeugten Clientdateien wurden aus dem Paket exakt rekonstruiert; die Originaldateien blieben unverändert. Kein Spiel oder Desktopfenster wurde gestartet.
+Profile, Einstellungen, Einladungen und Sicherungen bleiben erhalten. Das Tool-Update allein wendet kein Modprofil an. Für die automatische Übergabe alle drei Programme auf den genannten Stand bringen.
 
-Windows x64 mit .NET Framework 4.8. Das öffentliche Paket übernimmt die ursprüngliche Patcher-Laufzeit aus einer vorhandenen vollständigen Installation. Die Korrektur bestätigt die verarbeiteten Dateien; bisher offene Spielmechaniken werden dadurch nicht als im Spiel funktionierend bestätigt.
+Hintergrundprüfung: 20 gezielte Studio-Prüfgruppen, vier portable Export-/Manager-/Client-Vertragstests für Studio 0.4.22 bis 0.4.25 und 107 Prüfungen des vollständigen Patchlaufs auf isolierten Spieldatenkopien. Die erzeugten Clientdateien wurden exakt rekonstruiert. Kein Spiel und kein Desktopfenster wurde gestartet. Eine echte Junction-Erzeugung war in der Testumgebung gesperrt; die Ablehnungslogik wurde über einen Testzugang geprüft. Dateiprüfungen bestätigen keine bislang unbestätigten Spielmechaniken.
+
+Windows x64 mit .NET Framework 4.8. Das öffentliche ZIP enthält keine ursprüngliche Patcher-Runtime und keine Spieldaten. Die geprüfte Runtime wird über **Altes Setup übernehmen** aus einer vorhandenen vollständigen Installation übernommen. EMM liegt mit GPL-Lizenz und zugehörigem Quelltext separat bei.

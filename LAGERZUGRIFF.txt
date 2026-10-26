@@ -1,5 +1,5 @@
 LAGERZUGRIFF — GEMELDETER FUNKTIONSFEHLER
-Stand 0.4.21 / untersuchte Revision 1273043
+Lokale Testversion 0.4.14 / untersuchte Revision 1273043
 
 ZIEL
 Normale Kisten und Stationsinventare sollen wie magische Truhen als gemeinsame
@@ -30,7 +30,7 @@ STATUS IM TOOL
 Der Schalter trägt den Status „Fehler gemeldet · Materialzugriff unbestätigt“.
 In neuen Profilen ist er ausgeschaltet. Eine ausdrücklich eingeschaltete
 Einstellung aus einem vorhandenen Profil wird beim Übernehmen nicht gelöscht.
-Diese Version enthält keinen als funktionierend bestätigten neuen Fix.
+Diese Testversion enthält keinen als funktionierend bestätigten neuen Fix.
 
 Ein erfolgreicher Archivvergleich oder Serverstart ersetzt keinen Test, bei
 dem tatsächlich Material aus Kisten oder Stationsinventaren verbraucht wird.
@@ -46,7 +46,7 @@ außerdem Archivprüfsummen mit dem gespeicherten Patchstand. Keine Spielarchive
 Serverkonfigurationen oder Spielstände werden verändert; kein Serverprozess
 wird gestartet oder beendet. Anleitung: LAGER-DIAGNOSE-ANLEITUNG.txt.
 GELIEFERTER BEFUND DES TATSÄCHLICHEN SERVERS
-Der Diagnosebericht vom 23.10.2026 bestätigt am untersuchten laufenden Server:
+Der Diagnosebericht vom 23.10.2026 bestätigt am laufenden RDP-Server:
 6/6 normale Kisten und 30/30 Stationen besitzen den korrekt strukturierten
 InventoryCraftingStock-Baustein. Magische Kontrollkiste: 1/1. Profil- und
 Toolpfad stimmen mit dem laufenden Prozess überein. Die Archivprüfsummen passen

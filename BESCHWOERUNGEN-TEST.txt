@@ -1,5 +1,5 @@
-ENSHROUDED MOD STUDIO 0.4.21 — SECHS BEGLEITERZAUBER IM MEHRSPIELER
-Öffentlicher Datenpatch; echter Mehrspieler-Spieltest weiterhin offen.
+﻿ENSHROUDED MOD STUDIO 0.4.21 — SECHS BEGLEITERZAUBER IM MEHRSPIELER
+Private Testversion. Nichts veröffentlicht.
 
 SERVER UND ALLE SPIELCLIENTS PATCHEN
 Der Dedicated Server erhält Gegenstände, Rezepte, Knowledge, Begleiter-Vorlagen,
@@ -69,10 +69,6 @@ danach Server und Clients passend zurückstellen. Das Tool bereinigt keine Saves
 Ein reines Tool-Update verändert noch keine installierten Spielarchive.
 
 MIT FREUNDEN TEILEN
-Das öffentliche Studio-ZIP enthält keine persönlichen Profile, aktiven
-Einstellungen, Sicherungen oder Spielarchive. Vollständig in einen eigenen
-Ordner entpacken und die passende ursprüngliche Laufzeit über
-„Altes Setup übernehmen“ aus einer vorhandenen vollständigen Installation
-übernehmen. Server und jeder Spielclient werden danach jeweils lokal gepatcht.
-Herkunft der Fremdwerkzeuge: THIRD-PARTY.md. EMM liegt mit GPL-Lizenz und
-zugehörigem Quelltext bei; ursprünglicher Patcher und Legacy-Parser nicht.
+Das private Multiplayer-Test-ZIP enthält das Tool ohne deine Profile, aktiven
+Einstellungen und Sicherungen. Vollständig entpacken und lokalen Zielordner wählen.
+Ein Upload oder GitHub-Release wurde nicht erstellt.

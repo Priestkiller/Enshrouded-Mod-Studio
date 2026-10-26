@@ -1,6 +1,6 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.24",
+  "studio": "0.4.25",
   "files": {
     "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
@@ -10,8 +10,8 @@
     "single-step-taming.js": "f8c22848e29bcd04e71a38bcb4c0e2e007d6c964160f93813ccbd0694334ec67",
     "skill-points-check.js": "111417ab8f8d6b35d2d28c9ab93196f212d3294037078b6e58d112441163aa19",
     "stack-check.js": "175d4ccc3435efb2678e05389289f44e8aac38d639a719504bd41f91a7f9efd9",
-    "studio-backend.js": "38183a3c29ddc7587774d38740c2385206a0808d365edb86bc535d51616b299c",
-    "studio-runner.js": "42142865e157fe3e4bab608ede9dd305c70fb31aea23d6ffcf8a66a1e9b98011",
+    "studio-backend.js": "e2555757f266afa1ca536efec8daee768b9491b6325210987457697ffbc48172",
+    "studio-runner.js": "51921a6d80cc3510d22e154272ad2aa57288ede8635a9e965745275f98bea463",
     "summoned-companions.js": "c0eb99596d9f790733dc02acf02998f18879256b4b6b99a600d9c37ea6b05328",
     "vendor/config/loader.js.bytecode": "98f1a99f8746a854822e673d6af3fbd76c173738c894fe093b31abad0235b2c0",
     "vendor/core/file-ops.js.bytecode": "53961f724c80ceba06e7e03359e0575c0f06167291c7257377adf7808e952858",
@@ -59,7 +59,8 @@
     "assets/sabertooth-spell.json": "21c945404fd5e983d87d9b86676597adca74b95858f99b2013e072bb68c3f8cc",
     "animal-breeding.js": "f0d541869645d27d043d16d60c6b8635e3c8850aef5bb00d9f8f3a9ca4b55b00",
     "summon-multiplayer.js": "0dda0d7ac0d8652119d29bfb83e6e943201d6da7aa982b261dfd713b07823a8c",
-    "client-packages.js": "db7ef8236885d7840410e219cbbde9b575097da9f663de3685a7565ad1cee1ba",
-    "client-delta.js": "be8d3c9e01d218063ec49a6c1e3c55ab04722f6a10ba6001d4c39a3b9858eab8"
+    "client-packages.js": "8516f8e8bd2d9aa1d30b7fdbc6b587f5f9716761e0459da6d495047ce2d29b40",
+    "client-delta.js": "be8d3c9e01d218063ec49a6c1e3c55ab04722f6a10ba6001d4c39a3b9858eab8",
+    "manager-handoff.js": "cf1d5c36b5b56b05289942d493358fd35653ff72805230649c8a751cb5843540"
   }
 }

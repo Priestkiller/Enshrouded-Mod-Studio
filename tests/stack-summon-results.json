@@ -1,0 +1,148 @@
+{
+  "passed": 35,
+  "failed": 0,
+  "node": "v24.19.0",
+  "checks": [
+    {
+      "name": "Known regression rejects own ItemInfo when no creation proof is supplied",
+      "passed": true
+    },
+    {
+      "name": "server modified output accepts exactly six proven singleton spells and checks 65000 stacks",
+      "passed": true
+    },
+    {
+      "name": "server archive readback accepts exactly six proven singleton spells and checks 65000 stacks",
+      "passed": true
+    },
+    {
+      "name": "client modified output accepts exactly six proven singleton spells and checks 65000 stacks",
+      "passed": true
+    },
+    {
+      "name": "client archive readback accepts exactly six proven singleton spells and checks 65000 stacks",
+      "passed": true
+    },
+    {
+      "name": "Stacks-only and disabled stack options preserve original behavior",
+      "passed": true
+    },
+    {
+      "name": "Rejects feature disabled",
+      "passed": true
+    },
+    {
+      "name": "Rejects root role mismatch",
+      "passed": true
+    },
+    {
+      "name": "Rejects item role mismatch",
+      "passed": true
+    },
+    {
+      "name": "Rejects unknown role",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong build",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong prototype",
+      "passed": true
+    },
+    {
+      "name": "Rejects forged gameplay proof",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong item count",
+      "passed": true
+    },
+    {
+      "name": "Rejects missing creation identity",
+      "passed": true
+    },
+    {
+      "name": "Rejects extra creation identity",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong creation identity",
+      "passed": true
+    },
+    {
+      "name": "Rejects duplicate creation claim",
+      "passed": true
+    },
+    {
+      "name": "Rejects missing ItemInfo",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed ItemInfo payload",
+      "passed": true
+    },
+    {
+      "name": "Rejects stackable custom spell despite matching hash",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed persistent flags despite matching hash",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong item ID despite matching hash",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong debug name despite matching hash",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong object ID despite matching hash",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong proof resource type",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong proof filename",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong proof hash",
+      "passed": true
+    },
+    {
+      "name": "Rejects unknown seventh item",
+      "passed": true
+    },
+    {
+      "name": "Rejects creation GUID collision with original",
+      "passed": true
+    },
+    {
+      "name": "Rejects creation item ID collision with original",
+      "passed": true
+    },
+    {
+      "name": "Rejects wrong original stack size",
+      "passed": true
+    },
+    {
+      "name": "Rejects changed original singleton",
+      "passed": true
+    },
+    {
+      "name": "Rejects missing original resource in complete export",
+      "passed": true
+    },
+    {
+      "name": "Backend passes the creation proof to both modified and complete readback checks",
+      "passed": true
+    }
+  ],
+  "gameStarted": false
+}

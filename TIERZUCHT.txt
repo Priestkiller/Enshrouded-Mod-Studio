@@ -1,5 +1,5 @@
-ENSHROUDED MOD STUDIO 0.4.21 — NUTZTIER-ZUCHT
-Funktion vom Benutzer im Spiel bestätigt.
+﻿ENSHROUDED MOD STUDIO 0.4.20 — NUTZTIER-ZUCHT
+Private Version; nichts veröffentlicht.
 
 EINRICHTEN
 Unter Welt & Bauen „Nutztier-Zucht beschleunigen“ einschalten.
@@ -39,10 +39,9 @@ platzierte Tiere die neuen Werte übernehmen, ist im Spiel zu prüfen.
 Es werden keine Spielstände oder bereits gespeicherten Timer umgeschrieben.
 
 PRÜFSTATUS
-Die Funktion wurde vom Benutzer im Spiel bestätigt. Zusätzlich wurden die
-serverseitige Datenklassifikation sowie Client- und Serverdaten im Hintergrund
-geprüft. Automatische Modul-, Profil-/UI-Modell- und Pack-/Readback-Prüfungen
-belegen die hinterlegten Datenänderungen. Die Rückmeldung ist kein Nachweis
-für jede Tierart, jeden gespeicherten Timer oder jede Mehrspielerumgebung.
+Server_only-Klassifikation der Daten geprüft. Client- und Serverrolle auf
+nativen Daten im Hintergrund geprüft; kein gestarteter Dedicated Server.
+Modul-, Profil-/UI-Modell-/Updater- und Statusprüfungen sowie Pack-/Readback-Test
+siehe PRUEFBERICHT.txt und Pruefungen. Kein Spielstart und kein Live-Zuchttest.
 Profile und vorhandene Einstellungen bleiben beim Tool-Update erhalten;
 die neue Zuchteinstellung bleibt bei übernommenen Profilen ausgeschaltet.

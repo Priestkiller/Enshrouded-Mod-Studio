@@ -1,35 +1,44 @@
-PRÜFBERICHT 0.4.22 – AUTOMATISCHE CLIENTPAKETE
-Hintergrundprüfung vor Releasefreigabe; kein Upload durch diese Tests.
+PRÜFBERICHT 0.4.25 – AUTOMATISCHE LOKALE MANAGERÜBERGABE
+20 gezielte Studio-Prüfgruppen und 107 Prüfungen des vollständigen
+Server-/Client-Patchlaufs auf isolierten Kopien bestanden. Vier portable
+Export-/Manager-/Client-Vertragstests für 0.4.22 bis 0.4.25 bestanden.
+Keine Desktopfenster, Spiele oder produktiven Server durch Tests gestartet.
+Native Junction-Erzeugung in der Testumgebung gesperrt; Ablehnungslogik per
+Testzugang geprüft. Bisher offene Spielmechaniken bleiben offen.
 
-122 Hintergrundprüfungen bestanden, 0 offene Fehler:
-- 19 Delta-/Rekonstruktionsprüfungen, tatsächliche Node-18.5-Runtime.
-- 36 Paket-, Sicherheits-, Revisions- und Cacheprüfungen.
-- 18 fensterlose C#-Prüfungen für Einrichtung und Status; Build erfolgreich.
-- 7 Prüfungen der Aufbewahrung gekoppelter Clientvorschauen.
-- 42 Prüfungen mit echten Spieldaten auf isolierten H:-Kopien.
+Vorherige Prüfläufe und technische Einzelheiten:
 
-ECHTER BACKEND-ABLAUF AUF KOPIEN
-Spielbuild: 1273043|^/game38/branches/release_1.0|2026-10-20T14:55:29.904125Z
-Clientpatch und Dedicated-Serverpatch mit passenden Clientdaten angewendet.
-Jeweils 2267 geänderte Ressourcen geprüft und zurückgelesen.
-Beide Archive und 9 neue Datendateien aus den jeweiligen Paketen exakt rekonstruiert.
-Beispiel-Paket: 9,968,878 Bytes, statt vollständiger Archive.
-Erneuter Serverpatch: geprüftes Clientpaket wiederverwendet, Revision unverändert.
-Wiederherstellung: Export ungültig; konfigurierte Clientinstallation unverändert.
-Originale Eingabedateien per SHA-256 vor/nach dem Test unverändert bestätigt.
+PRIVATE KORREKTUR 0.4.23 – STAPELGRÖSSEN UND BEGLEITERZAUBER
 
-Der native Packer kann gleiche Ressourcen binär verschieden anordnen. Deshalb
-prüft der Cache Version, EXE, Ausgangsarchive, Optionen, Engine und Paketinhalt.
-Bei Clientpatches muss auch das vollständige Ergebnisinventar exakt passen.
+Der Abbruch „unbekannte ItemInfo-Ressource: 15b3baff-466a-42d8-8e07-686eb2d17b94“
+kam aus unserer Stapelprüfung. Die sechs eigenen Zauber waren dort nicht als
+zulässige neue Einzelgegenstände erfasst. Beide Prüfstellen sind korrigiert.
+Nur diese sechs durch Inhaltsnachweise gebundenen Items werden zugelassen.
+Fremde, fehlende und veränderte Ressourcen bleiben gesperrt.
 
-Fehlerfälle: falscher Build, fehlende Basis, beschädigtes Manifest/Payload,
-geänderte Ausgangsdateien, geänderte Einrichtung, unerlaubte Pfade, defekte
-Vorschau, deaktivierter Export und veraltete Bereitschaftsmeldungen abgedeckt.
-Paketerstellungsfehler werden getrennt vom bereits angewendeten Patch gemeldet.
+138 Hintergrundprüfungen bestanden:
+- 35 gezielte Fehler-/Kombinationsfälle unter tatsächlicher Node18.5-Laufzeit.
+- 103 Prüfungen eines vollständigen Ablaufs mit echten Spieldatenkopien:
+  Dedicated-Serverpatch, passende Clientvorbereitung mit Archiv-Readback,
+  Namen und Bilder, Paketerstellung und exakte Rekonstruktion aller Dateien.
+  65000er-Stapel + sechs Begleiterzauber + Punktewert4 gleichzeitig aktiviert.
+  2267 stapelbare Items je Rolle bestätigt; neue Zauber bleiben Einzelgegenstände.
+  Spielwirkung/Punktevergabe im laufenden Spiel wurde nicht getestet.
 
-GRENZEN
-Kein Spiel-, Server- oder Desktopstart. Keine Änderung echter Spielinstallationen
-oder Spielstände. Keine Bestätigung der Spielwirkung aller Modoptionen.
-Kein Upload und noch keine Netzwerkverbindung zum UGSM-Servermanager.
-Dessen Adapter muss den beschriebenen Paketvertrag erst integrieren.
-Details: CLIENTPAKETE.txt und SERVERMANAGER-CLIENTPAKETE.md.
+Echter Test: 2286 geänderte Serverressourcen,
+2294 geänderte Clientressourcen, Paket 17,043,569 Bytes.
+Das Paket umfasst75Dateien; der bisherige UGSM-Adapter begrenzt auf64.
+Keine Spiel-/Server-/Desktopstarts, keine Änderung echter Spielinstallationen.
+
+KOMPATIBILITÄT
+Manager0.15.23 / Spielerclient0.16.8 akzeptieren nur den exakt freigegebenen
+Studio0.4.22-Enginestand. Für diese Korrektur sind zwei Anpassungen erforderlich:
+1. Exakte Freigabe0.4.23 / Engine1.2.3 / Fingerprint
+   096ec23dc6551483b332583153145343d9171d2036f5544a61d15cacfc0dc309
+   Die bisherige Freigabe0.4.22 bleibt bestehen; gemischte Paare bleiben gesperrt.
+2. Dateizahlgrenze auf feste256 erhöhen; alle übrigen Prüfungen beibehalten.
+
+Der passende UGSM-Quellpatch ist separat vorbereitet. Sein gitapply--check
+gegen4b960dcc5f120bb45945d2a02c7c7505b9076e2a bestand. Go-Tests und signierte
+Manager-/Spielerclient-Builds stehen aus. Hier wurde nichts veröffentlicht.
+Der installierte öffentliche Studio0.4.22-Ordner wird nicht ersetzt.

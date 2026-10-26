@@ -1,19 +1,20 @@
-ENSHROUDED MOD STUDIO 0.4.21 — SPEICHERPLATZ
+ENSHROUDED MOD STUDIO 0.4.16 — SPEICHERPLATZ
+Private Version, nicht veröffentlicht. Keine Änderung an den Skelettrezepten.
 
-Den vollständigen Toolordner auf einem beschreibbaren Laufwerk mit genügend
-freiem Platz betreiben. Profile, passende Archivbasen, Jobs und Rücksicherungen
-liegen im Unterordner Data auf demselben Laufwerk. Relative Ausgabeordner
-beziehen sich auf engine. Ein neu entpacktes Paket verschiebt ältere
-Toolordner oder deren Daten nicht automatisch; dafür die Setup-Übernahme nutzen.
+Das aktive Setup dieses PCs liegt unter H:\Codex\Enshrouded-Mod-Studio.
+Profile, passende Archivbasis, Jobs und Rücksicherungen liegen im Unterordner
+Data auf demselben Laufwerk. Relative Ausgabeordner beziehen sich auf engine.
+Ein Ordner auf H allein verlegt ältere Toolkopien auf C nicht automatisch.
 
-Das Studio prüft freien Speicher vor der Vorbereitung und erneut vor dem
-Austausch der Spielarchive. Große temporäre Jobdaten werden nach einem
+Die neue Version prüft freien Speicher vor der Vorbereitung und erneut vor
+dem Austausch der Spielarchive. Große temporäre Jobdaten werden nach einem
 erfolgreichen Lauf bei ausgeschaltetem „Entpackte Dateien behalten“ entfernt.
-Auch Sprach-Arbeitskopien werden aufgeräumt. Aktive Vorschauen und offene
-Wiederherstellungsvorgänge sind vor automatischer Bereinigung geschützt.
-Profile und passende Originalbasen werden nicht automatisch gelöscht.
+Auch die Sprach-Arbeitskopien werden aufgeräumt. Aktive Vorschauen und offene
+Wiederherstellungsvorgänge werden von der automatischen Bereinigung geschützt.
+Profile und passende Originalbasen werden niemals automatisch gelöscht.
 
-Bei fehlendem Speicher den gemeldeten Status und Wiederherstellungshinweis
-beachten. Ein Abbruch während der Vorbereitung erfordert nicht grundsätzlich
-einen Basisreset. Vorhandene Sicherungen und Wiederherstellungsdaten behalten;
-erst nach geklärtem Zustand erneut „Patch anwenden / aktualisieren“ nutzen.
+Der fehlgeschlagene Lauf vom 24.10.2026 brach beim Anlegen der Rücksicherung
+ab. Beide Spielarchive sind nachweislich unverändert; ein manuelles Rollback
+oder ein Zurücksetzen der Basis ist dafür nicht nötig. Im neuen H-Setup die
+Einstellungen kontrollieren und „Patch anwenden / aktualisieren“ erneut nutzen.
+Den eigentlichen Spieltest führt der Benutzer selbst durch.

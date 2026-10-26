@@ -1,4 +1,18 @@
-0.4.22 – Automatische Clientpakete
+0.4.25 – Automatische lokale Übergabe an UGSM Manager
+StudioPatch → Manager übernimmt → Spielerclient synchronisiert.
+Vorhandene lokale Clientbasis automatisch erkennen; kein Upload von Spielern.
+Feste Ablage im verwalteten Installationsordner statt Zugriff auf private
+Studio-/Desktopdaten. Minimale Prüfnachweise und klare Statusmeldungen.
+Manager 0.15.26 und Spielerclient 0.16.11 verwenden. Details: CLIENTPAKETE.txt.
+
+0.4.23 – Private Korrektur: Stapelgrößen und eigene Begleiter gleichzeitig
+Bekannte sechs neue Zaubergegenstände anhand ihrer Erstellungsnachweise prüfen.
+Nicht stapelbare Items bleiben auf1; fremde Ressourcen weiterhin gesperrt.
+Echter Hintergrundtest mit65000er-Stapeln und sechs Zaubern bestanden.
+Noch nicht veröffentlicht: Manager-/Client-Kompatibilität benötigt neuen Build.
+Details: STAPEL-BEGLEITER-FIX.txt.
+
+0.4.22 – Automatische Clientpakete (private Testversion)
 Nach erfolgreichem Patch automatisch versionsgebundene Clientänderungen mit
 SHA-256-Prüfung für den künftigen Servermanager-Adapter erstellen.
 Einrichtung unter Werkzeuge: Clientbasis für Serverpatches und Ausgabeordner.

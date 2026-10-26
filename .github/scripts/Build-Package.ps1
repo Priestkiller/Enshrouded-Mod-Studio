@@ -10,7 +10,7 @@ $releaseOutput = Join-Path $releaseRoot 'artifacts'
 New-Item -ItemType Directory -Path $releaseOutput -Force | Out-Null
 $releaseStage = Join-Path $releaseOutput ('package-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $releaseStage | Out-Null
-foreach ($dir in @('assets','engine','source','tools','ThirdParty')) {
+foreach ($dir in @('assets','engine','source','tools','ThirdParty','tests')) {
     Copy-Item -LiteralPath (Join-Path $releaseRoot $dir) -Destination (Join-Path $releaseStage $dir) -Recurse
 }
 foreach ($file in Get-ChildItem -LiteralPath $releaseRoot -File | Where-Object { $_.Extension -in @('.txt','.md','.cmd','.js') -or $_.Name -in @('Enshrouded Mod Studio.exe','Enshrouded Mod Studio.exe.config') }) {
