@@ -30,7 +30,7 @@ namespace EnshroudedStudio
                 current = Path.GetDirectoryName(current);
             }
         }
-        private static Dictionary<string, string> Expected(string appRoot)
+        internal static Dictionary<string, string> Expected(string appRoot)
         {
             string engine = Path.GetFullPath(Path.Combine(appRoot, "engine"));
             var expected = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "enshrouded-patcher.exe", StudioStore.VerifiedEngineSha256 }, { "bin/kfc-parser.exe", VerifiedParserSha256 } };
@@ -52,7 +52,7 @@ namespace EnshroudedStudio
         }
         public static int Import(string oldAppRoot, string appRoot)
         { return ImportExpected(Path.GetFullPath(Path.Combine(oldAppRoot, "engine")), Path.GetFullPath(Path.Combine(appRoot, "engine")), Expected(appRoot)); }
-        private static int ImportExpected(string sourceRoot, string targetRoot, Dictionary<string, string> expected)
+        internal static int ImportExpected(string sourceRoot, string targetRoot, Dictionary<string, string> expected)
         {
             var missing = new List<string>(); var created = new List<string>();
             foreach (var entry in expected)

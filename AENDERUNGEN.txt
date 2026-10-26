@@ -1,3 +1,18 @@
+0.4.26 – Erstinstallation und sichere Basis für bereits gepatchte Server
+Patcher einrichten ergänzt die geprüfte Originalruntime 1.2.3 aus ZIP oder EXE
+mit passendem Parser. Kein alter Studioordner, keine alten Profile nötig.
+Die Einrichtung startet das Originalprogramm nicht und kopiert keine Spieldaten.
+Bereits vollständig hashgeprüfte Runtime wird als eingerichtet erkannt.
+Altes Setup übernehmen bleibt als getrennte optionale Umzugsfunktion erhalten.
+Bereits gepatchte Archive ohne Originalbasis werden vor dem Modifizieren gestoppt.
+Eigene private Serverreferenzen nur für den exakt passenden EXE-/Archivstand
+übernehmen; vorhandenen Studiozustand nicht überschreiben. Keine Spielarchive
+oder privaten Runtime-Dateien im öffentlichen Paket.
+80 native Hintergrundprüfungen bestanden: 38 aktive Einstellungen, 3661 Änderungen
+zweimal geprüft, 19141 inhaltlich identische Ressourcen, keine Faktorverdopplung
+und keine doppelten eigenen Begleiterregistrierungen. Kein Spielstart.
+Passende Übergabe: Manager 0.15.28 und Spielerclient 0.16.13.
+
 0.4.25 – Automatische lokale Übergabe an UGSM Manager
 StudioPatch → Manager übernimmt → Spielerclient synchronisiert.
 Vorhandene lokale Clientbasis automatisch erkennen; kein Upload von Spielern.

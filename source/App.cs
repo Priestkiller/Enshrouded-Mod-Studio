@@ -141,6 +141,7 @@ namespace EnshroudedStudio
                 else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S && !patcherRunning) { Act(SaveCurrent); e.Handled = true; }
                 else if (e.Key == Key.Escape && search.IsKeyboardFocusWithin && search.Text.Length > 0) { search.Clear(); e.Handled = true; }
             };
+            Find<Button>("SetupRuntime").Click += delegate { Act(SetupPatcherRuntime); };
             Find<Button>("TransferSetup").Click += delegate { Act(TransferSetup); };
             Find<Button>("CheckUpdates").Click += delegate { CheckForUpdates(); };
             Find<Button>("OpenPatchLog").Click += delegate { Act(OpenPatchLog); };
@@ -148,7 +149,7 @@ namespace EnshroudedStudio
             Find<Button>("HelpButton").Click += delegate
             {
                 MessageBox.Show(Window,
-                    "1. Installationsordner mit passender EXE, KFC und kfc_resources wählen.\n2. Optionen einschalten und Werte einstellen.\n3. Spiel oder Server schließen.\n4. ‚Patch anwenden / aktualisieren‘ drücken.\n\n" +
+                    "Erstinstallation: ‚Patcher einrichten‘ liest das Originalpaket. Ein alter Studioordner ist nicht erforderlich.\n\n1. Installationsordner mit passender EXE, KFC und kfc_resources wählen.\n2. Optionen einschalten und Werte einstellen.\n3. Spiel oder Server schließen.\n4. ‚Patch anwenden / aktualisieren‘ drücken.\n\n" +
                     "Der Knopf speichert das Profil, bereitet den Patch an Kopien vor, prüft die Archive und wendet das Ergebnis an. Fortschritt und Ergebnis erscheinen hier im Tool. Bei späteren Änderungen denselben Knopf erneut benutzen.\n\n" +
                     "Die erste Basis entspricht den aktuellen Dateien. Vorhandene ältere Mods sind darin enthalten. Für einen sauberen Anfang zuerst die Steam-Dateiprüfung verwenden. Nach Spielupdates eine neue Basis wählen; alte Backups bleiben erhalten.\n\n" +
                     "Spätere Profile werden aus derselben gespeicherten Basis erstellt. Alle Mods aus bereitet diese Basis vor. Gespeicherte Basis wiederherstellen nimmt die Änderungen dieses Tools zurück.\n\n" +
@@ -169,6 +170,7 @@ namespace EnshroudedStudio
             categories.SelectedIndex = 1;
             loading = false;
             LoadProfile((Profile)profiles.SelectedItem);
+            if (!testMode && runtimeMissingCount > 0) notice.Text = "Erstinstallation: ‚Patcher einrichten‘ ergänzt die Programmdateien aus dem Originalpaket. Ein alter Studioordner ist nicht erforderlich.";
             if (Store.LoadErrors.Count > 0) notice.Text = "Einige Profildateien konnten nicht geladen werden: " + string.Join(" · ", Store.LoadErrors);
             timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += delegate
@@ -321,12 +323,12 @@ namespace EnshroudedStudio
             Find<TextBlock>("InstallationHelp").Text = result.EndsWith("erkannt") ?
                 (result.StartsWith("Dedicated") ? "Ziel: Dedicated Server. Der Spielclient auf deinem PC wird separat gepatcht." : "Ziel: Spielclient. Für deinen Dedicated Server dessen eigenen Installationsordner wählen.") :
                 "Client oder Server: Passende EXE, KFC und kfc_resources müssen im gewählten Ordner liegen.";
-            if (result.EndsWith("erkannt")) Find<TextBlock>("InstallationHelp").Text += PatchBasis.Exists(Store.DataRoot, (string)Config["gameDirectory"]) ? " Patch-Basis vorhanden." : " Noch keine Basis: bei vorherigem Patch altes Setup übernehmen.";
-            if (!testMode && runtimeMissingCount > 0) Find<TextBlock>("InstallationHelp").Text += " Programm-Runtime fehlt: über ‚Altes Setup übernehmen‘ aus einem vollständigen bisherigen Studioordner ergänzen.";
+            if (result.EndsWith("erkannt")) Find<TextBlock>("InstallationHelp").Text += PatchBasis.Exists(Store.DataRoot, (string)Config["gameDirectory"]) ? " Patch-Basis vorhanden." : " Noch keine Originalbasis: eine passende mitgelieferte Referenz wird geprüft. Sonst sind unveränderte Spieldateien erforderlich.";
+            if (!testMode && runtimeMissingCount > 0) Find<TextBlock>("InstallationHelp").Text += " Patcher fehlt: ‚Patcher einrichten‘ verwenden. Kein altes Studio erforderlich.";
             Find<TextBlock>("GamePathHint").Visibility = string.IsNullOrWhiteSpace(gamePath.Text) ? Visibility.Visible : Visibility.Collapsed;
             string roleError = Store.RestrictedTargetError(Config);
             Find<Button>("LaunchPatcher").IsEnabled = !patcherRunning && !installingUpdate && roleError == null && result.EndsWith("erkannt") && (testMode || runtimeMissingCount == 0);
-            Find<Button>("LaunchPatcher").ToolTip = patcherRunning ? "Aktualisierung läuft. Bitte auf das Ergebnis warten." : roleError ?? (!testMode && runtimeMissingCount > 0 ? "Programm-Runtime fehlt. Zuerst ‚Altes Setup übernehmen‘ verwenden." : result.EndsWith("erkannt") ? "Profil speichern und in der angezeigten Zielinstallation anwenden." : "Zuerst den vollständigen Client- oder Serverordner wählen.");
+            Find<Button>("LaunchPatcher").ToolTip = patcherRunning ? "Aktualisierung läuft. Bitte auf das Ergebnis warten." : roleError ?? (!testMode && runtimeMissingCount > 0 ? "Patcher fehlt. Zuerst ‚Patcher einrichten‘ verwenden; kein altes Studio erforderlich." : result.EndsWith("erkannt") ? "Profil speichern und in der angezeigten Zielinstallation anwenden." : "Zuerst den vollständigen Client- oder Serverordner wählen.");
             foreach (var refresh in targetRoleUpdates.Values) refresh();
             if (refreshClientPackageStatus != null) refreshClientPackageStatus();
             UpdateSkillTargetHint();
@@ -415,6 +417,14 @@ namespace EnshroudedStudio
             status.Text = "Mod-Studio-Patcher geöffnet";
             notice.Text = "Im Patcher zuerst die Vorschau erstellen, dann die geprüften Archive anwenden. Die Profile bleiben bis zum Beenden des Patchers gesperrt.";
         }
+        private void SetupPatcherRuntime()
+        {
+            if (patcherRunning || installingUpdate) return;
+            bool installed = RuntimeSetupUi.Open(Window, Store.AppRoot);
+            runtimeMissingCount = testMode ? 0 : RuntimeImport.CountExpectedMissing(Store.AppRoot);
+            UpdateGame();
+            if (installed) { status.Text = "Patcher eingerichtet"; notice.Text = "Programmdateien sind bereit. Spielordner und Optionen wählen, dann ‚Patch anwenden / aktualisieren‘ drücken. Profile und Spieldateien wurden bei der Einrichtung nicht verändert."; }
+        }
         private void TransferSetup()
         {
             if (!MayLeave()) return;
@@ -480,12 +490,12 @@ namespace EnshroudedStudio
         private void UpdatePatch()
         {
             if (patcherRunning) return;
-            if (!testMode && (runtimeMissingCount = RuntimeImport.CountExpectedMissing(Store.AppRoot)) > 0) { UpdateGame(); throw new InvalidOperationException("Die Programm-Runtime fehlt. Bitte zuerst ‚Altes Setup übernehmen‘ wählen und den vollständigen bisherigen Mod-Studio-Ordner angeben. Es wurden keine Spieldateien geändert."); }
+            if (!testMode && (runtimeMissingCount = RuntimeImport.CountExpectedMissing(Store.AppRoot)) > 0) { UpdateGame(); throw new InvalidOperationException("Der Patcher ist noch nicht eingerichtet. ‚Patcher einrichten‘ ergänzt ihn aus dem Originalpaket; du brauchst kein altes Studio. Es wurden keine Spieldateien geändert."); }
             SaveCurrent();
             if (!StudioStore.CheckGame((string)Config["gameDirectory"]).EndsWith("erkannt")) throw new InvalidDataException(StudioStore.CheckGame((string)Config["gameDirectory"]));
             if (!testMode && !PatchBasis.Exists(Store.DataRoot, (string)Config["gameDirectory"]))
             {
-                string review = "Für diesen Ordner gibt es hier noch keine gespeicherte Ausgangsbasis:\n" + Config["gameDirectory"] + "\n\nDie aktuellen Dateien werden beim ersten Anwenden als Basis gesichert. Bereits enthaltene Patches gehören dann zu dieser Basis; sie lassen sich dadurch nicht automatisch entfernen, und Faktoren könnten erneut darauf angewendet werden.\n\nFalls du mit einer früheren Studio-Version schon gepatcht hast, zuerst ‚Altes Setup übernehmen‘ benutzen. Fehlt die alte Basis, vorher über Steam saubere Spieldateien herstellen.\n\nSind die aktuellen Dateien der gewünschte Ausgangsstand und soll das eingestellte Profil jetzt angewendet werden?";
+                string review = "Für diesen Ordner gibt es hier noch keine gespeicherte Ausgangsbasis:\n" + Config["gameDirectory"] + "\n\nEine mitgelieferte Originalbasis wird nur bei exakt passender Spiel-EXE geprüft und übernommen. Ohne passende Referenz müssen die aktuellen Spieldateien unverändert sein. Bereits enthaltene Mod-Studio-Beschwörungen werden vor dem Patchen erkannt.\n\nFehlt die Originalbasis bei bereits gepatchten Dateien, vorher über Steam unveränderte Spieldateien herstellen. Ein alter Studioordner ist dafür nicht erforderlich.\n\nSoll die passende Originalbasis geprüft und das eingestellte Profil jetzt vorbereitet werden?";
                 if (MessageBox.Show(Window, review, "Ausgangsbasis für den ersten Patch", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes) { notice.Text = "Noch nicht angewendet. Zuerst das alte Setup übernehmen oder saubere Spieldateien bereitstellen."; return; }
             }
             string id = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + "-" + Guid.NewGuid().ToString("N").Substring(0, 8);
@@ -582,7 +592,7 @@ namespace EnshroudedStudio
         }
         private void SetLocked(bool locked)
         {
-            foreach (string control in new[] { "Profiles", "CopyProfile", "SaveProfile", "BrowseGame", "ImportConfig", "ExportConfig", "GamePath", "OptionsScroll", "TransferSetup", "ChangeBasis", "ServerCheck" })
+            foreach (string control in new[] { "Profiles", "CopyProfile", "SaveProfile", "BrowseGame", "ImportConfig", "ExportConfig", "GamePath", "OptionsScroll", "SetupRuntime", "TransferSetup", "ChangeBasis", "ServerCheck" })
                 Find<UIElement>(control).IsEnabled = !locked;
             Find<Button>("CheckUpdates").IsEnabled = !locked && !checkingUpdates;
             UpdateGame();
@@ -875,6 +885,9 @@ namespace EnshroudedStudio
         private void RenderSettings()
         {
             var panel = new StackPanel();
+            panel.Children.Add(new TextBlock { Text = "Patcher einrichten – Erstinstallation", FontSize = 21, FontWeight = FontWeights.SemiBold });
+            panel.Children.Add(Readable("Du brauchst kein altes Studio. Die Einrichtung liest das geprüfte Originalpaket 1.2.3 und ergänzt nur fehlende Programmdateien. Profile, Archivbasen und Spieldateien bleiben dabei unberührt.", 15, "#D1DFED"));
+            var setupRuntime = new Button { Content = "Patcher einrichten …", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 12, 0, 20) }; setupRuntime.Click += delegate { Act(SetupPatcherRuntime); }; panel.Children.Add(setupRuntime);
             panel.Children.Add(new TextBlock { Text = "Clientpaket für Servermanager", FontSize = 21, FontWeight = FontWeights.SemiBold });
             panel.Children.Add(ClientPackageUi.Build(Store, Window, delegate { return Config["gameDirectory"] as string; }, Act, delegate(string message) { notice.Text = message; }, out refreshClientPackageStatus));
             panel.Children.Add(new TextBlock { Text = "Bereits gepatcht? Einfach aktualisieren.", FontSize = 21, FontWeight = FontWeights.SemiBold });

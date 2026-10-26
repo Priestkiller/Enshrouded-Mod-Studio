@@ -2,13 +2,13 @@
 
 Der vom Manager verwaltete Server-Installationsordner enthält `.ugsm-studio.json`. Studio validiert diese Bindung und verwendet ausschließlich `.ugsm-studio-transfer/output` als reservierte Paketablage. Nach dem erfolgreichen Patch folgen minimale Plan-/Zustandsbelege unter `snapshots/<planId>/proofs/patches`, deren SHA-256-Werte in der atomaren `handoff.json` stehen. Die Quelle der Clientdaten ist eine vorhandene getrennte lokale Clientbasis desselben Spielbuilds; es gibt keine Spieler-Uploads und keine Serverarchiv-Umbenennung.
 
-Manager 0.15.26 liest die gemeinsame Ablage, prüft weiterhin den angewendeten Serverplan und die aktuellen Serverdateien und übernimmt bestätigte Clientpakete. Der Manager benötigt dafür keinen privaten Studio-Datenpfad oder Desktop-Zugriff. Nicht vom Manager verwaltete Installationen können weiterhin den älteren manuellen Vertrag verwenden.
+Manager 0.15.28 liest die gemeinsame Ablage, prüft weiterhin den angewendeten Serverplan und die aktuellen Serverdateien und übernimmt bestätigte Clientpakete. Der Manager benötigt dafür keinen privaten Studio-Datenpfad oder Desktop-Zugriff. Nicht vom Manager verwaltete Installationen können weiterhin den älteren manuellen Vertrag verwenden.
 
 ## Bisheriger manueller Vertrag
 
 # Mod-Studio-Clientpakete: Übergabe an den Servermanager
 
-Stand: Mod Studio 0.4.25. Dieser Abschnitt beschreibt den weiterhin unterstützten manuellen Übergabevertrag. UGSM Manager 0.15.26 übernimmt und veröffentlicht bestätigte Pakete; Spielerclient 0.16.11 lädt, prüft und installiert sie über die bestehende Synchronisation. Die automatische lokale Bindung ist im vorigen Abschnitt beschrieben.
+Stand: Mod Studio 0.4.25. Dieser Abschnitt beschreibt den weiterhin unterstützten manuellen Übergabevertrag. UGSM Manager 0.15.28 übernimmt und veröffentlicht bestätigte Pakete; Spielerclient 0.16.13 lädt, prüft und installiert sie über die bestehende Synchronisation. Die automatische lokale Bindung ist im vorigen Abschnitt beschrieben.
 
 Die maßgeblichen Implementierungen sind `engine/client-packages.js`, `engine/client-delta.js` und deren Einbindung in `engine/studio-backend.js`. Bei einer Weiterentwicklung muss der Adapter bekannte Formate ausdrücklich unterstützen; unbekannte Pflichtfähigkeiten dürfen nicht stillschweigend ignoriert werden.
 

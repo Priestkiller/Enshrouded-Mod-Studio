@@ -2,6 +2,10 @@
 $releaseRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
 $releaseSpec = Get-Content -LiteralPath (Join-Path $releaseRoot '.github\release.json') -Raw | ConvertFrom-Json
 if ($releaseSpec.version -notmatch '^\d+\.\d+\.\d+$') { throw 'Invalid release version.' }
+# Private original archives and runtime imports must never become public assets.
+foreach ($forbidden in @('RecoveryBases','private-test-input','private-test')) {
+    if (Test-Path -LiteralPath (Join-Path $releaseRoot $forbidden)) { throw ('Private input in public source tree: ' + $forbidden) }
+}
 & (Join-Path $releaseRoot 'source\build.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'Build failed.' }
 $releaseExe = Join-Path $releaseRoot 'Enshrouded Mod Studio.exe'
@@ -17,7 +21,8 @@ foreach ($file in Get-ChildItem -LiteralPath $releaseRoot -File | Where-Object {
     Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $releaseStage $file.Name)
 }
 # Only this GPL tool is downloaded. Proprietary patcher/vendor and the legacy
-# parser are deliberately absent and must come from an existing installation.
+# parser are deliberately absent and are set up locally from the user's original
+# package, or retained from an existing verified installation.
 $releaseEmmDir = Join-Path $releaseStage 'engine\bin'
 New-Item -ItemType Directory -Path $releaseEmmDir -Force | Out-Null
 $releaseEmm = Join-Path $releaseEmmDir 'emm.exe'
@@ -32,8 +37,15 @@ foreach ($entry in $releaseManifest.files.PSObject.Properties) {
     if (-not $file.StartsWith((Join-Path $releaseStage 'engine') + '\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Invalid manifest path.' }
     if ((Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.Value) { throw ('Package hash mismatch: ' + $entry.Name) }
 }
-foreach ($forbidden in @('Data','PreviousSetups','Pruefungen','engine\config.json','engine\vendor','engine\enshrouded-patcher.exe','engine\bin\kfc-parser.exe','engine\bin\kfc-parser.compat')) {
+foreach ($forbidden in @('Data','PreviousSetups','Pruefungen','RecoveryBases','private-test-input','private-test','engine\config.json','engine\vendor','engine\enshrouded-patcher.exe','engine\bin\kfc-parser.exe','engine\bin\kfc-parser.compat')) {
     if (Test-Path -LiteralPath (Join-Path $releaseStage $forbidden)) { throw ('Forbidden package content: ' + $forbidden) }
+}
+foreach ($entry in Get-ChildItem -LiteralPath $releaseStage -Recurse -Force) {
+    if (($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw ('Linked package content: ' + $entry.Name) }
+    if ($entry.Name -in @('RecoveryBases','private-test-input','private-test','reference.json') -or
+        (-not $entry.PSIsContainer -and ($entry.Name -match '\.kfc(?:_|$)' -or $entry.Extension -eq '.bytecode' -or $entry.Name -in @('enshrouded.exe','enshrouded_server.exe','enshrouded_server.json')))) {
+        throw ('Private/game content in public package: ' + $entry.Name)
+    }
 }
 foreach ($required in @('ThirdParty\kfc-parser-GPL-3.0.txt','ThirdParty\kfc-parser-source-1670859.zip','ThirdParty\EMM-HERKUNFT.txt','README.md','THIRD-PARTY.md')) {
     if (-not (Test-Path -LiteralPath (Join-Path $releaseStage $required))) { throw ('Required notice/source missing: ' + $required) }

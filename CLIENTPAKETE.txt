@@ -1,7 +1,7 @@
 CLIENTPAKETE AB MOD STUDIO 0.4.25
 
 1. STUDIO PATCHT
-Den von Manager 0.15.26 verwalteten Enshrouded-Server-Installationsordner
+Den von Manager 0.15.28 verwalteten Enshrouded-Server-Installationsordner
 wählen. Spiel und Server schließen, Optionen einstellen und Patch anwenden /
 aktualisieren. Speichern allein wendet keine Spieländerungen an.
 
@@ -12,7 +12,7 @@ Clientinstallation desselben Spielbuilds. Der Manager übernimmt und prüft die
 lokale Übergabe automatisch. Danach den Server mit den neuen Daten neu starten.
 
 3. SPIELER SYNCHRONISIEREN
-Im Spielerclient 0.16.11 Synchronisieren & Spielen wählen. Passende Änderungen
+Im Spielerclient 0.16.13 Synchronisieren & Spielen wählen. Passende Änderungen
 werden geladen und geprüft; der bisherige Modstand wird vor dem Einbau gesichert.
 
 VORHANDENE LOKALE BASIS
