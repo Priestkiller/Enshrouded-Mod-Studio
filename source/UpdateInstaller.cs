@@ -344,7 +344,7 @@ namespace EnshroudedStudio
                 if (!Guid.TryParseExact(id,"N",out parsed) || !ids.Add(id)) throw new InvalidDataException("Eine Profil-ID ist ungültig oder doppelt.");
                 var profile = ReadJson(file); object name;
                 if (!profile.TryGetValue("name",out name) || !(name is string)) throw new InvalidDataException("Ein Profilname fehlt.");
-                StudioStore.CheckName((string)name); store.Normalize(Json.Object(profile["config"],"Profil-Konfiguration"));
+                StudioStore.CheckName((string)name); store.NormalizeForEditing(Json.Object(profile["config"],"Profil-Konfiguration"));
             }
             string uiFile = Path.Combine(data,"ui.json");
             if (File.Exists(uiFile)) { var ui=ReadJson(uiFile); object last; if (!ui.TryGetValue("lastProfile",out last) || !(last is string) || !ids.Contains((string)last)) throw new InvalidDataException("Das ausgewählte Profil passt nicht zu den übernommenen Profil-IDs."); }
@@ -432,7 +432,7 @@ namespace EnshroudedStudio
                 result.ProfilesCopied=ValidateProfiles(payload,data); result.BasesCopied=ValidateBases(data);
                 if(oldConfigHash!=null)
                 {
-                    var store=new StudioStore(payload,data); store.Normalize(ReadJson(oldConfig));
+                    var store=new StudioStore(payload,data); store.NormalizeForEditing(ReadJson(oldConfig));
                     string target=Path.Combine(payload,"engine","config.json"); File.Copy(oldConfig,target,true);
                     if(Hash(target)!=oldConfigHash||Hash(oldConfig)!=oldConfigHash)throw new IOException("Die bisherige Engine-Konfiguration wurde während des Updates verändert.");
                 }

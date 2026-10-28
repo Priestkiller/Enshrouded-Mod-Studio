@@ -1,4 +1,4 @@
-# Enshrouded Mod Studio 0.4.27
+# Enshrouded Mod Studio 0.4.28
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
 
@@ -7,12 +7,16 @@ Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshroud
 ## In drei Schritten zu allen Spielern
 
 1. **Studio patcht:** Den vom UGSM Manager verwalteten Server-Installationsordner wählen, Einstellungen prüfen, Spiel bzw. Server schließen und **Patch anwenden / aktualisieren** ausführen.
-2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.29** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
-3. **Spieler synchronisieren:** Mit Spielerclient **0.16.14** **Synchronisieren & Spielen** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Der vorherige Modstand wird gesichert.
+2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.32** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
+3. **Spieler synchronisieren:** Mit Spielerclient **0.16.16** zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
 
 **Auf dem Server ist keine zusätzliche Spielclientinstallation erforderlich.** Die neue Standardmethode verwendet ausschließlich die vorhandene Serverbasis. Die Originaldateien der Spieler bleiben auf deren PCs; sie werden nicht hochgeladen. Server und Clients müssen denselben unterstützten Spielstand verwenden. Die bisherige Methode mit vorgefertigten Clientarchiven bleibt unter der eingeklappten erweiterten Einrichtung verfügbar.
 
 Die Oberfläche trennt **Serverpatch**, **Änderungen bereitstellen** und **Spieler synchronisieren**. Ein erfolgreicher Serverpatch allein meldet keine fertige Verteilung. Der Manager erhält die geprüfte Übergabe über die reservierte Ablage im verwalteten Installationsordner; Desktop-Zugriffsrechte sind dafür nicht nötig. [Einrichtung](CLIENTPAKETE.txt) · [Schnittstelle](SERVERMANAGER-CLIENTPAKETE.md).
+
+Die Punkteoption berechnet den gesamten Levelanteil als **(Level - 1) × Punktewert**. Beispiel: Level 26 mit Wert 4 ergibt insgesamt 100 Punkte aus dem Levelanteil, keine 100 neuen Punkte je Levelaufstieg. Bereits ausgegebene Punkte und Wissensbelohnungen werden getrennt berücksichtigt. [Punkte erklären und prüfen](SKILLPUNKTE.txt).
+
+Teilweise importierte Profile aktivieren keine fehlenden Mods automatisch. Vorhandene Zahlenwerte bleiben sichtbar und bearbeitbar. Eine neue native Obergrenze gilt beim Einschalten der betreffenden Option; ausgeschaltete Altwerte blockieren andere Patches nicht.
 
 ## Installieren und aktualisieren
 

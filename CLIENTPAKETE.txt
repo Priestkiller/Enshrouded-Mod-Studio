@@ -1,5 +1,5 @@
 MODS AUTOMATISCH AN ALLE SPIELER VERTEILEN
-Studio 0.4.27 / Manager 0.15.29 / Spielerclient 0.16.14
+Studio 0.4.28 / Manager 0.15.32 / Spielerclient 0.16.16
 
 AUF DEM SERVER
 1. Studio und Manager aktualisieren. Die vorhandene vollständige Studio-Runtime,
@@ -12,7 +12,7 @@ AUF DEM SERVER
 
 BEI JEDEM SPIELER
 Spiel schließen. Im aktualisierten Spielerclient das Serverprofil öffnen und
-Synchronisieren & Spielen wählen. Die Änderungen werden geladen, auf die eigenen
+zuerst Synchronisieren und nach erfolgreichem Abschluss Spiel starten wählen. Die Änderungen werden geladen, auf die eigenen
 gesicherten Originaldateien angewendet, zurückgelesen und kontrolliert installiert.
 
 KEINE ZUSÄTZLICHE CLIENTINSTALLATION AUF DEM SERVER

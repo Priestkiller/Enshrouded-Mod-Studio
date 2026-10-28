@@ -23,7 +23,12 @@ namespace EnshroudedStudio
         public bool Boolean { get; set; }
         public bool Integer { get; set; }
         public double Minimum { get; set; }
-        public double Maximum { get; set; }
+        private double declaredMaximum;
+        // Older updaters can keep reading the legacy Maximum while current
+        // editors and patch validation honor a tighter native storage limit.
+        public double Maximum { get { return NativeMaximum.HasValue ? Math.Min(declaredMaximum, NativeMaximum.Value) : declaredMaximum; } set { declaredMaximum = value; } }
+        public double LegacyMaximum { get { return declaredMaximum; } }
+        public double? NativeMaximum { get; set; }
         public List<FieldChoiceDef> Choices { get; set; }
     }
     public class ModDef
@@ -181,6 +186,7 @@ namespace EnshroudedStudio
         public Dictionary<string, object> Defaults;
         public List<Profile> Profiles = new List<Profile>();
         public List<string> LoadErrors = new List<string>();
+        public List<string> LoadWarnings = new List<string>();
         public string LastId;
         public const string VerifiedEngineSha256 = "9c9a5911dfe1b87a7c155dc9ba4c95fc4a40b2cdf98eb8b1cebde16c106d8872";
         public StudioStore(string appRoot, string dataRoot)
@@ -199,9 +205,46 @@ namespace EnshroudedStudio
         }
         public Dictionary<string, object> Normalize(Dictionary<string, object> config)
         {
-            var merged = Json.Merge(Defaults, config);
+            var merged = NormalizeForEditing(config);
             var errors = Validate(merged);
             if (errors.Count > 0) throw new InvalidDataException(string.Join(Environment.NewLine, errors.Take(8)));
+            return merged;
+        }
+        // Existing numeric values may exceed a tightened limit after an update.
+        // Keep readable profiles editable; Save/ExportEngine still validate all
+        // limits before a profile can reach the patcher.
+        public Dictionary<string, object> NormalizeForEditing(Dictionary<string, object> config)
+        {
+            // Old and partial profiles must not opt into mods merely because
+            // the bundled patcher's defaults enable them. Explicit profile
+            // values, unknown future fields and non-mod settings still win.
+            var merged = Json.Merge(Baseline(), config);
+            object value;
+            foreach (string key in new[] { "gameDirectory", "outputDirectory", "kfcParserVersion" })
+                if (!merged.TryGetValue(key, out value) || !(value is string)) throw new InvalidDataException(key + ": Text erwartet.");
+            foreach (var category in Schema)
+            {
+                var section = Json.Object(merged[category.Key], category.Title);
+                foreach (var mod in category.Mods)
+                {
+                    var options = Json.Object(section[mod.Key], mod.Title);
+                    if (!options.TryGetValue("enabled", out value) || !(value is bool)) throw new InvalidDataException(mod.Title + ": enabled muss true oder false sein.");
+                    foreach (var field in mod.Fields)
+                    {
+                        if (!options.TryGetValue(field.Key, out value)) throw new InvalidDataException(mod.Title + ": " + field.Label + " fehlt.");
+                        if (field.Boolean)
+                        {
+                            if (!(value is bool)) throw new InvalidDataException(mod.Title + ": " + field.Label + " muss true oder false sein.");
+                        }
+                        else
+                        {
+                            double number = Json.Number(value);
+                            if (field.Choices != null && field.Choices.Count > 0 && (number < long.MinValue || number >= (double)long.MaxValue))
+                                throw new InvalidDataException(mod.Title + ": " + field.Label + " ist nicht als Auswahlwert darstellbar.");
+                        }
+                    }
+                }
+            }
             return merged;
         }
         public List<string> Validate(Dictionary<string, object> config)
@@ -222,6 +265,7 @@ namespace EnshroudedStudio
                     try { options = Json.Object(section[mod.Key], mod.Title); }
                     catch { errors.Add(mod.Title + ": Einstellungen fehlen oder sind ungültig."); continue; }
                     if (!options.TryGetValue("enabled", out value) || !(value is bool)) errors.Add(mod.Title + ": enabled muss true oder false sein.");
+                    bool enabled = options.TryGetValue("enabled", out value) && value is bool && (bool)value;
                     foreach (var field in mod.Fields)
                     {
                         if (!options.TryGetValue(field.Key, out value)) { errors.Add(mod.Title + ": " + field.Label + " fehlt."); continue; }
@@ -230,8 +274,9 @@ namespace EnshroudedStudio
                         try
                         {
                             double n = Json.Number(value);
-                            if (n < field.Minimum || n > field.Maximum || (field.Integer && n != Math.Truncate(n)))
-                                errors.Add(mod.Title + ": " + field.Label + " muss " + (field.Integer ? "ganzzahlig " : "") + "zwischen " + field.Minimum.ToString("G", CultureInfo.GetCultureInfo("de-DE")) + " und " + field.Maximum.ToString("G", CultureInfo.GetCultureInfo("de-DE")) + " liegen.");
+                            double maximum = enabled ? field.Maximum : field.LegacyMaximum;
+                            if (n < field.Minimum || n > maximum || (field.Integer && n != Math.Truncate(n)))
+                                errors.Add(mod.Title + ": " + field.Label + " muss " + (field.Integer ? "ganzzahlig " : "") + "zwischen " + field.Minimum.ToString("G", CultureInfo.GetCultureInfo("de-DE")) + " und " + maximum.ToString("G", CultureInfo.GetCultureInfo("de-DE")) + " liegen.");
                             if (field.Choices != null && field.Choices.Count > 0 && !field.Choices.Any(choice => choice.Value == n))
                                 errors.Add(mod.Title + ": " + field.Label + " benötigt eine der angebotenen Varianten.");
                         }
@@ -299,9 +344,11 @@ namespace EnshroudedStudio
                 try
                 {
                     var doc = Json.Read(file);
-                    var profile = new Profile { Id = Path.GetFileNameWithoutExtension(file), Name = (string)doc["name"], Config = Normalize(Json.Object(doc["config"], "Profil")) };
+                    var profile = new Profile { Id = Path.GetFileNameWithoutExtension(file), Name = (string)doc["name"], Config = NormalizeForEditing(Json.Object(doc["config"], "Profil")) };
                     Guid id; if (!Guid.TryParseExact(profile.Id, "N", out id)) throw new InvalidDataException("Ungültige Profil-ID.");
                     CheckName(profile.Name); Profiles.Add(profile);
+                    var warnings = Validate(profile.Config);
+                    if (warnings.Count > 0) LoadWarnings.Add(profile.Name + ": Werte vor dem Patchen korrigieren. " + string.Join(" · ", warnings.Take(3)));
                 }
                 catch (Exception ex) { LoadErrors.Add(Path.GetFileName(file) + ": " + ex.Message); }
             }

@@ -1,4 +1,4 @@
-name: Publish Mod Studio
+name: Publish Mod Studio 0.4.28
 on:
   push:
     branches: [main]
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release:
-    if: github.repository == 'Priestkiller/Enshrouded-Mod-Studio'
+    if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.28')"
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -29,6 +29,11 @@ jobs:
         run: |
           node tests/resource-recipe-tests.js
           if ($LASTEXITCODE) { throw 'Resource recipe export checks failed' }
+      - name: Verify rounded counts and native value limits
+        shell: powershell
+        run: |
+          node tests/settings-values-tests.js
+          if ($LASTEXITCODE) { throw 'Settings value arithmetic checks failed' }
       - name: Build and validate public package
         shell: powershell
         run: ./.github/scripts/Build-Package.ps1

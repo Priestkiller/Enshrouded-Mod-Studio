@@ -85,7 +85,7 @@
       {
         "Key": "enableCreativeMode",
         "Title": "Ohne Rezeptkosten herstellen",
-        "Description": "Entfernt bei unterstützten Rezepten Anforderungen und Materialkosten.",
+        "Description": "Entfernt bei unterstützten Herstellungsrezepten Anforderungen und Materialkosten. Kochrezepte bleiben unverändert.",
         "Fields": [
           {
             "Key": "includeUpgrade",
@@ -99,7 +99,7 @@
         ],
         "Effect": "Bearbeitet Freischaltbedingungen und Kosten passender Rezepte. Flammenaltar-Upgrades werden nur mit dem zusätzlichen Haken einbezogen.",
         "Example": "Ein betroffenes Rezept mit 10 Holz als Kosten wird ohne diese Holzkosten hinterlegt. Mit ausgeschalteter Altar-Option bleiben die entsprechenden Flammen-Upgrades ausgenommen.",
-        "Notes": "Das ist kein vollständiger Kreativmodus mit Flug, Unsterblichkeit oder automatisch allen Gegenständen. Der genaue Rezeptzugang im Spiel bleibt ungeprüft. Der Handler setzt eine Creative-Freischaltbedingung und leert Rezeptkosten. Ob dein normaler Servercharakter diese Bedingung erfüllt, ist nicht belegt; eine uneingeschränkte Rezeptfreischaltung wird damit nicht zugesichert.",
+        "Notes": "Kochrezepte bleiben ausgenommen. Aufwertungsrezepte werden nur mit dem zusätzlichen Upgrade-Schalter bearbeitet. Das ist kein vollständiger Kreativmodus mit Flug, Unsterblichkeit oder automatisch allen Gegenständen. Der genaue Rezeptzugang im Spiel bleibt ungeprüft. Der Handler setzt eine Creative-Freischaltbedingung und leert Rezeptkosten. Ob dein normaler Servercharakter diese Bedingung erfüllt, ist nicht belegt; eine uneingeschränkte Rezeptfreischaltung wird damit nicht zugesichert.",
         "Status": "Rezeptkosten geändert · Creative-Bedingung beachten",
         "WhenToUse": "Wenn du bauen und herstellen möchtest, ohne dafür die üblichen Rezeptmaterialien zu verbrauchen.",
         "Scope": "Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert."
@@ -233,7 +233,7 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "2 verdoppelt die ursprüngliche Zahl, bis die eingestellte Obergrenze greift. Es werden keine zusätzlichen Kisten erzeugt."
+            "Help": "2 verdoppelt die ursprüngliche Zahl, bis die eingestellte Obergrenze greift. Es werden keine zusätzlichen Kisten erzeugt. Bruchteile werden auf ganze Inventarplätze gerundet und danach auf die gewählte Höchstzahl begrenzt."
           },
           {
             "Key": "cap",
@@ -245,7 +245,7 @@
             "Help": "Feste Obergrenze für das Ergebnis: 96 bedeutet maximal 96 Plätze. Diese Grenze gilt auch bei Faktor 1."
           }
         ],
-        "Effect": "Multipliziert vorhandene Lagerplätze und begrenzt das Ergebnis auf deine Höchstzahl. Zusammengehörige Inventareinstellungen werden gemeinsam geändert.",
+        "Effect": "Multipliziert vorhandene Lagerplätze und begrenzt das Ergebnis auf deine Höchstzahl. Zusammengehörige Inventareinstellungen werden gemeinsam geändert. Berechnete Bruchteile werden auf ganze Plätze gerundet; die vorhandene Höchstzahl wird eingehalten.",
         "Example": "24 Plätze × Faktor 2 = 48 Plätze. Bei 64 Plätzen und Obergrenze 96 wird das Ergebnis auf 96 statt 128 begrenzt.",
         "Notes": "Bereits gebaute Lager müssen laut Patcher-Anleitung gegebenenfalls neu gebaut werden. Eine niedrige Obergrenze kann größere vorhandene Angaben auch verkleinern. Die Zahl der Lagerplätze wird als 8-Bit-Zahl gespeichert; die Obergrenze ist deshalb auf 255 begrenzt.",
         "Status": "Einzeln geprüft · bestehende Lager ggf. neu bauen",
@@ -336,7 +336,7 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "3 = dreimal die ursprüngliche Altarzahl der jeweiligen Flammenstufe, bis die Höchstzahl greift. Das ist kein Bonus von drei Altären."
+            "Help": "3 = dreimal die ursprüngliche Altarzahl der jeweiligen Flammenstufe, bis die Höchstzahl greift. Das ist kein Bonus von drei Altären. Ergebnisse werden auf ganze Altäre gerundet und danach begrenzt. Ursprüngliche Null-Einträge bleiben null. Der interne Vorstufen-Eintrag vor der ersten Flammenstufe bleibt unverändert."
           },
           {
             "Key": "cap",
@@ -357,7 +357,7 @@
             "Help": "An erlaubt die zusätzliche Anpassung für eine Höchstzahl über 16. Bis 32 einstellbar; dass sich diese Altäre tatsächlich zuverlässig setzen und speichern lassen, ist noch nicht im Spiel geprüft."
           }
         ],
-        "Effect": "Multipliziert die Altarzahl jeder Flammenstufe und begrenzt das Ergebnis. Eine Gesamtgrenze über 16 erfordert zusätzlich die experimentelle Freigabe.",
+        "Effect": "Multipliziert die Altarzahl jeder Flammenstufe, rundet auf ganze Altäre und begrenzt das Ergebnis. Eine Gesamtgrenze über 16 erfordert zusätzlich die experimentelle Freigabe.",
         "Example": "6 ursprüngliche Altäre × Faktor 3 wären 18. Mit Höchstzahl 16 werden daraus 16 Altäre.",
         "Notes": "Die Vorgabe 16 erhält die höchsten vorhandenen Tabellenwerte. Platzierung über 16 sowie Speichern und Mehrspieler-Synchronisierung sind nicht bestätigt. Eine niedrige Höchstzahl kann größere vorhandene Werte verkleinern.",
         "Status": "Funktion eingeschränkt · Spieltest offen",
@@ -858,7 +858,7 @@
         ],
         "Effect": "Multipliziert getrennt die Grenze für beginnenden Fallschaden und die Grenze für einen tödlichen Sturz.",
         "Example": "Eine Startgrenze von 10 wird mit Faktor 2 zu 20. Eine tödliche Grenze von 16 wird mit Faktor 3 zu 48.",
-        "Notes": "Die beiden Grenzen sollten zueinander passen: Beginn des Schadens unterhalb der tödlichen Grenze. Der Patch ist keine garantierte Fallschaden-Immunität; weitere Fallregeln und Maßeinheiten wurden nicht live geprüft.",
+        "Notes": "Vor dem Anwenden werden die tatsächlichen beiden Grenzwerte aus der Originalbasis berechnet. Liegt der Beginn des Fallschadens nicht unter der tödlichen Grenze, stoppt der Vorgang mit beiden Zahlen. Die Einstellung ist keine garantierte Fallschaden-Immunität; weitere Spielregeln wurden nicht live geprüft.",
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn du größere Stürze überstehen oder früher Fallschaden erleiden möchtest.",
         "Scope": "Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated: Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON bleibt unverändert."
@@ -897,7 +897,8 @@
             "Integer": true,
             "Minimum": 0,
             "Maximum": 1000000000,
-            "Help": "Feste Untergrenze je betroffener Truhe. 1 bedeutet mindestens eine vorgesehene Auswahl, nicht ein garantierter Stapel einer bestimmten Ressource."
+            "Help": "Feste Untergrenze je betroffener Truhe. 1 bedeutet mindestens eine vorgesehene Auswahl, nicht ein garantierter Stapel einer bestimmten Ressource. Der speicherbare Wert liegt zwischen 0 und 255. Die tatsächliche Beute bleibt durch Inventar und Spielregeln begrenzt.",
+            "NativeMaximum": 255
           },
           {
             "Key": "max",
@@ -906,7 +907,8 @@
             "Integer": true,
             "Minimum": 0,
             "Maximum": 1000000000,
-            "Help": "Feste Obergrenze der vorgesehenen Auswahlen. 5 bedeutet bis zu fünf Auswahlen. Der Wert muss mindestens so hoch sein wie die Untergrenze."
+            "Help": "Feste Obergrenze der vorgesehenen Auswahlen. 5 bedeutet bis zu fünf Auswahlen. Der Wert muss mindestens so hoch sein wie die Untergrenze. Der speicherbare Wert liegt zwischen 0 und 255. Die tatsächliche Beute bleibt durch Inventar und Spielregeln begrenzt.",
+            "NativeMaximum": 255
           }
         ],
         "Effect": "Ersetzt die erkannten Grenzen für zufällige Beuteauswahlen einer Truhe. Diese Auswahlen sind weder Lagerplätze noch Stückzahlen eines einzelnen Items.",
@@ -1034,10 +1036,10 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "10 verzehnfacht die bisherige Zählgrenze. 1 belässt sie. Der Wert ist kein festes Maximum von zehn Instrumenten."
+            "Help": "10 verzehnfacht die bisherige Zählgrenze. 1 belässt sie. Der Wert ist kein festes Maximum von zehn Instrumenten. Das berechnete Ergebnis wird auf eine ganze Instrumentenzahl gerundet. Zu große Ergebnisse werden mit einer Fehlermeldung abgelehnt."
           }
         ],
-        "Effect": "Skaliert die maximale Zahl der Instrumente, die für den Musik-Komfort berücksichtigt werden.",
+        "Effect": "Skaliert die maximale Zahl der Instrumente für den Musik-Komfort und rundet auf eine ganze Instrumentenzahl.",
         "Example": "4 berücksichtigte Instrumente × Faktor 10 = höchstens 40 berücksichtigte Instrumente.",
         "Notes": "Ändert die Zählgrenze des Bonus. Das ist keine allgemeine Erlaubnis zum Platzieren zusätzlicher Instrumente und kein direkter Faktor für Kampfschaden.",
         "Status": "Daten geprüft · Spieltest offen",
@@ -1056,10 +1058,10 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "10 = zehnfacher ursprünglicher Höchstbonus. 1 belässt ihn; 0,5 halbiert ihn. Das ist kein zusätzlicher fester Bonus von zehn Punkten."
+            "Help": "Multipliziert den ursprünglichen Höchstbonus und rundet auf ganze Komfortpunkte: 15 × 0,5 ergibt gerundet 8 Punkte. 1 belässt den Höchstbonus. Zu große Ergebnisse werden mit einer Fehlermeldung abgelehnt."
           }
         ],
-        "Effect": "Skaliert den hinterlegten Höchstwert des Musik-Komfortbonus. Die Einstellung ändert dessen Stärke, nicht seine Aufbauzeit.",
+        "Effect": "Skaliert den hinterlegten Höchstwert des Musik-Komfortbonus und rundet auf ganze Punkte. Die Aufbauzeit wird dadurch nicht geändert.",
         "Example": "15 Komfortpunkte × Faktor 10 = maximal 150 hinterlegte Komfortpunkte aus Musik.",
         "Notes": "Der Komfortbonus ist kein direkter Schadensbonus. Welche weiteren Wirkungen ein höherer Komfortwert im Spiel hat, wird durch die übrigen Spielregeln bestimmt und ist hier noch nicht live geprüft.",
         "Status": "Daten geprüft · Spieltest offen",
@@ -1136,7 +1138,7 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "2 verdoppelt den ursprünglichen Eintrag jeder Flammenstufe, bis die Höchstzahl greift. Vorgabe 1 fügt nichts hinzu."
+            "Help": "Multipliziert den ursprünglichen Eintrag jeder Flammenstufe. Das Ergebnis wird auf ganze Wasserquellen gerundet und danach auf die Höchstzahl begrenzt. Beispiel: 5 × 0,5 wird zu 3 Quellen. Ursprüngliche Null-Einträge bleiben null."
           },
           {
             "Key": "cap",
@@ -1145,10 +1147,11 @@
             "Integer": true,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "Gesamtgrenze für das berechnete Ergebnis, Vorgabe 50. Die Grenze füllt niedrigere Ergebnisse nicht automatisch auf und kann höhere Ergebnisse verkleinern."
+            "Help": "Gesamtgrenze für das berechnete Ergebnis, Vorgabe 50. Erlaubt sind 1 bis 255 Wasserquellen je Stufeneintrag. Niedrigere Ergebnisse werden dadurch nicht aufgefüllt.",
+            "NativeMaximum": 255
           }
         ],
-        "Effect": "Multipliziert jeden erkannten Stufeneintrag und begrenzt ihn auf die gewählte Gesamtzahl.",
+        "Effect": "Multipliziert jeden erkannten Stufeneintrag, rundet auf ganze Wasserquellen und begrenzt ihn auf die gewählte Gesamtzahl (höchstens 255).",
         "Example": "8 erlaubte Quellen × Faktor 2 wären 16. Mit Höchstzahl 10 werden daraus 10 Quellen.",
         "Notes": "Die Vorgabe Faktor 1 und Höchstzahl 50 kann alle vorhandenen Einträge unverändert lassen. Das Einschalten allein erzeugt deshalb keine zusätzlichen Quellen; Platzierung und Nutzung wurden noch nicht live geprüft.",
         "Status": "Daten geprüft · Spieltest offen",
