@@ -63,6 +63,9 @@ $releaseEmm = Join-Path $releaseEmmDir 'emm.exe'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest -Uri 'https://github.com/Brabb3l/kfc-parser/releases/download/v0.2.0/emm.exe' -OutFile $releaseEmm -UseBasicParsing
 if ((Get-FileHash -LiteralPath $releaseEmm -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305') { throw 'EMM checksum mismatch.' }
+& powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tests/update-data-migration-tests.ps1') -StudioAssembly $releaseExe -AppRoot $releaseRoot -OutputFile (Join-Path $releaseRoot 'build/update-data-migration-results.json')
+if ($LASTEXITCODE) { throw 'Update migration regression checks failed.' }
+
 $releaseManifest = Get-Content -LiteralPath (Join-Path $releaseStage 'engine\engine-manifest.json') -Raw | ConvertFrom-Json
 if ($releaseManifest.studio -ne $releaseSpec.version) { throw 'Manifest version mismatch.' }
 foreach ($entry in $releaseManifest.files.PSObject.Properties) {

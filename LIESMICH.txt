@@ -1,4 +1,4 @@
-ENSHROUDED MOD STUDIO 0.4.29
+ENSHROUDED MOD STUDIO 0.4.30
 
 Neue Punkteerklärung: Die erste Neuberechnung kann auch frühere Level und
 bereits bekannte Wurzelbelohnungen höher bewerten. Ein größerer erster Zuwachs
@@ -24,3 +24,5 @@ Weitere Erklärung: ERSTINSTALLATION.txt. Updates: UPDATES.txt.
 Automatische lokale Übergabe: Studio patcht, Manager 0.15.28 übernimmt,
 Spielerclient 0.16.13 synchronisiert. Eine getrennte lokale Clientinstallation
 desselben Spielbuilds bleibt für Serverpakete erforderlich. Kein Upload.
+
+Update-Pfadfehler: Die Arbeitsdaten-Übernahme ist korrigiert. Details und die einmalige Abhilfe für alte Updater stehen in UPDATE-PFADHILFE.txt.
