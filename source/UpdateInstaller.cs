@@ -49,7 +49,7 @@ namespace EnshroudedStudio
         private static readonly Regex TargetId = new Regex(@"^[a-fA-F0-9]{20}\z", RegexOptions.CultureInvariant);
         private static readonly Regex ReservedName = new Regex(@"^(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|\z)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         private sealed class CopyFile { public string Relative, Source, Sha256; public long Size; public DateTime Written; }
-        private sealed class TreePlan { public List<CopyFile> Files = new List<CopyFile>(); public List<string> Directories = new List<string>(); public long Bytes; }
+        private sealed class TreePlan { public List<CopyFile> Files = new List<CopyFile>(); public List<string> Directories = new List<string>(); public List<string> OmittedWorkingDirectories = new List<string>(); public long Bytes; }
         private sealed class ZipPlan { public ZipArchiveEntry Entry; public string Relative; public bool Directory; }
 
         public static Task<UpdateInstallResult> InstallAsync(UpdateResult release, string oldAppRoot, string oldDataRoot, IProgress<UpdateInstallProgress> progress)
@@ -85,6 +85,8 @@ namespace EnshroudedStudio
             }
         }
         private static string Child(string root, string relative)
+        { return Child(root, relative, true); }
+        private static string Child(string root, string relative, bool checkLength)
         {
             if (string.IsNullOrEmpty(relative) || relative.IndexOf('\\') >= 0 || Path.IsPathRooted(relative)) throw new InvalidDataException("Ungültiger Updatepfad.");
             foreach (string part in relative.Split('/'))
@@ -93,7 +95,7 @@ namespace EnshroudedStudio
             string full = Path.GetFullPath(Path.Combine(root, relative.Replace('/', Path.DirectorySeparatorChar)));
             if (!full.StartsWith(Full(root) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException("Updatepfad liegt außerhalb des Zielordners: " + relative);
-            if (full.Length > 240) throw new InvalidDataException("Der Updatepfad ist für Windows zu lang. Bitte den bisherigen Studioordner zuerst an einen kürzeren Pfad verschieben: " + relative);
+            if (checkLength && full.Length > 240) throw new InvalidDataException("Ein benötigter Updatepfad ist für Windows zu lang. Bitte den vollständigen bisherigen Studioordner einschließlich Data an einen kürzeren Pfad verschieben: " + relative);
             return full;
         }
         private static Dictionary<string, object> ReadJson(string file)
@@ -271,16 +273,51 @@ namespace EnshroudedStudio
             }
         }
 
+        private static void CheckDataTransactions(string root)
+        {
+            var controls = new TreePlan(); int scanned=0; string jobs = Path.Combine(root,"patches","jobs"); NoLinks(jobs);
+            if (Directory.Exists(jobs)) foreach (string job in Directory.EnumerateDirectories(jobs))
+            {
+                if(++scanned>MaximumDataFiles)throw new InvalidDataException("Zu viele Vorgangsordner im bisherigen Setup."); NoLinks(job);
+                string running = Path.Combine(job,".studio-running.json"); NoLinks(running);
+                if (File.Exists(running) || Directory.Exists(running)) throw new InvalidOperationException("Ein bisheriger Patch-Arbeitsordner ist noch als laufend markiert. Diesen Vorgang im bisherigen Studio zuerst beenden bzw. prüfen.");
+                string transaction = Path.Combine(job,"transaction.json"); NoLinks(transaction);
+                if (Directory.Exists(transaction)) throw new InvalidDataException("Unbekannte Vorgangsmetadaten im bisherigen Setup.");
+                if (File.Exists(transaction)) controls.Files.Add(new CopyFile { Source=transaction, Relative="patches/jobs/"+Path.GetFileName(job)+"/transaction.json" });
+            }
+            string targets = Path.Combine(root,"patches","targets"); NoLinks(targets);
+            if (Directory.Exists(targets)) foreach (string target in Directory.EnumerateDirectories(targets))
+            {
+                if(++scanned>MaximumDataFiles)throw new InvalidDataException("Zu viele Vorgangsordner im bisherigen Setup."); NoLinks(target); string prefix="patches/targets/"+Path.GetFileName(target)+"/";
+                string operation=Path.Combine(target,"operation.lock"); NoLinks(operation);
+                if (File.Exists(operation) || Directory.Exists(operation)) controls.Files.Add(new CopyFile { Source=operation, Relative=prefix+"operation.lock" });
+                string renewals=Path.Combine(target,"basis-renewals"); NoLinks(renewals);
+                if (Directory.Exists(renewals)) foreach (string renewal in Directory.EnumerateDirectories(renewals))
+                {
+                    if(++scanned>MaximumDataFiles)throw new InvalidDataException("Zu viele Vorgangsordner im bisherigen Setup."); NoLinks(renewal); string journal=Path.Combine(renewal,"journal.json"); NoLinks(journal);
+                    if (Directory.Exists(journal)) throw new InvalidDataException("Unbekannte Basismetadaten im bisherigen Setup.");
+                    if (File.Exists(journal)) controls.Files.Add(new CopyFile { Source=journal, Relative=prefix+"basis-renewals/"+Path.GetFileName(renewal)+"/journal.json" });
+                }
+            }
+            NoPending(controls);
+        }
         private static TreePlan PlanData(string root)
         {
             var plan = new TreePlan(); if (!Directory.Exists(root)) return plan;
-            NoLinks(root); var pending = new Stack<KeyValuePair<string,int>>(); pending.Push(new KeyValuePair<string,int>(root,0));
+            NoLinks(root); CheckDataTransactions(root);
+            var pending = new Stack<KeyValuePair<string,int>>(); pending.Push(new KeyValuePair<string,int>(root,0));
             while (pending.Count > 0)
             {
                 var current = pending.Pop(); if (current.Value > 32) throw new InvalidDataException("Der Setup-Ordner ist zu tief verschachtelt.");
                 foreach (string entry in Directory.EnumerateFileSystemEntries(current.Key))
                 {
-                    NoLinks(entry); string relative = entry.Substring(Full(root).Length + 1).Replace('\\','/'); Child(root, relative);
+                    NoLinks(entry); string relative = entry.Substring(Full(root).Length + 1).Replace('\\','/'); Child(root, relative, false);
+                    // Only generated trees of our numeric patch jobs are omitted.
+                    // The source is neither traversed nor deleted. Transaction gates
+                    // above run first; journals, rollback, bases and unknown data stay.
+                    if (Directory.Exists(entry) && Regex.IsMatch(relative, @"^patches/jobs/[0-9]+-[a-fA-F0-9]+/(?:game|unpacked|modified|verify|localization|bin)\z", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                    { plan.OmittedWorkingDirectories.Add(relative); continue; }
+                    Child(root, relative);
                     if (plan.Files.Count + plan.Directories.Count >= MaximumDataFiles) throw new InvalidDataException("Das Setup enthält mehr als 250.000 Dateien und Ordner.");
                     if (Directory.Exists(entry)) { plan.Directories.Add(relative); pending.Push(new KeyValuePair<string,int>(entry,current.Value+1)); }
                     else
@@ -323,10 +360,15 @@ namespace EnshroudedStudio
                 if(percent!=lastReportedPercent){Report(progress,"settings","Profile, Einstellungen und vollständige Sicherungen werden übernommen …",percent);lastReportedPercent=percent;}
             }
         }
+        private static void ValidateCopyDestinations(TreePlan plan, string destination)
+        {
+            foreach (string directory in plan.Directories) Child(destination,directory);
+            foreach (var item in plan.Files) Child(destination,item.Relative);
+        }
         private static void AssertUnchanged(TreePlan original, string root)
         {
             var current = PlanData(root);
-            if (current.Files.Count != original.Files.Count || current.Directories.Count != original.Directories.Count) throw new IOException("Das bisherige Setup wurde während des Updates geändert.");
+            if (current.Files.Count != original.Files.Count || current.Directories.Count != original.Directories.Count || !current.OmittedWorkingDirectories.OrderBy(p=>p,StringComparer.OrdinalIgnoreCase).SequenceEqual(original.OmittedWorkingDirectories.OrderBy(p=>p,StringComparer.OrdinalIgnoreCase),StringComparer.OrdinalIgnoreCase)) throw new IOException("Das bisherige Setup wurde während des Updates geändert.");
             var byName = current.Files.ToDictionary(f => f.Relative,StringComparer.OrdinalIgnoreCase);
             foreach (var item in original.Files)
             { CopyFile now; if (!byName.TryGetValue(item.Relative,out now) || now.Size != item.Size || now.Written != item.Written) throw new IOException("Das bisherige Setup wurde während des Updates geändert."); }
@@ -383,7 +425,7 @@ namespace EnshroudedStudio
                 string destination=Child(data,"updates/migrated-"+Path.GetFileNameWithoutExtension(file)+"-"+Guid.NewGuid().ToString("N").Substring(0,8)+".original.json");
                 Directory.CreateDirectory(Path.GetDirectoryName(destination)); File.Move(file,destination);
             }
-            result.Notes.Add("Die vollständige bisherige Data-Historie wurde übernommen. Alte Vorschauverweise bleiben als Originaldateien unter Data/updates erhalten; vor dem nächsten Anwenden wird eine neue Vorschau erstellt.");
+            result.Notes.Add("Profile, Sicherungen sowie Basis- und Vorgangsmetadaten wurden übernommen. Alte Vorschauverweise bleiben als Originaldateien unter Data/updates erhalten; vor dem nächsten Anwenden wird eine neue Vorschau erstellt.");
         }
         private static void FreeSpace(string parent,long required)
         {
@@ -421,7 +463,10 @@ namespace EnshroudedStudio
             string oldConfigHash=File.Exists(oldConfig)?Hash(oldConfig):null;
             FreeSpace(parent,dataPlan.Bytes+MaximumExpandedBytes+release.AssetSize+128L*1024*1024);
             string work=Child(parent,".studio-update-"+Guid.NewGuid().ToString("N")), payload=Path.Combine(work,"app"), zip=Path.Combine(work,"download.zip");
+            ValidateCopyDestinations(dataPlan,Path.Combine(payload,"Data"));
+            ValidateCopyDestinations(dataPlan,Path.Combine(finalRoot,"Data"));
             var result=new UpdateInstallResult { AppRoot=finalRoot,DataRoot=Path.Combine(finalRoot,"Data"),ExecutablePath=Path.Combine(finalRoot,ExecutableName),DataBytesCopied=dataPlan.Bytes };
+            if(dataPlan.OmittedWorkingDirectories.Count>0) result.Notes.Add(dataPlan.OmittedWorkingDirectories.Count+" erzeugte Patch-Arbeitsordner wurden nicht erneut kopiert. Sie bleiben im bisherigen Studio unverändert erhalten; die neue Version erstellt ihre Vorschau bei Bedarf neu.");
             bool published=false;
             try
             {
@@ -491,6 +536,9 @@ namespace EnshroudedStudio
             string job="patches/jobs/123456-abcdef";Directory.CreateDirectory(Child(oldData,job));File.WriteAllText(Child(oldData,job+"/transaction.json"),"{\"status\":\"committed\",\"unknown\":123}");File.WriteAllText(Child(oldData,job+"/history.bin"),"KEEP HISTORY");
             string latest="patches/latest-"+new string('a',20)+".json";File.WriteAllText(Child(oldData,latest),"{\"job\":\"123456-abcdef\",\"unknown\":77}");
             Directory.CreateDirectory(Path.Combine(oldData,"backups"));File.WriteAllText(Path.Combine(oldData,"backups","custom.txt"),"KEEP BACKUP");
+            string basisDirectory=Child(oldData,"patches/targets/"+new string('a',20)+"/basis-1");Directory.CreateDirectory(basisDirectory);
+            var basisHashes=new Dictionary<string,object>();foreach(string archiveName in new[]{"enshrouded.kfc","enshrouded.kfc_resources"}){string basisFile=Path.Combine(basisDirectory,archiveName);File.WriteAllText(basisFile,"ORIGINAL BASIS FIXTURE "+archiveName);basisHashes.Add(archiveName,Hash(basisFile));}
+            Json.Write(Path.Combine(Path.GetDirectoryName(basisDirectory),"state.json"),new Dictionary<string,object>{{"basis","basis-1"},{"exeHash",new string('0',64)},{"basisArchives",basisHashes},{"currentArchives",basisHashes},{"unknownFixtureState","KEEP"}},null);
             Version version=ExeVersion(Path.Combine(appRoot,ExecutableName));string tag="v"+UpdateCheck.DisplayVersion(version);
             var files=new Dictionary<string,byte[]>();
             foreach(string name in new[]{ExecutableName,ExecutableName+".config","assets/MainWindow.xaml","assets/defaults.json","assets/schema.json"})files.Add(name,File.ReadAllBytes(Child(appRoot,name)));
@@ -510,11 +558,29 @@ namespace EnshroudedStudio
             string link=Path.Combine(root,"link.zip");MakeZip(link,files,delegate(ZipArchive z){var e=z.CreateEntry("link");e.ExternalAttributes=unchecked((int)(0xa1ffu<<16));});
             check(Rejected(delegate{Extract(link,Path.Combine(root,"link-output"));}),"Auto-Update lehnt ZIP-Verknüpfungen ab");
             string transaction=Child(oldData,job+"/transaction.json");File.WriteAllText(transaction,"{\"status\":\"running\"}");check(Rejected(delegate{NoPending(PlanData(oldData));}),"Auto-Update blockiert unterbrochene Archivtauschvorgänge");File.WriteAllText(transaction,"{\"status\":\"committed\",\"unknown\":123}");
+            string scratch=Path.Combine(oldData,job.Replace('/',Path.DirectorySeparatorChar),"modified");Directory.CreateDirectory(scratch);
+            string longGenerated=Path.Combine(scratch,new string('x',Math.Max(1,246-scratch.Length-6))+".json");
+            if(longGenerated.Length<=240 || longGenerated.Length>=260)throw new Exception("Update migration fixture needs a source path between 241 and 259 characters.");
+            File.WriteAllText(longGenerated,"GENERATED RESOURCE, REBUILD FROM BASIS");
+            foreach(string generated in new[]{"game","unpacked","verify","localization","bin"}){Directory.CreateDirectory(Path.Combine(oldData,job.Replace('/',Path.DirectorySeparatorChar),generated));File.WriteAllText(Path.Combine(oldData,job.Replace('/',Path.DirectorySeparatorChar),generated,"temporary.bin"),"GENERATED");}
+            Directory.CreateDirectory(Path.Combine(oldData,job.Replace('/',Path.DirectorySeparatorChar),"rollback"));
+            File.WriteAllText(Path.Combine(oldData,job.Replace('/',Path.DirectorySeparatorChar),"rollback","original.bin"),"KEEP RECOVERY");
+            var selected=PlanData(oldData);
+            check(selected.OmittedWorkingDirectories.Count==6&&!selected.Files.Any(f=>f.Source==longGenerated)&&selected.Files.Any(f=>f.Relative==job+"/rollback/original.bin")&&selected.Files.Any(f=>f.Relative==job+"/history.bin"),"Auto-Update überspringt nur sechs erzeugte Arbeitsordner auch bei Pfaden über 240 Zeichen und bewahrt Historie und Rücknahmedaten");
+            File.WriteAllText(transaction,"{\"status\":\"recovery-required\"}");check(Rejected(delegate{PlanData(oldData);}),"Unterbrochene Vorgänge blockieren das Update vor dem Auslassen ihrer Arbeitsordner");
+            File.WriteAllText(transaction,"{\"status\":\"unexpected\"}");check(Rejected(delegate{PlanData(oldData);}),"Unbekannte Vorgangszustände werden trotz langer erzeugter Arbeitsdaten abgewiesen");File.WriteAllText(transaction,"{\"status\":\"committed\",\"unknown\":123}");
+            string running=Path.Combine(Path.GetDirectoryName(transaction),".studio-running.json");File.WriteAllText(running,"{\"pid\":123}");check(Rejected(delegate{PlanData(oldData);}),"Als laufend markierte Arbeitsordner werden nicht während eines Updates ausgelassen");File.Delete(running);
+            string lockedTarget=Path.Combine(oldData,"patches","targets",new string('b',20));Directory.CreateDirectory(lockedTarget);string operation=Path.Combine(lockedTarget,"operation.lock");File.WriteAllText(operation,"LOCK");check(Rejected(delegate{PlanData(oldData);}),"Ziel-Vorgangssperren werden vor dem Auslassen erzeugter Arbeitsdaten geprüft");File.Delete(operation);Directory.Delete(lockedTarget);
+            string unknownDir=Path.Combine(oldData,"unknown-history");Directory.CreateDirectory(unknownDir);string unknownLong=Path.Combine(unknownDir,new string('u',Math.Max(1,246-unknownDir.Length-6))+".json");File.WriteAllText(unknownLong,"UNKNOWN MUST NOT BE OMITTED");check(Rejected(delegate{PlanData(oldData);})&&File.ReadAllText(unknownLong)=="UNKNOWN MUST NOT BE OMITTED","Unbekannte lange Nutzerdaten werden nicht stillschweigend verworfen");File.Delete(unknownLong);Directory.Delete(unknownDir);
+            string destinationProbe=Path.Combine(oldData,"backups",new string('r',Math.Max(1,230-Path.Combine(oldData,"backups").Length-6))+".json");File.WriteAllText(destinationProbe,"KEEP CRITICAL BACKUP");bool downloadAttempted=false;
+            check(Rejected(delegate{InstallCore(release,old,oldData,null,delegate(string ignored){downloadAttempted=true;},delegate(string from,string to){return 0;});})&&!downloadAttempted&&File.ReadAllText(destinationProbe)=="KEEP CRITICAL BACKUP","Zu lange übernommene Zielpfade werden vor dem Download erkannt; Originaldaten bleiben erhalten");File.Delete(destinationProbe);
             var before=PlanData(oldData);foreach(var item in before.Files)item.Sha256=Hash(item.Source);string configHash=Hash(Path.Combine(old,"engine","config.json"));
             var installed=InstallCore(release,old,oldData,null,delegate(string target){CopyVerifiedArchive(good,target,release);},delegate(string from,string to){return 0;});
             var migratedStore=new StudioStore(installed.AppRoot,installed.DataRoot);migratedStore.Load();
             check(installed.ProfilesCopied==sourceStore.Profiles.Count&&migratedStore.LastId==sourceStore.LastId&&migratedStore.Profiles.Select(p=>p.Id).OrderBy(p=>p).SequenceEqual(sourceStore.Profiles.Select(p=>p.Id).OrderBy(p=>p))&&migratedStore.Profiles.Any(p=>p.Config.ContainsKey("updateUnknownFixture"))&&Hash(Path.Combine(installed.AppRoot,"engine","config.json"))==configHash,"Auto-Update erhält Profil-IDs, Auswahl, unbekannte Einstellungen und Engine-Konfiguration");
             check(before.Files.All(item=>Hash(item.Source)==item.Sha256)&&!File.Exists(Child(installed.DataRoot,latest))&&Directory.GetFiles(Path.Combine(installed.DataRoot,"updates"),"migrated-latest-*.original.json").Any()&&File.ReadAllText(Child(installed.DataRoot,job+"/history.bin"))=="KEEP HISTORY"&&File.ReadAllText(Path.Combine(installed.DataRoot,"backups","custom.txt"))=="KEEP BACKUP","Auto-Update lässt das alte Setup unverändert und bewahrt Historie mit sicher archivierten Vorschauverweisen");
+            check(File.ReadAllText(longGenerated)=="GENERATED RESOURCE, REBUILD FROM BASIS"&&!Directory.Exists(Path.Combine(installed.DataRoot,job.Replace('/',Path.DirectorySeparatorChar),"modified"))&&File.ReadAllText(Path.Combine(installed.DataRoot,job.Replace('/',Path.DirectorySeparatorChar),"rollback","original.bin"))=="KEEP RECOVERY"&&installed.Notes.Any(n=>n.Contains("6 erzeugte Patch-Arbeitsordner")),"Update mit langen erzeugten Ressourcen gelingt; alte Arbeitsdaten bleiben unverändert, Rücknahme und Hinweis werden übernommen");
+            check(installed.BasesCopied==1&&basisHashes.All(pair=>Hash(Path.Combine(installed.DataRoot,"patches","targets",new string('a',20),"basis-1",pair.Key))==(string)pair.Value)&&ReadJson(Path.Combine(installed.DataRoot,"patches","targets",new string('a',20),"state.json"))["unknownFixtureState"].Equals("KEEP"),"Auto-Update erhält die geprüften Originalbasen, ihren Zustand und unbekannte Metadaten trotz ausgelassener Arbeitsordner");
             var repeated=InstallCore(release,old,oldData,null,delegate(string target){CopyVerifiedArchive(good,target,release);},delegate(string from,string to){return 0;});
             check(repeated.AppRoot!=installed.AppRoot&&File.Exists(installed.ExecutablePath)&&File.Exists(repeated.ExecutablePath)&&Hash(installed.ExecutablePath)==installed.ExecutableSha256,"Auto-Update verwendet beim Wiederholen einen neuen Ordner und erhält die vorherige vorbereitete Version");
             string extracted=Path.Combine(root,"wrong-version");Extract(good,extracted);var wrong=new UpdateResult{LatestVersion=UpdateCheck.ParseVersion("99.0.0"),Repository=repository};check(Rejected(delegate{ValidatePackage(extracted,wrong,false);}),"Auto-Update lehnt falsche EXE- und Paketversionen ab");
