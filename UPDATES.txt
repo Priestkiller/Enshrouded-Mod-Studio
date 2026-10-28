@@ -1,3 +1,6 @@
+NEU IN 0.4.28: Manager 0.15.32 und Spielerclient 0.16.16 ebenfalls aktualisieren.
+Korrigierte Zahlenberechnungen und native Grenzen; danach den Serverpatch erneut anwenden. Spieler wählen zuerst Synchronisieren und anschließend Spiel starten. Alte Profilwerte bleiben erhalten und müssen bei neuen Grenzverletzungen vor dem Patchen korrigiert werden.
+
 NEU IN 0.4.27: Manager 0.15.29 und Spielerclient 0.16.14 ebenfalls aktualisieren.
 Die neue Standardmethode verwendet die Serverbasis; keine zusätzliche Clientinstallation auf dem Server und kein Upload von Clientoriginalen. Danach den Serverpatch erneut anwenden, um das neue Rezept zu erstellen.
 

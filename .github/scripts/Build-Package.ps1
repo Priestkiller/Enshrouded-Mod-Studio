@@ -12,6 +12,8 @@ $releaseExe = Join-Path $releaseRoot 'Enshrouded Mod Studio.exe'
 if ((Get-Item -LiteralPath $releaseExe).VersionInfo.FileVersion -ne ($releaseSpec.version + '.0')) { throw 'Unexpected executable version.' }
 $releaseOutput = Join-Path $releaseRoot 'artifacts'
 New-Item -ItemType Directory -Path $releaseOutput -Force | Out-Null
+& (Join-Path $releaseRoot 'tests\profile-normalization-tests.ps1') -StudioAssembly $releaseExe -AppRoot $releaseRoot -OutputFile (Join-Path $releaseOutput 'profile-normalization-results.json')
+if ($LASTEXITCODE -ne 0) { throw 'Profile normalization and points explanation checks failed.' }
 $releaseStage = Join-Path $releaseOutput ('package-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $releaseStage | Out-Null
 foreach ($dir in @('assets','engine','source','tools','ThirdParty','tests')) {

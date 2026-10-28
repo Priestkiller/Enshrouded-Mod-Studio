@@ -9,6 +9,25 @@ using System.Windows.Controls;
 
 namespace EnshroudedStudio
 {
+    public static class SkillPointUi
+    {
+        public const string FieldLabel = "Punktewert je erreichtem Level";
+        public const string FieldHelp = "Dieser Wert berechnet den gesamten Levelanteil: (Level - 1) × Punktewert. Er ist kein einzelner zusätzlicher Punktebonus.";
+        public const string Explanation = "Der Spielclient berechnet den gesamten Levelanteil des Punktebudgets als (Level - 1) × Punktewert. Der Wert gilt damit auch für bereits erreichte Level. Allgemeines Beispiel: Level 26 mit Wert 4 ergibt 100 Punkte aus dem Levelanteil insgesamt. Das bedeutet nicht 100 neue Punkte bei jedem Levelaufstieg. Wurzel- und Wissensbelohnungen sowie bereits ausgegebene Punkte kommen getrennt hinzu beziehungsweise werden abgezogen.";
+        public const string Synchronization = "Für Multiplayer den Server im Mod Studio patchen und das bestätigte Paket vom Manager bereitstellen lassen. Danach muss jeder Mitspieler im Spielerclient „Synchronisieren“ abschließen und erst anschließend „Spiel starten“ wählen. So wird derselbe Punktewert auch in den Clientdateien angewendet. Nur den Server zu patchen genügt nicht.";
+        public const string Scope = "Singleplayer: auf die lokale Spielinstallation anwenden. Multiplayer: Serverpatch und anschließende Synchronisierung auf allen Spielerclients mit demselben Punktewert. Das Studio bearbeitet keine Charakter- oder Weltspielstände.";
+        public const string Notes = "Eine Anzeige von 100 kann den gesamten Levelanteil anzeigen; sie beweist keine Gutschrift von 100 Punkten pro Levelaufstieg. Die Zahl der tatsächlich freien Punkte hängt außerdem von Wissensbelohnungen und bereits gekauften Talenten ab. Der installierte Tabellenwert ist von diesem Gesamtbudget zu unterscheiden. " + Synchronization + " Die Archivprüfung bestätigt den installierten Datenwert; die tatsächlich im Spiel ausgebbaren Punkte müssen getrennt geprüft werden.";
+
+        public static string TargetHint(string target)
+        {
+            if (target == "Dedicated Server erkannt")
+                return "Du bearbeitest den Dedicated Server. Ein bestätigter Serverwert allein bestätigt keine Änderung auf den Spieler-PCs. " + Synchronization;
+            if (target == "Steam-Client erkannt")
+                return "Du bearbeitest den Spielclient. Singleplayer verwendet diese lokalen Dateien. Bei einem verwalteten Multiplayer-Paket denselben Stand über „Synchronisieren“ im Spielerclient übernehmen und das Spiel danach neu starten.";
+            return "Zuerst eine vollständige Client- oder Serverinstallation wählen. " + Synchronization;
+        }
+    }
+
     public static class SkillReview
     {
         public static void SelfTest(Action<bool, string> check, string sandbox)
@@ -53,10 +72,11 @@ namespace EnshroudedStudio
                 throw new InvalidDataException("Die gemeldeten Tabellenwerte widersprechen dem Gesamtvergleich.");
             return (role == "client" ? "SPIELCLIENT" : "DEDICATED SERVER") + " · Revision " + Convert.ToString(result["build"]) +
                 "\n\nInstallierter Wert: " + string.Join(", ", values.Distinct().Select(value => value.ToString())) +
-                " Punkte je Level\nProfilwert: " + requested + " · Option " + (enabled ? "eingeschaltet" : "ausgeschaltet") +
+                " als Punktewert für die Levelberechnung\nProfilwert: " + requested + " · Option " + (enabled ? "eingeschaltet" : "ausgeschaltet") +
                 "\n\n" + (all ? "Der installierte Tabellenwert entspricht dem Profil." : "Der installierte Tabellenwert weicht vom Profil ab. Speichern allein reicht nicht: den Patch auf diese Installation anwenden.") +
-                (role == "server" ? "\n\nDieser Wert belegt ausschließlich die Serverdateien. Für zusätzliche Levelpunkte auch den Spielclient jedes Mitspielers mit demselben Wert patchen." : "\n\nNach einer Änderung Spiel und Server vollständig neu starten. Im Mehrspieler denselben Wert auf Server und allen Clients verwenden.") +
-                "\n\nDie Prüfung liest die Archive. Die tatsächliche Punktevergabe bei einem Levelaufstieg muss im Spiel geprüft werden.";
+                "\n\n" + SkillPointUi.Explanation +
+                (role == "server" ? "\n\nDieser Wert belegt ausschließlich die Serverdateien. " : "\n\nDieser Wert belegt die geprüften lokalen Clientdateien. ") + SkillPointUi.Synchronization +
+                "\n\nDie Prüfung liest die Archive. Das im Talentbaum verfügbare Budget und die Differenz bei einem neuen Levelaufstieg müssen im Spiel geprüft werden.";
         }
 
         public static void Open(StudioStore store, Dictionary<string, object> source, Window owner)

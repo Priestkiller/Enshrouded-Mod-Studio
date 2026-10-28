@@ -1,69 +1,58 @@
-FERTIGKEITSPUNKTE: SERVERWERT UND SPIELCLIENT ABGLEICHEN
+FERTIGKEITSPUNKTE VERSTEHEN UND SYNCHRONISIEREN
+Mod Studio 0.4.28 / Manager 0.15.32 / Spielerclient 0.16.16
 
-NUR SERVER / ALLE SPIELER: NICHT UNTERSTUETZT
-Der vorhandene Archivpatcher kann zusätzliche Punkte je Level nicht allein
-über den Server automatisch an alle Spieler übertragen. Archivwertänderungen
-sind kein globaler Punkte-Fix. Für eine echte Serverlösung fehlen ein
-geprüfter Synchronisationsmechanismus und ein Mehrspielernachweis.
+WAS DER WERT BEDEUTET
+Der untersuchte Spielclient berechnet den gesamten Levelanteil des Talentbudgets
+als (Level - 1) mal Punktewert. Bereits erreichte Level gehören zu dieser
+Berechnung. Der Patcher verteilt keinen getrennten einmaligen Punktebonus.
 
-Mod Studio 0.4.10 · 23. Oktober 2026
+Allgemeines Beispiel: Level 26 mit Punktewert 4 ergibt 25 mal 4 = 100 Punkte
+aus dem Levelanteil insgesamt. Das bedeutet nicht 100 neue Punkte bei jedem
+Levelaufstieg. Wurzel- und Wissensbelohnungen werden zusätzlich berücksichtigt;
+bereits gekaufte Talente verbrauchen Punkte. Der Levelanteil ist deshalb nicht
+automatisch identisch mit der Zahl der aktuell freien Punkte.
 
-WARUM BEIM SERVERWERT 4 TROTZDEM 2 ANGEZEIGT WURDEN
-Beim untersuchten Fehler war nur der Dedicated Server auf 4 eingestellt.
-Die aktuelle lokale Clientinstallation enthielt weiterhin den Archivwert 2.
-Das wurde direkt aus einer geprüften Kopie der installierten Clientarchive
-der Revision 1273043 gelesen. EXE und beide Originalarchive blieben dabei
-unverändert. Ein Serverpatch ändert keine Dateien auf dem Spiel-PC.
+Diese Erklärung diagnostiziert keinen bestimmten Charakter. Um einen Fehler
+einzugrenzen, Level und freie Punkte vor und nach einem neuen Levelaufstieg
+vergleichen und den tatsächlich installierten Tabellenwert prüfen.
 
-Damit ist eine konkrete Abweichung zwischen Serverprofil und Clientdateien
-nachgewiesen. Welche Seite im Mehrspieler letztlich die Punkte bestimmt und
-ob die laufende Gutschrift nach dem Clientpatch stimmt, muss im Spiel geprüft
-werden. Ein erfolgreicher Serverlauf ist kein Nachweis für Clientwert 4.
+FÜR ALLE MITSPIELER
+1. Im Studio den verwalteten Serverordner wählen, den gewünschten Punktewert
+   einschalten und Patch anwenden / aktualisieren ausführen.
+2. Der Manager übernimmt das bestätigte Änderungsrezept. Den verlangten
+   Serverneustart durchführen und die Spielerfreigabe prüfen.
+3. Jeder Mitspieler aktualisiert seinen Spielerclient, schließt Enshrouded und
+   klickt Synchronisieren. Erst nach erfolgreichem Abschluss Spiel starten wählen.
 
-SO WENDEST DU DEN GLEICHEN WERT AUF DEINEM SPIEL-PC AN
-1. Spiel und Server vor dem Anwenden schließen. Das gewünschte Profil laden,
-   „Fertigkeitspunkte pro Level“ einschalten und beispielsweise 4 einstellen.
-2. „Punkte auf diesem Spiel-PC anwenden …“ wählen. Den erkannten Clientordner
-   prüfen beziehungsweise die enshrouded.exe des Spielclients auswählen.
-   enshrouded_server.exe ist dafür nicht die richtige Datei.
-3. Für einen neuen Client wird nur die Punkteoption aus dem Serverprofil
-   übernommen. Besteht genau ein Profil für diesen Client, wird darin nur
-   der Punktewert aktualisiert; die anderen Clienteinstellungen bleiben
-   erhalten. Mehrere passende Profile müssen zuerst eindeutig gewählt werden.
-   Eine bestehende Basis ohne zugehöriges Profil wird nicht blind verwendet.
-4. Die normale Prüfung und Anwendung abwarten. Ziel muss der Client sein.
-   Die Abschlussmeldung muss beispielsweise „Fertigkeitspunkte-Tabelle
-   (Client): 2 → 4 im Archiv bestätigt“ nennen. „Server“ bestätigt ausschließlich
-   den Serverordner. Die Meldung ersetzt keinen Test der Punkte im Spiel.
-5. „Installierte Fähigkeitspunkte prüfen …“ wählen. Bei der Clientprüfung
-   müssen installierter Archivwert und gewünschter Profilwert beide 4 sein.
-   Die Prüfung liest nur und verändert keine Spiel- oder Speicherdateien.
-6. Server und Spiel neu starten und den Punktegewinn bei einem Levelaufstieg
-   prüfen. Für denselben Datensatz im Mehrspieler auf den beteiligten Clients
-   den gleichen Wert verwenden. Das Tool verteilt keine Mods über den Server.
+Die Synchronisierung wendet die passenden Änderungen lokal auf den Spieler-PCs
+an. Eine zusätzliche Clientinstallation auf dem Server ist nicht erforderlich;
+ursprüngliche Spielerdateien werden nicht hochgeladen. Nur den Server zu patchen
+und unveränderte Clients zu verwenden bleibt eine andere, nicht belegte Lösung.
 
-ALTE PROFILE UND ARCHIVBASIS
-Beim Versionswechsel denselben installierten Studioordner mit seinen Data-
-Dateien weiterverwenden beziehungsweise das alte Setup passend übernehmen.
-Die geprüfte Basis verhindert das Stapeln von Multiplikatoren. Fehlt die
-Basis eines bereits gepatchten Clients, zuerst die bisherigen Profile und
-Sicherungen übernehmen. Ohne diese Basis sind saubere, über Steam geprüfte
-Spieldateien nötig, bevor eine vollständige neue Basis angelegt wird.
+SINGLEPLAYER UND MANUELLE CLIENTPATCHES
+Für Singleplayer auf den vollständigen lokalen Spielordner mit enshrouded.exe
+anwenden. Die Schaltfläche Punkte auf diesem Spiel-PC anwenden bleibt für
+manuelle Clientprofile verfügbar. Bei einem verwalteten Multiplayer-Paket
+stattdessen den gemeinsamen Modstand im Spielerclient synchronisieren.
 
-WAS DIE VERSION 0.4.10 PRÜFT
-Der bestehende Datenhandler schreibt skillPointsPerLevel in die BalancingTable.
-Frische Spiel-Reflection muss dafür die geprüfte uint32-Struktur bestätigen.
-Dateiname, Ressourcentyp, GUID, Teilnummer und Zielwert werden kontrolliert.
-Nach dem Packen wird der Punktewert erneut aus der Archivkopie gelesen.
-Eine falsche oder fehlende Tabelle blockiert die Anwendung.
+INSTALLIERTEN WERT PRÜFEN
+Installierte Fähigkeitspunkte prüfen liest die gewählten Archive. Installierter
+Tabellenwert und Profilwert werden getrennt angezeigt. Ein Serverergebnis
+bestätigt ausschließlich die Serverdateien; eine Clientprüfung bestätigt die
+betreffenden lokalen Clientdateien. Der gewünschte Wert allein ist kein
+Installationsnachweis und die Archivprüfung ist keine Messung des Talentbudgets.
 
-Der gezielte Prüflauf hat den tatsächlichen Datenweg 2 → 4 einschließlich
-Repack und erneutem Auslesen bestätigt. Er arbeitete ausschließlich auf
-Arbeitskopien. Andere Optionen wurden dabei nicht erneut vollständig geprüft.
+Der Archivpatcher prüft Ressourcentyp, GUID, Teilnummer, uint32-Struktur und
+den exakten Punktewert vor und nach dem Packen. Eine falsche Tabelle blockiert
+die Anwendung. Charakter- und Weltspielstände werden nicht umgeschrieben.
 
-WAS WEITER OFFEN BLEIBT
-Die frühere Analyse einer Client-EXE fand für den Levelanteil eine passende
-Berechnung (Level minus 1) × Punktewert; zusätzliche Wissenspunkte sind
-getrennt. Das ist keine Messung der laufenden Mehrspieler-Gutschrift.
-Wie bereits verteilte Punkte behandelt werden, ist weiterhin nicht im Spiel
-bestätigt. Charakter- und Weltspeicherstände werden nicht umgeschrieben.
+PROFILE BEIM UPDATE
+Explizite Werte bleiben erhalten. Fehlende Optionen in alten oder teilweise
+importierten Profilen bleiben ausgeschaltet. Ein vorhandenes Profil mit einem
+inzwischen unzulässigen Zahlenwert wird nicht stillschweigend gekürzt oder
+verworfen: Es bleibt bearbeitbar. Neue native Obergrenzen gelten bei aktiver
+Option; ausgeschaltete Altwerte blockieren andere Patches nicht.
+
+Die tatsächliche Punkteberechnung und der Mehrspielerbeitritt werden weiterhin
+separat im Spiel geprüft. Die historische Untersuchung einer reinen Servermod
+mit unveränderten Clients steht in PUNKTE-SERVERMOD.txt.

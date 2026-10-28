@@ -62,6 +62,9 @@ namespace EnshroudedStudio
         private int cardRow;
         private DispatcherTimer timer;
 
+        public static bool IsReadOnlyCompatibilityField(string key)
+        { return key == "gameplay.enableGatherLootMultipliers.patchGameSettings"; }
+
         public T Find<T>(string name) where T : class { return Window.FindName(name) as T; }
         public static Brush Brush(string hex) { return (Brush)new BrushConverter().ConvertFromString(hex); }
         public StudioWindow(StudioStore store, bool testing)
@@ -171,6 +174,7 @@ namespace EnshroudedStudio
             loading = false;
             LoadProfile((Profile)profiles.SelectedItem);
             if (!testMode && runtimeMissingCount > 0) notice.Text = "Erstinstallation: ‚Patcher einrichten‘ ergänzt die Programmdateien aus dem Originalpaket. Ein alter Studioordner ist nicht erforderlich.";
+            if (Store.LoadWarnings.Count > 0) notice.Text = "Profile bleiben erhalten und bearbeitbar: " + string.Join(" · ", Store.LoadWarnings);
             if (Store.LoadErrors.Count > 0) notice.Text = "Einige Profildateien konnten nicht geladen werden: " + string.Join(" · ", Store.LoadErrors);
             timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += delegate
@@ -303,6 +307,14 @@ namespace EnshroudedStudio
             Find<TextBlock>("SidebarProfile").Text = profile.Name;
             Window.Title = "Enshrouded · Mod Studio — " + profile.Name;
             notice.Text = "Profil geladen. Schalter und Werte werden mit ‚Speichern‘ gesichert.";
+            var validation = Store.Validate(Config);
+            if (validation.Count > 0)
+            {
+                status.Text = "Profil geladen · Werte prüfen";
+                Find<TextBlock>("ProfileState").Text = "Werte prüfen";
+                Find<TextBlock>("ProfileState").Foreground = Brush("#EFC186");
+                notice.Text = "Dieses Profil bleibt mit seinen bisherigen Werten erhalten. Vor dem Speichern oder Patchen korrigieren: " + string.Join(" · ", validation.Take(3));
+            }
             return true;
         }
         public void MarkDirty()
@@ -460,10 +472,7 @@ namespace EnshroudedStudio
             if (skillTargetHint == null || Config == null) return;
             string target = StudioStore.CheckGame((string)Config["gameDirectory"]);
             if (skillClientActions != null) skillClientActions.Visibility = target == "Steam-Client erkannt" ? Visibility.Visible : Visibility.Collapsed;
-            skillTargetHint.Text = target == "Dedicated Server erkannt" ?
-                "Du bearbeitest den Dedicated Server. Diese Option überträgt den Punktewert NICHT automatisch an alle Spieler. Eine ausschließlich serverseitige Vergabe zusätzlicher Levelpunkte ist mit diesem Archivpatcher nicht unterstützt. Ein bestätigter Server-Archivwert ist kein Nachweis für die Punktevergabe im Spielclient." :
-                target == "Steam-Client erkannt" ? "Du bearbeitest den Spielclient. Hier muss der gewünschte Punktewert ebenfalls angewendet und danach im Spiel geprüft werden. Im Mehrspieler denselben Wert auch auf dem Server und den anderen Clients einstellen. Nach dem Anwenden das Spiel neu starten und einen Levelaufstieg prüfen." :
-                "Nur den Dedicated Server zu patchen ändert keine Clientdateien. Für diese Option auch die lokale Clientinstallation mit demselben Punktewert bearbeiten. Wähle dafür die enshrouded.exe des Spielclients.";
+            skillTargetHint.Text = SkillPointUi.TargetHint(target);
         }
         private void ApplyClientSkillPoints()
         {
@@ -695,6 +704,7 @@ namespace EnshroudedStudio
             if (cat.Key == "player" && mod.Key == "adjustSkillPointsPerLevel")
             {
                 var targetHelp = new StackPanel();
+                targetHelp.Children.Add(Readable(SkillPointUi.Explanation, 15, "#E3EDF4"));
                 skillTargetHint = Readable("", 14, "#F1D1A0"); UpdateSkillTargetHint(); targetHelp.Children.Add(skillTargetHint);
                 skillClientActions = new StackPanel { Tag = "SkillClientActions", Visibility = StudioStore.CheckGame((string)Config["gameDirectory"]) == "Steam-Client erkannt" ? Visibility.Visible : Visibility.Collapsed };
                 targetHelp.Children.Add(skillClientActions);
@@ -715,20 +725,34 @@ namespace EnshroudedStudio
             foreach (var field in mod.Fields)
             {
                 string key = prefix + "." + field.Key;
+                bool skillPointsField = prefix == "player.adjustSkillPointsPerLevel" && field.Key == "value";
+                string fieldLabel = skillPointsField ? SkillPointUi.FieldLabel : field.Label;
                 var row = new Grid { Margin = new Thickness(0, 14, 0, 0) };
                 row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(210) }); row.ColumnDefinitions.Add(new ColumnDefinition());
                 var inputArea = new StackPanel { Margin = new Thickness(0, 0, 20, 0) };
                 if (field.Boolean)
                 {
-                    var flag = new CheckBox { IsChecked = (bool)data[field.Key], Content = Readable(field.Label, 15, "#EDF3FA"), MinHeight = 34, IsEnabled = toggle.IsChecked == true };
+                    bool compatibilityReadOnly = IsReadOnlyCompatibilityField(key);
+                    const string compatibilityReason = "Der verwendete Patcher ignoriert dieses Alt-Feld. Es bleibt nur für die Kompatibilität gespeicherter Profile erhalten; es ändert keine Spiel- oder Serverregeln.";
+                    var flag = new CheckBox { IsChecked = (bool)data[field.Key], Content = Readable(compatibilityReadOnly ? "Altoption – ohne Wirkung" : field.Label, 15, "#EDF3FA"), MinHeight = 34, IsEnabled = !compatibilityReadOnly && toggle.IsChecked == true };
                     AutomationProperties.SetName(flag, mod.Title + ": " + field.Label);
-                    flag.Checked += delegate { data[field.Key] = true; MarkDirty(); };
-                    flag.Unchecked += delegate { data[field.Key] = false; MarkDirty(); };
-                    inputArea.Children.Add(flag); editable.Add(flag);
+                    inputArea.Children.Add(flag);
+                    if (compatibilityReadOnly)
+                    {
+                        flag.ToolTip = compatibilityReason;
+                        AutomationProperties.SetHelpText(flag, compatibilityReason);
+                        inputArea.Children.Add(Readable(compatibilityReason, 12, "#AEC6DA"));
+                    }
+                    else
+                    {
+                        flag.Checked += delegate { data[field.Key] = true; MarkDirty(); };
+                        flag.Unchecked += delegate { data[field.Key] = false; MarkDirty(); };
+                        editable.Add(flag);
+                    }
                 }
                 else if (field.Choices != null && field.Choices.Count > 0)
                 {
-                    inputArea.Children.Add(Readable(field.Label, 14, "#E0EAF4"));
+                    inputArea.Children.Add(Readable(fieldLabel, 14, "#E0EAF4"));
                     var label = new FrameworkElementFactory(typeof(TextBlock));
                     label.SetBinding(TextBlock.TextProperty, new Binding("Label")); label.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
                     label.SetValue(TextBlock.MaxWidthProperty, 140.0); label.SetValue(TextBlock.LineHeightProperty, 20.0);
@@ -749,7 +773,7 @@ namespace EnshroudedStudio
                 }
                 else
                 {
-                    inputArea.Children.Add(Readable(field.Label, 14, "#E0EAF4"));
+                    inputArea.Children.Add(Readable(fieldLabel, 14, "#E0EAF4"));
                     string draft; if (!Drafts.TryGetValue(key, out draft)) draft = Json.Number(data[field.Key]).ToString("R", CultureInfo.GetCultureInfo("de-DE"));
                     var input = new TextBox { Text = draft, FontSize = 16, Width = 170, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 7, 0, 0), IsEnabled = toggle.IsChecked == true };
                     AutomationProperties.SetName(input, mod.Title + ": " + field.Label);
@@ -771,7 +795,7 @@ namespace EnshroudedStudio
                 }
                 row.Children.Add(inputArea);
                 var explanation = new StackPanel();
-                explanation.Children.Add(Readable(field.Help, 14, "#CBD9E8"));
+                explanation.Children.Add(Readable(skillPointsField ? SkillPointUi.FieldHelp : field.Help, 14, "#CBD9E8"));
                 var original = Json.Object(Json.Object(Store.Defaults[cat.Key], cat.Key)[mod.Key], mod.Key)[field.Key];
                 string defaultText = field.Boolean ? ((bool)original ? "Ein" : "Aus") : Json.Number(original).ToString("R", CultureInfo.GetCultureInfo("de-DE"));
                 if (field.Choices != null && field.Choices.Count > 0)
@@ -786,7 +810,8 @@ namespace EnshroudedStudio
             if (mod.Fields.Count > 0) body.Children.Add(editHint);
             if (auxiliary.Children.Count > 0) body.Children.Add(auxiliary);
             var detailsBody = new StackPanel();
-            AddDetail(detailsBody, "Wo anwenden?", mod.Scope); AddDetail(detailsBody, "Wann ist das sinnvoll?", mod.WhenToUse); AddDetail(detailsBody, "Was wird geändert?", mod.Effect); AddDetail(detailsBody, "Beispiel", mod.Example); AddDetail(detailsBody, "Grenzen und Besonderheiten", mod.Notes);
+            bool skillPointsCard = prefix == "player.adjustSkillPointsPerLevel";
+            AddDetail(detailsBody, "Wo anwenden?", skillPointsCard ? SkillPointUi.Scope : mod.Scope); AddDetail(detailsBody, "Wann ist das sinnvoll?", mod.WhenToUse); AddDetail(detailsBody, "Was wird geändert?", mod.Effect); AddDetail(detailsBody, "Beispiel", mod.Example); AddDetail(detailsBody, "Grenzen und Besonderheiten", skillPointsCard ? SkillPointUi.Notes : mod.Notes);
             var details = new Expander { Header = new TextBlock { Text = "Anwendung, Beispiel und Grenzen", FontSize = 14, Foreground = Brush("#A9E5DD"), TextWrapping = TextWrapping.Wrap }, Content = detailsBody, Margin = new Thickness(0, 7, 0, 0), IsExpanded = OpenDetails.Contains(prefix) };
             details.Expanded += delegate { OpenDetails.Add(prefix); };
             details.Collapsed += delegate { OpenDetails.Remove(prefix); };
