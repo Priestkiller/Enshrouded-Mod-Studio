@@ -12,3 +12,6 @@ Pruefungen/
 artifacts/
 outputs/
 work/
+RecoveryBases/
+private-test-input/
+private-test/

@@ -4,6 +4,7 @@ const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const delta = require('./client-delta');
 const storage = require('./storage-maintenance');
 const manager = require('./manager-handoff');
+const resourceRecipe = require('./resource-recipe');
 const FORMAT = 'enshrouded-studio-client-package', VERSION = 1;
 const ID = /^[a-f0-9]{20}$/, SHA = /^[a-f0-9]{64}$/;
 const ARCHIVES = ['enshrouded.kfc', 'enshrouded.kfc_resources'];
@@ -38,7 +39,9 @@ function settings(options, plan = null) {
   const file = path.join(dataRoot, 'client-packages.json');
   const value = fs.existsSync(file) ? read(file) : { format: 1, enabled: true, clientBasisDirectory: null, outputDirectory: path.join(dataRoot, 'client-packages') };
   if (value.format !== 1 || typeof value.enabled !== 'boolean') throw Error('Ungültige Einrichtung für Clientpakete.');
-  const legacy = { format: 1, enabled: value.enabled, clientBasisDirectory: value.clientBasisDirectory ? safePath(value.clientBasisDirectory) : null,
+  const transportMode = value.transportMode || 'resource-recipe';
+  if (!['resource-recipe', 'client-archive-delta'].includes(transportMode)) throw Error('Unbekannte Methode für die Spieler-Synchronisation.');
+  const legacy = { format: 1, enabled: value.enabled, transportMode, clientBasisDirectory: transportMode === 'client-archive-delta' && value.clientBasisDirectory ? safePath(value.clientBasisDirectory) : null,
     outputDirectory: safePath(value.outputDirectory || path.join(dataRoot, 'client-packages')) };
   return plan ? manager.managedSettings(options, plan, legacy) : legacy;
 }
@@ -142,6 +145,11 @@ async function prepareForPlan(options, plan, prepare) {
       const cached = reusablePackage(options, plan, setup, plan.config, describeClientBasis(options, plan.target.dir));
       return { status: 'prepared', role: 'client', setup, cached };
     }
+    if (setup.transportMode === 'resource-recipe') {
+      const schema = read(path.join(options.root, '..', 'assets', 'schema.json'));
+      const recipe = resourceRecipe.prepare({engineRoot: options.root, job: plan.job, plan, options: publicOptions(plan.config, schema)});
+      return {status: 'prepared', role: 'server', setup, recipe};
+    }
     if (!setup.clientBasisDirectory) return { status: manager.bindingFor(plan.target) ? 'waiting-client-basis' : 'blocked', message: manager.bindingFor(plan.target) ? 'Keine eindeutige passende lokale Clientinstallation gefunden. Clientbasis im Studio einmal auswählen; es werden keine Dateien von Spielern hochgeladen.' : 'Clientpaket fehlt: Unter Werkzeuge einmal eine passende Clientbasis wählen.', setup };
     const source = setup.clientBasisDirectory;
     if (!ARCHIVES.every(name => fs.existsSync(path.join(source, name))) || !fs.existsSync(path.join(source, 'enshrouded.exe')) || fs.existsSync(path.join(source, 'enshrouded_server.exe')))
@@ -184,6 +192,7 @@ function baseDirectory(options, plan) {
   return path.join(options.data, 'targets', plan.target.id, state.basis);
 }
 function verifyPayload(directory, manifest) {
+  if (manifest.formatVersion === 2) return verifyResourcePayload(directory, manifest);
   if (manifest.format !== FORMAT || manifest.formatVersion !== VERSION || manifest.targetRole !== 'client') throw Error('Unbekanntes Clientpaket.');
   const { revision, ...identity } = manifest;
   if (!SHA.test(revision) || digest(identity) !== revision) throw Error('Clientpaket-Manifest beschädigt.');
@@ -204,6 +213,50 @@ function verifyPayload(directory, manifest) {
     if (fs.statSync(file).size !== blob.size || delta.hashFile(file) !== blob.sha256) throw Error('Clientpaket-Payload beschädigt.');
   }
   return true;
+}
+function verifyResourcePayload(directory, manifest) {
+  const {revision,...identity}=manifest;
+  if(manifest.format!==FORMAT||manifest.formatVersion!==2||manifest.requiredCapability!==resourceRecipe.CAPABILITY||manifest.targetRole!=='client'||!SHA.test(revision||'')||digest(identity)!==revision||Object.hasOwn(manifest,'requiredClientExeSha256')||Object.hasOwn(manifest,'files'))throw Error('Unbekanntes Ressourcenpaket.');
+  const descriptor=manifest.recipe;
+  if(!descriptor||Object.keys(descriptor).sort().join('|')!==['format','formatVersion','encoding','size','sha256','delta'].sort().join('|')||descriptor.format!==resourceRecipe.FORMAT||descriptor.formatVersion!==1||descriptor.encoding!=='gzip-json'||!SHA.test(descriptor.sha256||'')||!Number.isSafeInteger(descriptor.size)||descriptor.size<1||descriptor.size>resourceRecipe.MAX_BYTES)throw Error('Ungültiger Rezeptnachweis.');
+  const blocks=delta.validate(descriptor.delta);
+  if(descriptor.delta.base!==null||descriptor.delta.result.size>resourceRecipe.MAX_COMPRESSED||canonical([...blocks.values()].sort((a,b)=>a.sha256.localeCompare(b.sha256)))!==canonical(manifest.blobs))throw Error('Ungültiges Rezeptinventar.');
+  const chunks=[];
+  for(const op of descriptor.delta.operations){if(!Object.hasOwn(op,'blob'))throw Error('Ressourcenpakete dürfen keine fremden Archivbereiche kopieren.');const block=blocks.get(op.blob),file=path.join(directory,'blobs',op.blob);if(fs.lstatSync(file).isSymbolicLink()||fs.statSync(file).size!==block.size)throw Error('Ungültiger Rezeptblock.');const bytes=fs.readFileSync(file);if(resourceRecipe.digest(bytes)!==block.sha256)throw Error('Rezeptblock wurde verändert.');chunks.push(bytes);}
+  const packed=Buffer.concat(chunks);
+  if(packed.length!==descriptor.delta.result.size||resourceRecipe.digest(packed)!==descriptor.delta.result.sha256)throw Error('Komprimiertes Rezept ist beschädigt.');
+  const bytes=require('zlib').gunzipSync(packed,{maxOutputLength:resourceRecipe.MAX_BYTES});
+  if(bytes.length!==descriptor.size||resourceRecipe.digest(bytes)!==descriptor.sha256)throw Error('Rezept ist beschädigt.');
+  const recipe=JSON.parse(bytes.toString('utf8'));
+  if(canonical(recipe)!==bytes.toString('utf8')||recipe.gameBuild!==manifest.gameBuild||recipe.engineFingerprint!==manifest.engineFingerprint||canonical(recipe.options)!==canonical(manifest.options))throw Error('Rezept und Paketstand stimmen nicht überein.');
+  resourceRecipe.validate(recipe,require('./skeleton-spell-definitions.json'));
+  return true;
+}
+function buildResourcePackage(options,plan,setup) {
+  const prepared=plan.clientPackagePreparation?.recipe;
+  const loaded=resourceRecipe.load(prepared,plan.job,options.root),recipe=loaded.recipe;
+  const engine=read(path.join(options.root,'engine-manifest.json')),schema=read(path.join(options.root,'..','assets','schema.json'));
+  const config=publicOptions(plan.config,schema);
+  if(recipe.gameBuild!==String(plan.build)||recipe.engineFingerprint!==digest(engine)||canonical(recipe.options)!==canonical(config))throw Error('Änderungsrezept passt nicht zum angewendeten Serverpatch.');
+  restrictedOutput(setup.outputDirectory,plan,null,options.data);
+  const targetRoot=path.join(setup.outputDirectory,plan.target.id),packages=path.join(targetRoot,'packages');
+  fs.mkdirSync(packages,{recursive:true});noLinks(targetRoot);
+  atomicJson(path.join(targetRoot,'.studio-export.json'),{format:FORMAT,targetId:plan.target.id});
+  const work=path.join(packages,'.building-'+crypto.randomBytes(8).toString('hex'));fs.mkdirSync(work);
+  atomicJson(path.join(work,'.studio-owned.json'),{format:FORMAT,version:2});let retained=false;
+  try {
+    storage.assertSpace([{path:setup.outputDirectory,bytes:prepared.compressedSize+8*1024*1024,reason:'Änderungsrezept und atomare Paketmetadaten'}],{probe:options.spaceProbe,reserveBytes:options.spaceReserveBytes});
+    const patch=delta.createDelta(null,loaded.file,work);
+    const mods=schema.flatMap(category=>category.Mods.filter(mod=>config[category.Key]?.[mod.Key]?.enabled).map(mod=>({id:category.Key+'.'+mod.Key,name:mod.Title,archiveVerified:true,gameplayVerified:false})));
+    const identity={format:FORMAT,formatVersion:2,requiredCapability:resourceRecipe.CAPABILITY,targetRole:'client',game:'enshrouded',gameBuild:recipe.gameBuild,studioVersion:engine.studio,engineVersion:engine.version,engineFingerprint:recipe.engineFingerprint,basisProvenance:'local-client-basis-resource-checked',options:config,mods,gameplayVerified:false,multiplayerId:plan.mods?.skeletonSpells?.multiplayer?.shortId||null,managedFilePolicy:'complete-inventory-remove-only-files-owned-by-previous-package',recipe:{format:resourceRecipe.FORMAT,formatVersion:1,encoding:'gzip-json',size:prepared.size,sha256:prepared.sha256,delta:patch},blobs:patch.blobs};
+    const manifest={...identity,revision:digest(identity)};
+    atomicJson(path.join(work,'manifest.json'),manifest);verifyPayload(work,manifest);
+    const final=path.join(packages,manifest.revision);
+    if(fs.existsSync(final)){noLinks(final);const saved=read(path.join(final,'manifest.json'));verifyPayload(final,saved);if(canonical(saved)!==canonical(manifest))throw Error('Rezept-Revisionskonflikt.');}
+    else {fs.renameSync(work,final);retained=true;}
+    const manifestFile=path.join(final,'manifest.json');
+    return {targetRoot,packageDirectory:final,revision:manifest.revision,manifestSha256:delta.hashFile(manifestFile),downloadBytes:manifest.blobs.reduce((sum,b)=>sum+b.size,fs.statSync(manifestFile).size),gameBuild:manifest.gameBuild,studioVersion:manifest.studioVersion,multiplayerId:manifest.multiplayerId,requiredCapability:resourceRecipe.CAPABILITY,packageFormatVersion:2,recipeRevision:prepared.sha256};
+  } finally {if(!retained&&fs.existsSync(work)){noLinks(work);fs.rmSync(work,{recursive:true});}}
 }
 function buildPackage(options, sourcePlan, clientPlan, setup) {
   validatePlan(clientPlan);
@@ -337,14 +390,16 @@ function completeForPlan(options, plan, state) {
       atomicJson(currentFile, { format: 1, ...value }); manager.complete(options, plan, state, value); return value;
     }
     if (options.progress) options.progress({ stage: 'client-package', message: 'Clientpaket aus den geprüften Clientdateien erstellen …', progress: 97 });
-    const clientPlan = preparation.cached ? null : plan.target.server ? read(preparation.clientPlanFile) : plan;
+    const useRecipe=plan.target.server&&currentSetup.transportMode==='resource-recipe';
+    const clientPlan = useRecipe||preparation.cached ? null : plan.target.server ? read(preparation.clientPlanFile) : plan;
     if (clientPlan && String(clientPlan.build) !== String(plan.build)) throw Error('Spielbuild des Clientpakets passt nicht zum angewendeten Patch.');
-    const built = preparation.cached ? reusePackage(options, plan, preparation.cached, currentSetup) : buildPackage(options, plan, clientPlan, currentSetup);
+    const built = useRecipe ? buildResourcePackage(options,plan,currentSetup) : preparation.cached ? reusePackage(options, plan, preparation.cached, currentSetup) : buildPackage(options, plan, clientPlan, currentSetup);
     if (previous === built.revision) previous = SHA.test(priorIndex?.previousRevision || '') ? priorIndex.previousRevision : null;
     const index = { format: 1, status: 'ready', targetId: plan.target.id, sourceRole: plan.target.server ? 'server' : 'client', sourcePlanId: plan.id,
       sourceArchiveHashes: Object.fromEntries(plan.artifacts.map(row => [row.name, row.sha256])), revision: built.revision,
       manifest: 'packages/' + built.revision + '/manifest.json', manifestSha256: built.manifestSha256, gameBuild: built.gameBuild,
       downloadBytes: built.downloadBytes, previousRevision: previous,
+      ...(built.requiredCapability?{requiredCapability:built.requiredCapability,packageFormatVersion:built.packageFormatVersion}:{}),
       requiresManagerAdapter: true, published: false, updatedAt: new Date().toISOString() };
     atomicJson(currentFile, index);
     value = report(options, plan, { status: 'ready', message: built.reused ? 'Unverändertes Clientpaket wiederverwendet; Revision bleibt gleich. Noch nicht veröffentlicht.' : 'Clientpaket lokal erstellt; bereit für den Servermanager. Noch nicht veröffentlicht.', ...built, published: false });
@@ -360,6 +415,16 @@ function completeForPlan(options, plan, state) {
     try { manager.complete(options, plan, state, value); } catch (failure) { if (options.log) options.log('Manager-Fehlerstatus konnte nicht geschrieben werden: ' + failure.message); }
     try { return report(options, plan, value); } catch (failure) { value.message += ' Statusdatei konnte nicht geschrieben werden: ' + failure.message; return value; }
   } finally {
+    if (value?.status === 'ready' && preparation?.recipe) {
+      try {
+        const owned=preparation.recipe.file, relative=path.relative(path.resolve(plan.job),path.resolve(owned));
+        if(relative!=='client-recipe.json.gz')throw Error('Unbekannte Rezept-Arbeitsdatei bleibt erhalten.');
+        if(fs.existsSync(owned)) {
+          if(fs.lstatSync(owned).isSymbolicLink()||delta.hashFile(owned)!==preparation.recipe.compressedSha256)throw Error('Veränderte Rezept-Arbeitsdatei bleibt erhalten.');
+          fs.unlinkSync(owned);
+        }
+      } catch(error) {if(options.log)options.log('Rezept-Arbeitskopie konnte nicht bereinigt werden: '+error.message);}
+    }
     try { cleanupPreview(options, plan); } catch (error) { if (options.log) options.log('Client-Arbeitskopie konnte nicht bereinigt werden: ' + error.message); }
   }
 }
@@ -375,4 +440,4 @@ function invalidate(options, target, reason) {
   } catch (error) { if (options.log) options.log('Clientpaket-Status konnte nicht zurückgesetzt werden: ' + error.message); return { status: 'failed', message: error.message }; }
 }
 module.exports = { FORMAT, VERSION, canonical, digest, settings, statusFile, report, clientConfiguration, publicOptions, prepareForPlan, validatePlan,
-  verifyPayload, buildPackage, completeForPlan, cleanupPreview, invalidate, atomicJson, restrictedOutput };
+  verifyPayload, verifyResourcePayload, buildResourcePackage, buildPackage, completeForPlan, cleanupPreview, invalidate, atomicJson, restrictedOutput };

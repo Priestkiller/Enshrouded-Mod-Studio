@@ -21,6 +21,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: ./.github/scripts/Publish-Release.ps1 -QuarantineOnly
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '18.5.0'
+      - name: Verify server-only resource recipe export
+        shell: powershell
+        run: |
+          node tests/resource-recipe-tests.js
+          if ($LASTEXITCODE) { throw 'Resource recipe export checks failed' }
       - name: Build and validate public package
         shell: powershell
         run: ./.github/scripts/Build-Package.ps1

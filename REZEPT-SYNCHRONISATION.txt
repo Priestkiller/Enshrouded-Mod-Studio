@@ -1,0 +1,34 @@
+MODS AUTOMATISCH AN ALLE SPIELER VERTEILEN
+Studio 0.4.27 / Manager 0.15.29 / Spielerclient 0.16.14
+
+AUF DEM SERVER
+1. Studio und Manager aktualisieren. Die vorhandene vollständige Studio-Runtime,
+   Profile und passende Archivbasis bleiben erhalten.
+2. Im Studio den vom Manager verwalteten Serverordner wählen. Server stoppen,
+   Optionen einstellen und Patch anwenden / aktualisieren ausführen.
+3. Das Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis.
+4. Im Manager: Enshrouded > Spielerclient > Status aktualisieren.
+   Den verlangten Serverneustart durchführen. Die Spielerfreigabe muss aktiv sein.
+
+BEI JEDEM SPIELER
+Spiel schließen. Im aktualisierten Spielerclient das Serverprofil öffnen und
+Synchronisieren & Spielen wählen. Die Änderungen werden geladen, auf die eigenen
+gesicherten Originaldateien angewendet, zurückgelesen und kontrolliert installiert.
+
+KEINE ZUSÄTZLICHE CLIENTINSTALLATION AUF DEM SERVER
+Clientoriginale bleiben auf dem jeweiligen Spieler-PC und werden nicht hochgeladen.
+Die bisherige Paketmethode mit separatem Clientordner ist nur noch eine ausdrücklich
+gewählte erweiterte Einstellung. Normalerweise muss dort nichts eingerichtet werden.
+
+ANZEIGE
+Serverpatch: Änderungen wurden auf die Serverdateien angewendet.
+Änderungen bereitstellen: Ein bestätigtes Rezept ist für Spieler verfügbar.
+Spieler synchronisieren: Der jeweilige Spielerclient prüft seinen lokalen Stand.
+Der Manager behauptet keinen bereits installierten Stand auf fremden Spieler-PCs.
+
+VERIFIKATION
+Der tatsächliche gebündelte Worker bestand einen Transfer mit 38 aktiven Optionen,
+3661 Serverressourcen, 3669 Clientänderungen und 91827 geprüften KFC-Identitäten.
+Menü, Namen und Bilder der sechs Begleiterzauber wurden mitgeprüft. Die Originale
+blieben unverändert. Zusätzliche Spielmechaniken wie Punktegutschrift oder Material-
+zugriff müssen weiterhin im Spiel getestet werden; es wurde kein Spiel gestartet.

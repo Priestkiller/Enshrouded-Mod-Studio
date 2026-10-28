@@ -1,3 +1,6 @@
+NEU IN 0.4.27: Manager 0.15.29 und Spielerclient 0.16.14 ebenfalls aktualisieren.
+Die neue Standardmethode verwendet die Serverbasis; keine zusätzliche Clientinstallation auf dem Server und kein Upload von Clientoriginalen. Danach den Serverpatch erneut anwenden, um das neue Rezept zu erstellen.
+
 MOD STUDIO 0.4.26 – ERSTEINRICHTUNG UND GESCHÜTZTE ORIGINALBASIS
 
 Neue Installation: Patcher einrichten verwenden. Ein alter Studioordner ist

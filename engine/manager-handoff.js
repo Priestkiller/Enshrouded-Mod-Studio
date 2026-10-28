@@ -102,13 +102,14 @@ function discoveredCandidates(options, source) {
 }
 function managedSettings(options, plan, legacy) {
   const b = bindingFor(plan.target); if (!b) return legacy;
+  if (legacy.transportMode === 'resource-recipe') return {...legacy, clientBasisDirectory:null, outputDirectory:outputDirectory(b)};
   let client = null;
   if (legacy.clientBasisDirectory && validClient(legacy.clientBasisDirectory, b.sourceDirectory)) client = path.resolve(legacy.clientBasisDirectory);
   else {
     const candidates = [...new Map(discoveredCandidates(options, b.sourceDirectory).filter(p => validClient(p, b.sourceDirectory)).map(p => [path.resolve(p).toLowerCase(), path.resolve(p)])).values()];
     if (candidates.length === 1) client = candidates[0];
   }
-  return { format: 1, enabled: true, clientBasisDirectory: client, outputDirectory: outputDirectory(b) };
+  return { format: 1, enabled: true, transportMode:'client-archive-delta', clientBasisDirectory: client, outputDirectory: outputDirectory(b) };
 }
 function engineIdentity(options) {
   const e = read(path.join(options.root, 'engine-manifest.json'), 1048576);

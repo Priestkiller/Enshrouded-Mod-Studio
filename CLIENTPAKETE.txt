@@ -1,39 +1,34 @@
-CLIENTPAKETE AB MOD STUDIO 0.4.25
+MODS AUTOMATISCH AN ALLE SPIELER VERTEILEN
+Studio 0.4.27 / Manager 0.15.29 / Spielerclient 0.16.14
 
-1. STUDIO PATCHT
-Den von Manager 0.15.28 verwalteten Enshrouded-Server-Installationsordner
-wählen. Spiel und Server schließen, Optionen einstellen und Patch anwenden /
-aktualisieren. Speichern allein wendet keine Spieländerungen an.
+AUF DEM SERVER
+1. Studio und Manager aktualisieren. Die vorhandene vollständige Studio-Runtime,
+   Profile und passende Archivbasis bleiben erhalten.
+2. Im Studio den vom Manager verwalteten Serverordner wählen. Server stoppen,
+   Optionen einstellen und Patch anwenden / aktualisieren ausführen.
+3. Das Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis.
+4. Im Manager: Enshrouded > Spielerclient > Status aktualisieren.
+   Den verlangten Serverneustart durchführen. Die Spielerfreigabe muss aktiv sein.
 
-2. MANAGER ÜBERNIMMT
-Studio erkennt die Managerbindung im Installationsordner. Es baut passende
-Clientänderungen aus einer bereits lokal vorhandenen, getrennten
-Clientinstallation desselben Spielbuilds. Der Manager übernimmt und prüft die
-lokale Übergabe automatisch. Danach den Server mit den neuen Daten neu starten.
+BEI JEDEM SPIELER
+Spiel schließen. Im aktualisierten Spielerclient das Serverprofil öffnen und
+Synchronisieren & Spielen wählen. Die Änderungen werden geladen, auf die eigenen
+gesicherten Originaldateien angewendet, zurückgelesen und kontrolliert installiert.
 
-3. SPIELER SYNCHRONISIEREN
-Im Spielerclient 0.16.13 Synchronisieren & Spielen wählen. Passende Änderungen
-werden geladen und geprüft; der bisherige Modstand wird vor dem Einbau gesichert.
+KEINE ZUSÄTZLICHE CLIENTINSTALLATION AUF DEM SERVER
+Clientoriginale bleiben auf dem jeweiligen Spieler-PC und werden nicht hochgeladen.
+Die bisherige Paketmethode mit separatem Clientordner ist nur noch eine ausdrücklich
+gewählte erweiterte Einstellung. Normalerweise muss dort nichts eingerichtet werden.
 
-VORHANDENE LOKALE BASIS
-Eine gültige bisherige Clientbasis-Einstellung hat Vorrang. Fehlt sie, sucht
-Studio in seinen Profilen und Steam-Bibliotheken des angemeldeten Benutzers.
-Keine oder mehrere passende Installationen: den gemeldeten Grund prüfen und
-unter Werkzeuge > Clientpaket für Servermanager die passende vorhandene
-Clientbasis auswählen. Auf einem reinen Server ohne Clientinstallation kann
-Studio kein passendes Clientpaket erzeugen. Es gibt keinen Upload von
-Spieldateien eines Mitspielers und keinen Ersatz durch Serverarchive.
+ANZEIGE
+Serverpatch: Änderungen wurden auf die Serverdateien angewendet.
+Änderungen bereitstellen: Ein bestätigtes Rezept ist für Spieler verfügbar.
+Spieler synchronisieren: Der jeweilige Spielerclient prüft seinen lokalen Stand.
+Der Manager behauptet keinen bereits installierten Stand auf fremden Spieler-PCs.
 
-ÜBERGABE UND AUFBEWAHRUNG
-Die feste Managerablage liegt unter .ugsm-studio-transfer im verwalteten
-Installationsordner. Sie enthält Clientpakete, einen Status und minimale
-gehashte Prüfnachweise. Es werden keine privaten Profile oder Desktoprechte
-an den Manager weitergegeben. Aktuelle und vorherige eigene Pakete sowie
-zwei eigene Prüfnachweise bleiben erhalten. Unbekannte Daten bleiben geschützt.
-
-Die bisherige manuelle Einrichtung bleibt für nicht vom Manager verwaltete
-Installationen verfügbar. Ein passendes vorhandenes Paket wird nach erneuter
-Prüfung wiederverwendet. Ein Tool-Update wendet das Profil nicht aufs Spiel an.
-
-Dateiprüfungen bestätigen den vorbereiteten Modstand. Sie versprechen keine
-bislang ungeprüfte Spielwirkung einer einzelnen Option.
+VERIFIKATION
+Der tatsächliche gebündelte Worker bestand einen Transfer mit 38 aktiven Optionen,
+3661 Serverressourcen, 3669 Clientänderungen und 91827 geprüften KFC-Identitäten.
+Menü, Namen und Bilder der sechs Begleiterzauber wurden mitgeprüft. Die Originale
+blieben unverändert. Zusätzliche Spielmechaniken wie Punktegutschrift oder Material-
+zugriff müssen weiterhin im Spiel getestet werden; es wurde kein Spiel gestartet.

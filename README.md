@@ -1,4 +1,4 @@
-# Enshrouded Mod Studio 0.4.26
+# Enshrouded Mod Studio 0.4.27
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
 
@@ -7,12 +7,12 @@ Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshroud
 ## In drei Schritten zu allen Spielern
 
 1. **Studio patcht:** Den vom UGSM Manager verwalteten Server-Installationsordner wählen, Einstellungen prüfen, Spiel bzw. Server schließen und **Patch anwenden / aktualisieren** ausführen.
-2. **Manager übernimmt:** Studio erkennt die lokale Managerbindung und erstellt das passende Clientpaket. Manager **0.15.28** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten.
-3. **Spieler synchronisieren:** Mit Spielerclient **0.16.13** **Synchronisieren & Spielen** wählen. Der Client lädt geprüfte Änderungen, sichert den bisherigen Modstand und installiert die passenden Daten.
+2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.29** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
+3. **Spieler synchronisieren:** Mit Spielerclient **0.16.14** **Synchronisieren & Spielen** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Der vorherige Modstand wird gesichert.
 
-Studio benötigt für Serverpakete eine **bereits auf demselben Rechner vorhandene, getrennte Enshrouded-Clientinstallation desselben Spielbuilds**. Es verwendet zuerst eine gültige bisherige Studio-Einstellung und sucht ansonsten in gespeicherten Profilen sowie Steam-Bibliotheken. Bei fehlenden oder mehreren möglichen Installationen meldet Studio den Grund; die passende Basis kann weiterhin unter **Werkzeuge → Clientpaket für Servermanager** ausgewählt werden. Es werden keine Spieldateien von Spielern hochgeladen.
+**Auf dem Server ist keine zusätzliche Spielclientinstallation erforderlich.** Die neue Standardmethode verwendet ausschließlich die vorhandene Serverbasis. Die Originaldateien der Spieler bleiben auf deren PCs; sie werden nicht hochgeladen. Server und Clients müssen denselben unterstützten Spielstand verwenden. Die bisherige Methode mit vorgefertigten Clientarchiven bleibt unter der eingeklappten erweiterten Einrichtung verfügbar.
 
-Die Übergabe liegt in einer festen reservierten Ablage des verwalteten Installationsordners. Der Manager benötigt keinen Zugriff auf den Desktop- oder privaten Studio-Datenordner. Er erhält minimale gehashte Prüfnachweise und veröffentlicht nur bestätigte Clientpakete. Serverarchive werden nicht als Clientarchive verteilt. Ältere manuelle Verbindungen bleiben unterstützt. [Einrichtung](CLIENTPAKETE.txt) · [Schnittstelle](SERVERMANAGER-CLIENTPAKETE.md).
+Die Oberfläche trennt **Serverpatch**, **Änderungen bereitstellen** und **Spieler synchronisieren**. Ein erfolgreicher Serverpatch allein meldet keine fertige Verteilung. Der Manager erhält die geprüfte Übergabe über die reservierte Ablage im verwalteten Installationsordner; Desktop-Zugriffsrechte sind dafür nicht nötig. [Einrichtung](CLIENTPAKETE.txt) · [Schnittstelle](SERVERMANAGER-CLIENTPAKETE.md).
 
 ## Installieren und aktualisieren
 
@@ -28,7 +28,7 @@ Profile enthalten Spieler- und Gegenstandswerte, Tierproduktion, Zähmung, Nutzt
 
 Die Korrekturen aus 0.4.23 und 0.4.24 bleiben enthalten: Stapelgrößen können zusammen mit den sechs eigenen Begleitern verarbeitet werden; native 32-Bit-Gleitkommazahlen werden beim Kontrolllesen korrekt berücksichtigt. Hintergrundtests bestätigen erzeugte Archive und ihre exakte Rekonstruktion. Sie ersetzen keine Prüfung von Besitzerzuordnung, Folge-KI, Schaden oder anderen bislang unbestätigten Mechaniken im laufenden Mehrspieler. [Prüfbericht](PRUEFBERICHT.txt).
 
-Für 0.4.26 bestanden zusätzlich **80 native Hintergrundprüfungen** auf isolierten Kopien: Ohne Referenz blieben die Archive unverändert. Mit passender privater Originalbasis wurden alle 38 eingeschalteten Einstellungen und 3661 Änderungen zweimal kontrolliert. Alle 19141 gelesenen Ressourcen waren zwischen den Durchläufen inhaltlich identisch; Faktoren und eigene Begleiterregistrierungen wurden nicht verdoppelt. Kein Spiel oder produktiver Server wurde gestartet.
+Für 0.4.27 bestand der vollständige Transfer eines echten Serverprofils mit **38 eingeschalteten Optionen**: 3661 Serverressourcen wurden in ein Datenrezept übernommen. Der fest gebündelte Spielerclient-Worker erzeugte und kontrollierte 3669 Clientänderungen einschließlich Namen, Bildern und Herstellungsmenü der sechs Begleiterzauber. Alle 91827 KFC-Ressourcenidentitäten wurden geprüft; die Clientoriginale blieben unverändert. Sicherung, Wiederherstellung, Profilwechsel und die Kompatibilität mit bisherigen Paketen wurden zusätzlich geprüft. Kein Spiel oder produktiver Server wurde gestartet.
 
 Der gemeldete Materialzugriff aus normalen Kisten und Stationsinventaren wird durch die Synchronisation nicht repariert. Ein Servermod, der ohne passende Clientänderungen allen Spielern automatisch vier Fähigkeitspunkte je Level gibt, ist nicht enthalten. [Lagerbefund](LAGERZUGRIFF.txt) · [Fähigkeitspunkte](PUNKTE-SERVERMOD.txt).
 

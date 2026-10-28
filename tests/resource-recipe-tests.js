@@ -1,0 +1,43 @@
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert'),crypto=require('crypto');
+const recipe=require('../engine/resource-recipe'),packages=require('../engine/client-packages');
+const root=path.resolve(__dirname,'..','engine'),scratch=path.resolve(__dirname,'..','..','recipe-export-tests-'+Date.now());
+fs.mkdirSync(scratch);const checks=[];
+function check(name,run){run();checks.push(name);}
+function write(file,doc){fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(doc));}
+const defs=require('../engine/skeleton-spell-definitions.json'),schema=require('../assets/schema.json');
+const config={world:{},inventory:{},gameplay:{},player:{}};
+for(const c of schema)for(const m of c.Mods){config[c.Key]??={};config[c.Key][m.Key]={enabled:false};for(const f of m.Fields||[])config[c.Key][m.Key][f.Key]=f.Boolean?false:f.Integer?Math.ceil(f.Minimum):f.Minimum;}
+config.inventory.adjustStackSize.enabled=true;
+config.inventory.adjustStackSize.value=500;
+const options=packages.publicOptions(config,schema);
+const game=path.join(scratch,'server'),job=path.join(scratch,'job');fs.mkdirSync(game);fs.mkdirSync(job);
+const source={$type:'keen::ItemInfo',$guid:'11111111-2222-3333-4444-555555555555',$part:0,maxStackSize:20,untouched:'keep'};
+const after={...source,maxStackSize:500};
+write(path.join(job,'unpacked','ItemInfo','item.json'),source);write(path.join(job,'modified','ItemInfo','item.json'),after);
+const plan={id:'1793000000000-abcdef12',job,target:{id:'a'.repeat(20),dir:game,server:true,name:'enshrouded_server',archives:['enshrouded_server.kfc','enshrouded_server.kfc_resources']},build:'test-resource-build',config,modifiedFiles:1,verifiedFiles:1,mods:{}};
+const engineOptions={root,data:path.join(scratch,'data','patches'),spaceReserveBytes:0,spaceProbe:()=>({freeBytes:10*1024*1024*1024,volume:'test-volume'})};
+let prepared,built;
+check('New default uses resource recipes without a client directory',()=>{const settings=packages.settings(engineOptions);assert.equal(settings.transportMode,'resource-recipe');assert.equal(settings.clientBasisDirectory,null);});
+check('A verified server export creates a compressed data-only recipe',()=>{prepared=recipe.prepare({engineRoot:root,job,plan,options});assert.equal(prepared.resources,1);assert(prepared.compressedSize<prepared.size);});
+check('Recipe binds the exact game build and preserves the original preimage',()=>{const loaded=recipe.load(prepared,job,root);assert.equal(loaded.recipe.gameBuild,plan.build);assert.deepEqual(loaded.recipe.resources[0].before,source);assert.deepEqual(loaded.recipe.resources[0].after,after);assert.equal(loaded.recipe.resources[0].mode,'modify');});
+check('No client installation or client archive is created',()=>assert.deepEqual(fs.readdirSync(game),[]));
+check('Recipe SHA256 is the canonical uncompressed data identity',()=>{const r=recipe.load(prepared,job,root).recipe;assert.equal(crypto.createHash('sha256').update(recipe.canonical(r)).digest('hex'),prepared.sha256);});
+check('Full V2 package exports only compressed data blobs',()=>{plan.clientPackagePreparation={recipe:prepared};built=packages.buildResourcePackage(engineOptions,plan,{outputDirectory:path.join(scratch,'packages')});const m=JSON.parse(fs.readFileSync(path.join(built.packageDirectory,'manifest.json')));assert.equal(m.formatVersion,2);assert.equal(m.requiredCapability,recipe.CAPABILITY);assert(!Object.hasOwn(m,'requiredClientExeSha256'));assert(!Object.hasOwn(m,'files'));assert.equal(m.recipe.delta.base,null);assert.equal(m.recipe.sha256,prepared.sha256);assert.equal(packages.verifyPayload(built.packageDirectory,m),true);});
+const canonicalRecipe=recipe.load(prepared,job,root).recipe;
+const clone=()=>JSON.parse(JSON.stringify(canonicalRecipe));
+check('Resource identity changes are rejected',()=>{const r=clone();r.resources[0].after.$guid='22222222-2222-3333-4444-555555555555';assert.throws(()=>recipe.validate(r,defs));});
+check('Duplicate resources are rejected',()=>{const r=clone();r.resources.push(r.resources[0]);assert.throws(()=>recipe.validate(r,defs));});
+check('Unknown resources cannot be created',()=>{const r=clone();r.resources[0].mode='create';r.resources[0].before=null;assert.throws(()=>recipe.validate(r,defs));});
+check('An unchanged row is rejected',()=>{const r=clone();r.resources[0].after=r.resources[0].before;assert.throws(()=>recipe.validate(r,defs));});
+check('Unknown row fields are rejected',()=>{const r=clone();r.resources[0].script='run';assert.throws(()=>recipe.validate(r,defs));});
+check('Unknown top-level instructions are rejected',()=>{const r=clone();r.executable='game.exe';assert.throws(()=>recipe.validate(r,defs));});
+check('Prototype-mutating JSON keys are rejected',()=>{const r=clone();r.resources[0].after.data=JSON.parse('{"__proto__":{"polluted":true}}');assert.throws(()=>recipe.validate(r,defs));});
+check('Client-only resources cannot be supplied by server recipes',()=>{const r=clone();r.resources[0].type='keen::FbUiBundle';r.resources[0].before.$type=r.resources[0].after.$type='keen::FbUiBundle';assert.throws(()=>recipe.validate(r,defs));});
+check('Changed compressed recipe is rejected before package creation',()=>{const bytes=fs.readFileSync(prepared.file);fs.writeFileSync(prepared.file,Buffer.from(bytes).fill(0,10,11));assert.throws(()=>recipe.load(prepared,job,root));fs.writeFileSync(prepared.file,bytes);});
+check('A recipe outside its owned job is rejected',()=>assert.throws(()=>recipe.load({...prepared,file:path.join(scratch,'unowned.gz')},job,root)));
+check('Mismatched uncompressed size is rejected',()=>assert.throws(()=>recipe.load({...prepared,size:prepared.size+1},job,root)));
+check('Unverified server resources cannot be exported',()=>assert.throws(()=>recipe.prepare({engineRoot:root,job,plan:{...plan,verifiedFiles:0},options})));
+check('A client target cannot masquerade as a server-derived recipe',()=>assert.throws(()=>recipe.prepare({engineRoot:root,job,plan:{...plan,target:{...plan.target,server:false}},options})));
+const report={passed:true,checks,gameStarted:false,desktopStarted:false,clientDirectoryRequired:false,scratch};
+write(path.join(__dirname,'resource-recipe-results.json'),report);console.log(JSON.stringify({passed:true,checks:checks.length,recipeBytes:prepared.size,compressedBytes:prepared.compressedSize,manifestVersion:2}));

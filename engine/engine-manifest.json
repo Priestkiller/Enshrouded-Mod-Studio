@@ -1,6 +1,6 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.26",
+  "studio": "0.4.27",
   "files": {
     "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
@@ -59,10 +59,11 @@
     "assets/sabertooth-spell.json": "21c945404fd5e983d87d9b86676597adca74b95858f99b2013e072bb68c3f8cc",
     "animal-breeding.js": "f0d541869645d27d043d16d60c6b8635e3c8850aef5bb00d9f8f3a9ca4b55b00",
     "summon-multiplayer.js": "0dda0d7ac0d8652119d29bfb83e6e943201d6da7aa982b261dfd713b07823a8c",
-    "client-packages.js": "8516f8e8bd2d9aa1d30b7fdbc6b587f5f9716761e0459da6d495047ce2d29b40",
+    "client-packages.js": "0208df4873f2135140fb2f94be3de05fcf6ce4cf0631409a80b78e5e1c4d9401",
     "client-delta.js": "be8d3c9e01d218063ec49a6c1e3c55ab04722f6a10ba6001d4c39a3b9858eab8",
-    "manager-handoff.js": "cf1d5c36b5b56b05289942d493358fd35653ff72805230649c8a751cb5843540",
+    "manager-handoff.js": "ef3e2588c7ccd3e300b3ad6fbac67682f86897140c46da72e3b9086480e538b2",
     "reference-basis.js": "e31d767a946bd2935ffe00c97e62f88149f09349f6bcb1b931e9b864899c3eea",
-    "input-basis-check.js": "4461f75968d3cd9415ac02b091ad12288932035fea10bdbf2ff9e641054dd123"
+    "input-basis-check.js": "4461f75968d3cd9415ac02b091ad12288932035fea10bdbf2ff9e641054dd123",
+    "resource-recipe.js": "6b5c1d18adb3793cebb6cd13886cffa37d24042b82a9ec3bd6c1c7b82658ae13"
   }
 }

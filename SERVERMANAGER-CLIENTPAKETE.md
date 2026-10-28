@@ -1,4 +1,32 @@
-# Automatische lokale Übergabe ab 0.4.25
+# Ressourcenrezepte ab Studio 0.4.27
+
+Standard: Studio 0.4.27, Manager 0.15.29 und Spielerclient 0.16.14. Es wird keine
+Clientinstallation auf dem Server und kein Upload von Clientoriginalen benötigt.
+Nach erfolgreichem Serverpatch exportiert Studio erlaubte Ressourcenidentitäten
+mit ihren geprüften Vorher-/Nachherdaten und bereinigten Optionswerten. Der feste
+Spielerclient-Worker führt die Änderungen auf der eigenen gesicherten Basis aus.
+Clientfelder bleiben erhalten; unbekannte Identitäten, Altwerte oder Spielbuilds
+stoppen den Lauf vor einer Installation. Die fest eingebauten Begleiterdefinitionen
+ergänzen die nur lokal vorhandenen Menü-, Bild- und Sprachdaten.
+
+Das äußere Manifest bleibt `enshrouded-studio-client-package`, mit
+`formatVersion:2` und `requiredCapability:enshrouded-resource-recipe-v1`.
+`recipe` enthält Format/Version, `encoding:gzip-json`, Größe und SHA256 des
+kanonischen ungepackten Rezepts sowie ein bestehendes `base:null`-Blockdelta für
+die komprimierten Bytes. `blobs` ist dessen vollständiges Inhaltsinventar.
+Es werden keine Client-EXE- oder Ergebnisarchivhashes aus Serverdateien behauptet.
+Diese ermittelt und prüft der lokale Worker vor der vorhandenen Transaktion.
+Grenzen: Manifest 4 MiB, komprimiertes Rezept 64 MiB, ungepackt 256 MiB,
+10000 Ressourcen, Inhaltsblöcke höchstens 64 KiB. Es wird genau ein gzip-Member
+akzeptiert. Das Paket enthält Daten und keine heruntergeladenen Programme oder
+Skripte; Werkzeuge und Worker kommen ausschließlich aus dem geprüften Clientupdate.
+
+Einrichtungsschlüssel: `transportMode:resource-recipe` ist der neue Standard.
+`transportMode:client-archive-delta` aktiviert ausdrücklich die folgende ältere
+Methode. Die bisherigen vollständigen V1-Ausgangs-/Ergebnishashprüfungen bleiben
+erhalten. Alte Clients erhalten bei V2 eine klare Aufforderung zum Clientupdate.
+
+# Bisherige automatische Übergabe und V1-Paketmethode ab 0.4.25
 
 Der vom Manager verwaltete Server-Installationsordner enthält `.ugsm-studio.json`. Studio validiert diese Bindung und verwendet ausschließlich `.ugsm-studio-transfer/output` als reservierte Paketablage. Nach dem erfolgreichen Patch folgen minimale Plan-/Zustandsbelege unter `snapshots/<planId>/proofs/patches`, deren SHA-256-Werte in der atomaren `handoff.json` stehen. Die Quelle der Clientdaten ist eine vorhandene getrennte lokale Clientbasis desselben Spielbuilds; es gibt keine Spieler-Uploads und keine Serverarchiv-Umbenennung.
 
