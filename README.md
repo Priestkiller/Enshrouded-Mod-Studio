@@ -1,4 +1,4 @@
-# Enshrouded Mod Studio 0.4.28
+# Enshrouded Mod Studio 0.4.29
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
 
@@ -14,7 +14,7 @@ Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshroud
 
 Die Oberfläche trennt **Serverpatch**, **Änderungen bereitstellen** und **Spieler synchronisieren**. Ein erfolgreicher Serverpatch allein meldet keine fertige Verteilung. Der Manager erhält die geprüfte Übergabe über die reservierte Ablage im verwalteten Installationsordner; Desktop-Zugriffsrechte sind dafür nicht nötig. [Einrichtung](CLIENTPAKETE.txt) · [Schnittstelle](SERVERMANAGER-CLIENTPAKETE.md).
 
-Die Punkteoption berechnet den gesamten Levelanteil als **(Level - 1) × Punktewert**. Beispiel: Level 26 mit Wert 4 ergibt insgesamt 100 Punkte aus dem Levelanteil, keine 100 neuen Punkte je Levelaufstieg. Bereits ausgegebene Punkte und Wissensbelohnungen werden getrennt berücksichtigt. [Punkte erklären und prüfen](SKILLPUNKTE.txt).
+Die Punkteoption berechnet den gesamten Levelanteil als **(Level - 1) × Punktewert**. Auch bereits bekannte Wurzel- und Brunnenbelohnungen können mit einem geänderten Wurzelfaktor neu bewertet werden. Deshalb kann die erste Neuberechnung nach dem Patch einen größeren tatsächlichen Punktezuwachs ergeben; sie misst nicht allein den Zuwachs eines neuen Levels. Studio 0.4.29 berichtigt die bisherige irreführende Erklärung, dass nur künftige Wurzelbelohnungen betroffen seien. Die Archivwerte und Berechnungslogik bleiben gegenüber 0.4.28 unverändert. [Punkte erklären und prüfen](SKILLPUNKTE.txt).
 
 Teilweise importierte Profile aktivieren keine fehlenden Mods automatisch. Vorhandene Zahlenwerte bleiben sichtbar und bearbeitbar. Eine neue native Obergrenze gilt beim Einschalten der betreffenden Option; ausgeschaltete Altwerte blockieren andere Patches nicht.
 

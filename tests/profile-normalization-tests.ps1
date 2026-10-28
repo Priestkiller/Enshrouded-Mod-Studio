@@ -7,7 +7,7 @@ param(
 $ErrorActionPreference='Stop'
 if(-not $AppRoot){$AppRoot=Split-Path -Parent $PSScriptRoot}
 # A source checkout may retain a genuine 0.4.27 EXE, while a release build has
-# already replaced it with 0.4.28. Never infer an old reader from the filename.
+# already replaced it with a newer release. Never infer an old reader from the filename.
 if(-not $LegacyStudioAssembly){
  $candidate=Join-Path $AppRoot 'Enshrouded Mod Studio.exe'
  if([IO.File]::Exists($candidate) -and [Reflection.AssemblyName]::GetAssemblyName($candidate).Version.ToString() -ceq '0.4.27.0'){$LegacyStudioAssembly=$candidate}
@@ -75,7 +75,7 @@ foreach($bad in @('{"player":{"adjustSkillPointsPerLevel":{"enabled":"true","val
  Check $rejected 'Invalid explicitly supplied types are rejected rather than silently replaced'
 }
 Check ([EnshroudedStudio.SkillPointUi]::Explanation.Contains('(Level - 1)') -and [EnshroudedStudio.SkillPointUi]::Explanation.Contains('bereits erreichte Level')) 'The points card explains the global level contribution including previously reached levels'
-Check ([EnshroudedStudio.SkillPointUi]::Explanation.Contains('Level 26 mit Wert 4 ergibt 100 Punkte') -and [EnshroudedStudio.SkillPointUi]::Explanation.Contains('nicht 100 neue Punkte bei jedem Levelaufstieg')) 'The general four-point example distinguishes 100 total points from a per-level grant'
+Check ([EnshroudedStudio.SkillPointUi]::Explanation.Contains('ersten Neuberechnung') -and [EnshroudedStudio.SkillPointUi]::Notes.Contains('keine Diagnose') -and [EnshroudedStudio.SkillPointUi]::Notes.Contains('100 freie Punkte') -and [EnshroudedStudio.SkillPointUi]::Notes.Contains('104 freie Punkte') -and [EnshroudedStudio.SkillPointUi]::Notes.Contains('also nur 4 neue')) 'The conditional first recalculation example distinguishes a possible actual hundred-point jump from later four-point level gains'
 Check ([EnshroudedStudio.SkillPointUi]::Synchronization.Contains('jeder Mitspieler') -and [EnshroudedStudio.SkillPointUi]::Synchronization.IndexOf('Synchronisieren') -lt [EnshroudedStudio.SkillPointUi]::Synchronization.IndexOf('Spiel starten')) 'The current manager/client workflow synchronizes each player before the separate game start'
 Check ([EnshroudedStudio.SkillPointUi]::TargetHint('Dedicated Server erkannt').Contains('Synchronisieren') -and [EnshroudedStudio.SkillPointUi]::Scope.Contains('Serverpatch')) 'Dedicated points instructions use package synchronization instead of claiming no transfer mechanism exists'
 $compatibilityKey='gameplay.enableGatherLootMultipliers.patchGameSettings'
@@ -96,7 +96,7 @@ try {
  [IO.File]::WriteAllText($fixtureFile,($document|ConvertTo-Json -Depth 7),[Text.UTF8Encoding]::new($false))
  $description=[EnshroudedStudio.SkillReview]::Describe($fixtureFile,$fixtureTarget,4,$true)
  Check ($description.Contains('Installierter Wert: 2') -and $description.Contains('Profilwert: 4') -and $description.Contains('weicht vom Profil ab')) 'Readback keeps actual installed value distinct from the requested profile value'
- Check ($description.Contains('Allgemeines Beispiel: Level 26') -and $description.Contains('100 Punkte aus dem Levelanteil insgesamt') -and $description.Contains('Differenz bei einem neuen Levelaufstieg')) 'Readback labels the level formula as a general example and requests a separate in-game check'
+ Check ($description.Contains('(Level - 1)') -and $description.Contains('ersten Neuberechnung') -and $description.Contains('Wurzelbelohnungen') -and $description.Contains('Differenz bei einem neuen Levelaufstieg')) 'Readback explains first recalculation of prior level and root rewards and requests a separate in-game difference check'
  $legacyData=Join-Path $fixtureRoot 'legacy-profile-data';$legacyProfiles=Join-Path $legacyData 'profiles'
  [IO.Directory]::CreateDirectory($legacyProfiles)|Out-Null
  $legacyStore=New-Object EnshroudedStudio.StudioStore -ArgumentList ([IO.Path]::GetFullPath($AppRoot)),$legacyData

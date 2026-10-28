@@ -1,3 +1,12 @@
+0.4.29 – Erste Punkte-Neuberechnung und bekannte Wurzelbelohnungen erklären
+Die Oberfläche korrigiert die irreführende Aussage, nur künftige Wurzeln seien
+vom Punktefaktor betroffen. Bereits bekannte Belohnungen und frühere Level
+können bei der ersten Neuberechnung zusätzlich zählen. Ein klar gekennzeichnetes
+Rechenbeispiel erklärt einen einmaligen Zuwachs von 100 und später vier neue
+Punkte; es behauptet keine gemessenen Werte eines bestimmten Charakters.
+Die Spielwertberechnung und das Schema aus 0.4.28 bleiben unverändert.
+Nach dem Update gemeinsame Pakete mit Manager 0.15.32/Client 0.16.16 verwenden.
+
 0.4.26 – Erstinstallation und sichere Basis für bereits gepatchte Server
 Patcher einrichten ergänzt die geprüfte Originalruntime 1.2.3 aus ZIP oder EXE
 mit passendem Parser. Kein alter Studioordner, keine alten Profile nötig.

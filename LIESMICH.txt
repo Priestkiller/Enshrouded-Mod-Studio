@@ -1,4 +1,8 @@
-ENSHROUDED MOD STUDIO 0.4.26
+ENSHROUDED MOD STUDIO 0.4.29
+
+Neue Punkteerklärung: Die erste Neuberechnung kann auch frühere Level und
+bereits bekannte Wurzelbelohnungen höher bewerten. Ein größerer erster Zuwachs
+ist deshalb vom Zuwachs späterer Level zu unterscheiden. Details: SKILLPUNKTE.txt.
 
 Du brauchst keinen alten Studioordner.
 Bei einer öffentlichen Erstinstallation zuerst Patcher einrichten wählen und

@@ -1,4 +1,4 @@
-AKTUELLE EINORDNUNG: STUDIO 0.4.28
+AKTUELLE EINORDNUNG: STUDIO 0.4.29
 Der folgende Bericht beschreibt die frühere Anforderung einer reinen Servermod
 mit unveränderten Spielerclients. Heute können Manager 0.15.32 und Spielerclient
 0.16.16 die bestätigten Studioänderungen an alle teilnehmenden Spieler verteilen
