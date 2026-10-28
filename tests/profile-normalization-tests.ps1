@@ -1,10 +1,21 @@
 param(
  [Parameter(Mandatory=$true)][string]$StudioAssembly,
  [string]$AppRoot,
- [string]$OutputFile
+ [string]$OutputFile,
+ [ValidateNotNullOrEmpty()][string]$LegacyStudioAssembly
 )
 $ErrorActionPreference='Stop'
 if(-not $AppRoot){$AppRoot=Split-Path -Parent $PSScriptRoot}
+# A source checkout may retain a genuine 0.4.27 EXE, while a release build has
+# already replaced it with 0.4.28. Never infer an old reader from the filename.
+if(-not $LegacyStudioAssembly){
+ $candidate=Join-Path $AppRoot 'Enshrouded Mod Studio.exe'
+ if([IO.File]::Exists($candidate) -and [Reflection.AssemblyName]::GetAssemblyName($candidate).Version.ToString() -ceq '0.4.27.0'){$LegacyStudioAssembly=$candidate}
+}
+if($LegacyStudioAssembly){
+ $LegacyStudioAssembly=[IO.Path]::GetFullPath($LegacyStudioAssembly)
+ if([Reflection.AssemblyName]::GetAssemblyName($LegacyStudioAssembly).Version.ToString() -cne '0.4.27.0' -or [Diagnostics.FileVersionInfo]::GetVersionInfo($LegacyStudioAssembly).FileVersion -cne '0.4.27.0'){throw 'The explicit legacy updater assembly must be Studio 0.4.27.'}
+}
 Add-Type -AssemblyName System.Web.Extensions
 Add-Type -TypeDefinition 'public sealed class LegacyStudioFieldMaximum { public double Minimum { get; set; } public double Maximum { get; set; } }'
 $null=[Reflection.Assembly]::LoadFrom([IO.Path]::GetFullPath($StudioAssembly))
@@ -111,12 +122,41 @@ try {
  Check ([Convert]::ToBase64String([IO.File]::ReadAllBytes($legacyFile)) -ceq $originalProfile) 'Loading and rejecting invalid values leaves the original profile file byte-identical'
  $legacyStore.Profiles[0].Config['gameplay']['adjustWaterSourcePerFlameLevel']['cap']=255
  Check ($legacyStore.Validate($legacyStore.Profiles[0].Config).Count -eq 0) 'The retained profile becomes valid when its value is explicitly corrected to 255'
+ $legacyEvidence=$null
+ if($LegacyStudioAssembly){
+  # LoadFile keeps the old identity separate from the current same-name EXE.
+  # All calls below use its exact reflection types, not PowerShell type lookup.
+  $oldAssembly=[Reflection.Assembly]::LoadFile($LegacyStudioAssembly)
+  if($oldAssembly.GetName().Version.ToString() -cne '0.4.27.0'){throw 'Wrong explicit legacy updater version.'}
+  $oldStoreType=$oldAssembly.GetType('EnshroudedStudio.StudioStore',$true)
+  if($oldAssembly.GetType('EnshroudedStudio.FieldDef',$true).GetProperty('NativeMaximum')){throw 'The old updater already knows the native extension.'}
+  $oldData=Join-Path $fixtureRoot 'actual-old27-data';$oldProfiles=Join-Path $oldData 'profiles'
+  [IO.Directory]::CreateDirectory($oldProfiles)|Out-Null
+  $constructor=$oldStoreType.GetConstructor([type[]]@([string],[string]))
+  $oldStore=$constructor.Invoke([object[]]@([string][IO.Path]::GetFullPath($AppRoot),[string]$oldData))
+  $oldBounds=0;foreach($category in $oldStore.Schema){foreach($mod in $category.Mods){foreach($field in $mod.Fields){if(($mod.Key -ceq 'adjustWaterSourcePerFlameLevel' -and $field.Key -ceq 'cap') -or ($mod.Key -ceq 'adjustChestRandomSlots' -and $field.Key -in @('min','max'))){if($field.Maximum -ne 1000000000){throw 'The actual old reader did not retain its legacy maximum.'};$oldBounds++}}}}
+  if($oldBounds -ne 3){throw 'The actual old reader did not expose all three legacy bounds.'}
+  $originalBytes=@{};$oldIDs=@()
+  foreach($mode in @('water-active','water-inactive','chest-active','chest-inactive')){
+   $oldConfig=$oldStore.Baseline();$oldConfig['player']['adjustSkillPointsPerLevel']['enabled']=$true;$oldConfig['player']['adjustSkillPointsPerLevel']['value']=4
+   if($mode.StartsWith('water')){$oldOption=$oldConfig['gameplay']['adjustWaterSourcePerFlameLevel'];$oldOption['cap']=1000}else{$oldOption=$oldConfig['gameplay']['adjustChestRandomSlots'];$oldOption['min']=1000;$oldOption['max']=1000}
+   $oldOption['enabled']=$mode.EndsWith('-active');$oldID=[Guid]::NewGuid().ToString('N');$oldIDs+=$oldID;$oldFile=Join-Path $oldProfiles ($oldID+'.json')
+   [IO.File]::WriteAllText($oldFile,([ordered]@{formatVersion=1;name=$mode;config=$oldConfig}|ConvertTo-Json -Depth 20),[Text.UTF8Encoding]::new($false))
+   $originalBytes[$oldFile]=(Get-FileHash -LiteralPath $oldFile -Algorithm SHA256).Hash
+  }
+  [IO.File]::WriteAllText((Join-Path $oldData 'ui.json'),('{"lastProfile":"'+$oldIDs[0]+'"}'),[Text.UTF8Encoding]::new($false))
+  $method=$oldAssembly.GetType('EnshroudedStudio.UpdateInstaller',$true).GetMethod('ValidateProfiles',[Reflection.BindingFlags]'Static,NonPublic')
+  $oldCount=$method.Invoke($null,[object[]]@([string][IO.Path]::GetFullPath($AppRoot),[string]$oldData))
+  foreach($oldFile in $originalBytes.Keys){if((Get-FileHash -LiteralPath $oldFile -Algorithm SHA256).Hash -cne $originalBytes[$oldFile]){throw 'The actual old updater rewrote a profile.'}}
+  Check ($oldCount -eq 4) 'The actual 0.4.27 updater accepts enabled and disabled old water/chest values without rewriting their profiles'
+  $legacyEvidence=[ordered]@{passed=$true;version='0.4.27';assemblySHA256=(Get-FileHash -LiteralPath $LegacyStudioAssembly -Algorithm SHA256).Hash.ToLowerInvariant();acceptedProfiles=$oldCount;legacyBounds=$oldBounds;originalBytesUnchanged=$true}
+ }
 } finally {
  $resolved=[IO.Path]::GetFullPath($fixtureRoot)
  if([IO.Path]::GetDirectoryName($resolved) -cne [IO.Path]::GetFullPath($fixtureParent).TrimEnd([IO.Path]::DirectorySeparatorChar) -or -not [IO.Path]::GetFileName($resolved).StartsWith('skill-readback-test-',[StringComparison]::Ordinal)){throw 'Unexpected readback fixture cleanup path'}
  if((Get-Item -LiteralPath $resolved).Attributes -band [IO.FileAttributes]::ReparsePoint -or (Get-ChildItem -LiteralPath $resolved -Recurse -Force -Attributes ReparsePoint)){throw 'Linked readback fixture remains untouched'}
  Remove-Item -LiteralPath $resolved -Recurse -Force
 }
-$report=[ordered]@{passed=$true;checks=$checks.Count;mods=$modCount;fields=$fieldCount;readOnlyCompatibilityFields=@($compatibilityKey);tests=@($checks);bindings=$bindings;guiStarted=$false;gameStarted=$false;liveProfilesModified=$false;fixtureProfilesWritten=$true}
+$report=[ordered]@{passed=$true;checks=$checks.Count;mods=$modCount;fields=$fieldCount;readOnlyCompatibilityFields=@($compatibilityKey);legacyUpdaterProof=$legacyEvidence;tests=@($checks);bindings=$bindings;guiStarted=$false;gameStarted=$false;liveProfilesModified=$false;fixtureProfilesWritten=$true}
 if($OutputFile){$file=[IO.Path]::GetFullPath($OutputFile);$parent=[IO.Path]::GetDirectoryName($file);if(-not [IO.Directory]::Exists($parent)){[IO.Directory]::CreateDirectory($parent)|Out-Null};[IO.File]::WriteAllText($file,($report|ConvertTo-Json -Depth 7),[Text.UTF8Encoding]::new($false))}
 [pscustomobject]@{passed=$true;checks=$checks.Count;mods=$modCount;fields=$fieldCount;guiStarted=$false;gameStarted=$false;liveProfilesModified=$false;fixtureProfilesWritten=$true}|ConvertTo-Json -Compress

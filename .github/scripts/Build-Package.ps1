@@ -12,8 +12,37 @@ $releaseExe = Join-Path $releaseRoot 'Enshrouded Mod Studio.exe'
 if ((Get-Item -LiteralPath $releaseExe).VersionInfo.FileVersion -ne ($releaseSpec.version + '.0')) { throw 'Unexpected executable version.' }
 $releaseOutput = Join-Path $releaseRoot 'artifacts'
 New-Item -ItemType Directory -Path $releaseOutput -Force | Out-Null
-& (Join-Path $releaseRoot 'tests\profile-normalization-tests.ps1') -StudioAssembly $releaseExe -AppRoot $releaseRoot -OutputFile (Join-Path $releaseOutput 'profile-normalization-results.json')
-if ($LASTEXITCODE -ne 0) { throw 'Profile normalization and points explanation checks failed.' }
+# Pin the immutable public ZIP, then extract only its GUI for the actual old
+# updater's read-only profile validator. The local root EXE was just rebuilt.
+$profileLegacyParent = if ($env:RUNNER_TEMP) { [IO.Path]::GetFullPath($env:RUNNER_TEMP) } else { [IO.Path]::GetFullPath([IO.Path]::GetTempPath()) }
+$profileLegacyRoot = Join-Path $profileLegacyParent ('studio-legacy27-' + [Guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $profileLegacyRoot | Out-Null
+try {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    $profileLegacyZip = Join-Path $profileLegacyRoot 'studio-0.4.27.zip'
+    Invoke-WebRequest -Uri 'https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/download/v0.4.27/Enshrouded-Mod-Studio-0.4.27.zip' -OutFile $profileLegacyZip -UseBasicParsing
+    if ((Get-FileHash -LiteralPath $profileLegacyZip -Algorithm SHA256).Hash.ToLowerInvariant() -cne '3a6e1afee22cc616e1f1535ccb4b23db20b27291cea047059c649740c90d461b') { throw 'Public Studio 0.4.27 ZIP checksum mismatch.' }
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $profileLegacyExe = Join-Path $profileLegacyRoot 'Enshrouded Mod Studio.exe'
+    $profileLegacyArchive = [IO.Compression.ZipFile]::OpenRead($profileLegacyZip)
+    try {
+        $entries = @($profileLegacyArchive.Entries | Where-Object { $_.FullName -ceq 'Enshrouded Mod Studio.exe' })
+        if ($entries.Count -ne 1 -or $entries[0].Length -lt 1 -or $entries[0].Length -gt 32MB) { throw 'Public Studio 0.4.27 GUI inventory mismatch.' }
+        $inputStream = $entries[0].Open(); $outputStream = [IO.File]::Open($profileLegacyExe,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+        try { $inputStream.CopyTo($outputStream) } finally { $outputStream.Dispose(); $inputStream.Dispose() }
+    } finally { $profileLegacyArchive.Dispose() }
+    if ([Reflection.AssemblyName]::GetAssemblyName($profileLegacyExe).Version.ToString() -cne '0.4.27.0' -or [Diagnostics.FileVersionInfo]::GetVersionInfo($profileLegacyExe).FileVersion -cne '0.4.27.0') { throw 'Wrong pinned Studio 0.4.27 GUI version.' }
+    # A child process prevents loading the new GUI into this process, where the
+    # independent genuine 0.4.10 updater proof below still needs its old identity.
+    $testShell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+    & $testShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tests\profile-normalization-tests.ps1') -StudioAssembly $releaseExe -LegacyStudioAssembly $profileLegacyExe -AppRoot $releaseRoot -OutputFile (Join-Path $releaseOutput 'profile-normalization-results.json')
+    if ($LASTEXITCODE -ne 0) { throw 'Profile normalization and actual old updater checks failed.' }
+} finally {
+    $cleanup = [IO.Path]::GetFullPath($profileLegacyRoot)
+    if ([IO.Path]::GetDirectoryName($cleanup) -cne $profileLegacyParent.TrimEnd([IO.Path]::DirectorySeparatorChar) -or -not [IO.Path]::GetFileName($cleanup).StartsWith('studio-legacy27-',[StringComparison]::Ordinal)) { throw 'Unowned legacy GUI cleanup path.' }
+    if ((Get-Item -LiteralPath $cleanup).Attributes -band [IO.FileAttributes]::ReparsePoint -or (Get-ChildItem -LiteralPath $cleanup -Recurse -Force -Attributes ReparsePoint)) { throw 'Linked legacy GUI test data remains untouched.' }
+    Remove-Item -LiteralPath $cleanup -Recurse -Force
+}
 $releaseStage = Join-Path $releaseOutput ('package-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $releaseStage | Out-Null
 foreach ($dir in @('assets','engine','source','tools','ThirdParty','tests')) {
