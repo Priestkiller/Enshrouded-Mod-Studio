@@ -688,6 +688,11 @@ namespace EnshroudedStudio
             switchRow.Children.Add(state); switchRow.Children.Add(toggle); Grid.SetColumn(switchRow, 1); top.Children.Add(switchRow);
             body.Children.Add(top); Toggles[prefix] = toggle;
             var summary = Readable(mod.Description, 15, "#D4E1ED"); summary.Margin = new Thickness(0, 9, 0, 0); body.Children.Add(summary);
+            if (prefix == "player.adjustSkillPointsPerRoot")
+            {
+                var rootExplanation = Readable(SkillPointUi.RootExplanation, 15, "#E3EDF4");
+                rootExplanation.Margin = new Thickness(0, 12, 0, 0); body.Children.Add(rootExplanation);
+            }
             TextBlock roleHint = null;
             if (mod.ServerOnly || mod.ClientOnly || mod.KnownTargetOnly)
             {
@@ -811,7 +816,7 @@ namespace EnshroudedStudio
             if (auxiliary.Children.Count > 0) body.Children.Add(auxiliary);
             var detailsBody = new StackPanel();
             bool skillPointsCard = prefix == "player.adjustSkillPointsPerLevel";
-            AddDetail(detailsBody, "Wo anwenden?", skillPointsCard ? SkillPointUi.Scope : mod.Scope); AddDetail(detailsBody, "Wann ist das sinnvoll?", mod.WhenToUse); AddDetail(detailsBody, "Was wird geändert?", mod.Effect); AddDetail(detailsBody, "Beispiel", mod.Example); AddDetail(detailsBody, "Grenzen und Besonderheiten", skillPointsCard ? SkillPointUi.Notes : mod.Notes);
+            AddDetail(detailsBody, "Wo anwenden?", skillPointsCard ? SkillPointUi.Scope : mod.Scope); AddDetail(detailsBody, "Wann ist das sinnvoll?", mod.WhenToUse); AddDetail(detailsBody, "Was wird geändert?", mod.Effect); AddDetail(detailsBody, "Beispiel", mod.Example); AddDetail(detailsBody, "Grenzen und Besonderheiten", SkillPointUi.NotesFor(prefix, mod.Notes));
             var details = new Expander { Header = new TextBlock { Text = "Anwendung, Beispiel und Grenzen", FontSize = 14, Foreground = Brush("#A9E5DD"), TextWrapping = TextWrapping.Wrap }, Content = detailsBody, Margin = new Thickness(0, 7, 0, 0), IsExpanded = OpenDetails.Contains(prefix) };
             details.Expanded += delegate { OpenDetails.Add(prefix); };
             details.Collapsed += delegate { OpenDetails.Remove(prefix); };

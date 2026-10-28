@@ -1,20 +1,30 @@
 FERTIGKEITSPUNKTE VERSTEHEN UND SYNCHRONISIEREN
-Mod Studio 0.4.28 / Manager 0.15.32 / Spielerclient 0.16.16
+Mod Studio 0.4.29 / Manager 0.15.32 / Spielerclient 0.16.16
 
 WAS DER WERT BEDEUTET
 Der untersuchte Spielclient berechnet den gesamten Levelanteil des Talentbudgets
 als (Level - 1) mal Punktewert. Bereits erreichte Level gehören zu dieser
 Berechnung. Der Patcher verteilt keinen getrennten einmaligen Punktebonus.
 
-Allgemeines Beispiel: Level 26 mit Punktewert 4 ergibt 25 mal 4 = 100 Punkte
-aus dem Levelanteil insgesamt. Das bedeutet nicht 100 neue Punkte bei jedem
-Levelaufstieg. Wurzel- und Wissensbelohnungen werden zusätzlich berücksichtigt;
-bereits gekaufte Talente verbrauchen Punkte. Der Levelanteil ist deshalb nicht
-automatisch identisch mit der Zahl der aktuell freien Punkte.
+Wurzel- und Wissensbelohnungen werden zusätzlich berücksichtigt; bereits
+gekaufte Talente verbrauchen Punkte. Ein geänderter Wurzelfaktor kann auch
+bereits bekannte Belohnungen höher bewerten. Es wird keine Wurzel erneut
+freigeschaltet. Die frühere Aussage „nur künftige Belohnungen“ war irreführend.
 
-Diese Erklärung diagnostiziert keinen bestimmten Charakter. Um einen Fehler
-einzugrenzen, Level und freie Punkte vor und nach einem neuen Levelaufstieg
-vergleichen und den tatsächlich installierten Tabellenwert prüfen.
+Beim ersten Neuberechnen nach dem Patch kann deshalb tatsächlich ein größerer
+Punktezuwachs erscheinen. Rechnerisches Beispiel, keine Charakterdiagnose:
+Vorher Level 28, Punktewert 2, Wurzelfaktor 1, ursprüngliche bekannte Belohnungen
+zusammen 14 Punkte und alle 68 Punkte ausgegeben. Auf Level 29 mit Punktewert 4
+und Wurzelfaktor 4 beträgt das Budget 112 + 56 = 168. Abzüglich 68 ausgegebener
+Punkte bleiben 100 frei. Auf Level 30 wären es ohne weitere Änderungen 104 frei,
+also nur vier neue Punkte. Wurden die 100 Punkte vorher ausgegeben, bleiben auf
+Level 30 vier frei. Ob die angenommenen 14 ursprünglichen Belohnungspunkte zu
+deinem Charakter passen, ist damit nicht geprüft.
+
+Um einen Fehler einzugrenzen, auch einen weiteren Levelaufstieg ohne erneute
+Änderung der Einstellungen vergleichen. Neue Wissensbelohnungen und gekaufte
+Talente dabei getrennt berücksichtigen und den installierten Tabellenwert prüfen.
+Ein wiederholter unerwarteter Zuwachs ist gesondert zu untersuchen.
 
 FÜR ALLE MITSPIELER
 1. Im Studio den verwalteten Serverordner wählen, den gewünschten Punktewert

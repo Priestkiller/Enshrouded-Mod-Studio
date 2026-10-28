@@ -12,6 +12,9 @@ $releaseExe = Join-Path $releaseRoot 'Enshrouded Mod Studio.exe'
 if ((Get-Item -LiteralPath $releaseExe).VersionInfo.FileVersion -ne ($releaseSpec.version + '.0')) { throw 'Unexpected executable version.' }
 $releaseOutput = Join-Path $releaseRoot 'artifacts'
 New-Item -ItemType Directory -Path $releaseOutput -Force | Out-Null
+$explanationShell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+& $explanationShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tests\skill-point-explanation-tests.ps1') -StudioAssembly $releaseExe -AppRoot $releaseRoot -OutputFile (Join-Path $releaseOutput 'skill-point-explanation-results.json')
+if ($LASTEXITCODE -ne 0) { throw 'Skill-point explanation checks failed.' }
 # Pin the immutable public ZIP, then extract only its GUI for the actual old
 # updater's read-only profile validator. The local root EXE was just rebuilt.
 $profileLegacyParent = if ($env:RUNNER_TEMP) { [IO.Path]::GetFullPath($env:RUNNER_TEMP) } else { [IO.Path]::GetFullPath([IO.Path]::GetTempPath()) }
