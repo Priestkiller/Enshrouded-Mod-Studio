@@ -1,0 +1,17 @@
+Enshrouded: Herstellung direkt in der Installation pruefen
+
+1. Dieses ZIP auf dem Server vollstaendig entpacken.
+2. START-Pruefung.cmd doppelklicken.
+3. Den Mod-Studio-Ordner waehlen, der den Unterordner engine enthaelt.
+4. Der Test verwendet den im Studio zuletzt exportierten Spiel-/Serverordner.
+5. Den angezeigten kurzen Bericht kopieren und in unseren Chat einfuegen.
+
+Der Test liest nur drei bekannte Rezepte, Archivpruefsummen und Prozesszeiten.
+Er patcht und startet kein Spiel, stoppt keine Prozesse und laedt nichts herunter.
+Er benoetigt den bereits vorhandenen geprueften Parser des Mod Studios.
+Ausgabemengen und Zeiten stammen aus den installierten Archivdateien.
+Damit wird noch nicht bestaetigt, welche Werte die laufende Spielberechnung benutzt.
+
+Kleine Berichte bleiben unter Mod-Studio\Data\diagnostics erhalten.
+Die eigenen temporaeren Parser- und entpackten Rezeptdateien werden bereinigt.
+Der Bericht enthaelt lokale Ordnerpfade; teile ihn bei Bedarf in diesem Chat.
