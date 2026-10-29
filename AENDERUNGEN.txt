@@ -1,3 +1,31 @@
+0.4.31 – Einstellungswerte und unabhängige Anwendung korrigiert
+
+Neue optionale Reichweiteneinstellung für die beiden Abladestationen. Der
+horizontale Faktor 1 bis 16 skaliert ausschließlich die vorhandenen X/Z-Werte
+ihrer Box-Ausdehnung. Faktor 2 entspricht der vierfachen horizontalen Fläche;
+Höhe, Versatz, Spieleraktivierung und andere Stationen bleiben unverändert.
+Die Option ist in neuen und älteren Profilen zunächst aus. Es werden keine
+zusätzlichen Laufzeitkomponenten angelegt. Die tatsächliche Ablage, mögliche
+Spielgrenzen und die Leistung sind noch im Spiel zu prüfen. Auto-Loot und die
+Materialsuche magischer Kisten werden dadurch nicht verändert.
+
+Zusätzliche Hintergrundprüfungen verwenden bewusst geänderte Einstellungswerte,
+Originaldaten und getrennte Testordner. Ausdauerregeneration, Herstellungszahlen
+und Herstellungszeiten werden aus den ursprünglichen Daten berechnet und gegen
+ihren tatsächlichen nativen Zahlentyp geprüft. Axt-Holzschaden wird auf eine
+ganze Zahl gerundet; nicht darstellbare Ergebnisse werden vor dem Packen abgelehnt.
+
+Die Gegenstandshöchststufe prüft die Itemdaten und die globale Stufentabelle.
+Eine Höchststufe unter der ursprünglichen Mindeststufe eines betroffenen Gegenstands
+wird mit einem konkreten Hinweis abgelehnt. Ausgeschaltete Einstellungen und
+unabhängige Nachbarfelder werden nicht durch diese Korrekturen verändert.
+
+Die automatischen Update- und Profilübernahmetests bleiben erhalten. Die neuen
+Datenberechnungen benötigen bei der Verteilung Manager 0.15.38 und Spielerclient
+0.16.21. Die Einstellungen selbst werden im Studio-Profil ausgewählt; ein reines
+Tool-Update wendet noch keinen neuen Spielpatch an. Das tatsächliche Spielverhalten
+und ein laufender Mehrspielerbeitritt bleiben getrennte Spieltests.
+
 0.4.30 – Update mit langen Patch-Arbeitsdaten repariert
 
 Mod Studio 0.4.30 behebt einen Fehler der automatischen Update-Übernahme: Lange erzeugte Ressourcen unter Data/patches/jobs/.../modified konnten das Update schon vor dem Download abbrechen.

@@ -1,6 +1,6 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.30",
+  "studio": "0.4.31",
   "files": {
     "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
@@ -10,7 +10,7 @@
     "single-step-taming.js": "f8c22848e29bcd04e71a38bcb4c0e2e007d6c964160f93813ccbd0694334ec67",
     "skill-points-check.js": "111417ab8f8d6b35d2d28c9ab93196f212d3294037078b6e58d112441163aa19",
     "stack-check.js": "175d4ccc3435efb2678e05389289f44e8aac38d639a719504bd41f91a7f9efd9",
-    "studio-backend.js": "adc8be1d6eebb2db8de8aa424509208e07d33d2f2e7f5ff096f91b18148d788a",
+    "studio-backend.js": "161e26a38eb1cd54b2d2bf1db091ff952d5f01b8ae5657cced0e08890cb6830b",
     "studio-runner.js": "00683d890c1f5632e8ee78d657a40ee92095480f7760d8aac558aac571a47f55",
     "summoned-companions.js": "c0eb99596d9f790733dc02acf02998f18879256b4b6b99a600d9c37ea6b05328",
     "vendor/config/loader.js.bytecode": "98f1a99f8746a854822e673d6af3fbd76c173738c894fe093b31abad0235b2c0",
@@ -65,6 +65,11 @@
     "reference-basis.js": "e31d767a946bd2935ffe00c97e62f88149f09349f6bcb1b931e9b864899c3eea",
     "input-basis-check.js": "4461f75968d3cd9415ac02b091ad12288932035fea10bdbf2ff9e641054dd123",
     "resource-recipe.js": "6b5c1d18adb3793cebb6cd13886cffa37d24042b82a9ec3bd6c1c7b82658ae13",
-    "settings-values-fix.js": "2715d18b51b4e0e318c7afbe039b597ccb8e09452c105740321f404f8b0ee171"
+    "settings-values-fix.js": "2715d18b51b4e0e318c7afbe039b597ccb8e09452c105740321f404f8b0ee171",
+    "player-values-fix.js": "da47e10bec581d6e602aa4efacd6d6d4c4771ab25392c69a2db858a77b450bdb",
+    "craft-values-fix.js": "6a9310e59c2f1f843f757e336aec15e8fba40789fc58622fb50ca05c7888ca51",
+    "backpack-values-fix.js": "aa515c9422857c16c5ca28af914ba9ed46e0164745c496672e4df396f6738927",
+    "item-values-fix.js": "ddaeb88ff27b4c3dd9d34dd0fea2428b2429e63a5de8ec41aefe168a6fad2df8",
+    "area-deposit-radius.js": "49b96a852cca387be9d47f99fcf234411ec32bbf01ec5e00e62ef3458e65e4ad"
   }
 }

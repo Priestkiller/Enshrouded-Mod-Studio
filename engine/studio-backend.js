@@ -18,7 +18,7 @@ function verifyEngine(root){if(hash(path.join(root,'enshrouded-patcher.exe'))!==
 function target(config){const dir=path.resolve(config.gameDirectory||'');if(!config.gameDirectory||!fs.statSync(dir).isDirectory())throw Error('Installationsordner fehlt.');const server=fs.existsSync(path.join(dir,'enshrouded_server.exe'))&&fs.existsSync(path.join(dir,'enshrouded_server.kfc'));const client=fs.existsSync(path.join(dir,'enshrouded.exe'))&&fs.existsSync(path.join(dir,'enshrouded.kfc'));if(server&&client)throw Error('Client und Server im gleichen Ordner: bitte getrennte Installationen verwenden.');if(!server&&!client)throw Error('Passende Spiel-EXE und KFC fehlen.');const name=server?'enshrouded_server':'enshrouded';const archives=[name+'.kfc',name+'.kfc_resources'].filter(n=>fs.existsSync(path.join(dir,n)));if(archives.length!==2)throw Error('Die zugehörige .kfc_resources-Datei fehlt.');return {dir,name,server,exe:name+'.exe',archives,id:stableHash(dir.toLowerCase()).slice(0,20)};}
 function fingerprint(t){return {exe:hash(path.join(t.dir,t.exe)),archives:Object.fromEntries(t.archives.map(n=>[n,hash(path.join(t.dir,n))]))};}
 function noGameRunning(){if(process.platform!=='win32')return;let result=cp.spawnSync('tasklist.exe',['/FO','CSV','/NH'],{encoding:'utf8',windowsHide:true,timeout:10000});if(result.error||result.status!==0){const ps=path.join(process.env.SystemRoot||'C:\\Windows','System32','WindowsPowerShell','v1.0','powershell.exe');result=cp.spawnSync(ps,['-NoProfile','-NonInteractive','-Command',"if (Get-Process -Name enshrouded,enshrouded_server -ErrorAction SilentlyContinue) { 'RUNNING' } else { 'CLEAR' }"],{encoding:'utf8',windowsHide:true,timeout:15000});if(result.error||result.status!==0)throw Error('Laufende Spielprozesse konnten nicht geprüft werden.');if(String(result.stdout).trim()==='RUNNING')throw Error('Spiel oder Dedicated Server läuft. Bitte vor dem Patchen schließen.');if(String(result.stdout).trim()!=='CLEAR')throw Error('Laufende Spielprozesse konnten nicht geprüft werden.');return;}if(/"enshrouded(?:_server)?\.exe"/i.test(String(result.stdout)))throw Error('Spiel oder Dedicated Server läuft. Bitte vor dem Patchen schließen.');}
-function validate(config,root){if(config.world&&typeof config.world==='object'&&!Object.prototype.hasOwnProperty.call(config.world,'adjustAnimalBreeding'))config.world.adjustAnimalBreeding={enabled:false,speedFactor:2,chancePercent:0};const schema=read(path.join(root,'..','assets','schema.json'));for(const c of schema)for(const m of c.Mods){const v=config[c.Key]?.[m.Key];if(!v||typeof v.enabled!=='boolean')throw Error('Ungültige Option: '+m.Key);for(const f of m.Fields){const n=v[f.Key];if(f.Boolean){if(typeof n!=='boolean')throw Error('Schalter fehlt: '+f.Key);}else if(typeof n!=='number'||!Number.isFinite(n)||n<f.Minimum||n>f.Maximum||(v.enabled===true&&typeof f.NativeMaximum==='number'&&n>f.NativeMaximum)||(f.Integer&&!Number.isInteger(n)))throw Error('Ungültiger Wert: '+m.Key+'.'+f.Key);}}
+function validate(config,root){if(config.world&&typeof config.world==='object'&&!Object.prototype.hasOwnProperty.call(config.world,'adjustAreaDepositRadius'))config.world.adjustAreaDepositRadius={enabled:false,factor:2};if(config.world&&typeof config.world==='object'&&!Object.prototype.hasOwnProperty.call(config.world,'adjustAnimalBreeding'))config.world.adjustAnimalBreeding={enabled:false,speedFactor:2,chancePercent:0};const schema=read(path.join(root,'..','assets','schema.json'));for(const c of schema)for(const m of c.Mods){const v=config[c.Key]?.[m.Key];if(!v||typeof v.enabled!=='boolean')throw Error('Ungültige Option: '+m.Key);for(const f of m.Fields){const n=v[f.Key];if(f.Boolean){if(typeof n!=='boolean')throw Error('Schalter fehlt: '+f.Key);}else if(typeof n!=='number'||!Number.isFinite(n)||n<f.Minimum||n>f.Maximum||(v.enabled===true&&typeof f.NativeMaximum==='number'&&n>f.NativeMaximum)||(f.Integer&&!Number.isInteger(n)))throw Error('Ungültiger Wert: '+m.Key+'.'+f.Key);}}
  const g=config.gameplay,w=config.world;
  if(g.adjustChestRandomSlots.min>g.adjustChestRandomSlots.max)throw Error('Truhen-Minimum ist größer als Maximum.');
  if(g.enableGatherLootMultipliers.enabled&&(g.enableGatherLootMultipliers.enemyLootMultiplier!==1||g.enableGatherLootMultipliers.chestLootMultiplier!==1))throw Error('Die alten Gegner-/Truhen-Mengenmultiplikatoren sind unter 1.0 wirkungslos. Werte auf 1 setzen und bei Bedarf die separate Zufallsbeuteplatz-Option verwenden.');
@@ -81,6 +81,10 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  // The guarded supplement owns this option, including ordinary chests and
  // component-based station detection. Do not also run the narrower vendor scan.
  if(sharedStorageEnabled)effectiveConfig={...effectiveConfig,world:{...effectiveConfig.world,adjustFactoryInventoryAccess:{...effectiveConfig.world.adjustFactoryInventoryAccess,enabled:false}}};
+ // These guarded modules own their exact fields; do not also run broader legacy handlers.
+ for(const key of ['adjustWoodDamage','adjustItemMaxLevel','enableCraftOutputMultiplier','enableAdjustCraftingTime'])if(effectiveConfig.gameplay[key]?.enabled)effectiveConfig={...effectiveConfig,gameplay:{...effectiveConfig.gameplay,[key]:{...effectiveConfig.gameplay[key],enabled:false}}};
+ if(effectiveConfig.player.adjustStaminaRegen?.enabled)effectiveConfig={...effectiveConfig,player:{...effectiveConfig.player,adjustStaminaRegen:{...effectiveConfig.player.adjustStaminaRegen,enabled:false}}};
+ if(effectiveConfig.inventory.enableHigherBackpackSlot?.enabled)effectiveConfig={...effectiveConfig,inventory:{...effectiveConfig.inventory,enableHigherBackpackSlot:{...effectiveConfig.inventory.enableHigherBackpackSlot,enabled:false}}};
  const {load}=require('./vendor-loader'),{ModProcessor}=load('mod/processor');
  const p=ModProcessor.fromConfig(effectiveConfig);
  const result=require('./processor-fixes').apply(p,effectiveConfig,input,output);
@@ -90,6 +94,15 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  if(skipClientLimits)Object.assign(ctx.config,{enableUncapClientSettings:true,clientFactorMin:clientLimits.clientFactorMin,clientFactorMax:clientLimits.clientFactorMax});
  const extra=config.gameplay.enableSourceLootSlots;Object.assign(ctx.config,{enableEnemyRandomSlotMultiplier:extra.enabled&&extra.enemyMultiplier!==1,enemyRandomSlotMultiplier:extra.enemyMultiplier,enableChestRandomSlotMultiplier:extra.enabled&&extra.chestMultiplier!==1,chestRandomSlotMultiplier:extra.chestMultiplier});
  const settingsValues=require('./settings-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
+ const playerValues=require('./player-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
+ const itemValues=require('./item-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
+ const craftValues=require('./craft-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
+ const backpackValues=require('./backpack-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
+ const areaDepositRadius=require('./area-deposit-radius').apply({config,reflection,role,track:ctx.track},input,output);
+ if(areaDepositRadius.enabled)log('Abladestationen: horizontaler Reichweitenfaktor '+config.world.adjustAreaDepositRadius.factor+' vorbereitet; Höhe und Aktivierungsabstand bleiben erhalten. Spieltest offen.');
+ if(playerValues.enabled)log('Ausdauer-Regeneration: Faktor '+config.player.adjustStaminaRegen.factor+' in Grunddefinition und eingebetteter Berechnung vorbereitet.');
+ if(craftValues.enabled)log('Herstellung: Mengenfaktor '+(craftValues.quantityEnabled?config.gameplay.enableCraftOutputMultiplier.globalMultiplier:'unverändert')+', Zeitfaktor '+(craftValues.timeEnabled?config.gameplay.enableAdjustCraftingTime.factor:'unverändert')+'; '+craftValues.outputsChecked+' Ausgabemengen und '+craftValues.durationsChecked+' Zeiten einzeln geprüft. Eigene ewige Begleiterzauber liefern weiterhin je 1.');
+ if(backpackValues.enabled)log('Rucksackplätze: '+backpackValues.targets+' zugeordnete Rucksäcke in Anzeige und Inventar geprüft; ursprüngliche Plätze bleiben erhalten.');
  const loot=require('./loot-source-slots').apply(ctx,input,output),limits=require('./limits-fix').apply(ctx,input,output);
  const sharedStorage=require('./shared-crafting-storage').apply({enabled:sharedStorageEnabled,reflection,role,logger:ctx.logger,track:ctx.track},input,output);
  if(sharedStorageEnabled)log('Herstellungsbestand: '+sharedStorage.normalChests+' normale Kisten und '+sharedStorage.stations+' Stationsinventare erkannt; '+sharedStorage.added+' neue Kennzeichnungen, '+sharedStorage.alreadyPresent+' bereits vorhanden. Materialtransfer im Spiel noch ungeprüft.');
@@ -109,7 +122,7 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  if(skeletonSpells.enabled){skeletonSpells.multiplayer=require('./summon-multiplayer').create({...ownOption,role,build:reflection.version});log('Sechs Begleiterzauber: '+(role==='server'?'Serverteil':'Clientteil')+' vorbereitet. MP-Kennung '+skeletonSpells.multiplayer.shortId+'. Server und alle Clients benötigen denselben Stand; Multiplayer-Spieltest offen.');}
  const skillPoints=require('./skill-points-check').check({config,role,reflection,logger:ctx.logger},input,output);
  const stacks=require('./stack-check').check({config,role,reflection,skeletonSpells,logger:ctx.logger},input,output);
- return {vendor:result,settingsValues,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,skillPoints,stacks,extraChanges:changes.length,warnings};
+ return {vendor:result,settingsValues,playerValues,itemValues,craftValues,backpackValues,areaDepositRadius,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,skillPoints,stacks,extraChanges:changes.length,warnings};
 }
 function currentState(data,t){const dir=path.join(data,'targets',t.id);const active=path.join(dir,'state.json');return {dir,active,state:fs.existsSync(active)?read(active):null};}
 function checkedBasis(st){const dir=within(st.dir,path.join(st.dir,st.state.basis));if(!st.state.basisArchives)throw Error('Basis-Metadaten fehlen. Eine neue passende Basis auswählen.');for(const[n,sha]of Object.entries(st.state.basisArchives)){if(path.basename(n)!==n||hash(path.join(dir,n))!==sha)throw Error('Gespeicherte Basis beschädigt: '+n);}return dir;}
@@ -273,6 +286,18 @@ async function prepare(options){progress(options,'validate','Profil und Installa
   mods.settingsValues.verification=require('./settings-values-fix').verify(mods.settingsValues,ref,verify);
   mods.settingsValues.archiveReadbackValidated=true;
   log('Gewählte Zählwerte und Fallschadengrenzen nach Archiv-Readback bestätigt: '+mods.settingsValues.verification.checked+' Ressourcentabellen. Spieltest offen.');
+ }
+ for(const [key,moduleName,verifyCall] of [
+  ['playerValues','player-values-fix',(api,summary)=>api.verify(summary,ref,verify)],
+  ['itemValues','item-values-fix',(api,summary)=>api.verify({summary,verifyRoot:verify})],
+  ['areaDepositRadius','area-deposit-radius',(api,summary)=>api.verify({summary,verifyRoot:verify})],
+  ['craftValues','craft-values-fix',(api,summary)=>api.verify(summary,verify)],
+  ['backpackValues','backpack-values-fix',(api,summary)=>api.verify(summary,verify)]
+ ])if(mods[key]?.enabled){
+  if(!outputs.length)parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,verify,log);
+  mods[key].verification=verifyCall(require('./'+moduleName),mods[key]);
+  mods[key].archiveReadbackValidated=true;
+  log('Archivprüfung '+moduleName+': Werte nach erneutem Auslesen bestätigt. Spieltest offen.');
  }
  if(mods.taming?.enabled){mods.taming.archiveReadbackValidated=outputs.length>0&&verified===outputs.length;if(mods.taming.archiveReadbackValidated)log('Zähmung nach Archiv-Readback bestätigt: ein benötigter Erfolg in '+mods.taming.targets+' geprüften zähmbaren Vorlagen. Spieltest offen.');}
  if(mods.animalProduction?.enabled){

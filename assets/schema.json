@@ -106,66 +106,66 @@
       },
       {
         "Key": "adjustPlayerManaPerAP",
-        "Title": "Mana pro Attributpunkt",
-        "Description": "Setzt den Manazuwachs eines passenden Attributpunkts als feste Zahl.",
+        "Title": "Mana je Geist-Attributpunkt",
+        "Description": "Setzt den festen Mana-Bonus je Punkt im Attribut Geist.",
         "Fields": [
           {
             "Key": "value",
-            "Label": "Mana je passendem Attributpunkt",
+            "Label": "Mana je Geist-Punkt",
             "Boolean": false,
             "Integer": true,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "Feste Menge: 20 bedeutet +20 Mana je betroffenem Attributpunkt. 20 ist hier weder 20 % noch ein Faktor."
+            "Help": "Fester Bonus je Punkt im Attribut Geist. Beispiel 20 schreibt +20 Mana je Attributpunkt. Ein Charakterlevel erhöht dieses Attribut nicht automatisch."
           }
         ],
-        "Effect": "Ändert den hinterlegten Manabonus pro betroffenem Attributpunkt. Das ist eine feste Menge, kein Prozentwert und keine sofortige Managutschrift.",
+        "Effect": "Ändert den festen Mana-Bonus pro Geist-Attributpunkt. Der Bonus richtet sich nach den Punkten in diesem Attribut; ein Levelaufstieg allein vergibt keinen zusätzlichen Attributpunkt.",
         "Example": "Wert 20 steht für 20 Mana je betroffenem Attributpunkt. Wert 40 verdoppelt diesen Bonus gegenüber 20.",
-        "Notes": "Gilt für den passenden Attributbonus, nicht pauschal für jeden Fertigkeitspunkt. Die Neuberechnung bestehender Charaktere ist nicht geprüft.",
+        "Notes": "Die Einstellung ist ein Bonus pro Geist-Attributpunkt. Sie erzeugt keinen automatischen Mana-Zuwachs je Charakterlevel. Die konkrete Neuberechnung eines bestehenden Charakters muss im Spiel geprüft werden.",
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn ein entsprechender Attributpunkt mehr oder weniger Mana bringen soll.",
         "Scope": "Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated: Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON bleibt unverändert."
       },
       {
         "Key": "adjustPlayerHealthPerAP",
-        "Title": "Leben pro Attributpunkt",
-        "Description": "Setzt den Lebenspunkte-Zuwachs eines passenden Attributpunkts als feste Zahl.",
+        "Title": "Leben je Konstitution-Attributpunkt",
+        "Description": "Setzt den festen Leben-Bonus je Punkt im Attribut Konstitution.",
         "Fields": [
           {
             "Key": "value",
-            "Label": "Leben je passendem Attributpunkt",
+            "Label": "Leben je Konstitution-Punkt",
             "Boolean": false,
             "Integer": true,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "Feste Menge: 50 bedeutet +50 Lebenspunkte pro betroffenem Attributpunkt. Es ist keine Einstellung für 50 % Gegnerschaden."
+            "Help": "Fester Bonus je Punkt im Attribut Konstitution. Beispiel 20 schreibt +20 Leben je Attributpunkt. Ein Charakterlevel erhöht dieses Attribut nicht automatisch."
           }
         ],
-        "Effect": "Ändert den hinterlegten Lebenspunktebonus pro betroffenem Attributpunkt. Der Wert verleiht keine sofortige Heilung.",
+        "Effect": "Ändert den festen Leben-Bonus pro Konstitution-Attributpunkt. Der Bonus richtet sich nach den Punkten in diesem Attribut; ein Levelaufstieg allein vergibt keinen zusätzlichen Attributpunkt.",
         "Example": "Wert 50 steht für +50 Lebenspunkte je betroffenem Attributpunkt. Mit 100 ist dieser Bonus doppelt so hoch.",
-        "Notes": "Gilt für den passenden Attributbonus. Ob bestehende Charakterwerte sofort neu berechnet werden, ist nicht geprüft.",
+        "Notes": "Die Einstellung ist ein Bonus pro Konstitution-Attributpunkt. Sie erzeugt keinen automatischen Leben-Zuwachs je Charakterlevel. Die konkrete Neuberechnung eines bestehenden Charakters muss im Spiel geprüft werden.",
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn ein entsprechender Attributpunkt mehr oder weniger Leben bringen soll.",
         "Scope": "Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated: Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON bleibt unverändert."
       },
       {
         "Key": "adjustPlayerStaminaPerAP",
-        "Title": "Ausdauer pro Attributpunkt",
-        "Description": "Setzt den Ausdauer-Zuwachs eines passenden Attributpunkts als feste Zahl.",
+        "Title": "Ausdauer je Ausdauer-Attributpunkt",
+        "Description": "Setzt den festen Ausdauer-Bonus je Punkt im Attribut Ausdauer.",
         "Fields": [
           {
             "Key": "value",
-            "Label": "Ausdauer je passendem Attributpunkt",
+            "Label": "Ausdauer je Ausdauer-Punkt",
             "Boolean": false,
             "Integer": true,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "Feste Menge: 10 bedeutet +10 Ausdauer je betroffenem Attributpunkt. Für schnelleres Auffüllen gibt es die separate Regenerationsoption."
+            "Help": "Fester Bonus je Punkt im Attribut Ausdauer. Beispiel 20 schreibt +20 Ausdauer je Attributpunkt. Ein Charakterlevel erhöht dieses Attribut nicht automatisch."
           }
         ],
-        "Effect": "Ändert den hinterlegten Ausdauerbonus pro betroffenem Attributpunkt. Die Geschwindigkeit der Ausdauerregeneration wird hier nicht eingestellt.",
+        "Effect": "Ändert den festen Ausdauer-Bonus pro Ausdauer-Attributpunkt. Der Bonus richtet sich nach den Punkten in diesem Attribut; ein Levelaufstieg allein vergibt keinen zusätzlichen Attributpunkt.",
         "Example": "Wert 10 steht für +10 Ausdauer je betroffenem Attributpunkt. Mit 20 fällt dieser Bonus doppelt so hoch aus.",
-        "Notes": "Die Neuberechnung bereits verteilter Punkte wurde nicht im Spiel geprüft.",
+        "Notes": "Die Einstellung ist ein Bonus pro Ausdauer-Attributpunkt. Sie erzeugt keinen automatischen Ausdauer-Zuwachs je Charakterlevel. Die konkrete Neuberechnung eines bestehenden Charakters muss im Spiel geprüft werden.",
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn ein entsprechender Attributpunkt mehr oder weniger Ausdauer bringen soll.",
         "Scope": "Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated: Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON bleibt unverändert."
@@ -185,9 +185,9 @@
             "Boolean": false
           }
         ],
-        "Effect": "Skaliert die erkannte Grundformel für das Auffüllen von Ausdauer. Größer als 1 erhöht den Regenerationswert; kleiner als 1 senkt ihn.",
-        "Example": "Faktor 1,5 entspricht 150 % des bisherigen Basiswerts, also 50 % mehr. Ein Basiswert von 100 würde rechnerisch 150.",
-        "Notes": "Wirkt nur auf die erkannte Grundformel. Wartezeiten, Nahrung, Ausrüstung oder andere Boni können das tatsächliche Auffüllen zusätzlich beeinflussen.",
+        "Effect": "Multipliziert das Ergebnis der ursprünglichen Regenerationsformel mit dem Faktor. Die Grunddefinition und die eingebettete Ausdauerberechnung werden zusammen geändert.",
+        "Example": "Faktor 5 macht aus einem berechneten Regenerationswert von 0,5 den Wert 2,5. Die maximale Ausdauer bleibt dabei unverändert.",
+        "Notes": "Die Begrenzung der ursprünglichen Grundformel bleibt erhalten; erst danach wird der Faktor angewendet. Wartezeiten, Nahrung, Ausrüstung und weitere Boni beeinflussen das Auffüllen zusätzlich. Ein Levelaufstieg erhält dadurch keinen festen Ausdauerbonus.",
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn sich der Ausdauerbalken schneller oder langsamer erholen soll.",
         "Scope": "Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated: Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON bleibt unverändert."
@@ -255,7 +255,7 @@
       {
         "Key": "enableHigherBackpackSlot",
         "Title": "Zusätzliche Rucksackplätze",
-        "Description": "Addiert Plätze zur ursprünglichen Rucksackgröße und begrenzt die Gesamtzahl.",
+        "Description": "Erhöht die Rucksackplätze und gleicht Inventar und Platzanzeige gemeinsam ab.",
         "Fields": [
           {
             "Key": "bonus",
@@ -269,17 +269,17 @@
           {
             "Key": "cap",
             "Label": "Höchstens so viele Rucksackplätze",
-            "Help": "Gesamtgrenze einschließlich Bonus: Vorgabe 48. Nicht mit der Anzahl zusätzlich gewünschter Plätze verwechseln.",
+            "Help": "Grenze für die Vergrößerung einschließlich Bonus. Ein ursprünglich größerer Rucksack behält seine vorhandenen Plätze.",
             "Minimum": 8,
             "Maximum": 96,
             "Integer": true,
             "Boolean": false
           }
         ],
-        "Effect": "Rechnet ursprüngliche Rucksackplätze plus Bonus. Die eingestellte Höchstzahl begrenzt das Ergebnis.",
-        "Example": "24 ursprüngliche Plätze + 8 Bonus = 32 Plätze. Mit 44 ursprünglichen Plätzen und Höchstzahl 48 entstehen höchstens 48.",
-        "Notes": "Die Aktualisierung bereits vorhandener Rucksäcke ist nicht live geprüft. Die Höchstzahl kann ein größeres vorhandenes Inventar begrenzen. Ein Fehler in der alten Aufrufsteuerung ließ bei allein aktiver Rucksackoption die Item-Anzeige aus. Das Tool holt diesen Schritt jetzt genau einmal nach.",
-        "Status": "Rucksack-Anzeige korrigiert · Spieltest offen",
+        "Effect": "Ergebnis: höchstens die eingestellte Grenze für neue Plätze, mindestens die ursprüngliche Rucksackgröße. Die Anzeige und beide Inventar-Zählfelder erhalten denselben Wert.",
+        "Example": "24 ursprüngliche Plätze + 8 Bonus = 32. Bei ursprünglich 32 Plätzen und Grenze 30 bleiben die ursprünglichen 32 Plätze erhalten.",
+        "Notes": "Bestehende Grundkapazität wird durch diese Zusatzplatz-Option nicht verkleinert. Platzanzeige, nutzbare Plätze und verfügbare Plätze werden nach dem Packen gemeinsam geprüft. Der Umgang mit bereits vorhandenen Rucksäcken im Spiel bleibt separat zu testen.",
+        "Status": "Inventar und Anzeige gemeinsam geprüft · Spieltest offen",
         "WhenToUse": "Wenn du mehr verschiedene Dinge gleichzeitig im Rucksack tragen möchtest.",
         "Scope": "Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON bleibt unverändert."
       }
@@ -692,6 +692,28 @@
         "Example": "Bei Alden einen Skeletthund-Zauber und einen Säbelzahntiger-Zauber herstellen und im Inventar behalten. Einen Zauberstab auswählen, mit rechter Maustaste zielen, den gewünschten Zauber mit Mausrad oder E wechseln und mit linker Maustaste beschwören. Danach den anderen Zauber wählen, um eine gemischte Gruppe zu testen.",
         "Notes": "Mehrspieler-Teststand; Verhalten im laufenden Spiel, Synchronisation und Kampfverhalten sind noch zu prüfen. Ein erfolgreicher Datenpatch bestätigt keine funktionierende Mehrspielerpartie. Der Magier behält sein Eisgeschoss, beschwört aber zunächst keine zusätzlichen Totenköpfe. Seine ursprüngliche feindliche Beschwörung und Wiederbelebung sind in einer eigenen Angriffsvorlage entfernt. Hund und Tiger sind Kampfbegleiter auf Zeit, keine dauerhaft gezähmten Tiere. Weltgegner werden nicht umgestellt. Die drei Grundskelette teilen weiterhin Vorlagen mit vorhandenen Zaubern und Nekromantie-Edelsteinen. Die alte Option „Beschworene Begleiter anpassen“ ausschalten. Vor dem Deaktivieren auf allen beteiligten Installationen eigene Zaubergegenstände aus Inventar und Lagern entfernen und die passenden Patchstände gemeinsam zurücknehmen.",
         "Status": "Client + Server · Mehrspieler-Spieltest offen"
+      },
+      {
+        "Key": "adjustAreaDepositRadius",
+        "Title": "Abladestationen: horizontalen Bereich vergrößern",
+        "Description": "Vergrößert die vorhandene waagerechte Box-Ausdehnung der beiden Abladestationen ausgehend von ihren Originaldaten.",
+        "Fields": [
+          {
+            "Key": "factor",
+            "Label": "Reichweitenfaktor (horizontal)",
+            "Boolean": false,
+            "Integer": false,
+            "Minimum": 1,
+            "Maximum": 16,
+            "Help": "1 erhält den Bereich. 2 verdoppelt die halbe Breite und Länge: Der horizontale Bereich hat dadurch die vierfache Fläche. Höhe und Versatz bleiben unverändert."
+          }
+        ],
+        "Effect": "Ändert ausschließlich rangeX und rangeZ der vorhandenen TriggerShape-Box in den bestätigten 16x16- und 24x24-Abladestationsvorlagen.",
+        "Example": "Faktor 2 macht aus einer 16x16-Grundfläche rechnerisch 32x32; die 24x24-Vorlage wird entsprechend 48x48. Der Bereich bleibt eine Box.",
+        "Notes": "Experimentell: Die Vorlagen sind dem nativen AreaDepositEvent zugeordnet. Tatsächliche Ablageresultate, Reichweitenbegrenzungen und Spielleistung wurden nicht im Spiel geprüft. Höhe, Stationsversatz, Spieleraktivierung, Rechte und gültige Zielinventare bleiben unverändert. Dies ändert weder Auto-Loot noch die Suchreichweite beim Herstellen aus magischen Kisten.",
+        "Status": "Experimentell · Spieltest offen",
+        "WhenToUse": "Wenn die Abladestationen einen größeren horizontalen Ablagebereich erhalten sollen.",
+        "Scope": "Vorlagen der ausgewählten Spielinstallation. Für passende Server- und Clientdaten denselben Modstand verwenden; Verhalten im Mehrspieler ist noch nicht live geprüft."
       }
     ]
   },
@@ -717,7 +739,7 @@
         ],
         "Effect": "Setzt die Obergrenze in passenden Gegenstandsdaten und der zugehörigen Stufenregel auf den eingetragenen festen Wert.",
         "Example": "Wert 100 setzt die erkannten Grenzen auf Stufe 100. Ein vorhandener Gegenstand auf Stufe 30 wird dadurch nicht automatisch Stufe 100.",
-        "Notes": "Passende Datenänderungen sind geprüft. Verfügbarkeit, Aufwertung und Werte hoher Gegenstandsstufen wurden nicht im Spiel geprüft. Bestehende Gegenstände werden nicht pauschal auf die Höchststufe angehoben.",
+        "Notes": "Passende Datenänderungen sind geprüft. Verfügbarkeit, Aufwertung und Werte hoher Gegenstandsstufen wurden nicht im Spiel geprüft. Bestehende Gegenstände werden nicht pauschal auf die Höchststufe angehoben. Die gewählte ganze Höchststufe muss mindestens die vorhandene Mindeststufe jedes betroffenen Gegenstands erreichen; widersprüchliche Min-/Max-Bereiche werden vor dem Anwenden abgewiesen.",
         "Status": "Funktion eingeschränkt · Spieltest offen",
         "WhenToUse": "Wenn Gegenstände über der bisherigen Stufengrenze möglich sein sollen.",
         "Scope": "Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON bleibt unverändert."
@@ -827,7 +849,7 @@
         ],
         "Effect": "Erhöht oder senkt den Wert, der bei passenden Äxten für Holzschaden hinterlegt ist.",
         "Example": "18 Holzschaden × Faktor 3 = 54 Holzschaden pro passendem Treffer.",
-        "Notes": "Das ist die Einstellung für Holzabbau. Sie ist kein allgemeiner Schadensmultiplikator gegen Gegner; tatsächliche Trefferzahl und weitere Boni sind noch nicht live geprüft.",
+        "Notes": "Das ist die Einstellung für Holzabbau. Sie ist kein allgemeiner Schadensmultiplikator gegen Gegner; tatsächliche Trefferzahl und weitere Boni sind noch nicht live geprüft. Die resultierenden Schadenspunkte werden aus der ursprünglichen Zahl berechnet, auf ganze Zahlen gerundet und vor dem Schreiben gegen das native 32-Bit-Feld geprüft.",
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn du Bäume mit weniger Axtschlägen fällen möchtest.",
         "Scope": "Item- und Inventardaten der gewählten Installation. Im Mehrspieler müssen Server und Clients zusammenpassen; diese Abstimmung ist noch nicht live geprüft. Die Server-JSON bleibt unverändert."
@@ -1173,9 +1195,9 @@
             "Help": "3 = dreifache ursprüngliche Rezept-Ausgabe, danach Rundung auf ganze Stücke. Vorgabe 1 belässt die Menge; das Einschalten allein erhöht sie nicht."
           }
         ],
-        "Effect": "Multipliziert positive Rezept-Ausgabemengen und rundet auf ganze Stückzahlen.",
-        "Example": "2 produzierte Stück × Faktor 3 = 6 Stück pro Durchlauf. 3 Stück × Faktor 1,5 = 4,5, gerundet 5 Stück.",
-        "Notes": "Ändert die Ausgabemenge, nicht die Materialkosten oder Herstellungszeit. Weltbeute, Sammelknoten und Gegnerbeute werden über andere Optionen gesteuert.",
+        "Effect": "Multipliziert die positiven Ausgabemengen der ursprünglichen Rezepte. Das Ergebnis wird auf eine ganze Stückzahl mit mindestens 1 gerundet. Materialkosten bleiben durch diese Option unverändert.",
+        "Example": "Faktor 5 macht aus 1 Stück insgesamt 5 und aus 2 Stück insgesamt 10. Eigene ewige Begleiterzauber behalten ihre feste Ausgabemenge 1.",
+        "Notes": "Jede geänderte Rezeptausgabe wird nach erneutem Lesen des Archivs mit dem berechneten Ergebnis verglichen. Werte außerhalb des nativen 32-Bit-Bereichs werden abgewiesen. Eigene ewige Begleiterzauber sind von der Mengenvervielfachung ausgenommen. Inventarplatz und Spielregeln können die Herstellung zusätzlich begrenzen.",
         "Status": "Daten geprüft · Spieltest offen",
         "WhenToUse": "Wenn ein Herstellungsdurchlauf mehr fertige Gegenstände liefern soll.",
         "Scope": "Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert."

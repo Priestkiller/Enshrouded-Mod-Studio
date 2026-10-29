@@ -1,14 +1,18 @@
-# Enshrouded Mod Studio 0.4.30
+# Enshrouded Mod Studio 0.4.31
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
+
+Version 0.4.31 korrigiert zusätzliche Wertepfade: Ausdauerregeneration ändert den ursprünglichen Regenerationswert und dessen passende Begrenzung; Herstellungszahlen und Zeiten beachten ihre tatsächlichen nativen Zahlentypen. Axt-Holzschaden wird als ganze Zahl aus dem Originalwert berechnet. Eine Gegenstandshöchststufe unter der ursprünglichen Mindeststufe eines betroffenen Gegenstands wird vor der Anwendung abgewiesen. Die zugehörigen Hintergrundtests prüfen geänderte Werte, ausgeschaltete Optionen, unberührte Nachbarfelder und kombinierte Einstellungen. Sie bestätigen Datenberechnungen und Dateiprüfungen, keine unbeobachtete Spielwirkung.
+
+Neu und zunächst ausgeschaltet: **Abladestationen: horizontalen Bereich vergrößern**. Der Faktor skaliert die vorhandene halbe Breite und Länge der bestätigten 16x16- und 24x24-Stationen aus deren Originaldaten. Faktor 2 ergibt rechnerisch die vierfache Grundfläche; Höhe, Versatz und Spieleraktivierung bleiben unverändert. Der native Ablauf ist dem AreaDepositEvent zugeordnet. Die tatsächliche Ablage und mögliche Laufzeitgrenzen sind noch im Spiel zu prüfen. Diese Option verändert weder Auto-Loot noch die Materialsuche magischer Kisten.
 
 **[Aktuelle Windows-Version herunterladen](https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/latest)**
 
 ## In drei Schritten zu allen Spielern
 
 1. **Studio patcht:** Den vom UGSM Manager verwalteten Server-Installationsordner wählen, Einstellungen prüfen, Spiel bzw. Server schließen und **Patch anwenden / aktualisieren** ausführen.
-2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.32** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
-3. **Spieler synchronisieren:** Mit Spielerclient **0.16.16** zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
+2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.38** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
+3. **Spieler synchronisieren:** Mit Spielerclient **0.16.21** zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
 
 **Auf dem Server ist keine zusätzliche Spielclientinstallation erforderlich.** Die neue Standardmethode verwendet ausschließlich die vorhandene Serverbasis. Die Originaldateien der Spieler bleiben auf deren PCs; sie werden nicht hochgeladen. Server und Clients müssen denselben unterstützten Spielstand verwenden. Die bisherige Methode mit vorgefertigten Clientarchiven bleibt unter der eingeklappten erweiterten Einrichtung verfügbar.
 
