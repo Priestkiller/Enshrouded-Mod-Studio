@@ -1,5 +1,16 @@
 0.4.31 – Einstellungswerte und unabhängige Anwendung korrigiert
 
+Auto-Loot berücksichtigt jetzt auch die bisher ausgelassene generische Vorlage
+für physisch ausgeworfene einzelne Zufallsgegenstände. Nur bei eingeschalteter
+fallender/generischer Bodenbeute werden drei vorhandene native Aufhebe-Komponenten
+ergänzt. Radius und Zeitabstand werden geprüft; Gegenstandszuordnung, manuelle
+Interaktion und andere Komponenten bleiben erhalten. Beide Spawner-Verbindungen
+und das vollständige Rücklesen werden kontrolliert. 21 zusätzliche portable Tests
+verwenden synthetische Vertragsdaten und gezielt ungültige Fälle. Private Originaldaten
+wurden zusätzlich getrennt geprüft. Leichen und Behälterinventare
+werden dadurch NICHT automatisch geleert. Das tatsächliche Einsammeln bleibt ein
+offener Spieltest; andere schon erfasste Bodenbeutegruppen bleiben unverändert.
+
 Neue optionale Reichweiteneinstellung für die beiden Abladestationen. Der
 horizontale Faktor 1 bis 16 skaliert ausschließlich die vorhandenen X/Z-Werte
 ihrer Box-Ausdehnung. Faktor 2 entspricht der vierfachen horizontalen Fläche;

@@ -1,0 +1,626 @@
+{
+  "provenance": {
+    "kind": "Hand-authored synthetic contract fixture with factual GUIDs, debug names and reflection field metadata. Actual native evidence is private.",
+    "build": "1273043|^/game38/branches/release_1.0|2026-10-20T14:55:29.904125Z",
+    "liveGameStarted": false
+  },
+  "reflection": {
+    "version": "1273043|^/game38/branches/release_1.0|2026-10-20T14:55:29.904125Z",
+    "types": [
+      {
+        "qualifiedName": "keen::uint32",
+        "name": "uint32",
+        "qualifiedHash": 2194793467,
+        "primitiveType": "UINT32",
+        "size": 4,
+        "alignment": 4,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::uint8",
+        "name": "uint8",
+        "qualifiedHash": 3533154758,
+        "primitiveType": "UINT8",
+        "size": 1,
+        "alignment": 1,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::bool",
+        "name": "bool",
+        "qualifiedHash": 1988030794,
+        "primitiveType": "BOOL",
+        "size": 1,
+        "alignment": 1,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::string",
+        "name": "string",
+        "qualifiedHash": 779033687,
+        "primitiveType": "TYPEDEF",
+        "size": 8,
+        "alignment": 4,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::sint64",
+        "name": "sint64",
+        "qualifiedHash": 3434124194,
+        "primitiveType": "SINT64",
+        "size": 8,
+        "alignment": 8,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::Time",
+        "name": "Time",
+        "qualifiedHash": 3289532223,
+        "primitiveType": "STRUCT",
+        "size": 8,
+        "alignment": 8,
+        "fieldCount": 1,
+        "structFields": {
+          "value": {
+            "type": 4,
+            "dataOffset": 0
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::float32",
+        "name": "float32",
+        "qualifiedHash": 1911297837,
+        "primitiveType": "FLOAT32",
+        "size": 4,
+        "alignment": 4,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::uint16",
+        "name": "uint16",
+        "qualifiedHash": 1993756229,
+        "primitiveType": "UINT16",
+        "size": 2,
+        "alignment": 2,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::actor::StateMask",
+        "name": "StateMask",
+        "qualifiedHash": 834708408,
+        "primitiveType": "TYPEDEF",
+        "size": 8,
+        "alignment": 8,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::ecs::EntityId",
+        "name": "EntityId",
+        "qualifiedHash": 2979268477,
+        "primitiveType": "STRUCT",
+        "size": 4,
+        "alignment": 4,
+        "fieldCount": 1
+      },
+      {
+        "qualifiedName": "keen::ItemId",
+        "name": "ItemId",
+        "qualifiedHash": 1428289088,
+        "primitiveType": "TYPEDEF",
+        "size": 4,
+        "alignment": 4,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::ecs::Offset",
+        "name": "Offset",
+        "qualifiedHash": 935302332,
+        "primitiveType": "STRUCT",
+        "size": 40,
+        "alignment": 4,
+        "fieldCount": 3
+      },
+      {
+        "qualifiedName": "keen::ItemReference",
+        "name": "ItemReference",
+        "qualifiedHash": 102745210,
+        "primitiveType": "TYPEDEF",
+        "size": 16,
+        "alignment": 4,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::ecs::TriggerShapeType",
+        "name": "TriggerShapeType",
+        "qualifiedHash": 2956812314,
+        "primitiveType": "ENUM",
+        "size": 1,
+        "alignment": 1,
+        "fieldCount": 2,
+        "enumFields": {
+          "Range": {
+            "value": 0
+          },
+          "Box": {
+            "value": 1
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::ecs::TriggerShape",
+        "name": "TriggerShape",
+        "qualifiedHash": 1481697402,
+        "primitiveType": "STRUCT",
+        "size": 56,
+        "alignment": 4,
+        "fieldCount": 5,
+        "structFields": {
+          "shape": {
+            "type": 13,
+            "dataOffset": 0
+          },
+          "rangeX": {
+            "type": 6,
+            "dataOffset": 4
+          },
+          "rangeY": {
+            "type": 6,
+            "dataOffset": 8
+          },
+          "rangeZ": {
+            "type": 6,
+            "dataOffset": 12
+          },
+          "offset": {
+            "type": 11,
+            "dataOffset": 16
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::ecs::TemplateFamily",
+        "name": "TemplateFamily",
+        "qualifiedHash": 4235190185,
+        "primitiveType": "ENUM",
+        "size": 1,
+        "alignment": 1,
+        "fieldCount": 14,
+        "enumFields": {
+          "None": {
+            "value": 0
+          },
+          "Animal": {
+            "value": 1
+          },
+          "Altar": {
+            "value": 2
+          },
+          "Container": {
+            "value": 3
+          },
+          "Factory": {
+            "value": 4
+          },
+          "Npc": {
+            "value": 5
+          },
+          "Npc_Townsfolk": {
+            "value": 6
+          },
+          "Plant": {
+            "value": 7
+          },
+          "Prop": {
+            "value": 8
+          },
+          "Sign": {
+            "value": 9
+          },
+          "Switch": {
+            "value": 10
+          },
+          "Teleporter": {
+            "value": 11
+          },
+          "Tombstone": {
+            "value": 12
+          },
+          "Water": {
+            "value": 13
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::ecs::TemplateReference",
+        "name": "TemplateReference",
+        "qualifiedHash": 1698873882,
+        "primitiveType": "TYPEDEF",
+        "size": 16,
+        "alignment": 4,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::BlobArray<keen::BlobVariant<keen::ecs::Component>>",
+        "name": "BlobArray<keen::BlobVariant<keen::ecs::Component>>",
+        "qualifiedHash": 4095249246,
+        "primitiveType": "BLOB_ARRAY",
+        "size": 8,
+        "alignment": 4,
+        "fieldCount": 0
+      },
+      {
+        "qualifiedName": "keen::ecs::EntityProxyModelId",
+        "name": "EntityProxyModelId",
+        "qualifiedHash": 943704424,
+        "primitiveType": "STRUCT",
+        "size": 2,
+        "alignment": 2,
+        "fieldCount": 1
+      },
+      {
+        "qualifiedName": "keen::ecs::TemplateResource",
+        "name": "TemplateResource",
+        "qualifiedHash": 964069237,
+        "primitiveType": "STRUCT",
+        "size": 24,
+        "alignment": 4,
+        "fieldCount": 7
+      },
+      {
+        "qualifiedName": "keen::ItemRarity",
+        "name": "ItemRarity",
+        "qualifiedHash": 1738713322,
+        "primitiveType": "ENUM",
+        "size": 1,
+        "alignment": 1,
+        "fieldCount": 5,
+        "enumFields": {
+          "Common": {
+            "value": 0
+          },
+          "Uncommon": {
+            "value": 1
+          },
+          "Rare": {
+            "value": 2
+          },
+          "Epic": {
+            "value": 3
+          },
+          "Legendary": {
+            "value": 4
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::ecs::PickupLootSlot",
+        "name": "PickupLootSlot",
+        "qualifiedHash": 3315311765,
+        "primitiveType": "STRUCT",
+        "size": 32,
+        "alignment": 4,
+        "fieldCount": 7,
+        "structFields": {
+          "genericPickupItem": {
+            "type": 16,
+            "dataOffset": 0
+          },
+          "spawnedPickupEntity": {
+            "type": 9,
+            "dataOffset": 16
+          },
+          "shouldSpawnItem": {
+            "type": 2,
+            "dataOffset": 20
+          },
+          "spawnItem": {
+            "type": 10,
+            "dataOffset": 24
+          },
+          "spawnItemLevel": {
+            "type": 1,
+            "dataOffset": 28
+          },
+          "spawnItemRarity": {
+            "type": 20,
+            "dataOffset": 29
+          },
+          "spawnItemAmount": {
+            "type": 7,
+            "dataOffset": 30
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::ecs::IsPlayerInRange",
+        "name": "IsPlayerInRange",
+        "qualifiedHash": 2720146434,
+        "primitiveType": "STRUCT",
+        "size": 32,
+        "alignment": 8,
+        "fieldCount": 6,
+        "structFields": {
+          "checkAgainstPlayerCollider": {
+            "type": 2,
+            "dataOffset": 0
+          },
+          "onlyPlayer": {
+            "type": 2,
+            "dataOffset": 1
+          },
+          "ignoreStates": {
+            "type": 8,
+            "dataOffset": 8
+          },
+          "updateDelay": {
+            "type": 5,
+            "dataOffset": 16
+          },
+          "deactivateRange": {
+            "type": 6,
+            "dataOffset": 24
+          },
+          "minRange": {
+            "type": 6,
+            "dataOffset": 28
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::ecs::PickupItem",
+        "name": "PickupItem",
+        "qualifiedHash": 142039696,
+        "primitiveType": "STRUCT",
+        "size": 28,
+        "alignment": 4,
+        "fieldCount": 5,
+        "structFields": {
+          "itemId": {
+            "type": 10,
+            "dataOffset": 0
+          },
+          "item": {
+            "type": 12,
+            "dataOffset": 4
+          },
+          "level": {
+            "type": 0,
+            "dataOffset": 20
+          },
+          "rarity": {
+            "type": 20,
+            "dataOffset": 24
+          },
+          "pickupAmount": {
+            "type": 7,
+            "dataOffset": 26
+          }
+        }
+      },
+      {
+        "qualifiedName": "keen::ecs::PickupItemZone",
+        "name": "PickupItemZone",
+        "qualifiedHash": 2022418230,
+        "primitiveType": "STRUCT",
+        "size": 8,
+        "alignment": 8,
+        "fieldCount": 1,
+        "structFields": {
+          "lastAttempt": {
+            "type": 5,
+            "dataOffset": 0
+          }
+        }
+      }
+    ]
+  },
+  "documents": [
+    {
+      "$type": "keen::ecs::TemplateResource",
+      "$guid": "c15a5c9d-4956-49ff-9d72-9f522229cf1c",
+      "$part": 0,
+      "name": "Base_LootPickup_RandomLoot_Generic",
+      "family": "Prop",
+      "ownedTestCanary": "synthetic document; no original model, VFX or resource payload",
+      "components": [
+        {
+          "$type": "keen::ecs::PickupItem",
+          "$value": {
+            "itemId": {
+              "value": 0
+            },
+            "item": null,
+            "level": 0,
+            "rarity": "Common",
+            "pickupAmount": 1
+          }
+        },
+        {
+          "$type": "keen::ecs::InteractionOfferRuntime",
+          "$value": {
+            "isDisabled": false,
+            "ownedCanary": "manual interaction retained"
+          }
+        },
+        {
+          "$type": "keen::ecs::DestroyOnLoot",
+          "$value": {
+            "ownedCanary": "destruction retained"
+          }
+        },
+        {
+          "$type": "keen::ecs::InventoryEmptyState",
+          "$value": {
+            "ownedCanary": "not an inventory"
+          }
+        },
+        {
+          "$type": "keen::ecs::ModelComponent",
+          "$value": {
+            "ownedCanary": "synthetic visual"
+          }
+        },
+        {
+          "$type": "keen::ecs::SyntheticOwnershipCanary",
+          "$value": {
+            "owner": 2718,
+            "guest": 3141
+          }
+        }
+      ]
+    },
+    {
+      "$type": "keen::ecs::TemplateResource",
+      "$guid": "a6e24539-f509-4cc3-afa3-1aaa7ebce522",
+      "$part": 0,
+      "name": "Base_LootTouch_Orb",
+      "family": "None",
+      "ownedTestCanary": "synthetic document; no original model, VFX or resource payload",
+      "components": [
+        {
+          "$type": "keen::ecs::PickupItemZone",
+          "$value": {
+            "lastAttempt": {
+              "value": 0
+            }
+          }
+        },
+        {
+          "$type": "keen::ecs::IsPlayerInRange",
+          "$value": {
+            "checkAgainstPlayerCollider": false,
+            "onlyPlayer": true,
+            "ignoreStates": [],
+            "updateDelay": {
+              "value": 100000000
+            },
+            "deactivateRange": 0,
+            "minRange": 0
+          }
+        },
+        {
+          "$type": "keen::ecs::TriggerShape",
+          "$value": {
+            "shape": "Range",
+            "rangeX": 1,
+            "rangeY": 0,
+            "rangeZ": 0,
+            "offset": {
+              "localOffset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "worldOffset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "orientationOffset": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              }
+            }
+          }
+        },
+        {
+          "$type": "keen::ecs::SyntheticOrbCanary",
+          "$value": {
+            "value": "never copy"
+          }
+        }
+      ]
+    },
+    {
+      "$type": "keen::ecs::TemplateResource",
+      "$guid": "75dd7078-8c8b-422f-a76f-1357e573a9fd",
+      "$part": 0,
+      "name": "Base_LootPickup_RandomLoot_Spawner",
+      "family": "Prop",
+      "ownedTestCanary": "synthetic document; no original model, VFX or resource payload",
+      "components": [
+        {
+          "$type": "keen::ecs::PickupLootSlot",
+          "$value": {
+            "genericPickupItem": "c15a5c9d-4956-49ff-9d72-9f522229cf1c",
+            "spawnedPickupEntity": {
+              "id": 0
+            },
+            "shouldSpawnItem": false,
+            "spawnItem": {
+              "value": 0
+            },
+            "spawnItemLevel": 0,
+            "spawnItemRarity": "Common",
+            "spawnItemAmount": 0
+          }
+        },
+        {
+          "$type": "keen::ecs::RandomLoot",
+          "$value": {
+            "disableRandomLoot": false
+          }
+        },
+        {
+          "$type": "keen::ecs::RandomLootContainer",
+          "$value": {
+            "ownedCanary": "synthetic loot container"
+          }
+        },
+        {
+          "$type": "keen::ecs::RandomLootProbability",
+          "$value": {
+            "ownedCanary": "synthetic probability"
+          }
+        }
+      ]
+    },
+    {
+      "$type": "keen::ecs::TemplateResource",
+      "$guid": "02db30b3-3a8f-4e2b-9881-f1a4e52c19e9",
+      "$part": 0,
+      "name": "LootPickup_RandomLoot_Spawner_empty",
+      "family": "Prop",
+      "ownedTestCanary": "synthetic document; no original model, VFX or resource payload",
+      "components": [
+        {
+          "$type": "keen::ecs::PickupLootSlot",
+          "$value": {
+            "genericPickupItem": "c15a5c9d-4956-49ff-9d72-9f522229cf1c",
+            "spawnedPickupEntity": {
+              "id": 0
+            },
+            "shouldSpawnItem": false,
+            "spawnItem": {
+              "value": 0
+            },
+            "spawnItemLevel": 0,
+            "spawnItemRarity": "Common",
+            "spawnItemAmount": 0
+          }
+        },
+        {
+          "$type": "keen::ecs::RandomLoot",
+          "$value": {
+            "disableRandomLoot": false
+          }
+        },
+        {
+          "$type": "keen::ecs::RandomLootContainer",
+          "$value": {
+            "ownedCanary": "synthetic loot container"
+          }
+        },
+        {
+          "$type": "keen::ecs::RandomLootProbability",
+          "$value": {
+            "ownedCanary": "synthetic probability"
+          }
+        }
+      ]
+    }
+  ]
+}

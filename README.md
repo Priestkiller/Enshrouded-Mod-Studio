@@ -6,6 +6,8 @@ Version 0.4.31 korrigiert zusätzliche Wertepfade: Ausdauerregeneration ändert 
 
 Neu und zunächst ausgeschaltet: **Abladestationen: horizontalen Bereich vergrößern**. Der Faktor skaliert die vorhandene halbe Breite und Länge der bestätigten 16x16- und 24x24-Stationen aus deren Originaldaten. Faktor 2 ergibt rechnerisch die vierfache Grundfläche; Höhe, Versatz und Spieleraktivierung bleiben unverändert. Der native Ablauf ist dem AreaDepositEvent zugeordnet. Die tatsächliche Ablage und mögliche Laufzeitgrenzen sind noch im Spiel zu prüfen. Diese Option verändert weder Auto-Loot noch die Materialsuche magischer Kisten.
 
+**Auto-Loot: generische Bodenbeute ergänzt.** Die bisher ausgelassene Vorlage für physisch ausgeworfene einzelne Zufallsgegenstände erhält bei eingeschalteter „Fallender und generischer Bodenbeute“ die drei bestehenden Aufhebe-Komponenten des nativen Beutefunkens. Radius und Zeitabstand stammen aus dem Profil. Die Gegenstandszuordnung, manuelle Interaktion und alle anderen Komponenten bleiben erhalten; beide nativen Spawner-Verbindungen und das Rücklesen werden geprüft. Die zusätzlichen 21 Hintergrundprüfungen bestätigen diese begrenzte Datenkorrektur. Das tatsächliche Aufsammeln bleibt im Spiel zu prüfen. **Leichen und Behälterinventare werden nicht automatisch geleert.** Die bereits unterstützten anderen Bodenbeutegruppen behalten ihre bisherigen Regeln.
+
 **[Aktuelle Windows-Version herunterladen](https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/latest)**
 
 ## In drei Schritten zu allen Spielern

@@ -10,7 +10,7 @@
     "single-step-taming.js": "f8c22848e29bcd04e71a38bcb4c0e2e007d6c964160f93813ccbd0694334ec67",
     "skill-points-check.js": "111417ab8f8d6b35d2d28c9ab93196f212d3294037078b6e58d112441163aa19",
     "stack-check.js": "175d4ccc3435efb2678e05389289f44e8aac38d639a719504bd41f91a7f9efd9",
-    "studio-backend.js": "161e26a38eb1cd54b2d2bf1db091ff952d5f01b8ae5657cced0e08890cb6830b",
+    "studio-backend.js": "b6011898651d680b46b344271a768fa13e53a01d2aabb3adc452c6981f20824e",
     "studio-runner.js": "00683d890c1f5632e8ee78d657a40ee92095480f7760d8aac558aac571a47f55",
     "summoned-companions.js": "c0eb99596d9f790733dc02acf02998f18879256b4b6b99a600d9c37ea6b05328",
     "vendor/config/loader.js.bytecode": "98f1a99f8746a854822e673d6af3fbd76c173738c894fe093b31abad0235b2c0",
@@ -70,6 +70,7 @@
     "craft-values-fix.js": "6a9310e59c2f1f843f757e336aec15e8fba40789fc58622fb50ca05c7888ca51",
     "backpack-values-fix.js": "aa515c9422857c16c5ca28af914ba9ed46e0164745c496672e4df396f6738927",
     "item-values-fix.js": "ddaeb88ff27b4c3dd9d34dd0fea2428b2429e63a5de8ec41aefe168a6fad2df8",
-    "area-deposit-radius.js": "49b96a852cca387be9d47f99fcf234411ec32bbf01ec5e00e62ef3458e65e4ad"
+    "area-deposit-radius.js": "49b96a852cca387be9d47f99fcf234411ec32bbf01ec5e00e62ef3458e65e4ad",
+    "autoloot-pickup-fix.js": "f9dc5a28068256c41bd70e40fe7b0092ac663fef3d0fffce8828fc3d332d9669"
   }
 }

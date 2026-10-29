@@ -1276,12 +1276,12 @@
         "Fields": [
           {
             "Key": "autoCollectGravityLoot",
-            "Label": "Fallende Bodenbeute einbeziehen",
+            "Label": "Fallende und generische Bodenbeute einbeziehen",
             "Boolean": true,
             "Integer": false,
             "Minimum": 0,
             "Maximum": 1000000000,
-            "Help": "An bearbeitet die unterstützte fallende beziehungsweise physikalische Bodenbeute. Aus lässt diese Beutegruppe von der jeweiligen Anpassung aus."
+            "Help": "An erfasst unterstützte fallende Bodenbeute und die generische Vorlage für einzeln ausgeworfene Zufallsgegenstände. Aus lässt beide von dieser Anpassung aus. Das öffnet und leert keine Leichen oder Behälterinventare."
           },
           {
             "Key": "autoCollectMaterialPiles",
@@ -1308,7 +1308,7 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "16 übernimmt den Patcher-Reichweitenwert 16 in alle drei Raumrichtungen. Die genaue Form und tatsächlich nutzbare Entfernung sind noch nicht live geprüft; es ist kein bestätigter kugelförmiger Radius."
+            "Help": "Für generische Einzelgegenstände wird der Wert als nativer Kugelradius in rangeX geschrieben; unbenutzte Y/Z-Werte bleiben 0. Bestehende unterstützte Beutegruppen verwenden weiterhin die Aufhebezonen des Patchers. Die tatsächlich erreichbare Entfernung muss im Spiel geprüft werden."
           },
           {
             "Key": "pickupUpdateDelayMs",
@@ -1339,9 +1339,9 @@
           }
         ],
         "Effect": "Ergänzt automatische Aufhebezonen bei passenden Beuteobjekten. Beutegruppen, Bereich und Zeitabstand können getrennt eingestellt werden; Sammelknoten lassen sich zusätzlich für nahe liegende Auswürfe anpassen.",
-        "Example": "Reichweitenwert 16 setzt die drei räumlichen Aufhebe-Ausdehnungen auf 16. Abstand 1000 ms bedeutet 1 Sekunde, 0 bedeutet keine zusätzliche Wartezeit. Eine ausgeschaltete Beutegruppe wird von dieser Zusatzoption ausgelassen.",
-        "Notes": "Nur unterstützte Beute wird erfasst; bestimmte Tiere, Gegner und andere Objekte werden bewusst ausgelassen. Die genaue räumliche Form und das tatsächliche Einsammeln sind ungeprüft. Die sichtbare Wirkung der Beutefunken-Option ist nicht belegt. Questbeute einzubeziehen erledigt keine Quests automatisch.",
-        "Status": "Funktion eingeschränkt · Spieltest offen",
+        "Example": "Reichweitenwert 16 setzt bei generischen Einzelgegenständen den nativen Kugelradius auf 16; andere unterstützte Beutegruppen erhalten die bisherigen Aufhebezonen. Abstand 1000 ms bedeutet 1 Sekunde, 0 keine zusätzliche Wartezeit. Ausgeschaltete Beutegruppen bleiben ausgelassen.",
+        "Notes": "Die bisher ausgelassene generische Vorlage für physisch ausgeworfene einzelne Zufallsgegenstände erhält die drei vorhandenen Aufhebe-Komponenten des nativen Beutefunkens. Gegenstand, manuelle Interaktion und andere Vorlagenfelder bleiben erhalten. Leichen und Behälterinventare werden NICHT automatisch geleert. Die Korrektur ist mit Originaldaten und Rücklesen geprüft; das tatsächliche Einsammeln muss weiter im Spiel geprüft werden. Andere unterstützte Bodenbeutegruppen waren bereits korrekt in die Daten geschrieben; ihre Spielwirkung bleibt ungeprüft. Die sichtbare Beutefunken-Wirkung ist nicht belegt, Questbeute erledigt keine Quests automatisch.",
+        "Status": "Generische Bodenbeute korrigiert · Spieltest offen",
         "WhenToUse": "Wenn du passende Bodenbeute ohne einzelne Aufheben-Aktion einsammeln möchtest.",
         "Scope": "Beute- und Einsammeldaten der gewählten Installation. Einzelspieler: Clientordner; bei Dedicated sind zusammenpassende Server-/Clientdaten erforderlich. Aufsammeln und Synchronisierung noch nicht live geprüft."
       },

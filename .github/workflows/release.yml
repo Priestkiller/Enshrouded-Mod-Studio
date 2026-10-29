@@ -47,6 +47,8 @@ jobs:
           if ($LASTEXITCODE) { throw 'Native item integer checks failed' }
           node tests/area-deposit-radius-tests.js
           if ($LASTEXITCODE) { throw 'Area deposit station range checks failed' }
+          node tests/autoloot-pickup-tests.js
+          if ($LASTEXITCODE) { throw 'Generic physical pickup checks failed' }
       - name: Build and validate public package
         shell: powershell
         run: ./.github/scripts/Build-Package.ps1

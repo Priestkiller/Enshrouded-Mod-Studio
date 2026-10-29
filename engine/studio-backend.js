@@ -99,6 +99,8 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  const craftValues=require('./craft-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
  const backpackValues=require('./backpack-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
  const areaDepositRadius=require('./area-deposit-radius').apply({config,reflection,role,track:ctx.track},input,output);
+ const autoLootPickup=require('./autoloot-pickup-fix').apply({config,reflection,role,track:ctx.track},input,output);
+ if(autoLootPickup.enabled)log('Autoloot: generische einzelne Bodenbeute ergänzt; Reichweite '+autoLootPickup.radius+', Wartezeit '+config.gameplay.enableAutoLoot.pickupUpdateDelayMs+' ms. Leichen- und Behälterinventare werden damit nicht automatisch geplündert. Spieltest offen.');
  if(areaDepositRadius.enabled)log('Abladestationen: horizontaler Reichweitenfaktor '+config.world.adjustAreaDepositRadius.factor+' vorbereitet; Höhe und Aktivierungsabstand bleiben erhalten. Spieltest offen.');
  if(playerValues.enabled)log('Ausdauer-Regeneration: Faktor '+config.player.adjustStaminaRegen.factor+' in Grunddefinition und eingebetteter Berechnung vorbereitet.');
  if(craftValues.enabled)log('Herstellung: Mengenfaktor '+(craftValues.quantityEnabled?config.gameplay.enableCraftOutputMultiplier.globalMultiplier:'unverändert')+', Zeitfaktor '+(craftValues.timeEnabled?config.gameplay.enableAdjustCraftingTime.factor:'unverändert')+'; '+craftValues.outputsChecked+' Ausgabemengen und '+craftValues.durationsChecked+' Zeiten einzeln geprüft. Eigene ewige Begleiterzauber liefern weiterhin je 1.');
@@ -122,7 +124,7 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  if(skeletonSpells.enabled){skeletonSpells.multiplayer=require('./summon-multiplayer').create({...ownOption,role,build:reflection.version});log('Sechs Begleiterzauber: '+(role==='server'?'Serverteil':'Clientteil')+' vorbereitet. MP-Kennung '+skeletonSpells.multiplayer.shortId+'. Server und alle Clients benötigen denselben Stand; Multiplayer-Spieltest offen.');}
  const skillPoints=require('./skill-points-check').check({config,role,reflection,logger:ctx.logger},input,output);
  const stacks=require('./stack-check').check({config,role,reflection,skeletonSpells,logger:ctx.logger},input,output);
- return {vendor:result,settingsValues,playerValues,itemValues,craftValues,backpackValues,areaDepositRadius,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,skillPoints,stacks,extraChanges:changes.length,warnings};
+ return {vendor:result,settingsValues,playerValues,itemValues,craftValues,backpackValues,areaDepositRadius,autoLootPickup,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,skillPoints,stacks,extraChanges:changes.length,warnings};
 }
 function currentState(data,t){const dir=path.join(data,'targets',t.id);const active=path.join(dir,'state.json');return {dir,active,state:fs.existsSync(active)?read(active):null};}
 function checkedBasis(st){const dir=within(st.dir,path.join(st.dir,st.state.basis));if(!st.state.basisArchives)throw Error('Basis-Metadaten fehlen. Eine neue passende Basis auswählen.');for(const[n,sha]of Object.entries(st.state.basisArchives)){if(path.basename(n)!==n||hash(path.join(dir,n))!==sha)throw Error('Gespeicherte Basis beschädigt: '+n);}return dir;}
@@ -291,6 +293,7 @@ async function prepare(options){progress(options,'validate','Profil und Installa
   ['playerValues','player-values-fix',(api,summary)=>api.verify(summary,ref,verify)],
   ['itemValues','item-values-fix',(api,summary)=>api.verify({summary,verifyRoot:verify})],
   ['areaDepositRadius','area-deposit-radius',(api,summary)=>api.verify({summary,verifyRoot:verify})],
+  ['autoLootPickup','autoloot-pickup-fix',(api,summary)=>api.verify({summary,verifyRoot:verify})],
   ['craftValues','craft-values-fix',(api,summary)=>api.verify(summary,verify)],
   ['backpackValues','backpack-values-fix',(api,summary)=>api.verify(summary,verify)]
  ])if(mods[key]?.enabled){
