@@ -146,6 +146,10 @@
       "enabled": false,
       "speedFactor": 2,
       "chancePercent": 0
+    },
+    "adjustAreaDepositRadius": {
+      "enabled": false,
+      "factor": 2
     }
   },
   "gameplay": {

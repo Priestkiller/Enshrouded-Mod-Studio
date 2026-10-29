@@ -1,4 +1,4 @@
-name: Publish Mod Studio 0.4.30
+name: Publish Mod Studio 0.4.31
 on:
   push:
     branches: [main]
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release:
-    if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.30')"
+    if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.31')"
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -34,6 +34,19 @@ jobs:
         run: |
           node tests/settings-values-tests.js
           if ($LASTEXITCODE) { throw 'Settings value arithmetic checks failed' }
+      - name: Verify original-derived player, crafting and item values
+        shell: powershell
+        run: |
+          node tests/player-values-tests.js
+          if ($LASTEXITCODE) { throw 'Player value semantic checks failed' }
+          node tests/craft-values-tests.js
+          if ($LASTEXITCODE) { throw 'Crafting value semantic checks failed' }
+          node tests/backpack-values-tests.js
+          if ($LASTEXITCODE) { throw 'Backpack value semantic checks failed' }
+          node tests/item-values-tests.js
+          if ($LASTEXITCODE) { throw 'Native item integer checks failed' }
+          node tests/area-deposit-radius-tests.js
+          if ($LASTEXITCODE) { throw 'Area deposit station range checks failed' }
       - name: Build and validate public package
         shell: powershell
         run: ./.github/scripts/Build-Package.ps1
