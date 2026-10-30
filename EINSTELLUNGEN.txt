@@ -1,4 +1,4 @@
-﻿0.4.21 — Begleiterzauber für passend gepatchten Multiplayer
+0.4.21 — Begleiterzauber für passend gepatchten Multiplayer
 Sechs eigene Begleiterzauber jetzt auf Dedicated Server und Spielclients
 anwendbar. Server und ALLE Clients benötigen denselben Stand und dieselben
 Begleiterwerte; MP-Kennung vergleichen. Server verteilt keine Dateien.
@@ -114,14 +114,14 @@ Grenzen: Die Neuberechnung bereits verteilter Punkte wurde nicht im Spiel geprü
 Ausdauer schneller auffüllen
 Schlüssel: player.adjustStaminaRegen
 Status: Daten geprüft · Spieltest offen
-Beschreibung: Multipliziert den geprüften Basiswert der Ausdauerregeneration.
-Einsatz: Wenn sich der Ausdauerbalken schneller oder langsamer erholen soll.
-Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Dedicated: Serverordner; erforderlicher Abgleich mit Clients noch nicht live geprüft. Die Server-JSON bleibt unverändert.
-Wirkung: Skaliert die erkannte Grundformel für das Auffüllen von Ausdauer. Größer als 1 erhöht den Regenerationswert; kleiner als 1 senkt ihn.
-Beispiel: Faktor 1,5 entspricht 150 % des bisherigen Basiswerts, also 50 % mehr. Ein Basiswert von 100 würde rechnerisch 150.
-Grenzen: Wirkt nur auf die erkannte Grundformel. Wartezeiten, Nahrung, Ausrüstung oder andere Boni können das tatsächliche Auffüllen zusätzlich beeinflussen.
+Beschreibung: Multipliziert den absoluten Regenerationswert mit einer sicheren Ganzzahlrechnung.
+Einsatz: Wenn die vorhandene Grundregeneration erhöht oder verringert werden soll.
+Anwendung: Spielregeln in den Spieldateien. Einzelspieler: Clientordner. Im Multiplayer Server und Clients über den passenden Manager und Spielerclient abgleichen. Die Server-JSON bleibt unverändert.
+Wirkung: Faktor 2 macht aus dem ursprünglichen Regenerationswert 50 den Wert 100. Die maximale Ausdauer wird nicht zusätzlich eingerechnet. Eine Reserve von etwa 4000 braucht deshalb bei gleicher absoluter Regeneration länger zum Auffüllen als eine kleine Reserve.
+Beispiel: Faktor 1,5 ergibt bei Originalwert 50 den Wert 75. Es handelt sich nicht um 1,5 Sekunden Wartezeit und nicht um einen Anteil der maximalen Ausdauer.
+Grenzen: Der Faktor wird auf drei Nachkommastellen gerundet; Ganzzahlergebnisse werden abgerundet und auf höchstens 65.535 begrenzt. Das Protokoll nennt gewählten und wirksamen Faktor sowie den verwendeten Bruch. Faktor 1 erhält die ursprüngliche Formel vollständig. Warte- und Anlaufzeiten, Nahrung, Ausrüstung und andere Boni bleiben unverändert. Die Ausdaueranzeige wird nicht geändert.
   - Faktor der Grundregeneration
-    1 = bisheriger Basiswert; 1,5 = 150 %; 2 = doppelt. 1,5 bedeutet nicht 1,5 Sekunden Wartezeit.
+    1 = ursprünglicher Regenerationswert; 1,5 = 150 %; 2 = doppelt. Die Wirkung im laufenden Spiel ist gesondert zu prüfen.
 
 Inventar
 

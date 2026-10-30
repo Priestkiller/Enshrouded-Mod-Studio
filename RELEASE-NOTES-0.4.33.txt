@@ -17,6 +17,17 @@ PROGRAMM INSTALLIEREN UND AUTOMATISCH AKTUALISIEREN
   Profile und Einstellungen bleiben dort erhalten. Portable ZIPs nutzen weiter
   die gepruefte Datenuebernahme mit Rueckfall auf den bisherigen Ordner.
 
+AUSDAUERREGENERATION BERICHTIGT
+- Ein Kodierungsfehler konnte Faktoren wie 2 oder 10 als viel zu grosse
+  Ganzzahl schreiben. In der 16-Bit-Netzwerkdarstellung konnte daraus 0 werden.
+- Sichere Ganzzahlmultiplikation und Division: Originalwert 50 wird bei Faktor 2
+  zu 100, bei Faktor 10 zu 500. Faktor 1 erhaelt die Originalformel unveraendert.
+- Faktor auf drei Nachkommastellen, abschliessende Netzwerkgrenze 65.535.
+  Das Protokoll zeigt ausgewaehlten und tatsaechlich verwendeten Faktor.
+- Die absolute Regeneration skaliert nicht automatisch mit maximaler Ausdauer.
+  Anlaufzeit, Wartezeit und Ausdaueranzeige bleiben unveraendert.
+- Hintergrundtests pruefen Ganzzahlwerte, 10 auf 2, Deaktivieren und das erneute
+  Lesen beider Ressourcen nach dem Packen. Die Spielwirkung bleibt live offen.
 KORREKTUREN UND PRUEFUNG
 - Die erkannte installierte Version stammt jetzt aus der laufenden Anwendung.
   Die bisher fest eingetragene 0.4.30 konnte neuere vorhandene Versionen falsch
@@ -32,7 +43,7 @@ KORREKTUREN UND PRUEFUNG
   Es wurden keine produktiven Profile, Spielstaende oder Spiele veraendert.
 
 SYNCHRONISATION
-Zuerst Manager 0.15.40 und Spielerclient 0.16.24 aktualisieren, danach Studio
+Zuerst Manager 0.15.41 und Spielerclient 0.16.25 aktualisieren, danach Studio
 0.4.33 verwenden. Der neue Studio-Programmstand wird von beiden erkannt.
-Vorhandene aeltere Clientpakete bleiben unterstuetzt. Die Patch-Engine und
-die Spieloptionen wurden in dieser Programmversion nicht veraendert.
+Vorhandene aeltere Clientpakete bleiben unterstuetzt. Die Ausdauerberechnung ist berichtigt; die Anzahl und die gespeicherten
+Schluessel der 49 Spieloptionen bleiben unveraendert.

@@ -1,6 +1,12 @@
-# Enshrouded Mod Studio 0.4.32
+# Enshrouded Mod Studio 0.4.33
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
+
+**Neu in 0.4.33:** normales Windows-Setup mit Startmenü und Deinstallation sowie automatische Programmupdates beim Start. Änderungen werden vor der Installation und nach dem Neustart angezeigt. Updates lassen sich verschieben oder in den Werkzeugen abschalten. Profile und Einstellungen bleiben erhalten.
+
+Für die erste normale Installation die **Enshrouded-Mod-Studio-0.4.33-Setup.exe** aus dem aktuellen Release verwenden. Ein vorhandener portabler Studioordner kann im Setup für die Datenübernahme ausgewählt werden. Das vollständige ZIP bleibt als portable Variante verfügbar. Für die neuen Pakete zuerst **Manager 0.15.41 und Spielerclient 0.16.25** aktualisieren.
+
+**Ausdauerregeneration berichtigt:** Die Regenerationsformel verwendet Ganzzahl-Literale. Die vorherige Kodierung konnte bei Faktoren wie 2 oder 10 einen zu großen Wert erzeugen, dessen 16-Bit-Netzwerkdarstellung null war. Die neue Rechnung macht aus dem ursprünglichen Regenerationswert 50 bei Faktor 2 den Wert 100. Sie rundet den Faktor auf drei Nachkommastellen und begrenzt das Ergebnis auf 65.535. Maximale Ausdauer, Anlauf- und Wartezeiten bleiben unverändert; eine größere Ausdauerreserve braucht bei gleicher absoluter Regeneration länger. Hintergrundtests einschließlich Parser-Rücklesen bestätigen die korrigierten Daten, keine bereits beobachtete Spielwirkung.
 
 Version 0.4.32 korrigiert Inventarkapazitäten auf vollständige Achterreihen, erhält beim kostenlosen Herstellen die ursprünglichen Freischaltbedingungen und weist native Zahlenüberläufe vor dem Packen zurück. Drei zusätzliche Begleitervorlagen werden auf Server und passenden Clients im globalen Katalog registriert. Die Rezeptanzeige enthält den Mengenfaktor bereits: ×4 bedeutet insgesamt vier Stück. Ein aktueller Rüstungsversuch bestätigt diese Ausgabe; Herstellungszeit, Lagerzugriff und Autoloot sind damit nicht als Spielwirkung bestätigt. Für neue Pakete zuerst Manager 0.15.39 und Spielerclient 0.16.23 aktualisieren.
 
@@ -15,8 +21,8 @@ Neu und zunächst ausgeschaltet: **Abladestationen: horizontalen Bereich vergrö
 ## In drei Schritten zu allen Spielern
 
 1. **Studio patcht:** Den vom UGSM Manager verwalteten Server-Installationsordner wählen, Einstellungen prüfen, Spiel bzw. Server schließen und **Patch anwenden / aktualisieren** ausführen.
-2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.38** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
-3. **Spieler synchronisieren:** Mit Spielerclient **0.16.21** zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
+2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.41** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
+3. **Spieler synchronisieren:** Mit Spielerclient **0.16.25** zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
 
 **Auf dem Server ist keine zusätzliche Spielclientinstallation erforderlich.** Die neue Standardmethode verwendet ausschließlich die vorhandene Serverbasis. Die Originaldateien der Spieler bleiben auf deren PCs; sie werden nicht hochgeladen. Server und Clients müssen denselben unterstützten Spielstand verwenden. Die bisherige Methode mit vorgefertigten Clientarchiven bleibt unter der eingeklappten erweiterten Einrichtung verfügbar.
 

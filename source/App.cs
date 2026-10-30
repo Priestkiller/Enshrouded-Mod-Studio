@@ -731,6 +731,11 @@ namespace EnshroudedStudio
                 var rootExplanation = Readable(SkillPointUi.RootExplanation, 15, "#E3EDF4");
                 rootExplanation.Margin = new Thickness(0, 12, 0, 0); body.Children.Add(rootExplanation);
             }
+            if (prefix == "player.adjustStaminaRegen")
+            {
+                var staminaExplanation = Readable("Skaliert die absolute Regenerationsmenge, nicht den Anteil deiner maximalen Ausdauer. Beispiel: Aus dem Originalwert 50 macht Faktor 2 den Wert 100. Viel mehr maximale Ausdauer braucht deshalb weiterhin länger zum Auffüllen. Wartezeit, Anlaufzeit, Nahrung und Ausrüstung bleiben unverändert. Der Faktor wird für die sichere Ganzzahlberechnung auf drei Nachkommastellen gerundet; Protokoll und Prüfung nennen den wirksamen Faktor. Die abschließende Netzwerkgrenze beträgt 65.535.", 15, "#E3EDF4");
+                staminaExplanation.Margin = new Thickness(0, 12, 0, 0); body.Children.Add(staminaExplanation);
+            }
             TextBlock roleHint = null;
             if (mod.ServerOnly || mod.ClientOnly || mod.KnownTargetOnly)
             {
@@ -838,7 +843,7 @@ namespace EnshroudedStudio
                 }
                 row.Children.Add(inputArea);
                 var explanation = new StackPanel();
-                explanation.Children.Add(Readable(skillPointsField ? SkillPointUi.FieldHelp : field.Help, 14, "#CBD9E8"));
+                explanation.Children.Add(Readable(skillPointsField ? SkillPointUi.FieldHelp : prefix == "player.adjustStaminaRegen" ? "2 verdoppelt den absoluten Regenerationswert; die maximale Ausdauer wird nicht als Faktor eingerechnet. Höchstens drei Nachkommastellen wirken. Die Ausdaueranzeige und Wartezeiten werden nicht geändert." : field.Help, 14, "#CBD9E8"));
                 var original = Json.Object(Json.Object(Store.Defaults[cat.Key], cat.Key)[mod.Key], mod.Key)[field.Key];
                 string defaultText = field.Boolean ? ((bool)original ? "Ein" : "Aus") : Json.Number(original).ToString("R", CultureInfo.GetCultureInfo("de-DE"));
                 if (field.Choices != null && field.Choices.Count > 0)
@@ -854,7 +859,8 @@ namespace EnshroudedStudio
             if (auxiliary.Children.Count > 0) body.Children.Add(auxiliary);
             var detailsBody = new StackPanel();
             bool skillPointsCard = prefix == "player.adjustSkillPointsPerLevel";
-            AddDetail(detailsBody, "Wo anwenden?", skillPointsCard ? SkillPointUi.Scope : mod.Scope); AddDetail(detailsBody, "Wann ist das sinnvoll?", mod.WhenToUse); AddDetail(detailsBody, "Was wird geändert?", mod.Effect); AddDetail(detailsBody, "Beispiel", mod.Example); AddDetail(detailsBody, "Grenzen und Besonderheiten", SkillPointUi.NotesFor(prefix, mod.Notes));
+            bool staminaCard = prefix == "player.adjustStaminaRegen";
+            AddDetail(detailsBody, "Wo anwenden?", skillPointsCard ? SkillPointUi.Scope : mod.Scope); AddDetail(detailsBody, "Wann ist das sinnvoll?", mod.WhenToUse); AddDetail(detailsBody, "Was wird geändert?", staminaCard ? "Skaliert den absoluten Regenerationswert mit einer sicheren Ganzzahlrechnung in beiden zusammengehörigen Attributdefinitionen. Die maximale Ausdauer und ihre Anzeige bleiben unverändert." : mod.Effect); AddDetail(detailsBody, "Beispiel", staminaCard ? "Originalwert 50 und Faktor 2 ergeben 100. Das ist kein Versprechen, eine beliebig große Ausdauerreserve in derselben Zeit aufzufüllen." : mod.Example); AddDetail(detailsBody, "Grenzen und Besonderheiten", staminaCard ? "Der Faktor wird auf drei Nachkommastellen gerundet, das Ganzzahlergebnis abgerundet und auf höchstens 65.535 begrenzt. Faktor 1 lässt die ursprüngliche Formel vollständig unverändert. Warte- und Anlaufzeiten sowie andere Boni bleiben erhalten; die tatsächliche Spielwirkung ist live zu prüfen." : SkillPointUi.NotesFor(prefix, mod.Notes));
             var details = new Expander { Header = new TextBlock { Text = "Anwendung, Beispiel und Grenzen", FontSize = 14, Foreground = Brush("#A9E5DD"), TextWrapping = TextWrapping.Wrap }, Content = detailsBody, Margin = new Thickness(0, 7, 0, 0), IsExpanded = OpenDetails.Contains(prefix) };
             details.Expanded += delegate { OpenDetails.Add(prefix); };
             details.Collapsed += delegate { OpenDetails.Remove(prefix); };
