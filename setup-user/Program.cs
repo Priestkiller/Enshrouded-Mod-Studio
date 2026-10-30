@@ -190,6 +190,16 @@ namespace UGSM.Installation
             if (Directory.Exists(target) || File.Exists(target)) throw new IOException("Der Zielordner enthält bereits Benutzerdaten. Diese werden nicht überschrieben.");
             Directory.Move(source, target);
         }
+        internal static bool HasFiles(string directory)
+        {
+            if (!Directory.Exists(directory)) return false;
+            foreach (string entry in Directory.EnumerateFileSystemEntries(directory))
+            {
+                UserInstallState.NoLinks(entry);
+                if (File.Exists(entry) || HasFiles(entry)) return true;
+            }
+            return false;
+        }
         internal static void Install(string root, bool shortcut, Action<string> progress, string importRoot)
         {
             root = UserInstallState.RootPath(root);
@@ -197,7 +207,7 @@ namespace UGSM.Installation
             if (registered != null && !UserInstallState.Same(registered, root)) throw new InvalidDataException("Das Programm ist bereits unter " + registered + " installiert. Diesen Ordner für das Update verwenden.");
             InstallRecord old = null;
             if (registered != null && File.Exists(UserInstallState.Resolve(root, UserInstallState.MarkerName))) old = UserInstallState.ReadRegistered(PackageDefinition.AppId, root);
-            else if (Directory.Exists(root) && Directory.EnumerateFileSystemEntries(root).Any()) throw new InvalidDataException("Bitte einen leeren eigenen Programmordner wählen. Vorhandene portable Programme werden nicht überschrieben.");
+            else if (HasFiles(root)) throw new InvalidDataException("Bitte einen leeren eigenen Programmordner wählen. Vorhandene portable Programme werden nicht überschrieben.");
             if (old != null && new Version(PackageDefinition.Version) < new Version(old.Version)) throw new InvalidDataException("Eine neuere Version ist bereits installiert.");
             string parent = Path.GetDirectoryName(root); Directory.CreateDirectory(parent); UserInstallState.NoLinks(parent);
             string stage = PrivateDirectory(parent, ".ugsm-stage-"), rollback = PrivateDirectory(parent, ".ugsm-rollback-");
@@ -369,6 +379,7 @@ namespace UGSM.Installation
             browse = new Button { Left = 524, Top = 121, Width = 100, Height = 32, Text = "Ordner …", Enabled = existing == null && record == null };
             browse.Click += delegate { using (var dialog = new FolderBrowserDialog { Description = "Einen leeren eigenen Programmordner wählen", ShowNewFolderButton = true }) if (dialog.ShowDialog(this) == DialogResult.OK) folder.Text = dialog.SelectedPath; }; Controls.Add(browse);
             shortcut = new CheckBox { Text = "Verknüpfung im Startmenü erstellen", Left = 26, Top = 168, Width = 500, Checked = true, Visible = record == null }; Controls.Add(shortcut);
+            if (pid != null) shortcut.Checked = !String.IsNullOrEmpty(UserInstallState.ReadRegistered(PackageDefinition.AppId, existing).ShortcutPath);
             importFolder = new TextBox { Left = 26, Top = 229, Width = 488, Visible = offerImport };
             if (offerImport)
             {

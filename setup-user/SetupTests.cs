@@ -59,6 +59,9 @@ namespace UGSM.Installation
             Write(importStage, "Data/profile.json", "other-id");
             Reject(delegate { SetupEngine.MoveImportedData(importStage, importTarget); }, "Import overwrote existing Data");
             Check(File.ReadAllText(Path.Combine(importTarget, "Data/profile.json")) == "preserved-id", "Rejected import changed existing profile");
+            string emptyTree = Path.Combine(test, "empty-tree"); Directory.CreateDirectory(Path.Combine(emptyTree, "nested"));
+            Check(!SetupEngine.HasFiles(emptyTree), "Empty directories prevent retry after rollback");
+            Write(emptyTree, "nested/user.txt", "keep"); Check(SetupEngine.HasFiles(emptyTree), "Foreign files accepted as empty installation target");
             Console.WriteLine("PASS " + checks + " headless checks; no app, installer, registry mutation or game launched.");
             return 0;
         }
