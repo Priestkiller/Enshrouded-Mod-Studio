@@ -5,8 +5,10 @@ const clientPackages=require('./client-packages');
 const managerHandoff=require('./manager-handoff');
 const ENGINE_SHA='9c9a5911dfe1b87a7c155dc9ba4c95fc4a40b2cdf98eb8b1cebde16c106d8872';
 const PARSER_SHA='b65d0558d09c1f0793e70ec50a76d9a06c3cc1a177b3185895b2c2ba1150250f';
-const TYPES=['keen::ItemInfo','keen::UiTextureResource','keen::enemy::EnemyArsenalRegistryResource','keen::ecs::TemplateResource','keen::RecipeRegistryResource','keen::ItemRegistryResource','keen::LocaTagCollectionResource','keen::BalancingTable','keen::BaseAttributeResource','keen::AttributeContainerResource','keen::GameKnowledgeResource','keen::MapMarkerRegistryResource','keen::actor::ActorSequenceResource','keen::TerraformingEfficiencyRegistryResource','keen::GameSettingsPresetsResource','keen::SceneResource','keen::FbUiBundle','keen::VolumetricFog3Resource','keen::LootableItemsResource','keen::LootDistributionTreeResource','keen::ecs::DefaultInventoryResource'];
-function resourceTypesForRole(role){if(!['client','server'].includes(role))throw Error('Unbekannte Archivrolle.');return role==='server'?TYPES.filter(type=>!['keen::UiTextureResource','keen::FbUiBundle','keen::LocaTagCollectionResource'].includes(type)):TYPES.slice();}
+// Studio32 requires the matching reviewed client worker and Go append policy.
+const TEMPLATE_COLLECTION_REGISTRATION_RELEASED=true;
+const TYPES=['keen::ItemInfo','keen::UiTextureResource','keen::enemy::EnemyArsenalRegistryResource','keen::ecs::TemplateResource','keen::ecs::TemplateCollectionResource','keen::Game38ClientResources','keen::Game38ServerResources','keen::RecipeRegistryResource','keen::ItemRegistryResource','keen::LocaTagCollectionResource','keen::BalancingTable','keen::BaseAttributeResource','keen::AttributeContainerResource','keen::GameKnowledgeResource','keen::MapMarkerRegistryResource','keen::actor::ActorSequenceResource','keen::TerraformingEfficiencyRegistryResource','keen::GameSettingsPresetsResource','keen::SceneResource','keen::FbUiBundle','keen::VolumetricFog3Resource','keen::LootableItemsResource','keen::LootDistributionTreeResource','keen::ecs::DefaultInventoryResource'];
+function resourceTypesForRole(role){if(!['client','server'].includes(role))throw Error('Unbekannte Archivrolle.');const excluded=role==='server'?['keen::UiTextureResource','keen::FbUiBundle','keen::LocaTagCollectionResource','keen::Game38ClientResources']:['keen::Game38ServerResources'];if(!TEMPLATE_COLLECTION_REGISTRATION_RELEASED)excluded.push('keen::ecs::TemplateCollectionResource','keen::Game38ClientResources','keen::Game38ServerResources');return TYPES.filter(type=>!excluded.includes(type));}
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const stableHash=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8').replace(/^\uFEFF/,''));
@@ -69,7 +71,7 @@ function verifyArchiveResources(before,after,manifest,reflection){
  return {original:before.size,created:created.size,current:after.size};
 }
 function assertSummonTarget(config,role){const own=config.world?.enableSkeletonSummoningSpells?.enabled===true,existing=config.world?.adjustSummonedCompanions?.enabled===true;if(own&&existing)throw Error('Eigene Skelettzauber und die Änderung vorhandener Beschwörungen dürfen nicht gleichzeitig aktiv sein.');if(own&&!['client','server'].includes(role))throw Error('Für die sechs Begleiterzauber einen getrennten Spielclient- oder Dedicated-Serverordner wählen.');if(existing&&!['server','client'].includes(role))throw Error('Für Beschwörungen muss ein Spielclient für den lokalen Einzelspieler-Test oder ein Dedicated Server eindeutig erkannt sein. Bitte den passenden Installationsordner wählen oder die Option ausschalten.');}
-function applyMods(config,input,output,log,role='unknown',reflection=null){
+function applyMods(config,input,output,log,role='unknown',reflection=null,originalResourceInventory=null){
  assertSummonTarget(config,role);
  require('./input-basis-check').assertUnmodified({input,reflection,role,config,createdKeys:['server','client'].includes(role)?ownSpellCreateKeys(role):[]});
  if(config.inventory?.adjustStackSize?.enabled)require('./stack-check').assertSchema(reflection);
@@ -93,6 +95,7 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  const ctx={config:{...p.getConfig()},role,logger:{warn:s=>{warnings.push(String(s));log('HINWEIS: '+s);},info:log,debug:()=>{},success:log},track:(...args)=>changes.push(args)};
  if(skipClientLimits)Object.assign(ctx.config,{enableUncapClientSettings:true,clientFactorMin:clientLimits.clientFactorMin,clientFactorMax:clientLimits.clientFactorMax});
  const extra=config.gameplay.enableSourceLootSlots;Object.assign(ctx.config,{enableEnemyRandomSlotMultiplier:extra.enabled&&extra.enemyMultiplier!==1,enemyRandomSlotMultiplier:extra.enemyMultiplier,enableChestRandomSlotMultiplier:extra.enabled&&extra.chestMultiplier!==1,chestRandomSlotMultiplier:extra.chestMultiplier});
+ const creativeCosts=require('./creative-costs-fix').apply({config,reflection,role,track:ctx.track},input,output);
  const settingsValues=require('./settings-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
  const playerValues=require('./player-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
  const itemValues=require('./item-values-fix').apply({config,reflection,role,track:ctx.track},input,output);
@@ -122,9 +125,12 @@ function applyMods(config,input,output,log,role='unknown',reflection=null){
  const ownOption=config.world.enableSkeletonSummoningSpells;
  const skeletonSpells=require('./skeleton-spells').apply({...ownOption,enabled:ownOption?.enabled===true,existingCompanionsEnabled:companionOption?.enabled===true,reflection,role,logger:ctx.logger,track:ctx.track},input,output);
  if(skeletonSpells.enabled){skeletonSpells.multiplayer=require('./summon-multiplayer').create({...ownOption,role,build:reflection.version});log('Sechs Begleiterzauber: '+(role==='server'?'Serverteil':'Clientteil')+' vorbereitet. MP-Kennung '+skeletonSpells.multiplayer.shortId+'. Server und alle Clients benötigen denselben Stand; Multiplayer-Spieltest offen.');}
+ const templateCollection=TEMPLATE_COLLECTION_REGISTRATION_RELEASED?require('./template-collection-registration').apply({config,reflection,role,track:ctx.track,assertPristineBasis:()=>({build:reflection?.version,inventory:originalResourceInventory})},input,output):{enabled:false,requiresReviewedClientAppend:true,gameplayVerified:false};
+ if(templateCollection.enabled)log('Begleitervorlagen: drei neue Typen in der globalen Vorlagenliste registriert; ursprüngliche Verweise bleiben erhalten. Spieltest offen.');
  const skillPoints=require('./skill-points-check').check({config,role,reflection,logger:ctx.logger},input,output);
  const stacks=require('./stack-check').check({config,role,reflection,skeletonSpells,logger:ctx.logger},input,output);
- return {vendor:result,settingsValues,playerValues,itemValues,craftValues,backpackValues,areaDepositRadius,autoLootPickup,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,skillPoints,stacks,extraChanges:changes.length,warnings};
+ const nativeOutputValues=require('./native-output-guard').apply({config,reflection},input,output);
+ return {vendor:result,creativeCosts,settingsValues,playerValues,itemValues,craftValues,backpackValues,areaDepositRadius,autoLootPickup,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,templateCollection,skillPoints,stacks,nativeOutputValues,extraChanges:changes.length,warnings};
 }
 function currentState(data,t){const dir=path.join(data,'targets',t.id);const active=path.join(dir,'state.json');return {dir,active,state:fs.existsSync(active)?read(active):null};}
 function checkedBasis(st){const dir=within(st.dir,path.join(st.dir,st.state.basis));if(!st.state.basisArchives)throw Error('Basis-Metadaten fehlen. Eine neue passende Basis auswählen.');for(const[n,sha]of Object.entries(st.state.basisArchives)){if(path.basename(n)!==n||hash(path.join(dir,n))!==sha)throw Error('Gespeicherte Basis beschädigt: '+n);}return dir;}
@@ -271,7 +277,7 @@ async function prepare(options){progress(options,'validate','Profil und Installa
  for(const n of t.archives)fs.copyFileSync(path.join(base,n),path.join(stage,n));fs.copyFileSync(path.join(t.dir,t.exe),path.join(stage,t.exe));fs.copyFileSync(path.join(root,'bin','kfc-parser.exe'),path.join(bin,'kfc-parser.exe'));
  for(const n of t.archives)if(hash(path.join(stage,n))!==hash(path.join(base,n)))throw Error('Die Ausgangsbasis wurde während des Kopierens geändert.');if(hash(path.join(stage,t.exe))!==fp.exe)throw Error('Spielversion wurde während der Vorbereitung geändert.');
  progress(options,'unpack','Ressourcen aus der Archivkopie lesen …',18);const staged={...t,dir:stage};log('1/4 Relevante Ressourcen aus der Kopie entpacken …');parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,input,log);
- const ref=read(path.join(bin,'reflection_data.json')),originalResourceInventory=archiveResourceInventory(path.join(stage,t.name+'.kfc'));log('Spielversion: '+ref.version);progress(options,'basis-input-check','Ausgangsbasis auf vorhandene Mod-Studio-Dateien prüfen …',35);require('./input-basis-check').assertUnmodified({input,reflection:ref,role:t.server?'server':'client',config,createdKeys:ownSpellCreateKeys(t.server?'server':'client')});log('2/4 Profil auf die Arbeitsdaten anwenden …');progress(options,'modify','Profil auf die unveränderte Basis anwenden …',40);const mods=applyMods(config,input,modified,log,t.server?'server':'client',ref);
+ const ref=read(path.join(bin,'reflection_data.json')),originalResourceInventory=archiveResourceInventory(path.join(stage,t.name+'.kfc'));log('Spielversion: '+ref.version);progress(options,'basis-input-check','Ausgangsbasis auf vorhandene Mod-Studio-Dateien prüfen …',35);require('./input-basis-check').assertUnmodified({input,reflection:ref,role:t.server?'server':'client',config,createdKeys:ownSpellCreateKeys(t.server?'server':'client')});log('2/4 Profil auf die Arbeitsdaten anwenden …');progress(options,'modify','Profil auf die unveränderte Basis anwenden …',40);const mods=applyMods(config,input,modified,log,t.server?'server':'client',ref,originalResourceInventory);
  const ownEnabled=mods.skeletonSpells?.enabled===true,createKeys=ownEnabled?ownSpellCreateKeys(t.server?'server':'client'):[];
  let manifest=resourceManifest(input,modified,ref,createKeys),outputs=[...manifest.changed.values()].map(row=>row.file),verified=0;
  if(!ownEnabled){const ownKeys=ownSpellCreateKeys(t.server?'server':'client');if(ownKeys.some(key=>manifest.original.has(key)))throw Error('Die Ausgangsbasis enthält bereits eigene Skelettzauber. Für deren vollständige Entfernung ist eine unveränderte Basis erforderlich.');}
@@ -290,6 +296,7 @@ async function prepare(options){progress(options,'validate','Profil und Installa
   log('Gewählte Zählwerte und Fallschadengrenzen nach Archiv-Readback bestätigt: '+mods.settingsValues.verification.checked+' Ressourcentabellen. Spieltest offen.');
  }
  for(const [key,moduleName,verifyCall] of [
+  ['creativeCosts','creative-costs-fix',(api,summary)=>api.verify(summary,verify)],
   ['playerValues','player-values-fix',(api,summary)=>api.verify(summary,ref,verify)],
   ['itemValues','item-values-fix',(api,summary)=>api.verify({summary,verifyRoot:verify})],
   ['areaDepositRadius','area-deposit-radius',(api,summary)=>api.verify({summary,verifyRoot:verify})],
@@ -323,6 +330,7 @@ async function prepare(options){progress(options,'validate','Profil und Installa
  }
  if(ownEnabled){
   mods.skeletonSpells.verification=require('./skeleton-spells').verify(mods.skeletonSpells,ref,verify);
+  if(mods.templateCollection.enabled){mods.templateCollection.verification=require('./template-collection-registration').verify({summary:mods.templateCollection,verifyRoot:verify});mods.templateCollection.archiveReadbackValidated=true;}
   require('./summon-multiplayer').verify(mods.skeletonSpells.multiplayer,{...config.world.enableSkeletonSummoningSpells,role:t.server?'server':'client',build:ref.version});
   if(!t.server){
    mods.skeletonSpells.localizationVerification=require('./skeleton-spell-localization').verify(mods.skeletonSpells.localization,localizationOptions);

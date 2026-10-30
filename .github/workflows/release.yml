@@ -1,4 +1,4 @@
-name: Publish Mod Studio 0.4.31
+name: Publish Mod Studio 0.4.32
 on:
   push:
     branches: [main]
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release:
-    if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.31')"
+    if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.32')"
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -27,6 +27,8 @@ jobs:
       - name: Verify server-only resource recipe export
         shell: powershell
         run: |
+          node tests/template-collection-tests.js
+          if ($LASTEXITCODE) { throw 'Owned companion template registration checks failed' }
           node tests/resource-recipe-tests.js
           if ($LASTEXITCODE) { throw 'Resource recipe export checks failed' }
       - name: Verify rounded counts and native value limits
@@ -41,6 +43,10 @@ jobs:
           if ($LASTEXITCODE) { throw 'Player value semantic checks failed' }
           node tests/craft-values-tests.js
           if ($LASTEXITCODE) { throw 'Crafting value semantic checks failed' }
+          node tests/creative-costs-tests.js
+          if ($LASTEXITCODE) { throw 'Recipe cost and original unlock checks failed' }
+          node tests/native-output-guard-tests.js
+          if ($LASTEXITCODE) { throw 'Changed native numeric range checks failed' }
           node tests/backpack-values-tests.js
           if ($LASTEXITCODE) { throw 'Backpack value semantic checks failed' }
           node tests/item-values-tests.js

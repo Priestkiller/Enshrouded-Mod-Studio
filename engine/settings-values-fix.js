@@ -16,6 +16,10 @@ function scaleCount(before,factor,maximum,cap=maximum,name='Zählwert'){
  return result;
 }
 function musicCount(before,factor,name){integer(before,0,UINT32,name+' Ausgangswert');number(factor,name+' Faktor');const result=Math.round(before*factor);if(!Number.isSafeInteger(result)||result<0||result>UINT32)fail(name+': berechneter Wert '+result+' überschreitet uint32 (höchstens '+UINT32+'). Kleineren Faktor wählen.');return result;}
+function slotCount(before,factor,cap){
+ integer(before,0,248,'Ursprüngliche Inventarkapazität');if(before%8!==0)fail('Ursprüngliche Inventarkapazität ist kein Vielfaches von acht.');number(factor,'Inventarplatz-Faktor');integer(cap,8,255,'Inventarplatz-Höchstzahl');
+ if(before===0)return 0;const product=before*factor;if(!Number.isFinite(product))fail('Berechnete Inventarkapazität ist nicht endlich.');return Math.min(Math.floor(cap/8)*8,Math.ceil(product/8)*8);
+}
 function fallPair(before,option,name='Spieler'){
  const start=Math.fround(number(before.start,name+' ursprünglicher Fallschadenbeginn')*number(option.factorStart,'Fallschadenbeginn-Faktor'));
  const lethal=Math.fround(number(before.lethal,name+' ursprüngliche tödliche Fallgrenze')*number(option.factorLethal,'Tödliche-Fallgrenze-Faktor'));
@@ -80,8 +84,9 @@ function apply(ctx,inputRoot,outputRoot){
     const source=row.doc.components?.filter(c=>c.$type===component)||[],target=live.doc.components?.filter(c=>c.$type===component)||[];
     if(source.length>1||target.length>1)fail('Mehrdeutige Inventar-Komponente: '+row.name+' '+component);if(!source.length||!target.length)continue;
     for(const name of names){const initial=source[0].$value?.[name],currentValue=target[0].$value?.[name];
-     integer(initial,0,UINT8,'Inventarplätze Ausgangswert');const raw=Math.min(initial*selected.slots.factor,selected.slots.cap),wanted=scaleCount(initial,selected.slots.factor,UINT8,selected.slots.cap,'Inventarplätze');
-     if(currentValue!==initial&&!nativeEqual(currentValue,raw)&&currentValue!==wanted)fail('Konkurrierende Inventarplatz-Änderung in '+row.name+' '+name+'.');
+     integer(initial,0,UINT8,'Inventarplätze Ausgangswert');const originalGeneric=source[0].$value.genericSlotCount,effectiveGeneric=slotCount(originalGeneric,selected.slots.factor,selected.slots.cap);
+     const raw=Math.min(initial*selected.slots.factor,selected.slots.cap),legacy=scaleCount(initial,selected.slots.factor,UINT8,selected.slots.cap,'Inventarplätze'),wanted=name==='genericSlotCount'||initial===originalGeneric?effectiveGeneric:Math.min(effectiveGeneric,legacy);
+     if(currentValue!==initial&&!nativeEqual(currentValue,raw)&&currentValue!==legacy&&currentValue!==wanted)fail('Konkurrierende Inventarplatz-Änderung in '+row.name+' '+name+'.');
      if(!before[component]){before[component]={};expected[component]={};}before[component][name]=initial;expected[component][name]=wanted;
      if(currentValue!==wanted){target[0].$value[name]=wanted;changed++;}
     }
@@ -98,7 +103,7 @@ function verify(summary,reflection,root,fs=fsDefault){
  if(summary?.enabled!==true)return {enabled:false,checked:0,gameplayVerified:false};
  if(summary.build!==reflection?.version||!Array.isArray(summary.resources))fail('Die Werte-Prüfliste passt nicht zur Spielversion.');const checked=schema(reflection,summary.selected);let count=0;
  for(const row of summary.resources){const type=row.type===BALANCE?checked.balance:checked.template;if(!type)fail('Unerwarteter Ressourcentyp in der Werte-Prüfliste.');const file=path.join(root,type.name,row.file),doc=read(fs,file);identity(doc,file,type);if(doc.$guid!==row.guid||doc.$part!==row.part)fail('Identität nach Archiv-Readback verändert: '+row.file);
-  const expected=row.kind==='counts'?expectedCounts(row.before,summary.selected):row.kind==='fall'?fallPair(row.before,summary.selected.fall,row.file):row.kind==='slots'?Object.fromEntries(Object.entries(row.before).map(([component,fields])=>[component,Object.fromEntries(Object.entries(fields).map(([name,value])=>[name,scaleCount(value,summary.selected.slots.factor,UINT8,summary.selected.slots.cap,'Inventarplätze')]))])):fail('Unbekannter Prüflistentyp.');if(!nativeEqual(expected,row.expected))fail('Berechnung der Werte-Prüfliste stimmt nicht: '+row.file);
+  const expected=row.kind==='counts'?expectedCounts(row.before,summary.selected):row.kind==='fall'?fallPair(row.before,summary.selected.fall,row.file):row.kind==='slots'?Object.fromEntries(Object.entries(row.before).map(([component,fields])=>{const generic=slotCount(fields.genericSlotCount,summary.selected.slots.factor,summary.selected.slots.cap);return [component,Object.fromEntries(Object.entries(fields).map(([name,value])=>[name,name==='genericSlotCount'||value===fields.genericSlotCount?generic:Math.min(generic,scaleCount(value,summary.selected.slots.factor,UINT8,summary.selected.slots.cap,'Inventarplätze'))]))];})):fail('Unbekannter Prüflistentyp.');if(!nativeEqual(expected,row.expected))fail('Berechnung der Werte-Prüfliste stimmt nicht: '+row.file);
   if(row.kind==='counts'){for(const [key,value]of Object.entries(expected))if(!nativeEqual(doc[key],value))fail('Archivwert weicht vom gewählten Profil ab: '+row.file+' '+key);}
   else if(row.kind==='fall'){const all=doc.components?.filter(c=>c.$type===FALL);if(all?.length!==1||!nativeEqual(all[0].$value.fallDamageStartDistance,expected.start)||!nativeEqual(all[0].$value.fallDamageLethalDistance,expected.lethal))fail('Fallschadengrenzen nach Archiv-Readback abweichend: '+row.file);}
   else{for(const [component,fields]of Object.entries(expected)){const all=doc.components?.filter(c=>c.$type===component);if(all?.length!==1)fail('Inventarkomponente nach Archiv-Readback abweichend: '+row.file);for(const [name,value]of Object.entries(fields))if(all[0].$value[name]!==value)fail('Inventarplätze nach Archiv-Readback abweichend: '+row.file+' '+name);}}
@@ -106,4 +111,4 @@ function verify(summary,reflection,root,fs=fsDefault){
  }
  if((checked.balance||summary.selected.fall)&&!count)fail('Leere Werte-Prüfliste.');return {enabled:true,checked:count,gameplayVerified:false};
 }
-module.exports={apply,verify,scaleCount,musicCount,fallPair,expectedCounts,options,schema,UINT8,UINT32};
+module.exports={apply,verify,scaleCount,musicCount,slotCount,fallPair,expectedCounts,options,schema,UINT8,UINT32};

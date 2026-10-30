@@ -6,7 +6,7 @@ const FORMAT='enshrouded-resource-recipe',VERSION=1,CAPABILITY='enshrouded-resou
 const MAX_BYTES=256*1024*1024,MAX_COMPRESSED=64*1024*1024,MAX_RESOURCES=10000;
 const GUID=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 const SHA=/^[a-f0-9]{64}$/;
-const TYPES=new Set(['keen::ItemInfo','keen::enemy::EnemyArsenalRegistryResource','keen::ecs::TemplateResource','keen::RecipeRegistryResource','keen::ItemRegistryResource','keen::BalancingTable','keen::BaseAttributeResource','keen::AttributeContainerResource','keen::GameKnowledgeResource','keen::MapMarkerRegistryResource','keen::actor::ActorSequenceResource','keen::TerraformingEfficiencyRegistryResource','keen::GameSettingsPresetsResource','keen::SceneResource','keen::VolumetricFog3Resource','keen::LootableItemsResource','keen::LootDistributionTreeResource','keen::ecs::DefaultInventoryResource']);
+const TYPES=new Set(['keen::ItemInfo','keen::enemy::EnemyArsenalRegistryResource','keen::ecs::TemplateResource','keen::ecs::TemplateCollectionResource','keen::RecipeRegistryResource','keen::ItemRegistryResource','keen::BalancingTable','keen::BaseAttributeResource','keen::AttributeContainerResource','keen::GameKnowledgeResource','keen::MapMarkerRegistryResource','keen::actor::ActorSequenceResource','keen::TerraformingEfficiencyRegistryResource','keen::GameSettingsPresetsResource','keen::SceneResource','keen::VolumetricFog3Resource','keen::LootableItemsResource','keen::LootDistributionTreeResource','keen::ecs::DefaultInventoryResource']);
 function fail(message){throw Error('Änderungsrezept: '+message);}
 const canonical=v=>Array.isArray(v)?'['+v.map(canonical).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
 const digest=b=>crypto.createHash('sha256').update(b).digest('hex');
@@ -26,6 +26,7 @@ function validate(recipe,definitions){
   if(row.mode==='modify'){if(identity(row.before)!==key||canonical(row.before)===canonical(row.after))fail('Ungültige oder wirkungslose Änderung.');}
   else if(row.mode==='create'){if(row.before!==null||!creates.has(key)||recipe.options.world?.enableSkeletonSummoningSpells?.enabled!==true)fail('Nicht freigegebene neue Ressource.');}
   else fail('Unbekannte Änderungsart.');
+  if(row.type==='keen::ecs::TemplateCollectionResource')require('./template-collection-registration').validateAppendRecipe(row,recipe.options.world?.enableSkeletonSummoningSpells?.enabled===true);
  }
  safeData(recipe);return recipe;
 }

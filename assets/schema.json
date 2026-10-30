@@ -85,7 +85,7 @@
       {
         "Key": "enableCreativeMode",
         "Title": "Ohne Rezeptkosten herstellen",
-        "Description": "Entfernt bei unterstützten Herstellungsrezepten Anforderungen und Materialkosten. Kochrezepte bleiben unverändert.",
+        "Description": "Entfernt Material- und Wasserkosten unterstützter Rezepte. Ursprüngliche Freischaltungen und Werkstattbedingungen bleiben erhalten; Kochrezepte sind ausgenommen.",
         "Fields": [
           {
             "Key": "includeUpgrade",
@@ -94,13 +94,13 @@
             "Integer": false,
             "Minimum": 0,
             "Maximum": 1000000000,
-            "Help": "Aus: Altar-Aufwertungsrezepte ausnehmen. An: auch deren unterstützte Anforderungen und Kosten bearbeiten; kann die Weltfortschritt-Regeln verändern."
+            "Help": "Aus: Altar-Aufwertungsrezepte ausnehmen. An: auch deren Material- und Wasserkosten entfernen. Voraussetzungen für Stufe, Weltfortschritt und zufriedene NPCs bleiben erhalten."
           }
         ],
-        "Effect": "Bearbeitet Freischaltbedingungen und Kosten passender Rezepte. Flammenaltar-Upgrades werden nur mit dem zusätzlichen Haken einbezogen.",
+        "Effect": "Leert die Materialkosten und setzt den Wasserverbrauch passender Rezepte auf null. Die ursprünglichen Wissensfreischaltungen, benötigten Stationsgegenstände und die Überdachungspflicht bleiben erhalten. Flammenaltar-Upgrades werden nur mit dem zusätzlichen Haken einbezogen.",
         "Example": "Ein betroffenes Rezept mit 10 Holz als Kosten wird ohne diese Holzkosten hinterlegt. Mit ausgeschalteter Altar-Option bleiben die entsprechenden Flammen-Upgrades ausgenommen.",
-        "Notes": "Kochrezepte bleiben ausgenommen. Aufwertungsrezepte werden nur mit dem zusätzlichen Upgrade-Schalter bearbeitet. Das ist kein vollständiger Kreativmodus mit Flug, Unsterblichkeit oder automatisch allen Gegenständen. Der genaue Rezeptzugang im Spiel bleibt ungeprüft. Der Handler setzt eine Creative-Freischaltbedingung und leert Rezeptkosten. Ob dein normaler Servercharakter diese Bedingung erfüllt, ist nicht belegt; eine uneingeschränkte Rezeptfreischaltung wird damit nicht zugesichert.",
-        "Status": "Rezeptkosten geändert · Creative-Bedingung beachten",
+        "Notes": "Kochrezepte bleiben ausgenommen. Aufwertungsrezepte werden nur mit dem zusätzlichen Upgrade-Schalter bearbeitet; ihre Stufen-, Weltfortschritts- und NPC-Voraussetzungen bleiben erhalten. Die Option schaltet keine gesperrten Rezepte frei und fügt keine zusätzliche Creative-Bedingung hinzu. Der tatsächliche Herstellungsablauf im Spiel muss separat getestet werden.",
+        "Status": "Rezeptkosten und ursprüngliche Bedingungen geprüft · Spieltest offen",
         "WhenToUse": "Wenn du bauen und herstellen möchtest, ohne dafür die üblichen Rezeptmaterialien zu verbrauchen.",
         "Scope": "Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert."
       },
@@ -233,7 +233,7 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "2 verdoppelt die ursprüngliche Zahl, bis die eingestellte Obergrenze greift. Es werden keine zusätzlichen Kisten erzeugt. Bruchteile werden auf ganze Inventarplätze gerundet und danach auf die gewählte Höchstzahl begrenzt."
+            "Help": "Multipliziert die ursprüngliche Kapazität. Das Spiel benötigt vollständige Reihen mit acht Plätzen: Das Ergebnis wird auf die nächste Achterreihe aufgerundet und danach durch die Höchstzahl begrenzt."
           },
           {
             "Key": "cap",
@@ -242,11 +242,11 @@
             "Integer": true,
             "Minimum": 0.001,
             "Maximum": 255,
-            "Help": "Feste Obergrenze für das Ergebnis: 96 bedeutet maximal 96 Plätze. Diese Grenze gilt auch bei Faktor 1."
+            "Help": "Feste Obergrenze für das Ergebnis. Es passen nur vollständige Achterreihen hinein: 77 erlaubt höchstens 72 Plätze. Diese Grenze gilt auch bei Faktor 1; technisch sind maximal 248 Plätze möglich."
           }
         ],
-        "Effect": "Multipliziert vorhandene Lagerplätze und begrenzt das Ergebnis auf deine Höchstzahl. Zusammengehörige Inventareinstellungen werden gemeinsam geändert. Berechnete Bruchteile werden auf ganze Plätze gerundet; die vorhandene Höchstzahl wird eingehalten.",
-        "Example": "24 Plätze × Faktor 2 = 48 Plätze. Bei 64 Plätzen und Obergrenze 96 wird das Ergebnis auf 96 statt 128 begrenzt.",
+        "Effect": "Vergrößert unterstützte Lagerinventare in vollständigen Achterreihen. Der Zielwert wird aufgerundet; deine Höchstzahl wird auf die letzte vollständige Reihe abgerundet. Zusammengehörige Inventareinstellungen erhalten passende Werte.",
+        "Example": "24 Plätze × Faktor 1,3 ergibt 32 Plätze. Bei Höchstzahl 30 sind höchstens 24 Plätze erlaubt; 64 × 2 wird bei Grenze 96 auf 96 begrenzt.",
         "Notes": "Bereits gebaute Lager müssen laut Patcher-Anleitung gegebenenfalls neu gebaut werden. Eine niedrige Obergrenze kann größere vorhandene Angaben auch verkleinern. Die Zahl der Lagerplätze wird als 8-Bit-Zahl gespeichert; die Obergrenze ist deshalb auf 255 begrenzt.",
         "Status": "Einzeln geprüft · bestehende Lager ggf. neu bauen",
         "WhenToUse": "Wenn deine Lagerkisten mehr freie Plätze bekommen sollen.",
@@ -260,7 +260,7 @@
           {
             "Key": "bonus",
             "Label": "Zusätzliche Plätze",
-            "Help": "Feste Zugabe: 8 bedeutet acht zusätzliche Plätze vor Anwendung der Gesamtgrenze. 0 fügt keine Plätze hinzu.",
+            "Help": "Zusätzliche Plätze vor der Gesamtgrenze. Das Ergebnis wird auf eine vollständige Achterreihe aufgerundet; beispielsweise werden aus 24 + 1 insgesamt 32 Plätze. 0 fügt keine Plätze hinzu.",
             "Minimum": 0,
             "Maximum": 40,
             "Integer": true,
@@ -269,14 +269,14 @@
           {
             "Key": "cap",
             "Label": "Höchstens so viele Rucksackplätze",
-            "Help": "Grenze für die Vergrößerung einschließlich Bonus. Ein ursprünglich größerer Rucksack behält seine vorhandenen Plätze.",
+            "Help": "Grenze einschließlich Bonus, auf vollständige Achterreihen abgerundet: 30 erlaubt 24 Plätze. Ein ursprünglich größerer Rucksack behält seine vorhandene Kapazität.",
             "Minimum": 8,
             "Maximum": 96,
             "Integer": true,
             "Boolean": false
           }
         ],
-        "Effect": "Ergebnis: höchstens die eingestellte Grenze für neue Plätze, mindestens die ursprüngliche Rucksackgröße. Die Anzeige und beide Inventar-Zählfelder erhalten denselben Wert.",
+        "Effect": "Neue Rucksackkapazitäten bestehen aus vollständigen Achterreihen und bleiben innerhalb deiner Grenze. Ein größerer ursprünglicher Rucksack wird nicht verkleinert. Anzeige und Inventar verwenden denselben Wert.",
         "Example": "24 ursprüngliche Plätze + 8 Bonus = 32. Bei ursprünglich 32 Plätzen und Grenze 30 bleiben die ursprünglichen 32 Plätze erhalten.",
         "Notes": "Bestehende Grundkapazität wird durch diese Zusatzplatz-Option nicht verkleinert. Platzanzeige, nutzbare Plätze und verfügbare Plätze werden nach dem Packen gemeinsam geprüft. Der Umgang mit bereits vorhandenen Rucksäcken im Spiel bleibt separat zu testen.",
         "Status": "Inventar und Anzeige gemeinsam geprüft · Spieltest offen",
@@ -1192,13 +1192,13 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-            "Help": "3 = dreifache ursprüngliche Rezept-Ausgabe, danach Rundung auf ganze Stücke. Vorgabe 1 belässt die Menge; das Einschalten allein erhöht sie nicht."
+        "Help": "4 = vierfache ursprüngliche Rezept-Ausgabe, danach Rundung auf ganze Stücke. Die Rezeptanzeige ×4 enthält die Änderung bereits und bedeutet insgesamt vier Stück je Herstellung. Vorgabe 1 belässt die Menge."
           }
         ],
         "Effect": "Multipliziert die positiven Ausgabemengen der ursprünglichen Rezepte. Das Ergebnis wird auf eine ganze Stückzahl mit mindestens 1 gerundet. Materialkosten bleiben durch diese Option unverändert.",
-        "Example": "Faktor 5 macht aus 1 Stück insgesamt 5 und aus 2 Stück insgesamt 10. Eigene ewige Begleiterzauber behalten ihre feste Ausgabemenge 1.",
-        "Notes": "Jede geänderte Rezeptausgabe wird nach erneutem Lesen des Archivs mit dem berechneten Ergebnis verglichen. Werte außerhalb des nativen 32-Bit-Bereichs werden abgewiesen. Eigene ewige Begleiterzauber sind von der Mengenvervielfachung ausgenommen. Inventarplatz und Spielregeln können die Herstellung zusätzlich begrenzen.",
-        "Status": "Daten geprüft · Spieltest offen",
+      "Example": "Ein ursprünglich einzelnes Rüstungsteil wird mit Faktor 4 zu insgesamt vier Teilen. Zeigt das Rezept ×4, liefert eine Herstellung diese vier Teile. Ein Rezept mit ursprünglich zwei Stück liefert bei Faktor 4 insgesamt acht. Eigene ewige Begleiterzauber bleiben bei einem Stück.",
+      "Notes": "Für ein getestetes Rüstungsrezept wurden bei Faktor 4 tatsächlich vier Stück im Spiel bestätigt. Andere Rezepte und die Herstellungszeit müssen separat geprüft werden. Jede geänderte Rezeptausgabe wird nach erneutem Lesen des Archivs mit dem berechneten Ergebnis verglichen. Werte außerhalb des nativen 32-Bit-Bereichs werden abgewiesen. Eigene ewige Begleiterzauber sind von der Mengenvervielfachung ausgenommen. Inventarplatz und Spielregeln können die Herstellung zusätzlich begrenzen.",
+      "Status": "Daten geprüft · Rüstungstest bestätigt · weitere Rezepte offen",
         "WhenToUse": "Wenn ein Herstellungsdurchlauf mehr fertige Gegenstände liefern soll.",
         "Scope": "Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert."
       },
