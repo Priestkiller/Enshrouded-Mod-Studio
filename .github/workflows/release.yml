@@ -13,7 +13,7 @@ jobs:
   release:
     if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.33')"
     runs-on: windows-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Quarantine known invalid package when repairing
@@ -58,6 +58,35 @@ jobs:
       - name: Build and validate public package
         shell: powershell
         run: ./.github/scripts/Build-Package.ps1
+      - name: Wait for matching public Player25 before publishing Studio33
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ready = $false
+          for ($attempt = 0; $attempt -lt 80; $attempt++) {
+            $savedPreference = $ErrorActionPreference
+            try {
+              $ErrorActionPreference = 'Continue'
+              $json = & gh api repos/Priestkiller/UGSM-Player/releases/tags/v0.16.25 2>$null
+              $apiExit = $LASTEXITCODE
+            } finally { $ErrorActionPreference = $savedPreference }
+            if ($apiExit -eq 0) {
+              $release = $json | ConvertFrom-Json
+              if ($release.tag_name -ceq 'v0.16.25' -and -not $release.draft -and -not $release.prerelease) {
+                $ready = $true
+                foreach ($name in @('UGSM-Player-0.16.25-Windows-x64.zip','UGSM-Player-0.16.25-Setup.exe')) {
+                  $assets = @($release.assets | Where-Object { $_.name -ceq $name })
+                  if ($assets.Count -ne 1 -or $assets[0].state -cne 'uploaded' -or $assets[0].size -lt 1 -or $assets[0].digest -cnotmatch '^sha256:[a-f0-9]{64}$') { $ready = $false }
+                }
+                if ($ready) { break }
+              }
+            }
+            if ($attempt -eq 0) { Write-Output 'Studio package is built. Waiting for the compatible Player25 download.' }
+            Start-Sleep -Seconds 15
+          }
+          if (-not $ready) { throw 'Studio33 remains unpublished until matching Player25 is available.' }
       - name: Upload, verify and publish release
         shell: powershell
         env:
