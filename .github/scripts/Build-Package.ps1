@@ -1,4 +1,5 @@
-﻿$ErrorActionPreference = 'Stop'
+param([string]$ValidationRoot)
+$ErrorActionPreference = 'Stop'
 $releaseRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
 $releaseSpec = Get-Content -LiteralPath (Join-Path $releaseRoot '.github\release.json') -Raw | ConvertFrom-Json
 if ($releaseSpec.version -notmatch '^\d+\.\d+\.\d+$') { throw 'Invalid release version.' }
@@ -12,12 +13,19 @@ $releaseExe = Join-Path $releaseRoot 'Enshrouded Mod Studio.exe'
 if ((Get-Item -LiteralPath $releaseExe).VersionInfo.FileVersion -ne ($releaseSpec.version + '.0')) { throw 'Unexpected executable version.' }
 $releaseOutput = Join-Path $releaseRoot 'artifacts'
 New-Item -ItemType Directory -Path $releaseOutput -Force | Out-Null
+if (-not $ValidationRoot) { $ValidationRoot = if ($env:RUNNER_TEMP) { $env:RUNNER_TEMP } else { Join-Path $releaseRoot '..\..' } }
+$ValidationRoot = [IO.Path]::GetFullPath($ValidationRoot)
+New-Item -ItemType Directory -Path $ValidationRoot -Force | Out-Null
 $explanationShell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
 & $explanationShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tests\skill-point-explanation-tests.ps1') -StudioAssembly $releaseExe -AppRoot $releaseRoot -OutputFile (Join-Path $releaseOutput 'skill-point-explanation-results.json')
 if ($LASTEXITCODE -ne 0) { throw 'Skill-point explanation checks failed.' }
+& $explanationShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tests\startup-update-tests.ps1') -StudioAssembly $releaseExe -SandboxParent $ValidationRoot
+if ($LASTEXITCODE -ne 0) { throw 'Startup update and release-note checks failed.' }
+& $explanationShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tools\test-user-setup.ps1') -WorkDirectory (Join-Path $ValidationRoot ('studio-setup-tests-' + [Guid]::NewGuid().ToString('N')))
+if ($LASTEXITCODE -ne 0) { throw 'Per-user installer transaction checks failed.' }
 # Pin the immutable public ZIP, then extract only its GUI for the actual old
 # updater's read-only profile validator. The local root EXE was just rebuilt.
-$profileLegacyParent = if ($env:RUNNER_TEMP) { [IO.Path]::GetFullPath($env:RUNNER_TEMP) } else { [IO.Path]::GetFullPath([IO.Path]::GetTempPath()) }
+$profileLegacyParent = $ValidationRoot
 $profileLegacyRoot = Join-Path $profileLegacyParent ('studio-legacy27-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $profileLegacyRoot | Out-Null
 try {
@@ -48,7 +56,7 @@ try {
 }
 $releaseStage = Join-Path $releaseOutput ('package-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $releaseStage | Out-Null
-foreach ($dir in @('assets','engine','source','tools','ThirdParty','tests')) {
+foreach ($dir in @('assets','engine','source','tools','ThirdParty','tests','setup-user')) {
     Copy-Item -LiteralPath (Join-Path $releaseRoot $dir) -Destination (Join-Path $releaseStage $dir) -Recurse
 }
 foreach ($file in Get-ChildItem -LiteralPath $releaseRoot -File | Where-Object { $_.Extension -in @('.txt','.md','.cmd','.js') -or $_.Name -in @('Enshrouded Mod Studio.exe','Enshrouded Mod Studio.exe.config') }) {
@@ -63,7 +71,7 @@ $releaseEmm = Join-Path $releaseEmmDir 'emm.exe'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest -Uri 'https://github.com/Brabb3l/kfc-parser/releases/download/v0.2.0/emm.exe' -OutFile $releaseEmm -UseBasicParsing
 if ((Get-FileHash -LiteralPath $releaseEmm -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305') { throw 'EMM checksum mismatch.' }
-& powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tests/update-data-migration-tests.ps1') -StudioAssembly $releaseExe -AppRoot $releaseRoot -OutputFile (Join-Path $releaseRoot 'build/update-data-migration-results.json')
+& $explanationShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tests/update-data-migration-tests.ps1') -StudioAssembly $releaseExe -AppRoot $releaseRoot -SandboxParent $ValidationRoot -OutputFile (Join-Path $releaseOutput 'update-data-migration-results.json')
 if ($LASTEXITCODE) { throw 'Update migration regression checks failed.' }
 
 $releaseManifest = Get-Content -LiteralPath (Join-Path $releaseStage 'engine\engine-manifest.json') -Raw | ConvertFrom-Json
@@ -123,6 +131,15 @@ $legacyResult.LatestVersion = $legacyAssembly.GetType('EnshroudedStudio.UpdateCh
 $null = $legacyInstaller.GetMethod('ValidatePackage',$legacyFlags).Invoke($null,@([string]$releaseStage,$legacyResult,$false))
 $releaseHash = (Get-FileHash -LiteralPath $releaseZip -Algorithm SHA256).Hash.ToLowerInvariant()
 [IO.File]::WriteAllText(($releaseZip + '.sha256'),($releaseHash + '  ' + $releaseName + [Environment]::NewLine),[Text.UTF8Encoding]::new($false))
-$releaseProof = [ordered]@{version=$releaseSpec.version;archive=$releaseName;sha256=$releaseHash;bytes=(Get-Item -LiteralPath $releaseZip).Length;legacyRuntimeIncluded=$false;emmIncluded=$true;sourceIncluded=$true}
+$setupName = 'Enshrouded-Mod-Studio-' + $releaseSpec.version + '-Setup.exe'
+$setupFile = Join-Path $releaseOutput $setupName
+if (Test-Path -LiteralPath $setupFile) { throw 'Release installer already exists.' }
+& $explanationShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $releaseRoot 'tools\build-user-setup.ps1') -AppKind Studio -Version $releaseSpec.version -PayloadZip $releaseZip -OutputFile $setupFile
+if ($LASTEXITCODE -ne 0) { throw 'Studio per-user installer build failed.' }
+$setupProof = Get-Content -LiteralPath ($setupFile + '.build.json') -Raw | ConvertFrom-Json
+$setupHash = (Get-FileHash -LiteralPath $setupFile -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($setupProof.appId -cne 'Enshrouded.ModStudio' -or $setupProof.version -cne $releaseSpec.version -or $setupProof.payloadSha256 -cne $releaseHash -or $setupProof.sha256 -cne $setupHash -or $setupProof.bytes -ne (Get-Item -LiteralPath $setupFile).Length) { throw 'Studio Setup identity/digest verification failed.' }
+[IO.File]::WriteAllText(($setupFile + '.sha256'),($setupHash + '  ' + $setupName + [Environment]::NewLine),[Text.UTF8Encoding]::new($false))
+$releaseProof = [ordered]@{version=$releaseSpec.version;archive=$releaseName;sha256=$releaseHash;bytes=(Get-Item -LiteralPath $releaseZip).Length;setup=$setupName;setupSha256=$setupHash;setupBytes=(Get-Item -LiteralPath $setupFile).Length;legacyRuntimeIncluded=$false;emmIncluded=$true;sourceIncluded=$true}
 [IO.File]::WriteAllText((Join-Path $releaseOutput 'package.json'),($releaseProof | ConvertTo-Json),[Text.UTF8Encoding]::new($false))
 $releaseProof | ConvertTo-Json

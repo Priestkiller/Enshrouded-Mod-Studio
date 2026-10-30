@@ -15,6 +15,10 @@ namespace EnshroudedStudio
     public sealed class UpdateResult
     {
         public string Repository;
+        public string ReleaseNotes;
+        public string InstallerDownloadUrl, InstallerAssetName, InstallerSha256;
+        public long InstallerAssetSize;
+        public bool InstallerAvailable { get { return InstallerAssetSize > 0 && InstallerAssetSize <= UpdateInstaller.MaximumArchiveBytes && InstallerSha256 != null && Regex.IsMatch(InstallerSha256, @"^[a-f0-9]{64}\z"); } }
         public Version InstalledVersion;
         public Version LatestVersion;
         public string ReleaseTag;
@@ -30,7 +34,7 @@ namespace EnshroudedStudio
 
     public static class UpdateCheck
     {
-        public const string InstalledVersion = "0.4.30";
+        public static string InstalledVersion { get { return DisplayVersion(typeof(UpdateCheck).Assembly.GetName().Version); } }
         public const int TimeoutMilliseconds = 10000;
         public const int MaximumResponseBytes = 1024 * 1024;
         private static readonly Regex RepositoryPattern = new Regex(@"^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}/[A-Za-z0-9][A-Za-z0-9_.-]{0,99}\z", RegexOptions.CultureInvariant);
@@ -62,6 +66,18 @@ namespace EnshroudedStudio
             return "Enshrouded-Mod-Studio-" + tag.TrimStart('v', 'V') + ".zip";
         }
 
+        public static string ExpectedInstallerName(string tag)
+        { ParseVersion(tag); return "Enshrouded-Mod-Studio-" + tag.TrimStart('v', 'V') + "-Setup.exe"; }
+        public static bool IsAllowedInstallerUrl(string repository, string tag, string name, string url)
+        {
+            try
+            {
+                ValidateRepository(repository); if (name != ExpectedInstallerName(tag)) return false;
+                Uri u; return Uri.TryCreate(url, UriKind.Absolute, out u) && u.Scheme == "https" && u.Host == "github.com" && u.IsDefaultPort && u.UserInfo.Length == 0 && u.Query.Length == 0 && u.Fragment.Length == 0 &&
+                    string.Equals(url, "https://github.com/" + repository + "/releases/download/" + tag + "/" + name, StringComparison.Ordinal);
+            }
+            catch (InvalidDataException) { return false; }
+        }
         public static bool IsAllowedAssetUrl(string repository, string tag, string assetName, string url)
         {
             try
@@ -115,6 +131,8 @@ namespace EnshroudedStudio
             string tag = (string)value;
             var latest = ParseVersion(tag);
             var result = new UpdateResult { Repository = repository, InstalledVersion = installed, LatestVersion = latest, ReleaseTag = tag };
+            object body; if (release.TryGetValue("body", out body) && body != null && !(body is string)) throw new InvalidDataException("Die Änderungsbeschreibung der Veröffentlichung ist ungültig.");
+            result.ReleaseNotes = StartupUpdates.CleanNotes(body as string);
             if (!result.IsNewer) return result;
             object[] assets;
             if (!release.TryGetValue("assets", out value) || (assets = value as object[]) == null)
@@ -136,6 +154,19 @@ namespace EnshroudedStudio
                     result.Sha256 = ((string)value).Substring(7).ToLowerInvariant();
             }
             if (download == null) throw new InvalidDataException("Die neue Version enthält noch kein passendes vollständiges ZIP. Bitte später erneut prüfen.");
+            string setupName = ExpectedInstallerName(tag);
+            foreach (object entry in assets)
+            {
+                var asset = entry as Dictionary<string, object>;
+                if (asset == null || !asset.TryGetValue("name", out value) || !(value is string) || (string)value != setupName) continue;
+                if (result.InstallerDownloadUrl != null) throw new InvalidDataException("Der Installer-Download ist nicht eindeutig.");
+                if (!asset.TryGetValue("browser_download_url", out value) || !(value is string) || !IsAllowedInstallerUrl(repository, tag, setupName, (string)value))
+                    throw new InvalidDataException("Die Installeradresse passt nicht zur vorgesehenen GitHub-Version.");
+                result.InstallerDownloadUrl = (string)value; result.InstallerAssetName = setupName;
+                long size;
+                if (asset.TryGetValue("size", out value) && (value is int || value is long) && (size = Convert.ToInt64(value)) > 0 && size <= UpdateInstaller.MaximumArchiveBytes) result.InstallerAssetSize = size;
+                if (asset.TryGetValue("digest", out value) && value is string && Regex.IsMatch((string)value, @"^sha256:[a-fA-F0-9]{64}\z")) result.InstallerSha256 = ((string)value).Substring(7).ToLowerInvariant();
+            }
             result.DownloadUrl = download;
             if (!result.AutomaticInstallAvailable) result.InstallUnavailableReason = "GitHub liefert für dieses ZIP noch keine gültige SHA256-Prüfsumme und Dateigröße. Die automatische Installation ist deshalb nicht verfügbar.";
             return result;
@@ -198,31 +229,18 @@ namespace EnshroudedStudio
             }
         }
 
-        public static bool ShowDownloadDialog(Window owner, UpdateResult result)
+        public static bool ShowDownloadDialog(Window owner, UpdateResult result, bool automatic = false, bool installedMode = false)
         {
             if (!result.IsNewer || !IsAllowedAssetUrl(result.Repository, result.ReleaseTag, ExpectedAssetName(result.ReleaseTag), result.DownloadUrl))
                 throw new InvalidDataException("Es liegt kein geprüfter Download für eine neue Version vor.");
-            if (!result.AutomaticInstallAvailable)
+            if (installedMode && !result.InstallerAvailable) throw new InvalidDataException("Diese Veröffentlichung bietet noch keinen geprüften Installer für die installierte Anwendung. Das bisherige Studio bleibt geöffnet.");
+            if (!result.AutomaticInstallAvailable && !installedMode)
             {
                 if (MessageBox.Show(owner, result.InstallUnavailableReason + "\n\nDas ZIP stattdessen im Browser öffnen und manuell in einen neuen Ordner entpacken? Anschließend ‚Altes Setup übernehmen‘ verwenden.", "Automatische Installation nicht verfügbar", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                     Process.Start(new ProcessStartInfo(result.DownloadUrl) { UseShellExecute = true });
                 return false;
             }
-            var dialog = new Window { Owner = owner, Title = "Neue Mod-Studio-Version", Width = 540, SizeToContent = SizeToContent.Height,
-                ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Background = new SolidColorBrush(Color.FromRgb(20, 31, 45)), Foreground = Brushes.White,
-                FontFamily = owner.FontFamily, FontSize = 15 };
-            dialog.Resources = owner.Resources;
-            var panel = new StackPanel { Margin = new Thickness(24) };
-            panel.Children.Add(new TextBlock { Text = "Ein Update ist verfügbar", FontSize = 21, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 17) });
-            panel.Children.Add(new TextBlock { Text = "Installiert: " + DisplayVersion(result.InstalledVersion) + "\nVerfügbar: " + DisplayVersion(result.LatestVersion), LineHeight = 24, Margin = new Thickness(0, 0, 0, 17) });
-            panel.Children.Add(new TextBlock { Text = "Das Studio lädt und prüft das ZIP und richtet die neue Version in einem eigenen Ordner ein. Deine Profile, Einstellungen, Sicherungen und geprüften Laufzeitdateien werden automatisch übernommen.\n\nDer bisherige Ordner bleibt erhalten. Die neue Version wird erst nach erfolgreicher Prüfung gestartet; die alte schließt erst, wenn der neue Start bestätigt wurde.", TextWrapping = TextWrapping.Wrap, LineHeight = 23 });
-            var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0, 22, 0, 0) };
-            var cancel = new Button { Content = "Später", IsCancel = true, Margin = new Thickness(0, 0, 10, 0) };
-            var open = new Button { Content = "Jetzt installieren", IsDefault = true };
-            open.Click += delegate { dialog.DialogResult = true; };
-            buttons.Children.Add(cancel); buttons.Children.Add(open); panel.Children.Add(buttons); dialog.Content = panel;
-            return dialog.ShowDialog() == true;
+            return StartupUpdates.ShowUpdateNotice(owner, result, automatic);
         }
 
         private static string Fixture(string tag, string repository, string url)

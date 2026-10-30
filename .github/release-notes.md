@@ -1,34 +1,40 @@
-# Enshrouded Mod Studio 0.4.32
+# Enshrouded Mod Studio 0.4.33
 
-Herstellung verständlich erklärt
-- Die Rezeptanzeige enthält den Mengenfaktor bereits: Zeigt ein Rezept ×4,
-  liefert eine Herstellung insgesamt vier Stück. Der Faktor wird aus der
-  ursprünglichen Rezeptmenge berechnet.
-- Im Spiel bestätigt: Das getestete Rüstungsrezept lieferte bei Faktor 4
-  tatsächlich vier Teile. Weitere Rezepte und Herstellungszeiten bleiben
-  getrennt zu prüfen.
+Enshrouded Mod Studio 0.4.33
 
-Geprüfte Datenkorrekturen
-- Kisten und Rucksäcke verwenden vollständige Inventarreihen mit acht Plätzen.
-  Die eingestellte Grenze wird auf vollständige Reihen begrenzt; bestehende
-  Rucksack-Grundkapazität wird durch die Zusatzplatz-Option nicht verkleinert.
-- Herstellen ohne Rezeptkosten entfernt Material- und Wasserkosten und erhält
-  die ursprünglichen Freischaltungen, Stationsgegenstände und Überdachung.
-  Kochen bleibt ausgenommen; Altar-Upgrades sind optional und behalten ihre
-  Stufen-, Weltfortschritts- und NPC-Voraussetzungen.
-- Nicht darstellbare Mana-, Musikzeit-, Zauber-/Bogenanzeige- und Sammelwerte
-  werden vor dem Packen mit Option, Ressource und Feld benannt und abgewiesen.
-  Gültige Werte werden durch diese Prüfung nicht verändert.
+PROGRAMM INSTALLIEREN UND AUTOMATISCH AKTUALISIEREN
+- Das neue Setup installiert Studio als normales Programm mit Startmenueintrag
+  und einem Eintrag zum Deinstallieren in Windows. Administratorrechte sind
+  nicht erforderlich. Der Installationsordner kann ausgewaehlt werden.
+- Beim ersten Setup kannst du den bisherigen portablen Studioordner auswaehlen.
+  Profile, Auswahl, Einstellungen, Sicherungen, gepruefte Originalbasen und
+  passende private Patcherdateien werden uebernommen. Das Original bleibt
+  erhalten. Ohne bisheriges Setup ist weiterhin eine frische Einrichtung moeglich.
+- Beim Start prueft Studio automatisch auf eine neuere stabile Version und
+  installiert sie nach Anzeige der Aenderungen. Die kurze Wartezeit laesst
+  sich anhalten; mit Spaeter wird fuer diesen Start verschoben.
+- Unter Werkzeuge koennen automatische Programmupdates ausgeschaltet werden.
+  Update pruefen und Aenderungen dieser Version anzeigen bleiben verfuegbar.
+- Installierte Programme behalten beim Update denselben Ordner. Die bestehenden
+  Profile und Einstellungen bleiben dort erhalten. Portable ZIPs nutzen weiter
+  die gepruefte Datenuebernahme mit Rueckfall auf den bisherigen Ordner.
 
-Prüfumfang und Grenzen
-- Eigene Hintergrundtests prüfen Berechnungen, Zusammenspiel und Archivdaten.
-  Das bestätigt keine allgemeine Spielwirkung aller Einstellungen.
-- Vorhandene gespeicherte Kisten oder Rucksackinstanzen können weiterhin ihre
-  gespeicherte Größe verwenden; der Umgang damit ist im Spiel zu prüfen.
-- Ausdauer je Attributpunkt ist kein automatischer Ausdauerbonus je Level.
-  Fertigkeitspunkte verwenden den Levelanteil der Gesamtpunkteberechnung.
+KORREKTUREN UND PRUEFUNG
+- Die erkannte installierte Version stammt jetzt aus der laufenden Anwendung.
+  Die bisher fest eingetragene 0.4.30 konnte neuere vorhandene Versionen falsch
+  erkennen. Falls dein bisheriges Update deshalb abbricht: dieses Setup einmal
+  direkt herunterladen, das alte Studio schliessen und im Setup uebernehmen.
+- Laufende Patches und ungespeicherte Aenderungen werden nicht durch ein
+  automatisches Programmupdate unterbrochen. Fehlgeschlagene automatische
+  Versuche werden fuer dieselbe Version 30 Minuten verschoben.
+- Downloadadresse, Groesse und SHA-256 werden vor dem Installieren geprueft.
+  Bei Fehlern bleibt die bisherige Anwendung nutzbar.
+- Eigene Hintergrundtests pruefen Update-Metadaten, Einstellungen,
+  Datenuebernahme und Installer-Ruecknahme mit kuenstlichen Dateien.
+  Es wurden keine produktiven Profile, Spielstaende oder Spiele veraendert.
 
-
-Die drei neuen Begleitervorlagen werden gezielt im globalen Vorlagenkatalog registriert. Bestehende Clientverweise bleiben bei der Synchronisierung erhalten.
-
-**Update-Reihenfolge:** Manager 0.15.39 und Spielerclient 0.16.23 aktualisieren, dann Studio 0.4.32 verwenden, Serverprofil erneut anwenden und auf den Spieler-PCs synchronisieren. Profile und Einstellungen bleiben erhalten. Alte Studio-Pakete werden weiterhin unterstützt.
+SYNCHRONISATION
+Zuerst Manager 0.15.40 und Spielerclient 0.16.24 aktualisieren, danach Studio
+0.4.33 verwenden. Der neue Studio-Programmstand wird von beiden erkannt.
+Vorhandene aeltere Clientpakete bleiben unterstuetzt. Die Patch-Engine und
+die Spieloptionen wurden in dieser Programmversion nicht veraendert.

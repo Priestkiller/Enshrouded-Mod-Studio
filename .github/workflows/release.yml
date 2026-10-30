@@ -1,4 +1,4 @@
-name: Publish Mod Studio 0.4.32
+name: Publish Mod Studio 0.4.33
 on:
   push:
     branches: [main]
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release:
-    if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.32')"
+    if: "github.repository == 'Priestkiller/Enshrouded-Mod-Studio' && (github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'release: Mod Studio 0.4.33')"
     runs-on: windows-latest
     timeout-minutes: 15
     steps:

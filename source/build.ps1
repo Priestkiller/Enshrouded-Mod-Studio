@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Stop'
 $studioRoot = Split-Path -Parent $PSScriptRoot
 $studioFramework = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319'
 $studioCompiler = Join-Path $studioFramework 'csc.exe'
@@ -22,6 +22,8 @@ foreach ($studioReference in $studioReferences) { $studioCompileArgs += '/refere
 $studioCompileArgs += @((Join-Path $PSScriptRoot 'Core.cs'), (Join-Path $PSScriptRoot 'App.cs'), (Join-Path $PSScriptRoot 'SelfTests.cs'), (Join-Path $PSScriptRoot 'AssemblyInfo.cs'), (Join-Path $PSScriptRoot 'ServerReview.cs'), (Join-Path $PSScriptRoot 'SetupTransfer.cs'), (Join-Path $PSScriptRoot 'PatchRun.cs'), (Join-Path $PSScriptRoot 'ClientProfiles.cs'))
 $studioCompileArgs += @((Join-Path $PSScriptRoot 'BasisStatus.cs'), (Join-Path $PSScriptRoot 'BasisReview.cs'))
 $studioCompileArgs += @((Join-Path $PSScriptRoot 'StackStatus.cs'), (Join-Path $PSScriptRoot 'StackReview.cs'))
+$studioCompileArgs += (Join-Path $PSScriptRoot 'UserInstallState.cs')
+$studioCompileArgs += (Join-Path $PSScriptRoot 'StartupUpdates.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateCheck.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'UpdateInstaller.cs')
 $studioCompileArgs += (Join-Path $PSScriptRoot 'RuntimeImport.cs')

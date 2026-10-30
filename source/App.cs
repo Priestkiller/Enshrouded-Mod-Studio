@@ -41,6 +41,8 @@ namespace EnshroudedStudio
         private bool installingUpdate;
         private bool windowClosed;
         private bool testMode;
+        private bool startupProcessed;
+        private bool updateHandoff;
         private int runtimeMissingCount;
         private Process engineProcess;
         private bool directUpdate;
@@ -67,9 +69,9 @@ namespace EnshroudedStudio
 
         public T Find<T>(string name) where T : class { return Window.FindName(name) as T; }
         public static Brush Brush(string hex) { return (Brush)new BrushConverter().ConvertFromString(hex); }
-        public StudioWindow(StudioStore store, bool testing)
+        public StudioWindow(StudioStore store, bool testing, bool afterUpdate = false)
         {
-            Store = store; testMode = testing;
+            Store = store; testMode = testing; updateHandoff = afterUpdate;
             runtimeMissingCount = testMode ? 0 : RuntimeImport.CountExpectedMissing(store.AppRoot);
             using (var stream = File.OpenRead(Path.Combine(store.AppRoot, "assets", "MainWindow.xaml"))) Window = (Window)XamlReader.Load(stream);
             FitWindowToWorkArea(SystemParameters.WorkArea);
@@ -141,7 +143,7 @@ namespace EnshroudedStudio
             Window.PreviewKeyDown += delegate(object sender, KeyEventArgs e)
             {
                 if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.F) { search.Focus(); search.SelectAll(); e.Handled = true; }
-                else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S && !patcherRunning) { Act(SaveCurrent); e.Handled = true; }
+                else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S && !patcherRunning && !installingUpdate) { Act(SaveCurrent); e.Handled = true; }
                 else if (e.Key == Key.Escape && search.IsKeyboardFocusWithin && search.Text.Length > 0) { search.Clear(); e.Handled = true; }
             };
             Find<Button>("SetupRuntime").Click += delegate { Act(SetupPatcherRuntime); };
@@ -157,7 +159,7 @@ namespace EnshroudedStudio
                     "Die erste Basis entspricht den aktuellen Dateien. Vorhandene ältere Mods sind darin enthalten. Für einen sauberen Anfang zuerst die Steam-Dateiprüfung verwenden. Nach Spielupdates eine neue Basis wählen; alte Backups bleiben erhalten.\n\n" +
                     "Spätere Profile werden aus derselben gespeicherten Basis erstellt. Alle Mods aus bereitet diese Basis vor. Gespeicherte Basis wiederherstellen nimmt die Änderungen dieses Tools zurück.\n\n" +
                     "Serverwerte prüfen liest enshrouded_server.json. Bereits gespeicherte 1000%-Werte werden nicht automatisch zurückgesetzt.\n\n" +
-                    "‚Update prüfen‘ installiert neuere Tool-Versionen und übernimmt Profile, Einstellungen und Sicherungen automatisch. Das bisherige Studio bleibt als Rückfall erhalten. Beim erstmaligen Wechsel von einer älteren Version ‚Altes Setup übernehmen‘ verwenden. Für Steam-Spielupdates die Erklärung unter Werkzeuge lesen.\n\n" +
+                    "Beim Programmstart werden neuere Tool-Versionen automatisch geprüft. Vor der Installation erscheinen die Änderungen und eine kurze Wartezeit zum Verschieben. Unter Werkzeuge kannst du automatische Updates ausschalten. Profile, Einstellungen und Sicherungen bleiben erhalten. ‚Update prüfen‘ startet die Prüfung jederzeit manuell. Für Steam-Spielupdates die Erklärung unter Werkzeuge lesen.\n\n" +
                     "Profile/Sicherungen: Data\\profiles, Data\\backups. Archivbasis und Prüfprotokolle: Data\\patches. Engine: 1.2.3 mit Mod-Studio-Ergänzungen. Die Spielwirkung einzelner Optionen bleibt live zu prüfen.",
                     "Hinweise zu Enshrouded Mod Studio", MessageBoxButton.OK, MessageBoxImage.Information);
             };
@@ -196,6 +198,7 @@ namespace EnshroudedStudio
             };
             if (!testing) timer.Start();
             Window.Closed += delegate { windowClosed = true; timer.Stop(); if (engineProcess != null) engineProcess.Dispose(); };
+            Window.ContentRendered += async delegate { await ProcessStartupUpdateAsync(); };
         }
         public void Act(Action action)
         {
@@ -207,9 +210,26 @@ namespace EnshroudedStudio
                 else throw;
             }
         }
-        private async void CheckForUpdates()
+        private async Task ProcessStartupUpdateAsync()
         {
-            if (patcherRunning || checkingUpdates) return;
+            if (startupProcessed || testMode) return;
+            startupProcessed = true;
+            // Portable handoff must finish before opening a modal changelog.
+            for (int i = 0; !Window.IsEnabled && !windowClosed && i < 200; i++) await Task.Delay(250);
+            if (windowClosed || !Window.IsEnabled) return;
+            try
+            {
+                StartupUpdates.EnsureBundledNotes(Store.AppRoot, Store.DataRoot, UpdateCheck.InstalledVersion);
+                StartupUpdates.ShowInstalledNotes(Window, Store.DataRoot, UpdateCheck.InstalledVersion, false);
+                string warning; bool enabled = StartupUpdates.AutomaticEnabled(Store.DataRoot, out warning);
+                if (warning != null) notice.Text = warning;
+                if (StartupUpdates.ShouldCheck(enabled, updateHandoff, testMode, windowClosed, patcherRunning || installingUpdate || checkingUpdates, Dirty, false)) CheckForUpdates(true);
+            }
+            catch (Exception ex) { if (!windowClosed) notice.Text = "Startupdate verschoben: " + ex.Message + " Über ‚Update prüfen‘ erneut versuchen."; }
+        }
+        private async void CheckForUpdates(bool automatic = false)
+        {
+            if (patcherRunning || checkingUpdates || installingUpdate || windowClosed || (automatic && Dirty)) return;
             if (testMode) { notice.Text = "Die Online-Updateprüfung ist im Testmodus deaktiviert."; return; }
             checkingUpdates = true; UpdateCheckButtonState();
             status.Text = "Updateprüfung läuft …";
@@ -217,33 +237,50 @@ namespace EnshroudedStudio
             {
                 var result = await UpdateCheck.CheckAsync(Store.AppRoot);
                 if (windowClosed) return;
-                if (patcherRunning) return;
+                if (patcherRunning || (automatic && Dirty)) { notice.Text = "Updateprüfung verschoben. Nach dem Patch oder Speichern ‚Update prüfen‘ verwenden."; return; }
                 if (result.NoRelease)
                 {
                     status.Text = "Noch keine öffentliche Version gefunden";
-                    MessageBox.Show(Window, "Für dieses Mod Studio ist auf GitHub noch keine öffentliche stabile Version verfügbar. Bitte später erneut prüfen.", "Update prüfen", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (!automatic) MessageBox.Show(Window, "Für dieses Mod Studio ist auf GitHub noch keine öffentliche stabile Version verfügbar. Bitte später erneut prüfen.", "Update prüfen", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else if (!result.IsNewer)
                 {
                     status.Text = "Mod Studio ist aktuell";
-                    MessageBox.Show(Window, "Installiert: " + UpdateCheck.DisplayVersion(result.InstalledVersion) + "\nNeueste stabile Version: " + UpdateCheck.DisplayVersion(result.LatestVersion) + "\n\nDu verwendest bereits diese oder eine neuere Version.", "Mod Studio ist aktuell", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (!automatic) MessageBox.Show(Window, "Installiert: " + UpdateCheck.DisplayVersion(result.InstalledVersion) + "\nNeueste stabile Version: " + UpdateCheck.DisplayVersion(result.LatestVersion) + "\n\nDu verwendest bereits diese oder eine neuere Version.", "Mod Studio ist aktuell", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
                     status.Text = "Update verfügbar: " + UpdateCheck.DisplayVersion(result.LatestVersion);
-                    if (UpdateCheck.ShowDownloadDialog(Window, result))
+                    bool installedMode = UGSM.Installation.UserInstallState.IsRegistered("Enshrouded.ModStudio", Store.AppRoot);
+                    string nextVersion = UpdateCheck.DisplayVersion(result.LatestVersion);
+                    if (automatic && (!StartupUpdates.MayInstallAutomatically(result, windowClosed, patcherRunning, Dirty, installedMode) || !StartupUpdates.CanAttemptAutomatically(Store.DataRoot, nextVersion, DateTime.UtcNow)))
+                    { notice.Text = "Neue Version verfügbar. Automatisches Update verschoben; über ‚Update prüfen‘ erneut versuchen."; return; }
+                    if (UpdateCheck.ShowDownloadDialog(Window, result, automatic, installedMode))
                     {
+                        if (windowClosed || patcherRunning || (automatic && Dirty)) return;
                         SaveCurrent();
                         if (Store.LoadErrors.Count > 0) throw new InvalidDataException("Einige Profile konnten nicht geladen werden. Bitte diese vor dem automatischen Update korrigieren: " + string.Join(" · ", Store.LoadErrors));
+                        StartupUpdates.RecordAttempt(Store.DataRoot, nextVersion, DateTime.UtcNow);
                         installingUpdate = true; SetLocked(true);
                         var bar = Find<ProgressBar>("PatchProgress"); bar.Visibility = Visibility.Visible; bar.IsIndeterminate = false; bar.Value = 0;
                         var reporter = new Progress<UpdateInstallProgress>(delegate(UpdateInstallProgress value) {
                             if (windowClosed) return; status.Text = value.Message; bar.Value = value.Percent;
-                            notice.Text = "Neue Tool-Version wird installiert. Profile, Einstellungen und Archivbasen werden automatisch übernommen. Das bisherige Studio bleibt als Sicherung erhalten.";
+                            notice.Text = "Neue Tool-Version wird installiert. Profile, Einstellungen und Archivbasen bleiben erhalten.";
                         });
-                        var installed = await UpdateInstaller.InstallAsync(result, Store.AppRoot, Store.DataRoot, reporter);
-                        status.Text = "Neue Version starten und Profile prüfen …";
-                        await ToolHandoff.StartAndConfirmAsync(installed, Store);
+                        if (installedMode)
+                        {
+                            string setup = await UpdateInstaller.DownloadInstalledSetupAsync(result, Store.DataRoot, reporter);
+                            StartupUpdates.RecordInstalled(Store.DataRoot, result);
+                            status.Text = "Installer übernimmt und startet die neue Version …";
+                            await StartupUpdates.StartInstalledUpdateAsync(setup);
+                        }
+                        else
+                        {
+                            var installed = await UpdateInstaller.InstallAsync(result, Store.AppRoot, Store.DataRoot, reporter);
+                            StartupUpdates.RecordInstalled(installed.DataRoot, result);
+                            status.Text = "Neue Version starten und Profile prüfen …";
+                            await ToolHandoff.StartAndConfirmAsync(installed, Store);
+                        }
                         installingUpdate = false; Dirty = false; Window.Close();
                     }
                 }
@@ -253,7 +290,8 @@ namespace EnshroudedStudio
                 if (!windowClosed && !patcherRunning)
                 {
                     status.Text = installingUpdate ? "Tool-Update nicht abgeschlossen" : "Updateprüfung nicht möglich";
-                    MessageBox.Show(Window, ex.Message, "Update prüfen", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    notice.Text = ex.Message + (automatic ? " Das Studio bleibt nutzbar; über ‚Update prüfen‘ erneut versuchen." : "");
+                    if (!automatic) MessageBox.Show(Window, ex.Message, "Update prüfen", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             finally { bool wasInstalling = installingUpdate; installingUpdate = false; checkingUpdates = false; if (!windowClosed) { if (wasInstalling) SetLocked(false); UpdateCheckButtonState(); } }
@@ -915,6 +953,15 @@ namespace EnshroudedStudio
         private void RenderSettings()
         {
             var panel = new StackPanel();
+            panel.Children.Add(new TextBlock { Text = "Programmupdates", FontSize = 21, FontWeight = FontWeights.SemiBold });
+            string updateWarning;
+            var automaticUpdates = new CheckBox { Content = "Beim Programmstart automatisch aktualisieren", IsChecked = StartupUpdates.AutomaticEnabled(Store.DataRoot, out updateWarning), FontSize = 16, Margin = new Thickness(0, 7, 0, 8) };
+            automaticUpdates.Click += delegate { Act(delegate { StartupUpdates.SetAutomatic(Store.DataRoot, automaticUpdates.IsChecked == true); notice.Text = automaticUpdates.IsChecked == true ? "Automatische Updates sind beim nächsten Programmstart eingeschaltet." : "Automatische Updates sind ausgeschaltet. ‚Update prüfen‘ bleibt verfügbar."; }); };
+            panel.Children.Add(automaticUpdates);
+            panel.Children.Add(Readable(updateWarning ?? "Neue Versionen werden mit ihren Änderungen angezeigt und nach kurzer Wartezeit installiert. Du kannst die Wartezeit anhalten oder das Update verschieben. Während eines Patches und bei ungespeicherten Änderungen startet keine automatische Installation.", 15, "#D1DFED"));
+            var checkUpdate = new Button { Content = "Jetzt nach Programmupdates suchen", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 12, 0, 8) }; checkUpdate.Click += delegate { CheckForUpdates(); }; panel.Children.Add(checkUpdate);
+            var showChanges = new Button { Content = "Änderungen dieser Version anzeigen", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 0, 0, 18) };
+            showChanges.Click += delegate { Act(delegate { StartupUpdates.EnsureBundledNotes(Store.AppRoot, Store.DataRoot, UpdateCheck.InstalledVersion); StartupUpdates.ShowInstalledNotes(Window, Store.DataRoot, UpdateCheck.InstalledVersion, true); }); }; panel.Children.Add(showChanges);
             panel.Children.Add(new TextBlock { Text = "Patcher einrichten – Erstinstallation", FontSize = 21, FontWeight = FontWeights.SemiBold });
             panel.Children.Add(Readable("Du brauchst kein altes Studio. Die Einrichtung liest das geprüfte Originalpaket 1.2.3 und ergänzt nur fehlende Programmdateien. Profile, Archivbasen und Spieldateien bleiben dabei unberührt.", 15, "#D1DFED"));
             var setupRuntime = new Button { Content = "Patcher einrichten …", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 12, 0, 20) }; setupRuntime.Click += delegate { Act(SetupPatcherRuntime); }; panel.Children.Add(setupRuntime);
@@ -1003,14 +1050,24 @@ namespace EnshroudedStudio
             try
             {
                 string root = AppDomain.CurrentDomain.BaseDirectory;
-                if (args.Length == 0 && ToolHandoff.TryForward(root)) return 0;
+                if (args.Length > 0 && args[0] == "--import-portable")
+                {
+                    try
+                    {
+                        if (args.Length != 2) throw new InvalidDataException("Der bisherige Studioordner fehlt.");
+                        UpdateInstaller.ImportPortableSetup(args[1], root, null); return 0;
+                    }
+                    catch (Exception error) { string message = error.Message; Console.Error.WriteLine(message.Substring(0, Math.Min(4000, message.Length))); return 2; }
+                }
+                if (args.Length == 0 && !UGSM.Installation.UserInstallState.IsRegistered("Enshrouded.ModStudio", root) && ToolHandoff.TryForward(root)) return 0;
                 if (args.Length > 0 && args[0] == "--self-test") return SelfTests.Run(root, args.Length > 1 ? args[1] : Path.Combine(root, "test-report.txt"));
                 bool preview = args.Length > 0 && args[0] == "--preview";
                 if (preview && args.Length < 2) throw new ArgumentException("--preview benötigt einen PNG-Pfad.");
                 string data = preview ? Path.Combine(Path.GetDirectoryName(Path.GetFullPath(args[1])), "preview-data-" + Guid.NewGuid().ToString("N")) : Path.Combine(root, "Data");
                 var store = new StudioStore(root, data); store.Load();
                 var app = new Application();
-                var ui = new StudioWindow(store, preview);
+                bool afterUpdate = args.Length > 0 && (args[0] == "--update-startup" || args[0] == "--after-update");
+                var ui = new StudioWindow(store, preview, afterUpdate);
                 if (args.Length > 0 && args[0] == "--update-startup")
                 {
                     if (args.Length != 2) throw new ArgumentException("Startbestätigung fehlt.");

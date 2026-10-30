@@ -58,6 +58,31 @@ namespace EnshroudedStudio
                 delegate(string destination) { Download(release, destination, progress); }, RuntimeImport.Import); });
         }
 
+        public static Task<string> DownloadInstalledSetupAsync(UpdateResult release, string dataRoot, IProgress<UpdateInstallProgress> progress)
+        {
+            if (release == null || !release.IsNewer || !release.InstallerAvailable || !UpdateCheck.IsAllowedInstallerUrl(release.Repository, release.ReleaseTag, release.InstallerAssetName, release.InstallerDownloadUrl))
+                throw new InvalidDataException("Für diese installierte Version ist kein geprüfter Installer verfügbar.");
+            return Task.Run(delegate {
+                string directory = Path.Combine(dataRoot, "updates", "setup-downloads"); NoLinks(directory); Directory.CreateDirectory(directory);
+                string file = Path.Combine(directory, "studio-" + UpdateCheck.DisplayVersion(release.LatestVersion) + "-" + release.InstallerSha256.Substring(0, 12) + ".exe"); NoLinks(file);
+                var selected = new UpdateResult { Repository = release.Repository, ReleaseTag = release.ReleaseTag, InstalledVersion = release.InstalledVersion, LatestVersion = release.LatestVersion,
+                    DownloadUrl = release.InstallerDownloadUrl, AssetName = release.InstallerAssetName, AssetSize = release.InstallerAssetSize, Sha256 = release.InstallerSha256 };
+                if (File.Exists(file))
+                {
+                    try { VerifyArchive(file, selected); return file; }
+                    catch (InvalidDataException) { File.Delete(file); }
+                }
+                string temporary = file + ".part-" + Guid.NewGuid().ToString("N");
+                try
+                {
+                    Download(selected, temporary, progress);
+                    if (File.Exists(file)) VerifyArchive(file, selected);
+                    else File.Move(temporary, file);
+                    return file;
+                }
+                finally { try { if (File.Exists(temporary)) File.Delete(temporary); } catch { } }
+            });
+        }
         // Offline integration API: exactly the same digest, package, migration and
         // runtime checks as InstallAsync. Reads old EXE metadata, not this DLL's version.
         public static UpdateInstallResult InstallFromZip(string zipFile, UpdateResult release, string oldAppRoot, string oldDataRoot, IProgress<UpdateInstallProgress> progress)
@@ -443,6 +468,50 @@ namespace EnshroudedStudio
             NoLinks(work); Directory.Delete(work,true);
         }
 
+        // Invoked by the checked first-install Setup on its extracted application.
+        // Copies user data only; never applies a game patch or starts the game.
+        public static UpdateInstallResult ImportPortableSetup(string oldAppRoot, string newAppRoot, IProgress<UpdateInstallProgress> progress)
+        { return ImportPortableSetupCore(oldAppRoot, newAppRoot, progress, RuntimeImport.Import); }
+        private static UpdateInstallResult ImportPortableSetupCore(string oldAppRoot, string newAppRoot, IProgress<UpdateInstallProgress> progress, Func<string,string,int> importRuntime)
+        {
+            string oldRoot = Full(oldAppRoot), target = Full(newAppRoot); NoLinks(oldRoot); NoLinks(target);
+            if (!Directory.Exists(oldRoot) || !File.Exists(Path.Combine(oldRoot, ExecutableName)) || !Directory.Exists(target) || !File.Exists(Path.Combine(target, ExecutableName)) || Same(oldRoot, target) || oldRoot.StartsWith(target + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) || target.StartsWith(oldRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("Bitte einen anderen vollständigen bisherigen Studioordner wählen; Quelle und neues Programm dürfen nicht ineinander liegen.");
+            string oldData = Path.Combine(oldRoot, "Data"), data = Path.Combine(target, "Data");
+            if (!Directory.Exists(oldData)) throw new InvalidDataException("Im bisherigen Studioordner fehlen die persönlichen Daten unter Data.");
+            if (Directory.Exists(data) || File.Exists(data)) throw new InvalidDataException("Die neue Installation enthält bereits Data. Vorhandene Einstellungen werden nicht überschrieben.");
+            var plan = PlanData(oldData); NoPending(plan);
+            string oldConfig = Path.Combine(oldRoot, "engine", "config.json"), newConfig = Path.Combine(target, "engine", "config.json"); NoLinks(oldConfig); NoLinks(newConfig);
+            string configHash = File.Exists(oldConfig) ? Hash(oldConfig) : null;
+            if (File.Exists(newConfig) || Directory.Exists(newConfig)) throw new InvalidDataException("Die neue Installation enthält bereits eine Engine-Konfiguration. Diese wird nicht überschrieben.");
+            string work = Child(target, ".studio-update-" + Guid.NewGuid().ToString("N")), stagedData = Path.Combine(work, "Data");
+            ValidateCopyDestinations(plan, stagedData); ValidateCopyDestinations(plan, data); FreeSpace(target, plan.Bytes + 128L * 1024 * 1024);
+            var result = new UpdateInstallResult { AppRoot = target, DataRoot = data, DataBytesCopied = plan.Bytes };
+            try
+            {
+                Directory.CreateDirectory(work); CopyTree(plan, stagedData, progress);
+                result.ProfilesCopied = ValidateProfiles(target, stagedData); result.BasesCopied = ValidateBases(stagedData);
+                if (configHash != null) { var store = new StudioStore(target, stagedData); store.NormalizeForEditing(ReadJson(oldConfig)); }
+                AssertUnchanged(plan, oldData); ArchivePreviewLinks(stagedData, result);
+                string forwarding = Path.Combine(stagedData, "installed-tool-update.json");
+                if (File.Exists(forwarding))
+                {
+                    string archive = Path.Combine(stagedData, "updates", "portable-forwarder-" + Guid.NewGuid().ToString("N") + ".original.json");
+                    Directory.CreateDirectory(Path.GetDirectoryName(archive)); File.Move(forwarding, archive);
+                }
+                result.RuntimeFilesCopied = importRuntime(oldRoot, target);
+                if (configHash != null)
+                {
+                    string configCopy = Path.Combine(work, "config.json"); File.Copy(oldConfig, configCopy, false);
+                    if (Hash(configCopy) != configHash || Hash(oldConfig) != configHash) throw new IOException("Die bisherige Engine-Konfiguration wurde während der Übernahme verändert.");
+                    Directory.CreateDirectory(Path.GetDirectoryName(newConfig)); File.Move(configCopy, newConfig);
+                }
+                AssertUnchanged(plan, oldData); NoLinks(data); Directory.Move(stagedData, data);
+                return result;
+            }
+            finally { DeleteWork(target, work); }
+        }
+
         private static UpdateInstallResult InstallCore(UpdateResult release,string oldAppRoot,string oldDataRoot,IProgress<UpdateInstallProgress> progress,Action<string> obtainZip,Func<string,string,int> importRuntime)
         {
             string oldRoot=Full(oldAppRoot), oldData=Full(oldDataRoot); NoLinks(oldRoot); NoLinks(oldData);
@@ -583,6 +652,15 @@ namespace EnshroudedStudio
             check(installed.BasesCopied==1&&basisHashes.All(pair=>Hash(Path.Combine(installed.DataRoot,"patches","targets",new string('a',20),"basis-1",pair.Key))==(string)pair.Value)&&ReadJson(Path.Combine(installed.DataRoot,"patches","targets",new string('a',20),"state.json"))["unknownFixtureState"].Equals("KEEP"),"Auto-Update erhält die geprüften Originalbasen, ihren Zustand und unbekannte Metadaten trotz ausgelassener Arbeitsordner");
             var repeated=InstallCore(release,old,oldData,null,delegate(string target){CopyVerifiedArchive(good,target,release);},delegate(string from,string to){return 0;});
             check(repeated.AppRoot!=installed.AppRoot&&File.Exists(installed.ExecutablePath)&&File.Exists(repeated.ExecutablePath)&&Hash(installed.ExecutablePath)==installed.ExecutableSha256,"Auto-Update verwendet beim Wiederholen einen neuen Ordner und erhält die vorherige vorbereitete Version");
+            string portableTarget=Path.Combine(root,"first-setup");Extract(good,portableTarget);
+            File.WriteAllText(Path.Combine(oldData,"installed-tool-update.json"),"{\"executable\":\"old-portable-copy.exe\"}");
+            var firstSetup=ImportPortableSetupCore(old,portableTarget,null,delegate(string from,string to){Directory.CreateDirectory(Path.Combine(to,"engine","vendor"));File.WriteAllText(Path.Combine(to,"engine","vendor","fixture.bytecode"),"CHECKED PRIVATE RUNTIME FIXTURE");return 1;});
+            var firstStore=new StudioStore(portableTarget,firstSetup.DataRoot);firstStore.Load();
+            check(firstSetup.ProfilesCopied==sourceStore.Profiles.Count&&firstSetup.BasesCopied==1&&firstStore.LastId==sourceStore.LastId&&firstStore.Profiles.Any(p=>p.Config.ContainsKey("updateUnknownFixture"))&&File.ReadAllText(Path.Combine(firstSetup.DataRoot,"backups","custom.txt"))=="KEEP BACKUP"&&firstSetup.RuntimeFilesCopied==1,"Erstes Setup übernimmt Profil-IDs, Auswahl, unbekannte Einstellungen, Sicherungen, geprüfte Basen und private Runtime");
+            check(File.Exists(Path.Combine(oldData,"installed-tool-update.json"))&&!File.Exists(Path.Combine(firstSetup.DataRoot,"installed-tool-update.json"))&&Directory.GetFiles(Path.Combine(firstSetup.DataRoot,"updates"),"portable-forwarder-*.original.json").Length==1&&Hash(Path.Combine(portableTarget,"engine","config.json"))==configHash&&File.Exists(longGenerated),"Erstes Setup archiviert alte Weiterleitungen, erhält die Engine-Konfiguration und lässt das portable Original unverändert");
+            check(Rejected(delegate{ImportPortableSetupCore(old,portableTarget,null,delegate(string from,string to){throw new Exception("must not run");});}),"Erstes Setup überschreibt niemals einen vorhandenen Data-Ordner");
+            string refused=Path.Combine(root,"blocked-first-setup");Extract(good,refused);File.WriteAllText(transaction,"{\"status\":\"running\"}");
+            check(Rejected(delegate{ImportPortableSetupCore(old,refused,null,delegate(string from,string to){throw new Exception("must not run");});})&&!Directory.Exists(Path.Combine(refused,"Data")),"Erstes Setup blockiert laufende Archivvorgänge vor der Datenübernahme");File.WriteAllText(transaction,"{\"status\":\"committed\",\"unknown\":123}");
             string extracted=Path.Combine(root,"wrong-version");Extract(good,extracted);var wrong=new UpdateResult{LatestVersion=UpdateCheck.ParseVersion("99.0.0"),Repository=repository};check(Rejected(delegate{ValidatePackage(extracted,wrong,false);}),"Auto-Update lehnt falsche EXE- und Paketversionen ab");
             }
             finally { DeleteFixture(fixtureParent,root); }
