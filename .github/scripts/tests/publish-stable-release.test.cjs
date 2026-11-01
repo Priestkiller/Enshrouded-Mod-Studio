@@ -8,17 +8,19 @@ const publisher = require('../publish-stable-release.cjs');
 const { APPS, sha256, namesFor, parseManifest, reconstructAssets, assertRemoteAssets, releaseBody, assertResumableDraft, assertUpdaterRelease, publish } = publisher;
 const clone = value => JSON.parse(JSON.stringify(value));
 const digest = 'a'.repeat(64);
+const draftToken = 'untagged-0eace0d698646b1fa024';
 function fixture(app = 'studio') {
   const version = { studio: '0.4.34', player: '0.16.27', manager: '0.15.45' }[app];
   const bytes = Buffer.from(`fixture for ${app}`); const hash = sha256(bytes);
   return { schemaVersion: 1, app, repository: APPS[app].repository, visibility: APPS[app].visibility, version, releaseTag: `v${version}`, releaseName: `${app} ${version}`, sourceCommit: 'b'.repeat(40), notes: 'Release fixture notes.', assets: namesFor(app, version).map(name => ({ name, size: bytes.length, sha256: hash, parts: [{ path: `.github/stable-release-parts/${hash}.bin`, size: bytes.length, sha256: hash }] })) };
 }
 function parse(manifest) { return parseManifest(JSON.stringify(manifest), manifest.repository); }
-function remoteAsset(asset, manifest, id = 1) {
-  return { id, name: asset.name, size: asset.size, digest: `sha256:${asset.sha256}`, state: 'uploaded', url: `https://api.github.com/repos/${manifest.repository}/releases/assets/${id}`, browser_download_url: `https://github.com/${manifest.repository}/releases/download/${manifest.releaseTag}/${asset.name}` };
+function remoteAsset(asset, manifest, id = 1, downloadTag = manifest.releaseTag) {
+  return { id, name: asset.name, size: asset.size, digest: `sha256:${asset.sha256}`, state: 'uploaded', url: `https://api.github.com/repos/${manifest.repository}/releases/assets/${id}`, browser_download_url: `https://github.com/${manifest.repository}/releases/download/${downloadTag}/${asset.name}` };
 }
 function release(manifest, draft = false) {
-  return { id: 101, tag_name: manifest.releaseTag, target_commitish: manifest.sourceCommit, name: manifest.releaseName, body: releaseBody(manifest, digest), draft, prerelease: false, html_url: `https://github.com/${manifest.repository}/releases/tag/${manifest.releaseTag}`, assets: manifest.assets.map((asset, index) => remoteAsset(asset, manifest, index + 1)) };
+  const downloadTag = draft ? draftToken : manifest.releaseTag;
+  return { id: 101, tag_name: manifest.releaseTag, target_commitish: manifest.sourceCommit, name: manifest.releaseName, body: releaseBody(manifest, digest), draft, prerelease: false, html_url: `https://github.com/${manifest.repository}/releases/tag/${downloadTag}`, assets: manifest.assets.map((asset, index) => remoteAsset(asset, manifest, index + 1, downloadTag)) };
 }
 for (const app of Object.keys(APPS)) test(`${app}: manifest and updater response parse with standard asset names`, () => {
   const manifest = parse(fixture(app)); const response = release(manifest);
@@ -82,16 +84,57 @@ test('resume accepts only the exact bound draft and never a published release', 
   for (const change of [{ draft: false }, { prerelease: true }, { target_commitish: 'c'.repeat(40) }, { body: 'Other publisher' }, { name: 'Other title' }]) assert.throws(() => assertResumableDraft({ ...draft, ...change }, manifest, digest));
   draft.assets[0].digest = `sha256:${'f'.repeat(64)}`; assert.throws(() => assertResumableDraft(draft, manifest, digest), /Remote bytes differ/);
 });
+test('draft assets use one exact untagged token bound to the draft release URL', () => {
+  const manifest = parse(fixture());
+  assert.doesNotThrow(() => assertResumableDraft(release(manifest, true), manifest, digest));
+  for (const mutate of [
+    response => { response.assets[0].browser_download_url += '?download=1'; },
+    response => { response.assets[0].browser_download_url += '#fragment'; },
+    response => { response.assets[0].browser_download_url = response.assets[0].browser_download_url.replace(manifest.repository, 'Other/Repository'); },
+    response => { response.assets[0].browser_download_url = response.assets[0].browser_download_url.replace('github.com/', 'github.com.evil.test/'); },
+    response => { response.assets[0].browser_download_url = response.assets[0].browser_download_url.replace(response.assets[0].name, 'wrong.zip'); },
+    response => { response.assets[0].browser_download_url = response.assets[0].browser_download_url.replace(draftToken, 'untagged-11111111111111111111'); },
+    response => { response.html_url = response.html_url.replace(manifest.repository, 'Other/Repository'); },
+    response => { response.html_url += '?extra=1'; },
+    response => { response.html_url = response.html_url.replace(draftToken, 'untagged-1234'); },
+    response => { response.html_url = response.html_url.replace(draftToken, 'untagged-0EACE0D698646B1FA024'); },
+  ]) {
+    const response = release(manifest, true); mutate(response);
+    assert.throws(() => assertResumableDraft(response, manifest, digest));
+  }
+});
+test('published updater response rejects untagged URLs even when all assets agree', () => {
+  const manifest = parse(fixture()); const response = release(manifest, true);
+  response.draft = false;
+  assert.throws(() => assertUpdaterRelease(response, manifest), /Remote browser asset URL/);
+  response.draft = 'true';
+  assert.throws(() => assertRemoteAssets(response, manifest, true), /Remote browser asset URL/);
+});
+test('observed Studio draft 430830219 validates all four real server asset digests and URLs', () => {
+  const observed = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/studio-draft-observed.json'), 'utf8'));
+  const manifest = parse(observed.manifest);
+  assert.equal(observed.release.id, 430830219);
+  assert.equal(observed.release.assets.length, 4);
+  assertResumableDraft(observed.release, manifest, observed.manifestSha256);
+  assertRemoteAssets(observed.release, manifest, true);
+  const prematureFinal = clone(observed.release); prematureFinal.draft = false;
+  assert.throws(() => assertUpdaterRelease(prematureFinal, manifest), /Remote browser asset URL/);
+});
 function publicationHarness(manifest, initial, corrupt = false) {
   let current = initial && clone(initial); let writes = 0; const uploads = []; const calls = [];
   const api = (endpoint, method = 'GET', body) => {
     calls.push({ endpoint, method, body });
     if (endpoint === `repos/${manifest.repository}`) return { full_name: manifest.repository, visibility: manifest.visibility, private: manifest.visibility === 'private' };
     if (method === 'POST') { writes++; current = { ...release(manifest, true), ...body, assets: [] }; return clone(current); }
-    if (method === 'PATCH') { writes++; assert.equal(body.make_latest, 'true'); assert.equal(current.assets.length, manifest.assets.length); current.draft = false; current.prerelease = false; return clone(current); }
+    if (method === 'PATCH') {
+      writes++; assert.equal(body.make_latest, 'true'); assert.equal(current.assets.length, manifest.assets.length); current.draft = false; current.prerelease = false;
+      current.html_url = `https://github.com/${manifest.repository}/releases/tag/${manifest.releaseTag}`;
+      for (const asset of current.assets) asset.browser_download_url = `https://github.com/${manifest.repository}/releases/download/${manifest.releaseTag}/${asset.name}`;
+      return clone(current);
+    }
     return clone(current);
   };
-  const upload = asset => { uploads.push(asset.name); const remote = remoteAsset(asset, manifest, current.assets.length + 1); if (corrupt) remote.digest = `sha256:${'f'.repeat(64)}`; current.assets.push(remote); };
+  const upload = asset => { uploads.push(asset.name); const remote = remoteAsset(asset, manifest, current.assets.length + 1, current.html_url.split('/').at(-1)); if (corrupt) remote.digest = `sha256:${'f'.repeat(64)}`; current.assets.push(remote); };
   return { api, read: () => initial, upload, calls, uploads, writes: () => writes };
 }
 test('publication creates a draft, verifies all digests, then publishes as latest stable', () => {

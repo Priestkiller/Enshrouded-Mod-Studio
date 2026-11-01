@@ -1,0 +1,133 @@
+{
+  "description": "Observed GitHub draft response for Studio release 430830219, restricted to publication parser fields.",
+  "manifest": {
+    "schemaVersion": 1,
+    "app": "studio",
+    "repository": "Priestkiller/Enshrouded-Mod-Studio",
+    "visibility": "public",
+    "version": "0.4.34",
+    "releaseTag": "v0.4.34",
+    "releaseName": "Enshrouded Mod Studio 0.4.34",
+    "sourceCommit": "9811f1728304e739758b811f6fe7540534acf402",
+    "notes": "Mod Studio 0.4.34 – private Testfassung\n\nSieben Nachtpflanzen mit Setzlingen, eigener Wachstums- und Erntekette.\nEigener Drak-Handwerker nach Schmied-Freischaltung, mit drei ewigen Zaubern.\nSpeerkrieger: 8 Schuppen + 2 Krallen. Chakramjäger: 8 Schuppen + 2 Zähne.\nMagier: 8 Schuppen + 3 Blut + 1 Aquamarin. Native Drak-/Pflanzenbilder.\nNeue Manager-/Spielerclient-Worker-Unterstützung für die automatische Verteilung.\n\nHintergrundtests und vollständige native Server-/Client-Archivprüfungen bestanden.\nKeine laufende Spielpartie, kein Spielstand und keine produktive Installation verändert.\nPlatzierung, Ernte, Speichern/Laden und Kampf im Spiel müssen noch geprüft werden.\n\nAnleitung: NACHTPFLANZEN-DRAK-TEST.txt\n",
+    "assets": [
+      {
+        "name": "Enshrouded-Mod-Studio-0.4.34.zip",
+        "size": 13261595,
+        "sha256": "fb627e068efb901d6dc022e06c4c48fe881cbe58e8274d8b2b62cd227df3efb7",
+        "parts": [
+          {
+            "path": ".github/stable-release-parts/e89ccb745abadee984b37054c6b5865f5ec909f6a4c8871dbb6ff36bbaa69a28.bin",
+            "size": 8388608,
+            "sha256": "e89ccb745abadee984b37054c6b5865f5ec909f6a4c8871dbb6ff36bbaa69a28"
+          },
+          {
+            "path": ".github/stable-release-parts/02011c20aebddfa5fac0ffa2cfb4dc2b10f9d9c4427971319d33e49572348fc2.bin",
+            "size": 4872987,
+            "sha256": "02011c20aebddfa5fac0ffa2cfb4dc2b10f9d9c4427971319d33e49572348fc2"
+          }
+        ]
+      },
+      {
+        "name": "Enshrouded-Mod-Studio-0.4.34-Setup.exe",
+        "size": 13363712,
+        "sha256": "c3b077c3de0caab8410c0df85a4c2a16cd91b72421d8ccd5275592e277639270",
+        "parts": [
+          {
+            "path": ".github/stable-release-parts/16302f8ff61521837d348ef4f37d48c742fad62acefd65369ddf57ffcf511747.bin",
+            "size": 39672,
+            "sha256": "16302f8ff61521837d348ef4f37d48c742fad62acefd65369ddf57ffcf511747"
+          },
+          {
+            "path": ".github/stable-release-parts/e89ccb745abadee984b37054c6b5865f5ec909f6a4c8871dbb6ff36bbaa69a28.bin",
+            "size": 8388608,
+            "sha256": "e89ccb745abadee984b37054c6b5865f5ec909f6a4c8871dbb6ff36bbaa69a28"
+          },
+          {
+            "path": ".github/stable-release-parts/02011c20aebddfa5fac0ffa2cfb4dc2b10f9d9c4427971319d33e49572348fc2.bin",
+            "size": 4872987,
+            "sha256": "02011c20aebddfa5fac0ffa2cfb4dc2b10f9d9c4427971319d33e49572348fc2"
+          },
+          {
+            "path": ".github/stable-release-parts/f8f5c6dba1d5e1750f2cc9149ffe6e6cee9c2e130cdfea15b981eca457082ff7.bin",
+            "size": 62445,
+            "sha256": "f8f5c6dba1d5e1750f2cc9149ffe6e6cee9c2e130cdfea15b981eca457082ff7"
+          }
+        ]
+      },
+      {
+        "name": "RELEASE-NOTES.txt",
+        "size": 725,
+        "sha256": "d000c053c3ce0d643db0f267ca53f9189fcdd5c656559138ee59b18ab02e0f89",
+        "parts": [
+          {
+            "path": ".github/stable-release-parts/d000c053c3ce0d643db0f267ca53f9189fcdd5c656559138ee59b18ab02e0f89.bin",
+            "size": 725,
+            "sha256": "d000c053c3ce0d643db0f267ca53f9189fcdd5c656559138ee59b18ab02e0f89"
+          }
+        ]
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "size": 288,
+        "sha256": "8776fd8bc85c101f99e0e7e45b270e0e1927adf14388845d37b72e7c995c318f",
+        "parts": [
+          {
+            "path": ".github/stable-release-parts/8776fd8bc85c101f99e0e7e45b270e0e1927adf14388845d37b72e7c995c318f.bin",
+            "size": 288,
+            "sha256": "8776fd8bc85c101f99e0e7e45b270e0e1927adf14388845d37b72e7c995c318f"
+          }
+        ]
+      }
+    ]
+  },
+  "manifestSha256": "5cc42936fe90ca999abf81f8c890f2265dba0d9966795c755d3aaedd351620ca",
+  "release": {
+    "id": 430830219,
+    "tag_name": "v0.4.34",
+    "target_commitish": "9811f1728304e739758b811f6fe7540534acf402",
+    "name": "Enshrouded Mod Studio 0.4.34",
+    "body": "Mod Studio 0.4.34 – private Testfassung\n\nSieben Nachtpflanzen mit Setzlingen, eigener Wachstums- und Erntekette.\nEigener Drak-Handwerker nach Schmied-Freischaltung, mit drei ewigen Zaubern.\nSpeerkrieger: 8 Schuppen + 2 Krallen. Chakramjäger: 8 Schuppen + 2 Zähne.\nMagier: 8 Schuppen + 3 Blut + 1 Aquamarin. Native Drak-/Pflanzenbilder.\nNeue Manager-/Spielerclient-Worker-Unterstützung für die automatische Verteilung.\n\nHintergrundtests und vollständige native Server-/Client-Archivprüfungen bestanden.\nKeine laufende Spielpartie, kein Spielstand und keine produktive Installation verändert.\nPlatzierung, Ernte, Speichern/Laden und Kampf im Spiel müssen noch geprüft werden.\n\nAnleitung: NACHTPFLANZEN-DRAK-TEST.txt\n\n<!-- stable-manifest-sha256:5cc42936fe90ca999abf81f8c890f2265dba0d9966795c755d3aaedd351620ca -->",
+    "draft": true,
+    "prerelease": false,
+    "html_url": "https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/tag/untagged-0eace0d698646b1fa024",
+    "assets": [
+      {
+        "id": 699411010,
+        "name": "Enshrouded-Mod-Studio-0.4.34-Setup.exe",
+        "size": 13363712,
+        "digest": "sha256:c3b077c3de0caab8410c0df85a4c2a16cd91b72421d8ccd5275592e277639270",
+        "state": "uploaded",
+        "url": "https://api.github.com/repos/Priestkiller/Enshrouded-Mod-Studio/releases/assets/699411010",
+        "browser_download_url": "https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/download/untagged-0eace0d698646b1fa024/Enshrouded-Mod-Studio-0.4.34-Setup.exe"
+      },
+      {
+        "id": 699410883,
+        "name": "Enshrouded-Mod-Studio-0.4.34.zip",
+        "size": 13261595,
+        "digest": "sha256:fb627e068efb901d6dc022e06c4c48fe881cbe58e8274d8b2b62cd227df3efb7",
+        "state": "uploaded",
+        "url": "https://api.github.com/repos/Priestkiller/Enshrouded-Mod-Studio/releases/assets/699410883",
+        "browser_download_url": "https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/download/untagged-0eace0d698646b1fa024/Enshrouded-Mod-Studio-0.4.34.zip"
+      },
+      {
+        "id": 699411101,
+        "name": "RELEASE-NOTES.txt",
+        "size": 725,
+        "digest": "sha256:d000c053c3ce0d643db0f267ca53f9189fcdd5c656559138ee59b18ab02e0f89",
+        "state": "uploaded",
+        "url": "https://api.github.com/repos/Priestkiller/Enshrouded-Mod-Studio/releases/assets/699411101",
+        "browser_download_url": "https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/download/untagged-0eace0d698646b1fa024/RELEASE-NOTES.txt"
+      },
+      {
+        "id": 699411157,
+        "name": "SHA256SUMS.txt",
+        "size": 288,
+        "digest": "sha256:8776fd8bc85c101f99e0e7e45b270e0e1927adf14388845d37b72e7c995c318f",
+        "state": "uploaded",
+        "url": "https://api.github.com/repos/Priestkiller/Enshrouded-Mod-Studio/releases/assets/699411157",
+        "browser_download_url": "https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/download/untagged-0eace0d698646b1fa024/SHA256SUMS.txt"
+      }
+    ]
+  }
+}

@@ -102,6 +102,15 @@ function reconstructAssets(manifest, root, output) {
 function assertRemoteAssets(release, manifest, complete) {
   check(Array.isArray(release.assets), 'Remote assets must be an array');
   check(!complete || release.assets.length === manifest.assets.length, 'Remote asset count differs');
+  let downloadTag = manifest.releaseTag;
+  const releaseURLPrefix = `https://github.com/${manifest.repository}/releases/tag/`;
+  if (release.draft === true && release.html_url !== releaseURLPrefix + manifest.releaseTag) {
+    // GitHub gives a draft an untagged URL until publication. Bind every
+    // asset to this exact draft token; final updater URLs remain numeric.
+    check(typeof release.html_url === 'string' && release.html_url.startsWith(releaseURLPrefix), 'Remote draft release URL differs');
+    downloadTag = release.html_url.slice(releaseURLPrefix.length);
+    check(/^untagged-[a-f0-9]{20}$/.test(downloadTag), 'Remote draft release token differs');
+  }
   const seen = new Set();
   for (const remote of release.assets) {
     object(remote, 'Remote asset');
@@ -110,7 +119,7 @@ function assertRemoteAssets(release, manifest, complete) {
     check(remote.state === 'uploaded' && remote.size === local.size && remote.digest === `sha256:${local.sha256}`, `Remote bytes differ: ${remote.name}`);
     check(Number.isSafeInteger(remote.id) && remote.id > 0, 'Remote asset ID is invalid');
     check(remote.url === `https://api.github.com/repos/${manifest.repository}/releases/assets/${remote.id}`, 'Remote API asset URL differs');
-    check(remote.browser_download_url === `https://github.com/${manifest.repository}/releases/download/${manifest.releaseTag}/${remote.name}`, 'Remote browser asset URL differs');
+    check(remote.browser_download_url === `https://github.com/${manifest.repository}/releases/download/${downloadTag}/${remote.name}`, 'Remote browser asset URL differs');
   }
 }
 function releaseBody(manifest, manifestDigest) { return `${manifest.notes.trim()}\n\n<!-- stable-manifest-sha256:${manifestDigest} -->`; }
