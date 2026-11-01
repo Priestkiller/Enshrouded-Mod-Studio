@@ -1,0 +1,70 @@
+Mod Studio 0.4.34
+Nachtpflanzen und Drak-Handwerker
+
+Diese Erweiterung ist für den Spielbuild 1273043 vorbereitet. Die
+Hintergrundprüfung kontrolliert Ressourcen, Berechnungen und gepackte
+Archive. Platzierung, Ernte, Speichern/Laden und Kampf müssen anschließend
+im Spiel erprobt werden. Ein erfolgreicher Datenpatch ist kein Spieltest.
+
+NACHTPFLANZEN
+
+Unter Welt & Bauen „Nachtpflanzen im Garten anbauen“ einschalten.
+Die Basis-Wachstumsdauer und die feste Erntemenge sind einstellbar.
+Native Wachstumsstufen und Bodenfaktoren wirken weiterhin auf die Dauer.
+
+Im Saatbeet gibt es sieben zusätzliche Setzlingsrezepte. Ein Stück
+Ackerboden und eine passende gesammelte Nachtpflanze ergeben fünf
+Setzlinge. Zuerst muss die betreffende Pflanzenressource entdeckt sein.
+Die Anzeige übernimmt die Namen und Symbole der originalen Pflanzen;
+der Beschreibungstext kennzeichnet den Gegenstand als Setzling.
+
+Unterstützt werden Midnight Lily, Gloomberry, Calla Luna, Shadowbloom,
+Glimmer Gentian, Stapelia Starflower und Passionflower. Die tatsächlichen
+Anzeigenamen richten sich nach der Sprache des Spiels.
+
+Setzlinge im Inventar auswählen und auf geeignetem Boden pflanzen.
+Unreife Pflanzen geben beim Entfernen einen Setzling zurück. Die reife
+Pflanze liefert die im Tool eingestellte Menge ihres ursprünglichen
+Materials. Wildpflanzen und ihre nächtlichen Welt-Spawner werden nicht
+verändert. Dies ist keine pauschale Freigabe aller Pflanzenarten.
+
+DRAK-HANDWERKER UND ZAUBER
+
+Unter Welt & Bauen „Draki-Händler und Draki-Beschwörungszauber“ einschalten.
+Den vorhandenen Schmied zuerst freischalten/retten. Danach im normalen
+Beschwörungsstab den zusätzlichen „Drak-Handwerker“ auswählen und in der
+Basis platzieren. Baurechte und die übrigen Platzierungsregeln gelten.
+Der neue NPC ersetzt keinen vorhandenen Handwerker.
+
+Bei ihm gibt es drei ewige Zauber:
+  - Drak-Speerkrieger beschwören
+  - Drak-Chakramjäger beschwören
+  - Drak-Magier beschwören
+
+Speerkrieger: 8 Schuppen und 2 Krallen. Chakramjäger: 8 Schuppen und
+2 Zähne. Magier: 8 Schuppen, 3 Blut und 1 Aquamarin. Die eigenen Rezepte
+verlangen keine Überdachung. Zauber im Inventar behalten, einen passenden
+Zauberstab ausrüsten und die Varianten über die normale Zauberauswahl
+wechseln. Nacheinander beschwören, um unterschiedliche Begleiter zu mischen.
+
+Grundlimit, Lebensdauer und Stärkefaktor sind im Tool einstellbar.
+Drak und Skelette teilen den nativen Skeleton-Pool. Wenn beide Optionen
+aktiv sind, muss dasselbe Grundlimit eingestellt sein. Talente und das
+native Poollimit können die tatsächlich mögliche Anzahl beeinflussen.
+Die Gefährten sind zeitlich begrenzte Beschwörungen, keine gezähmten Tiere.
+
+SOLO UND MEHRSPIELER
+
+Spiel bzw. Server vor dem Patchen schließen. Für Solo den Spielclient
+patchen. Für Mehrspieler müssen Server und alle Spielclients dieselben
+passenden Erweiterungen erhalten. Für die automatische Verteilung sind
+Manager 0.15.44 und Spielerclient 0.16.27 erforderlich. Alte veröffentlichte Worker akzeptieren diese
+neuen Ressourcen bewusst nicht. Keine komplette Server-KFC auf einen
+Spielclient kopieren.
+
+VOR DEM ZURÜCKNEHMEN DER ERWEITERUNG
+
+Eigene Pflanzen, Setzlinge, Drak-Handwerker und Zaubergegenstände zunächst
+aus Welt, Inventaren und Lagern entfernen. Beschworene Begleiter auslaufen
+lassen. Danach den Patch auf allen beteiligten Installationen gemeinsam
+zurücknehmen. Spielstände werden vom Tool nicht umgeschrieben.

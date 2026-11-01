@@ -116,6 +116,19 @@ function createdSpellItems(options, schema, originals, modified) {
   }
   return created;
 }
+function createdFeatureItems(options,schema,originals,modified) {
+  const found=new Map(),originalIds=new Set([...originals.values()].map(r=>r.document.itemId?.value));
+  for(const [key,option,moduleName]of [['nightPlants','enableNightPlantCultivation','night-plants'],['drakMerchant','enableDrakMerchant','drak-merchant']]){
+    if(options.config?.world?.[option]?.enabled!==true)continue;
+    const proof=options[key];if(proof?.enabled!==true||proof.gameplayVerified!==false||proof.role!==options.role)fail('Prüfliste neuer Pflanzen-/Draki-Gegenstände fehlt.');
+    for(const expected of require('./'+moduleName).buildCreatedResources(options.config).filter(d=>d.$type===TYPE)){
+      const id=expected.$guid+':0',row=modified.get(id);
+      if(originals.has(id)||originalIds.has(expected.itemId?.value)||found.has(id)||!row||canonical(row.document)!==canonical(expected))fail('Neuer Pflanzen-/Draki-Gegenstand weicht von seiner festen Definition ab: '+expected.$guid);
+      rejectPersistentStack(row.document,row.file);originalIds.add(expected.itemId.value);found.set(id,row);
+    }
+  }
+  return found;
+}
 function inspect(options, directory) {
   const schema = assertSchema(options.reflection), requested = requestedValue(options.requested);
   const source = items(directory, schema, true), rows = [];
@@ -139,10 +152,12 @@ function check(options, input, output) {
   const schema = assertSchema(options.reflection), requested = requestedValue(option.value);
   const originals = items(input, schema, true), modified = items(output, schema, false), rows = [];
   const created = createdSpellItems(options, schema, originals, modified);
+  for(const[id,row]of createdFeatureItems(options,schema,originals,modified)){if(created.has(id))fail('Neue Itemidentitäten kollidieren.');created.set(id,row);}
   for (const [id, row] of modified) if (!originals.has(id) && !created.has(id)) fail('Ausgabe enthält eine unbekannte ItemInfo-Ressource: ' + path.basename(row.file));
   if (options.complete === true && (modified.size !== originals.size + created.size || [...originals.keys()].some(id => !modified.has(id))))
     fail('Der erneute Export enthält nicht alle ursprünglichen ItemInfo-Ressourcen.');
-  let changed = 0, singletonItems = created.size;
+  let changed = 0, singletonItems = 0;
+  for(const[id,{document,file}]of created){if(document[FIELD]===1){singletonItems++;continue;}if(document[FIELD]!==requested)fail('Stapelwert eines neuen Gegenstands stimmt nicht mit dem Profil überein.');rows.push({file:path.basename(file),guid:document.$guid,name:document.debugName,before:null,after:document[FIELD],value:document[FIELD],expected:requested,matches:true});}
   for (const [id, { document: before, file }] of originals) {
     rejectPersistentStack(before, file);
     const change = modified.get(id), after = change ? change.document : before;

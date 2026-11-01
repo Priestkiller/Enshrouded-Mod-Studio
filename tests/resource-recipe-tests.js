@@ -39,5 +39,35 @@ check('A recipe outside its owned job is rejected',()=>assert.throws(()=>recipe.
 check('Mismatched uncompressed size is rejected',()=>assert.throws(()=>recipe.load({...prepared,size:prepared.size+1},job,root)));
 check('Unverified server resources cannot be exported',()=>assert.throws(()=>recipe.prepare({engineRoot:root,job,plan:{...plan,verifiedFiles:0},options})));
 check('A client target cannot masquerade as a server-derived recipe',()=>assert.throws(()=>recipe.prepare({engineRoot:root,job,plan:{...plan,target:{...plan.target,server:false}},options})));
+check('unchanged options grant no new resource identities',()=>assert.strictEqual(recipe.allowedCreates(defs,{world:{}}).size,0));
+check('unknown feature names cannot introduce resource permissions',()=>assert.strictEqual(recipe.allowedCreates(defs,{world:{enableArbitraryResources:{enabled:true}}}).size,0));
+check('legacy companion definitions are bound to their complete descriptor digest',()=>{const changed=JSON.parse(JSON.stringify(defs));changed.items[0].guid='11111111-2222-3333-4444-555555555555';assert.throws(()=>recipe.allowedCreates(changed),/Featuredefinition/);});
+check('new feature permissions have exact independent identity and type counts',()=>{for(const [key,total,templates,inventories]of [['enableNightPlantCultivation',49,28,14],['enableDrakMerchant',8,4,0]]){const fspec=recipe.featureDescriptors({world:{[key]:{enabled:true}}})[0];assert.strictEqual(fspec.resources.length,total);assert.strictEqual(fspec.templates.length,templates);assert.strictEqual(fspec.resources.filter(r=>r.type==='keen::ecs::DefaultInventoryResource').length,inventories);assert(/^[a-f0-9]{64}$/.test(fspec.definitionSha256));}});
+check('Drak native registries cannot be changed while its option is disabled',()=>{const r=clone(),d={$type:'keen::NpcCollection',$guid:'377f61dc-c7b8-4e4f-830f-7d2c3e8b7fd8',$part:0,npcs:[]};r.resources=[{type:d.$type,guid:d.$guid,part:0,mode:'modify',before:d,after:{...d,npcs:[{}]}}];assert.throws(()=>recipe.validate(r,defs),/Drak-Katalogänderung/);});
+const nativeCollection=process.env.EMS_NATIVE_COLLECTION;
+if(nativeCollection){
+ const N=require('../engine/night-plants'),K=require('../engine/custom-skeleton-items'),D=N.definitions,copy=v=>JSON.parse(JSON.stringify(v));
+ const flag=(t,id)=>{const v=copy(t);v.id.id.value=id;return v;},empty=()=>({entries:[{start:0,count:0}],keys:[],values:[]});
+ const doc=(type,guid,data)=>({$type:type,$guid:guid,$part:0,...data});
+ const nativeItems=Object.values(D.sources).filter(r=>r.directory==='ItemInfo').map(r=>r.document);
+ const catalog=doc(D.types.ItemRegistryResource,D.registries.items,{itemRefs:nativeItems.map(d=>d.$guid),dbgNames:nativeItems.map(d=>d.debugName)}),recipes=doc(D.types.RecipeRegistryResource,D.registries.recipes,{inputCategories:[],recipes:[copy(D.sourceRecipe)]});
+ const player=[D.knowledgeTemplates.playerItem,D.knowledgeTemplates.playerRecipe].map(v=>[v.id.id.value,copy(v)]),world=[copy(D.knowledgeTemplates.worldItem),...D.plants.map(p=>flag(D.knowledgeTemplates.worldItem,D.sources[p.key+'Item'].document.itemId.value))].map(v=>[v.id.id.value,v]);
+ const knowledge=doc(D.types.GameKnowledgeResource,D.registries.knowledge,{playerKnowledge:K.rebuildMap(empty(),player),worldKnowledge:K.rebuildMap(empty(),world)}),afterCatalog=copy(catalog),afterRecipes=copy(recipes),afterKnowledge=copy(knowledge),pAdds=[],wAdds=[];
+ for(const p of D.plants){afterCatalog.itemRefs.push(p.itemGuid);afterCatalog.dbgNames.push(p.debugName);afterRecipes.recipes.push(N.ownRecipe(p));pAdds.push([p.itemId,flag(D.knowledgeTemplates.playerItem,p.itemId)],[p.recipeId,flag(D.knowledgeTemplates.playerRecipe,p.recipeId)]);wAdds.push([p.itemId,flag(D.knowledgeTemplates.worldItem,p.itemId)]);}
+ afterKnowledge.playerKnowledge=K.rebuildMap(afterKnowledge.playerKnowledge,pAdds);afterKnowledge.worldKnowledge=K.rebuildMap(afterKnowledge.worldKnowledge,wAdds);
+ const selected=copy(options);selected.world.enableNightPlantCultivation={enabled:true,growthMinutes:20,harvestCount:2};const beforeCollection=JSON.parse(fs.readFileSync(nativeCollection,'utf8'));
+ const featureRecipe={...clone(),gameBuild:'1273043|owned transfer fixture',options:selected,resources:[...N.buildCreatedResources(selected).map(after=>({type:after.$type,guid:after.$guid,part:0,mode:'create',before:null,after})),...[catalog,recipes,knowledge,beforeCollection].map((before,i)=>({type:before.$type,guid:before.$guid,part:0,mode:'modify',before,after:i===0?afterCatalog:i===1?afterRecipes:i===2?afterKnowledge:{...copy(before),templates:[...before.templates,...N.registrationTargets().map(t=>t.guid)]}}))]};
+ featureRecipe.resources.sort((a,b)=>{const x=a.type+'|'+a.guid+'|'+a.part,y=b.type+'|'+b.guid+'|'+b.part;return x<y?-1:x>y?1:0;});
+ check('native pinned collection permits the complete exact plant transfer',()=>assert.strictEqual(recipe.validate(featureRecipe,defs),featureRecipe));
+ for(const [name,mutate,pattern]of [
+  ['missing creation',r=>r.resources.splice(r.resources.findIndex(x=>x.mode==='create'),1),/Pflanzenressource/],
+  ['descriptor payload change',r=>r.resources.find(x=>x.type==='keen::ItemInfo'&&x.mode==='create').after.maxStackSize++,/Pflanzenressource/],
+  ['unknown creation',r=>r.resources.find(x=>x.mode==='create').after.$guid='11111111-2222-3333-4444-555555555555',/Ressourcenidentität/],
+  ['missing collection',r=>r.resources=r.resources.filter(x=>x.type!=='keen::ecs::TemplateCollectionResource'),/Registrierung/],
+  ['foreign template append',r=>r.resources.find(x=>x.type==='keen::ecs::TemplateCollectionResource').after.templates.push('11111111-2222-3333-4444-555555555555'),/Originalsammlung/],
+  ['disabled plant option',r=>r.options.world.enableNightPlantCultivation.enabled=false,/freigegebene/],
+  ['unapproved native build',r=>r.gameBuild='future-build',/Spielbuild/]
+ ])check('strict plant transfer rejects '+name,()=>{const r=copy(featureRecipe);mutate(r);assert.throws(()=>recipe.validate(r,defs),pattern);});
+}
 const report={passed:true,checks,gameStarted:false,desktopStarted:false,clientDirectoryRequired:false,scratch};
 write(path.join(__dirname,'resource-recipe-results.json'),report);console.log(JSON.stringify({passed:true,checks:checks.length,recipeBytes:prepared.size,compressedBytes:prepared.compressedSize,manifestVersion:2}));

@@ -334,6 +334,19 @@ namespace EnshroudedStudio
                     errors.Add("Für die eigenen Begleiterzauber die vorhandene Option „Beschworene Begleiter anpassen“ ausschalten. Beide Varianten können nicht gleichzeitig angewendet werden.");
             }
             catch { /* Schema validation reports malformed values. */ }
+            try
+            {
+                var world = Json.Object(config["world"], "Welt");
+                var drak = Json.Object(world["enableDrakMerchant"], "Draki-Handwerker");
+                if ((bool)drak["enabled"])
+                    foreach (string key in new[] { "enableSkeletonSummoningSpells", "adjustSummonedCompanions" })
+                    {
+                        var companions = Json.Object(world[key], "Begleiter");
+                        if ((bool)companions["enabled"] && Json.Number(drak["maxCompanions"]) != Json.Number(companions["maxCompanions"]))
+                            errors.Add("Draki- und Skelettbegleiter teilen ein Grundlimit. Bei beiden Optionen dieselbe Anzahl einstellen.");
+                    }
+            }
+            catch { /* Schema validation reports malformed values. */ }
             return errors;
         }
         public void Load()

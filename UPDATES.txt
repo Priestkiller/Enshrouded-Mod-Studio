@@ -1,4 +1,4 @@
-Enshrouded Mod Studio 0.4.33
+Enshrouded Mod Studio 0.4.34
 
 PROGRAMM INSTALLIEREN UND AUTOMATISCH AKTUALISIEREN
 - Das neue Setup installiert Studio als normales Programm mit Startmenueintrag
@@ -43,10 +43,10 @@ KORREKTUREN UND PRUEFUNG
   Es wurden keine produktiven Profile, Spielstaende oder Spiele veraendert.
 
 SYNCHRONISATION
-Zuerst Manager 0.15.41 und Spielerclient 0.16.25 aktualisieren, danach Studio
-0.4.33 verwenden. Der neue Studio-Programmstand wird von beiden erkannt.
-Vorhandene aeltere Clientpakete bleiben unterstuetzt. Die Ausdauerberechnung ist berichtigt; die Anzahl und die gespeicherten
-Schluessel der 49 Spieloptionen bleiben unveraendert.
+Zuerst Manager 0.15.44 und Spielerclient 0.16.27 aktualisieren, danach Studio
+0.4.34 verwenden. Der neue Studio-Programmstand wird von beiden erkannt.
+Vorhandene aeltere Clientpakete bleiben unterstuetzt. Die Ausdauerberechnung bleibt berichtigt. Zwei neue Optionen ergänzen die
+bisherigen 49 Spieloptionen um Nachtpflanzen und Drak-Handwerker; ältere Pakete bleiben unterstützt.
 
 BISHERIGE HINWEISE
 

@@ -150,6 +150,17 @@
     "adjustAreaDepositRadius": {
       "enabled": false,
       "factor": 2
+    },
+    "enableNightPlantCultivation": {
+      "enabled": false,
+      "growthMinutes": 20,
+      "harvestCount": 2
+    },
+    "enableDrakMerchant": {
+      "enabled": false,
+      "maxCompanions": 4,
+      "durationSeconds": 120,
+      "strengthFactor": 1
     }
   },
   "gameplay": {

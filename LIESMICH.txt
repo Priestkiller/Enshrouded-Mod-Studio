@@ -1,28 +1,24 @@
-ENSHROUDED MOD STUDIO 0.4.30
+Mod Studio 0.4.34
+Nachtpflanzen und Drak-Handwerker
 
-Neue Punkteerklärung: Die erste Neuberechnung kann auch frühere Level und
-bereits bekannte Wurzelbelohnungen höher bewerten. Ein größerer erster Zuwachs
-ist deshalb vom Zuwachs späterer Level zu unterscheiden. Details: SKILLPUNKTE.txt.
+Sieben Nachtpflanzen mit eigenen Setzlingen, Wachstumsstufen und Ernteketten.
+Die Basis-Wachstumsdauer und Erntemenge sind einstellbar.
+Zusätzlicher platzierbarer Drak-Handwerker nach der Schmied-Freischaltung.
+Drei ewige Drak-Zauber mit eigenen Materialrezepten und nativen Symbolen.
+Speerkrieger: 8 Schuppen + 2 Krallen. Chakramjäger: 8 Schuppen + 2 Zähne.
+Magier: 8 Schuppen + 3 Blut + 1 Aquamarin.
 
-Du brauchst keinen alten Studioordner.
-Bei einer öffentlichen Erstinstallation zuerst Patcher einrichten wählen und
-das selbst beschaffte Originalpaket 1.2.3 auswählen. Diese Funktion ergänzt
-nur geprüfte Programmdateien; keine Profile, Basen oder Spieldateien.
-Eine bereits vollständig eingerichtete Runtime benötigt keinen erneuten Import.
+Für die automatische Verteilung zuerst Manager 0.15.44 und Spielerclient
+0.16.27 aktualisieren. Anschließend Studio-Serverpatch und Synchronisation
+wie gewohnt ausführen. Alle beteiligten Installationen müssen denselben
+Modstand und den unterstützten Spielbuild 1273043 verwenden.
 
-Spielclient- oder Serverordner wählen, Optionen einstellen, Spiel bzw. Server
-schließen und Patch anwenden / aktualisieren drücken. Beim ersten Patch wird
-die unveränderte aktuelle Ausgangsbasis nach Bestätigung gesichert.
-Bereits modifizierte Archive ohne Originalbasis werden vor dem Modifizieren
-gestoppt. Saubere Dateien derselben Spielversion oder die eigene passende Basis
-verwenden. Eine vorhandene private Originalreferenz wird nur beim exakt
-passenden Dedicated-Serverstand übernommen. Das öffentliche ZIP enthält keine
-Original-Spielarchive oder RecoveryBases.
+Hintergrundtests sowie native Server-/Client-Archivprüfungen bestanden.
+Platzierung, tatsächliche Wachstumszeit, Ernte, Speichern/Laden und Kampf
+sind noch nicht im Spiel bestätigt. Die neuen Optionen sind standardmäßig
+ausgeschaltet. Anleitung: NACHTPFLANZEN-DRAK-TEST.txt
 
-Altes Setup übernehmen ist optional zum Umziehen vorhandener Profile/Basen.
-Weitere Erklärung: ERSTINSTALLATION.txt. Updates: UPDATES.txt.
-Automatische lokale Übergabe: Studio patcht, Manager 0.15.28 übernimmt,
-Spielerclient 0.16.13 synchronisiert. Eine getrennte lokale Clientinstallation
-desselben Spielbuilds bleibt für Serverpakete erforderlich. Kein Upload.
-
-Update-Pfadfehler: Die Arbeitsdaten-Übernahme ist korrigiert. Details und die einmalige Abhilfe für alte Updater stehen in UPDATE-PFADHILFE.txt.
+Normales Windows-Setup und automatische Programmupdates bleiben verfügbar.
+Das öffentliche Paket enthält die Moddefinitionen und EMM mit GPL-Quellen.
+Original-Patcher, Vendor-Bytecode und Legacy-Parser werden aus der eigenen
+geprüften Installation übernommen oder über Patcher einrichten ergänzt.

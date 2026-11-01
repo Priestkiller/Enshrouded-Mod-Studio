@@ -2,7 +2,7 @@
 
 ## Ursprünglicher Patcher und Legacy-Parser
 
-Das Repository und das öffentliche Studio-ZIP enthalten weder `engine/enshrouded-patcher.exe` noch die ursprünglichen Module unter `engine/vendor/`. Auch der bisher verwendete `engine/bin/kfc-parser.exe` und seine Kompatibilitätsdatei werden nicht mitgeliefert. Spielarchive, exportierte Spielressourcen, Profile, aktive Einstellungen und Sicherungen sind ausgeschlossen.
+Das Repository und das öffentliche Studio-ZIP enthalten weder `engine/enshrouded-patcher.exe` noch die ursprünglichen Module unter `engine/vendor/`. Auch der bisher verwendete `engine/bin/kfc-parser.exe` und seine Kompatibilitätsdatei werden nicht mitgeliefert. Original-Spielarchive, vollständige Spiel-/Parser-Exporte und Reflection-Dumps sowie Profile, aktive Einstellungen und Sicherungen sind ausgeschlossen.
 
 Der Studio-Code verwendet diese Werkzeuge als getrennte Prozesse. **Patcher einrichten** ergänzt fehlende passende Laufzeitdateien aus dem selbst beschafften geprüften Originalpaket 1.2.3. **Altes Setup übernehmen** und die automatische Updateübernahme können sie aus einer vorhandenen vollständigen Installation übernehmen. Alle Wege prüfen die erwarteten Dateihashes. Eigene aktuelle Studio-Module werden dadurch nicht mit älteren Dateien überschrieben. Die Vendor-Prüfsummen bleiben im Manifest enthalten, damit die übernommene Laufzeit geprüft werden kann.
 
@@ -19,6 +19,12 @@ Die zugehörige Workspace-Metadatei nennt `GPL-3.0-or-later`. Der Lizenztext lie
 EMM dient ausschließlich als separater Offline-Prozess auf Arbeitskopien für Sprachinhalte. Aus diesem Projekt wird keine Runtime-DLL ins Spiel installiert. Diese Beigabe ändert die oben beschriebenen Ausschlüsse für den ursprünglichen Patcher und den Legacy-Parser nicht.
 
 Die Hinweise übertragen keine Rechte an Enshrouded, dem ursprünglichen Patcher oder anderen Fremdkomponenten.
+
+## Moddefinitionen und native Datenstrukturen
+
+Die eigenen Modmodule enthalten gezielt ausgewählte native Descriptor-Vorlagen, Ressourcenkennungen, Feldwerte und Schema-Prüfungen als Eingaben für die Erstellung der zusätzlichen Nachtpflanzen und Drak-Ressourcen. Dazu gehören `engine/night-plant-definitions.json` und `engine/drak-definitions.json`; kleine Entwicklungsfixtures prüfen die begrenzten Registry-Erweiterungen. Dies sind absichtlich mitgelieferte Moddefinitionen und keine vollständigen Spielarchive, vollständigen Spieleexporte oder separat ausführbaren Originalprogramme.
+
+Die Module referenzieren Modelle, Symbole, Animationen und andere Ressourcen aus der passenden lokal vorhandenen Spielversion. Sie liefern diese Original-Modelle, Texturen und Animationen nicht als eigenständige Mediendateien mit. Namen und native Datenstrukturen bleiben ihren jeweiligen Rechteinhabern zugeordnet. Für diese Bestandteile wird weder eine eigene Lizenz noch eine allgemeine Weitergabeerlaubnis behauptet. Die beigefügte GPL-Lizenz von EMM erstreckt sich nicht auf Spieldaten oder den ursprünglichen Patcher.
 
 ## Private Originalreferenzen
 

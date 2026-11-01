@@ -1,0 +1,13 @@
+Mod Studio 0.4.34 – private Testfassung
+
+Sieben Nachtpflanzen mit Setzlingen, eigener Wachstums- und Erntekette.
+Eigener Drak-Handwerker nach Schmied-Freischaltung, mit drei ewigen Zaubern.
+Speerkrieger: 8 Schuppen + 2 Krallen. Chakramjäger: 8 Schuppen + 2 Zähne.
+Magier: 8 Schuppen + 3 Blut + 1 Aquamarin. Native Drak-/Pflanzenbilder.
+Neue Manager-/Spielerclient-Worker-Unterstützung für die automatische Verteilung.
+
+Hintergrundtests und vollständige native Server-/Client-Archivprüfungen bestanden.
+Keine laufende Spielpartie, kein Spielstand und keine produktive Installation verändert.
+Platzierung, Ernte, Speichern/Laden und Kampf im Spiel müssen noch geprüft werden.
+
+Anleitung: NACHTPFLANZEN-DRAK-TEST.txt

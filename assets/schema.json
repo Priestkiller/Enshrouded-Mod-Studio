@@ -409,6 +409,40 @@
         "Scope": "Welt- und Beuteregeln in den Spieldateien. Einzelspieler: Clientordner; bei Dedicated den Serverordner verwenden. Multiplayer-Verhalten noch nicht live geprüft."
       },
       {
+        "Key": "enableNightPlantCultivation",
+        "Title": "Nachtpflanzen im Garten anbauen",
+        "Description": "Ergänzt sieben Setzlinge für Nachtpflanzen im Saatbeet. Pflanze sie wie normale Setzlinge in geeigneten Boden und ernte ihre ursprünglichen Materialien.",
+        "ClientOnly": false,
+        "KnownTargetOnly": true,
+        "ServerOnly": false,
+        "Fields": [
+          {
+            "Key": "growthMinutes",
+            "Label": "Basis-Wachstumsdauer (Minuten)",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 1440,
+            "Help": "Basiswert der Wachstumsberechnung in Minuten. Native Wachstumsstufen und Bodenfaktoren bleiben wirksam; die tatsächliche Zeit bis zur Ernte kann abweichen. Gilt für neu gepflanzte Kulturen; bereits gespeicherte Timer können ihren bisherigen Stand behalten."
+          },
+          {
+            "Key": "harvestCount",
+            "Label": "Stück pro erntereifer Pflanze",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 99,
+            "Help": "Feste Erntemenge pro ausgewachsener Pflanze, kein Multiplikator. Vorgabe 2 liefert zwei Pflanzenmaterialien."
+          }
+        ],
+        "WhenToUse": "Um die unterstützten Wild-Nachtpflanzen selbst anzubauen.",
+        "Scope": "Neue Setzlinge, Rezepte und Pflanzvorlagen für denselben Spielbuild auf Server und Spielclients. Die Übernahme durch den Spielerclient benötigt die passende neue Worker-Version.",
+        "Effect": "Im Saatbeet aus einer vorhandenen Nachtpflanze den passenden Setzling herstellen. Gesetze Pflanzen durchlaufen Wachstumsstufen; die wilden Originalpflanzen bleiben unverändert.",
+        "Example": "Eine Nachtlilie sammeln, im Saatbeet ihren Setzling herstellen, pflanzen und nach der eingestellten Zeit ernten.",
+        "Notes": "Testfunktion: Daten- und Archivprüfungen bestätigen keine bereits beobachtete Ernte im Spiel. Unterstützt die sieben ausdrücklich erfassten Nachtpflanzen; keine pauschale Freigabe sämtlicher Pflanzenarten. Pflanzen und Setzlinge vor dem Zurücknehmen des Patches entfernen.",
+        "Status": "Neue Anbauketten · Spieltest offen"
+      },
+      {
         "Key": "adjustFactoryInventoryAccess",
         "Title": "Normale Kisten und Stationslager verknüpfen",
         "Description": "Kennzeichnet normale Kisten und Stationsinventare als mögliche Materialquellen. Der tatsächliche Materialzugriff wurde als fehlerhaft gemeldet und ist unbestätigt.",
@@ -714,6 +748,49 @@
         "Status": "Experimentell · Spieltest offen",
         "WhenToUse": "Wenn die Abladestationen einen größeren horizontalen Ablagebereich erhalten sollen.",
         "Scope": "Vorlagen der ausgewählten Spielinstallation. Für passende Server- und Clientdaten denselben Modstand verwenden; Verhalten im Mehrspieler ist noch nicht live geprüft."
+      },
+      {
+        "Key": "enableDrakMerchant",
+        "Title": "Draki-Händler und Draki-Beschwörungszauber",
+        "Description": "Ergänzt einen eigenen freundlichen Draki-Handwerker und drei wählbare Draki-Begleiterzauber. Einbau und Speicherung des neuen NPC sind eine Testfunktion.",
+        "ClientOnly": false,
+        "KnownTargetOnly": true,
+        "ServerOnly": false,
+        "Fields": [
+          {
+            "Key": "maxCompanions",
+            "Label": "Gemeinsames Beschwörungs-Grundlimit",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 8,
+            "Help": "Absolutes Grundlimit vor zusätzlichen Talenten. Vorgabe 4 ist keine Garantie für genau vier aktive Begleiter: Talente und ein gemeinsamer 12er-Pool können die tatsächliche Endzahl beeinflussen."
+          },
+          {
+            "Key": "durationSeconds",
+            "Label": "Dauer in Sekunden",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 3600,
+            "Help": "Absolute hinterlegte Dauer, kein Faktor. 120 Sekunden sind 2 Minuten, 3600 Sekunden sind 1 Stunde. Vorzeitiger Tod und andere Spielregeln werden dadurch nicht ausgeschlossen."
+          },
+          {
+            "Key": "strengthFactor",
+            "Label": "Stärkefaktor",
+            "Boolean": false,
+            "Integer": true,
+            "Minimum": 1,
+            "Maximum": 20,
+            "Help": "Multipliziert den vorgesehenen DamageMod und passt die HP-Levelskalierung der Begleiter an. 1 lässt die zusätzliche Stärkeskalierung unverändert. 2 verspricht weder doppelte sichtbare Lebenspunkte noch einen im Spiel gemessenen doppelten Schaden."
+          }
+        ],
+        "WhenToUse": "Um einen eigenen Draki-Handwerker und Draki-Kampfgefährten im Solo-Spiel oder mit passend synchronisierten Mitspielern zu testen.",
+        "Scope": "Server und alle Spielclients benötigen die gleichen neuen NPC-, Rezept-, Gegenstands- und Begleiterdaten. Die automatische Übernahme benötigt den passenden neuen Spielerclient-Worker.",
+        "Effect": "Ergänzt nach der vorhandenen Schmied-Freischaltung einen eigenen Drak-Handwerker und drei ewige Zauber für Speerkrieger, Chakramjäger und Magier. Die Zutaten unterscheiden sich je Variante. Bestehende NPCs behalten ihre Kennungen. Die eigenen Rezepte brauchen keine Überdachung.",
+        "Example": "Vorhandenen Schmied freischalten. Im normalen Beschwörungsstab den zusätzlichen Drak-Handwerker auswählen und platzieren. Bei ihm die ewigen Zauber herstellen: Speerkrieger aus acht Schuppen und zwei Krallen, Chakramjäger aus acht Schuppen und zwei Zähnen, Magier aus acht Schuppen, drei Blut und einem Aquamarin.",
+        "Notes": "Platzierung, Speicherung, Animationen, Folge-KI, Angriffe und Multiplayer müssen im Spiel geprüft werden. Draki und Skelettbegleiter teilen den nativen Skeleton-Pool. Wenn beide Optionen aktiv sind, muss ihr Grundlimit gleich sein. Vor dem Entfernen des Patches eigene NPCs und Gegenstände aus der Welt entfernen.",
+        "Status": "Eigener NPC + Begleiter · Spieltest offen"
       }
     ]
   },
@@ -1192,13 +1269,13 @@
             "Integer": false,
             "Minimum": 0.001,
             "Maximum": 1000000000,
-        "Help": "4 = vierfache ursprüngliche Rezept-Ausgabe, danach Rundung auf ganze Stücke. Die Rezeptanzeige ×4 enthält die Änderung bereits und bedeutet insgesamt vier Stück je Herstellung. Vorgabe 1 belässt die Menge."
+            "Help": "4 = vierfache ursprüngliche Rezept-Ausgabe, danach Rundung auf ganze Stücke. Die Rezeptanzeige ×4 enthält die Änderung bereits und bedeutet insgesamt vier Stück je Herstellung. Vorgabe 1 belässt die Menge."
           }
         ],
         "Effect": "Multipliziert die positiven Ausgabemengen der ursprünglichen Rezepte. Das Ergebnis wird auf eine ganze Stückzahl mit mindestens 1 gerundet. Materialkosten bleiben durch diese Option unverändert.",
-      "Example": "Ein ursprünglich einzelnes Rüstungsteil wird mit Faktor 4 zu insgesamt vier Teilen. Zeigt das Rezept ×4, liefert eine Herstellung diese vier Teile. Ein Rezept mit ursprünglich zwei Stück liefert bei Faktor 4 insgesamt acht. Eigene ewige Begleiterzauber bleiben bei einem Stück.",
-      "Notes": "Für ein getestetes Rüstungsrezept wurden bei Faktor 4 tatsächlich vier Stück im Spiel bestätigt. Andere Rezepte und die Herstellungszeit müssen separat geprüft werden. Jede geänderte Rezeptausgabe wird nach erneutem Lesen des Archivs mit dem berechneten Ergebnis verglichen. Werte außerhalb des nativen 32-Bit-Bereichs werden abgewiesen. Eigene ewige Begleiterzauber sind von der Mengenvervielfachung ausgenommen. Inventarplatz und Spielregeln können die Herstellung zusätzlich begrenzen.",
-      "Status": "Daten geprüft · Rüstungstest bestätigt · weitere Rezepte offen",
+        "Example": "Ein ursprünglich einzelnes Rüstungsteil wird mit Faktor 4 zu insgesamt vier Teilen. Zeigt das Rezept ×4, liefert eine Herstellung diese vier Teile. Ein Rezept mit ursprünglich zwei Stück liefert bei Faktor 4 insgesamt acht. Eigene ewige Begleiterzauber bleiben bei einem Stück.",
+        "Notes": "Für ein getestetes Rüstungsrezept wurden bei Faktor 4 tatsächlich vier Stück im Spiel bestätigt. Andere Rezepte und die Herstellungszeit müssen separat geprüft werden. Jede geänderte Rezeptausgabe wird nach erneutem Lesen des Archivs mit dem berechneten Ergebnis verglichen. Werte außerhalb des nativen 32-Bit-Bereichs werden abgewiesen. Eigene ewige Begleiterzauber sind von der Mengenvervielfachung ausgenommen. Inventarplatz und Spielregeln können die Herstellung zusätzlich begrenzen.",
+        "Status": "Daten geprüft · Rüstungstest bestätigt · weitere Rezepte offen",
         "WhenToUse": "Wenn ein Herstellungsdurchlauf mehr fertige Gegenstände liefern soll.",
         "Scope": "Rezeptdaten der gewählten Installation. Einzelspieler: Clientordner; im Mehrspieler Server und Clients abstimmen. Die Server-JSON bleibt unverändert."
       },

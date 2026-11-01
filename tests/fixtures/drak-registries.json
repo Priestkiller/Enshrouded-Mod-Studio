@@ -1,0 +1,3154 @@
+{
+  "npcs": {
+    "npcs": [
+      {
+        "id": {
+          "value": 1731045065
+        },
+        "name": {
+          "value": 166154735
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 476632750
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 1103055054
+        },
+        "workshopLabel": {
+          "value": 3679988613
+        },
+        "itemId": {
+          "value": 387784553
+        },
+        "itemRef": "a514d932-4cf0-4eac-b25c-d8cf32f6d394",
+        "characterPresetReference": "6401eac1-603b-4e5e-96a3-a28f6ea15128",
+        "characterPresetId": {
+          "value": 4189673484
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_Blacksmith_Assistant_01"
+      },
+      {
+        "id": {
+          "value": 2884455235
+        },
+        "name": {
+          "value": 4169891387
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 3374954499
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 321292257
+        },
+        "itemRef": "8bfa33e7-c3e6-4dd1-ba99-ceb60a910be1",
+        "characterPresetReference": "9270e6e2-1b81-4900-bd3c-11d283f44811",
+        "characterPresetId": {
+          "value": 3659317138
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Male_villager_05_RobertGibson"
+      },
+      {
+        "id": {
+          "value": 974506154
+        },
+        "name": {
+          "value": 3596176572
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1330272680
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3651361391
+        },
+        "workshopLabel": {
+          "value": 2395529621
+        },
+        "itemId": {
+          "value": 1004393385
+        },
+        "itemRef": "2ba6961c-f842-49bd-9551-654c82cb6de0",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "e31efd37-7962-4a67-ad6d-4d5e5a4db833",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "75d71f93-fa53-4dae-bc1d-6fc665c2cdde"
+        },
+        "debugName": "NPC_Workshop_Farmer01"
+      },
+      {
+        "id": {
+          "value": 218342694
+        },
+        "name": {
+          "value": 2529057262
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 4284481762
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3866275888
+        },
+        "workshopLabel": {
+          "value": 2340969932
+        },
+        "itemId": {
+          "value": 1100674176
+        },
+        "itemRef": "b3923138-2f51-44db-9a85-c400a342ff7b",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "49da72b3-b961-4e11-9068-1576a87aba19",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "42dda04f-9b53-45e7-b06f-39b2e57c623d"
+        },
+        "debugName": "NPC_Workshop_Bard01"
+      },
+      {
+        "id": {
+          "value": 3159593666
+        },
+        "name": {
+          "value": 3808186077
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 2770906303
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3362288633
+        },
+        "workshopLabel": {
+          "value": 1189666570
+        },
+        "itemId": {
+          "value": 2202966376
+        },
+        "itemRef": "b8e3be95-1811-43ba-8e25-a6f1b6b1ca04",
+        "characterPresetReference": "cddb25c6-689c-4600-9336-e6c29c2e812b",
+        "characterPresetId": {
+          "value": 282878365
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_Alchemist_Assistant_01"
+      },
+      {
+        "id": {
+          "value": 17795309
+        },
+        "name": {
+          "value": 0
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 0
+          },
+          "compareValue": 0,
+          "compareOperator": "GreaterThan",
+          "type": "Extern",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 0
+        },
+        "itemRef": null,
+        "characterPresetReference": "0f1774e6-53ae-4b2a-95dc-4633acf0cc4b",
+        "characterPresetId": {
+          "value": 2080018762
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "test_Townsfolk_Female_03"
+      },
+      {
+        "id": {
+          "value": 1663943126
+        },
+        "name": {
+          "value": 0
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 0
+          },
+          "compareValue": 0,
+          "compareOperator": "GreaterThan",
+          "type": "Extern",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 0
+        },
+        "itemRef": null,
+        "characterPresetReference": "21d48c59-2b12-47c6-88d3-df7abbc5badb",
+        "characterPresetId": {
+          "value": 1254513092
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "test_Townsfolk_Male_03"
+      },
+      {
+        "id": {
+          "value": 2031808579
+        },
+        "name": {
+          "value": 3975828399
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 3894495428
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3185407206
+        },
+        "workshopLabel": {
+          "value": 3570276834
+        },
+        "itemId": {
+          "value": 2205178126
+        },
+        "itemRef": "b5ba37e3-3cc5-46dd-9398-89ecbc6a9bd7",
+        "characterPresetReference": "3bd7d140-b9ae-4320-a818-5b465b6cf770",
+        "characterPresetId": {
+          "value": 3523082313
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_Carpenter_Assistant_01"
+      },
+      {
+        "id": {
+          "value": 1095951179
+        },
+        "name": {
+          "value": 2209023256
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 2717667968
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 4219574132
+        },
+        "workshopLabel": {
+          "value": 2398022097
+        },
+        "itemId": {
+          "value": 1710067644
+        },
+        "itemRef": "a343beaa-e10f-4395-981d-ac3e8ca6a785",
+        "characterPresetReference": "0090ec40-42a9-44c1-a189-6a16c8713051",
+        "characterPresetId": {
+          "value": 3561247617
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_ancientResearcher_LoraineCrim"
+      },
+      {
+        "id": {
+          "value": 2436073821
+        },
+        "name": {
+          "value": 0
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 0,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 0
+          },
+          "compareValue": 0,
+          "compareOperator": "GreaterThan",
+          "type": "Extern",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 0
+        },
+        "itemRef": null,
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": null,
+          "defaultAnimationStateId": {
+            "value": 0
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "_DEPRECATEDBase_NPC_Workshop_DEPRECATED"
+      },
+      {
+        "id": {
+          "value": 931246742
+        },
+        "name": {
+          "value": 0
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 0
+          },
+          "compareValue": 0,
+          "compareOperator": "GreaterThan",
+          "type": "Extern",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 0
+        },
+        "itemRef": null,
+        "characterPresetReference": "ea24707f-11dd-43f4-a07d-68538297d10a",
+        "characterPresetId": {
+          "value": 2971947477
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "test_Townsfolk_Male_02"
+      },
+      {
+        "id": {
+          "value": 2051296717
+        },
+        "name": {
+          "value": 2274692156
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 61714521
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 1055693550
+        },
+        "itemRef": "619f33c5-5a3a-4a93-8b51-19dfe76ec9e2",
+        "characterPresetReference": "687d55b5-f579-4f62-8d45-3649dcec6108",
+        "characterPresetId": {
+          "value": 795759725
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Female_villager_03_GabrielleFairburn"
+      },
+      {
+        "id": {
+          "value": 4057418535
+        },
+        "name": {
+          "value": 2738116374
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1839205351
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3362288633
+        },
+        "workshopLabel": {
+          "value": 3333925958
+        },
+        "itemId": {
+          "value": 4146744324
+        },
+        "itemRef": "b500ea01-9d3f-40c3-a3b1-14127f313755",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "78a12762-0d2b-456f-97ed-c2b086fe8fb8",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "877330d5-0233-4d78-8047-ab6c8b7a9c2b"
+        },
+        "debugName": "NPC_Workshop_Alchemist01"
+      },
+      {
+        "id": {
+          "value": 2103948589
+        },
+        "name": {
+          "value": 3872843518
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 688186165
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3185407206
+        },
+        "workshopLabel": {
+          "value": 1084236782
+        },
+        "itemId": {
+          "value": 1149463877
+        },
+        "itemRef": "3431ac56-3dc6-4230-ba4a-3bf5e0f2d086",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "b6e8baeb-e9b8-4ebe-99c0-7af00f6ad556",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "47d0ebb2-451b-4e55-bc8d-0824bbddb208"
+        },
+        "debugName": "NPC_Workshop_Carpenter01"
+      },
+      {
+        "id": {
+          "value": 2797365275
+        },
+        "name": {
+          "value": 2214968496
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1358951473
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 2236893082
+        },
+        "workshopLabel": {
+          "value": 3824357418
+        },
+        "itemId": {
+          "value": 2375735512
+        },
+        "itemRef": "05e5697b-983f-4a99-a1c9-77a39bead07a",
+        "characterPresetReference": "d62bedb3-c9f8-49bc-833c-0e67aa4b8a43",
+        "characterPresetId": {
+          "value": 1416075024
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_ChineseNewYear_Trader"
+      },
+      {
+        "id": {
+          "value": 3112377773
+        },
+        "name": {
+          "value": 0
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 0
+          },
+          "compareValue": 0,
+          "compareOperator": "GreaterThan",
+          "type": "Extern",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 0
+        },
+        "itemRef": null,
+        "characterPresetReference": "27d012a5-3bb1-4ed8-ba16-9a6fd24b11fc",
+        "characterPresetId": {
+          "value": 3152700996
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "test_Townsfolk_Male_01"
+      },
+      {
+        "id": {
+          "value": 1669027340
+        },
+        "name": {
+          "value": 3864466932
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1886836110
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3651361391
+        },
+        "workshopLabel": {
+          "value": 2096166216
+        },
+        "itemId": {
+          "value": 1209217157
+        },
+        "itemRef": "79a17ecf-390b-4c1c-baec-5f5ac48a95f1",
+        "characterPresetReference": "cf43ea5d-3e95-4989-ae90-c3c64f5087c5",
+        "characterPresetId": {
+          "value": 1982176185
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_Farmer_Assistant_01"
+      },
+      {
+        "id": {
+          "value": 2242206866
+        },
+        "name": {
+          "value": 259753160
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 2134637595
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 2216351573
+        },
+        "workshopLabel": {
+          "value": 1579483555
+        },
+        "itemId": {
+          "value": 1340233313
+        },
+        "itemRef": "3dbdc1d0-98e7-4b25-9327-937444b6ac87",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "93ca85d5-33fc-4db2-bfe5-3197d97191e4",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "0022fed6-0380-4125-be31-ba8b5fdcbfcd"
+        },
+        "debugName": "NPC_Workshop_Hunter01"
+      },
+      {
+        "id": {
+          "value": 2159156280
+        },
+        "name": {
+          "value": 1882292469
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 3295005125
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 2906865252
+        },
+        "workshopLabel": {
+          "value": 2276518262
+        },
+        "itemId": {
+          "value": 3954545655
+        },
+        "itemRef": "f0e9d8f1-9af1-4426-8cdb-5bbf1453fb32",
+        "characterPresetReference": "12d80d12-7c1c-47ad-b7ae-485471ac0689",
+        "characterPresetId": {
+          "value": 871121135
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_cryptKeeper_Assistant_01"
+      },
+      {
+        "id": {
+          "value": 3865858997
+        },
+        "name": {
+          "value": 1899038102
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1937610298
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 841170834
+        },
+        "itemRef": "7ff83086-1c4f-4bb1-8d7d-9c0e426fbd6b",
+        "characterPresetReference": "b4eb485f-fe27-473c-8dd2-3f05be12bd51",
+        "characterPresetId": {
+          "value": 1011044992
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Female_villager_01_HannahReed"
+      },
+      {
+        "id": {
+          "value": 757847452
+        },
+        "name": {
+          "value": 1109147964
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 146824705
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 2906865252
+        },
+        "workshopLabel": {
+          "value": 3148204644
+        },
+        "itemId": {
+          "value": 3764330463
+        },
+        "itemRef": "48aee0f0-ba8f-4045-9595-42b0723d67a2",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "19a7b7f2-bb20-455b-9954-efda831fd302",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "7e0ee54f-d486-48bc-85a6-236d8786ca45"
+        },
+        "debugName": "NPC_Workshop_cryptKeeper01"
+      },
+      {
+        "id": {
+          "value": 210448717
+        },
+        "name": {
+          "value": 3895958327
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1484621636
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 1689944669
+        },
+        "itemRef": "ea5e57d8-cb82-484e-b79e-bbb9ee6266d9",
+        "characterPresetReference": "53a5d2c3-a599-4670-9c4f-0d245549b042",
+        "characterPresetId": {
+          "value": 4169246000
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Male_villager_06_HugoVanderhall"
+      },
+      {
+        "id": {
+          "value": 2228043345
+        },
+        "name": {
+          "value": 2539604947
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 2994342791
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 3298879737
+        },
+        "itemRef": "b5e48301-501d-46b5-8e9e-8a4d96750b2e",
+        "characterPresetReference": "bd3530fe-392c-4d8c-b9b1-a3f12fcafdf2",
+        "characterPresetId": {
+          "value": 816646701
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Female_villager_04_KaoriConway"
+      },
+      {
+        "id": {
+          "value": 1201801546
+        },
+        "name": {
+          "value": 1183857048
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1809139972
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 1103055054
+        },
+        "workshopLabel": {
+          "value": 3357628507
+        },
+        "itemId": {
+          "value": 786532879
+        },
+        "itemRef": "505ccfbc-440d-4d63-a3d6-d689d3d55e78",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "bf5f977e-ba56-4c08-b807-b28f25cb170b",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "fe9b5722-e7be-4132-92c7-ad53279a5829"
+        },
+        "debugName": "NPC_Workshop_Blacksmith01"
+      },
+      {
+        "id": {
+          "value": 1551167056
+        },
+        "name": {
+          "value": 1712126222
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 2753267815
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 1240116813
+        },
+        "itemRef": "594a675c-d6a6-40cb-a56d-25b0857b2ac6",
+        "characterPresetReference": "4d88858a-f0f4-49ff-8a8f-dfcc5f08ce10",
+        "characterPresetId": {
+          "value": 2621127322
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Female_villager_02_MarianneReed"
+      },
+      {
+        "id": {
+          "value": 3625720976
+        },
+        "name": {
+          "value": 0
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 0
+          },
+          "compareValue": 0,
+          "compareOperator": "GreaterThan",
+          "type": "Extern",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 0
+        },
+        "itemRef": null,
+        "characterPresetReference": "1d81aa57-53e2-46a7-a81b-10697c0b1e50",
+        "characterPresetId": {
+          "value": 1225073329
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "test_Townsfolk_Female_02"
+      },
+      {
+        "id": {
+          "value": 1633192162
+        },
+        "name": {
+          "value": 3622970937
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 2519362961
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 2216351573
+        },
+        "workshopLabel": {
+          "value": 923149976
+        },
+        "itemId": {
+          "value": 3991532476
+        },
+        "itemRef": "eeae5607-6361-4067-b608-26e93c7cef71",
+        "characterPresetReference": "3de2a5e5-c17d-455c-b5b8-377c532565a8",
+        "characterPresetId": {
+          "value": 1602195472
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_Hunter_Assistant_01"
+      },
+      {
+        "id": {
+          "value": 973797060
+        },
+        "name": {
+          "value": 0
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 0
+          },
+          "compareValue": 0,
+          "compareOperator": "GreaterThan",
+          "type": "Extern",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 0
+        },
+        "itemRef": null,
+        "characterPresetReference": "e1d823aa-e11c-4add-9885-1f8d9bbc8140",
+        "characterPresetId": {
+          "value": 2753622424
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "test_Townsfolk_Female_01"
+      },
+      {
+        "id": {
+          "value": 4192796482
+        },
+        "name": {
+          "value": 219452026
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 3374657449
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3299655940
+        },
+        "workshopLabel": {
+          "value": 3049545225
+        },
+        "itemId": {
+          "value": 2684532648
+        },
+        "itemRef": "d2561878-5596-4b29-bfa2-0ce0da1f65d5",
+        "characterPresetReference": "0f807c69-a380-408c-a9a7-9e38a0b63654",
+        "characterPresetId": {
+          "value": 2684991466
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_Fisher_Trader"
+      },
+      {
+        "id": {
+          "value": 3851040981
+        },
+        "name": {
+          "value": 3469151724
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1770615151
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 1607688361
+        },
+        "itemRef": "b9f5be6e-16a0-48c3-bcff-7853b1842bfb",
+        "characterPresetReference": "33c835ee-232a-445e-924d-40dec2269ec8",
+        "characterPresetId": {
+          "value": 2729073285
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Male_villager_01_GuntherGaleforth"
+      },
+      {
+        "id": {
+          "value": 3689431984
+        },
+        "name": {
+          "value": 3087878709
+        },
+        "isCraftingAssistant": false,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 2267741765
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3087984146
+        },
+        "workshopLabel": {
+          "value": 518368038
+        },
+        "itemId": {
+          "value": 3721320872
+        },
+        "itemRef": "828d1363-f824-4552-8f0a-1303bd369d14",
+        "characterPresetReference": null,
+        "characterPresetId": {
+          "value": 0
+        },
+        "uiRendering": {
+          "model": "38eeeb44-6531-4a3b-9e7a-793f3f65f76f",
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "010aecef-a99a-4f9a-ac80-00e5b1dd2484"
+        },
+        "debugName": "NPC_Workshop_Barber01"
+      },
+      {
+        "id": {
+          "value": 2327016443
+        },
+        "name": {
+          "value": 4163886443
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 3338199407
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 3944857827
+        },
+        "itemRef": "e49541d5-07d6-4522-bba2-4e2bbaa0db14",
+        "characterPresetReference": "c5ddc67d-bf79-4f6d-b1f3-8348a0497b08",
+        "characterPresetId": {
+          "value": 2267497631
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Male_villager_04_AntonGodwin"
+      },
+      {
+        "id": {
+          "value": 1497472537
+        },
+        "name": {
+          "value": 88039389
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 289265368
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 2801667479
+        },
+        "itemRef": "0d04b55f-180b-49ab-a10b-6cf71038697e",
+        "characterPresetReference": "e0fc7b39-1a98-4017-b85d-9676b4f5e78c",
+        "characterPresetId": {
+          "value": 2866872227
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Male_villager_03_OscarGodwin"
+      },
+      {
+        "id": {
+          "value": 1779249664
+        },
+        "name": {
+          "value": 1088981530
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 30,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 1437321217
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 0
+        },
+        "workshopLabel": {
+          "value": 0
+        },
+        "itemId": {
+          "value": 2159713419
+        },
+        "itemRef": "fe7e7349-65dc-4a1f-9175-87f0e783e98e",
+        "characterPresetReference": "a7332e4c-550b-4b6b-ba80-eea60ad931ee",
+        "characterPresetId": {
+          "value": 2901066011
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "Townsfolk_Male_villager_02_RamoneJones"
+      },
+      {
+        "id": {
+          "value": 1640210983
+        },
+        "name": {
+          "value": 487092108
+        },
+        "isCraftingAssistant": true,
+        "npcRoamingRange": 10,
+        "unlockRequirement": {
+          "knowledgeOrQueryId": {
+            "value": 4021733631
+          },
+          "compareValue": 1,
+          "compareOperator": "Equals",
+          "type": "SimpleBool",
+          "isExplicitPlayerKnowledgeQuery": false
+        },
+        "workshopId": {
+          "value": 3866275888
+        },
+        "workshopLabel": {
+          "value": 2086572758
+        },
+        "itemId": {
+          "value": 279729468
+        },
+        "itemRef": "b55d2fef-1d05-43ea-aa2a-7fe0fcd27bc2",
+        "characterPresetReference": "fccedf37-89ed-45fb-93e1-733a9d35b06d",
+        "characterPresetId": {
+          "value": 2561423883
+        },
+        "uiRendering": {
+          "model": null,
+          "defaultAnimation": "2e701760-3fb1-4e08-b14a-4e012cac15d0",
+          "defaultAnimationStateId": {
+            "value": 345030359
+          },
+          "animationGraph2": "402df515-5965-4b01-a17b-17d482a91af4"
+        },
+        "debugName": "NPC_Workshop_Bard_Assistant_01"
+      }
+    ],
+    "$type": "keen::NpcCollection",
+    "$guid": "377f61dc-c7b8-4e4f-830f-7d2c3e8b7fd8",
+    "$part": 0
+  },
+  "workshops": {
+    "npcs": [],
+    "workshops": [
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "965d3192-0287-49a2-ad51-a716139571a6",
+        "workshopId": {
+          "value": 1302892403
+        },
+        "name": {
+          "value": 3014021066
+        },
+        "item": {
+          "value": 1998277725
+        },
+        "itemRef": "2f04a05f-697d-489b-a32f-76bb3439f5bc",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": true,
+        "workshopGuid": "9b30b429-2c74-4336-bf13-97ed6acaffe3",
+        "workshopId": {
+          "value": 3005669442
+        },
+        "name": {
+          "value": 3942584753
+        },
+        "item": {
+          "value": 0
+        },
+        "itemRef": null,
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": true,
+        "workshopGuid": "ef7ac3ec-e537-41b5-82ac-e3c3af60dbbc",
+        "workshopId": {
+          "value": 1231898837
+        },
+        "name": {
+          "value": 3014021066
+        },
+        "item": {
+          "value": 0
+        },
+        "itemRef": null,
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "91bf1e57-6f70-475e-bc89-b7d602499f7b",
+        "workshopId": {
+          "value": 518647999
+        },
+        "name": {
+          "value": 925672142
+        },
+        "item": {
+          "value": 3397817290
+        },
+        "itemRef": "c90a7365-c80c-485f-9e55-fa5c531ac015",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "d87666a7-fac9-464e-ad59-0935721ac594",
+        "workshopId": {
+          "value": 91067640
+        },
+        "name": {
+          "value": 3645293029
+        },
+        "item": {
+          "value": 4243734462
+        },
+        "itemRef": "2bd7915e-923a-4bdc-8401-8110996281ef",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": true,
+        "workshopGuid": "9e191fb2-66a0-4d2b-b7c0-ac3f7910ee13",
+        "workshopId": {
+          "value": 1870486831
+        },
+        "name": {
+          "value": 1222128551
+        },
+        "item": {
+          "value": 0
+        },
+        "itemRef": null,
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "31819004-5ce4-40c1-8a24-4180f2251ab5",
+        "workshopId": {
+          "value": 625389129
+        },
+        "name": {
+          "value": 2012050564
+        },
+        "item": {
+          "value": 367322414
+        },
+        "itemRef": "988c48f7-7e39-4bc7-a086-69b3d0d34f7b",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "dce27796-6036-48ee-9896-32dd53e09ced",
+        "workshopId": {
+          "value": 1804983347
+        },
+        "name": {
+          "value": 4191783154
+        },
+        "item": {
+          "value": 3513149511
+        },
+        "itemRef": "837e55e4-a151-4592-8355-b0fe5535644f",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "324343b4-9f49-40c3-a598-d2f674f793c6",
+        "workshopId": {
+          "value": 972806543
+        },
+        "name": {
+          "value": 972139413
+        },
+        "item": {
+          "value": 3881781700
+        },
+        "itemRef": "97021e32-eb48-4b86-a0bd-05cc5f636b95",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "5d06940e-ed3f-4e43-a7fb-e19bfbced02d",
+        "workshopId": {
+          "value": 2222893907
+        },
+        "name": {
+          "value": 4127054386
+        },
+        "item": {
+          "value": 21592019
+        },
+        "itemRef": "142b3e78-8eed-4490-95e5-dcc1a961560f",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "60a2bcc3-f413-40b3-b65c-491fab9b38c7",
+        "workshopId": {
+          "value": 2378837065
+        },
+        "name": {
+          "value": 1532346137
+        },
+        "item": {
+          "value": 770717366
+        },
+        "itemRef": "307aa279-8f3a-4a8b-b079-8f8fdb478871",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "0411e76d-e141-45aa-b9e2-740f37784eba",
+        "workshopId": {
+          "value": 4121605386
+        },
+        "name": {
+          "value": 4072896271
+        },
+        "item": {
+          "value": 146975947
+        },
+        "itemRef": "8cc32600-6f88-467f-a956-a462170d4654",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "8e123d39-371b-48cf-9837-2fd0bcdf12b0",
+        "workshopId": {
+          "value": 448758083
+        },
+        "name": {
+          "value": 2385919752
+        },
+        "item": {
+          "value": 4247975958
+        },
+        "itemRef": "5c069268-a20e-487c-99d8-34a38d2da6dd",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "7447d540-32ea-4f13-911a-e77ff7b10035",
+        "workshopId": {
+          "value": 2763647653
+        },
+        "name": {
+          "value": 754053094
+        },
+        "item": {
+          "value": 2901638773
+        },
+        "itemRef": "91f20536-4483-4649-942e-5248a81e7e8c",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "c5f50987-f46c-480d-843e-a368a5a8e2e0",
+        "workshopId": {
+          "value": 3498808064
+        },
+        "name": {
+          "value": 498328511
+        },
+        "item": {
+          "value": 3764911324
+        },
+        "itemRef": "e9584ac9-810b-4169-a274-1db0980b39ac",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "a778ca3f-e94a-4a31-8231-bde05f1fc98d",
+        "workshopId": {
+          "value": 3127317327
+        },
+        "name": {
+          "value": 1414716342
+        },
+        "item": {
+          "value": 2871019400
+        },
+        "itemRef": "35d74624-e017-45c8-8f2b-e378addc04ed",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": true,
+        "workshopGuid": "0c791ee0-68d9-40be-937e-798134589170",
+        "workshopId": {
+          "value": 177347707
+        },
+        "name": {
+          "value": 1476469456
+        },
+        "item": {
+          "value": 0
+        },
+        "itemRef": null,
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "bfe92849-fa9b-4181-8aa3-ab60e94e3875",
+        "workshopId": {
+          "value": 647636903
+        },
+        "name": {
+          "value": 1693806198
+        },
+        "item": {
+          "value": 2792360705
+        },
+        "itemRef": "4f2223e3-8130-419b-9117-87f3cc822da5",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "f0f044a6-03e0-4a10-be0a-bb93f633a5fd",
+        "workshopId": {
+          "value": 1932552551
+        },
+        "name": {
+          "value": 714231825
+        },
+        "item": {
+          "value": 1594637042
+        },
+        "itemRef": "e0d5958b-fb5b-42f7-9545-25d85f29f585",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "937d7f85-f783-4d3d-a670-f5006219da08",
+        "workshopId": {
+          "value": 3798021301
+        },
+        "name": {
+          "value": 2310115582
+        },
+        "item": {
+          "value": 720550594
+        },
+        "itemRef": "64f3eb86-0606-4133-9dff-191da0a98155",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "a3dd831b-7c3f-4f42-8622-6f776f44c254",
+        "workshopId": {
+          "value": 977061672
+        },
+        "name": {
+          "value": 1863782178
+        },
+        "item": {
+          "value": 48453107
+        },
+        "itemRef": "f93f311a-b9a7-4ad3-bcb8-5057da6f02d6",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "66d50da6-b96e-4b3b-9025-3649892e9362",
+        "workshopId": {
+          "value": 548957216
+        },
+        "name": {
+          "value": 1011544581
+        },
+        "item": {
+          "value": 1750422149
+        },
+        "itemRef": "f5352ae8-35b6-4411-a1e3-9499d2e639ca",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "90a39fdc-b60d-4850-9766-36407d30e18a",
+        "workshopId": {
+          "value": 2278680289
+        },
+        "name": {
+          "value": 2017973633
+        },
+        "item": {
+          "value": 0
+        },
+        "itemRef": null,
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": true,
+        "workshopGuid": "38bbcee3-efe1-4baf-9a1c-deb73e356259",
+        "workshopId": {
+          "value": 973495664
+        },
+        "name": {
+          "value": 1768495365
+        },
+        "item": {
+          "value": 0
+        },
+        "itemRef": null,
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "7b757cec-22a1-4084-9e55-ced9fd2b6550",
+        "workshopId": {
+          "value": 448736551
+        },
+        "name": {
+          "value": 2517994654
+        },
+        "item": {
+          "value": 2407454540
+        },
+        "itemRef": "a858e1c8-325a-4f00-8b14-924154194006",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "f1f62261-36d7-4efb-b427-09c8f250bfa1",
+        "workshopId": {
+          "value": 726012489
+        },
+        "name": {
+          "value": 935626102
+        },
+        "item": {
+          "value": 4188196504
+        },
+        "itemRef": "23cffd4c-16b2-4708-9d17-c3eab6c5448f",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "c80b7289-87e7-48db-8707-34021fcd54aa",
+        "workshopId": {
+          "value": 3564727450
+        },
+        "name": {
+          "value": 1872823049
+        },
+        "item": {
+          "value": 2101422131
+        },
+        "itemRef": "75432c3b-ee99-4da6-9f24-9022b19bc9ed",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "d31c8d99-01a4-4fda-be1f-4f1cd149a187",
+        "workshopId": {
+          "value": 1214169756
+        },
+        "name": {
+          "value": 675024689
+        },
+        "item": {
+          "value": 2465126757
+        },
+        "itemRef": "3941d0bc-6b03-4e84-abc7-664134483bea",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "cb3392f7-a789-497a-a805-021e411e6066",
+        "workshopId": {
+          "value": 995228565
+        },
+        "name": {
+          "value": 1230812543
+        },
+        "item": {
+          "value": 3229096192
+        },
+        "itemRef": "6059f647-155e-4341-906e-ab9dfcb17675",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "fc328abe-def1-4e74-ac65-20e23fe75d10",
+        "workshopId": {
+          "value": 2107047400
+        },
+        "name": {
+          "value": 3793436469
+        },
+        "item": {
+          "value": 917858421
+        },
+        "itemRef": "a942779c-5855-4440-a0a9-338dbb768972",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "071fa8f5-a65c-428f-92de-6368ead92cf4",
+        "workshopId": {
+          "value": 2800471523
+        },
+        "name": {
+          "value": 3038581157
+        },
+        "item": {
+          "value": 2068629527
+        },
+        "itemRef": "a1a6896a-64bf-4bfc-9038-e078da037d76",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "0287a52d-c264-4fbe-854f-b89e5dd8a2aa",
+        "workshopId": {
+          "value": 1917968600
+        },
+        "name": {
+          "value": 4015956841
+        },
+        "item": {
+          "value": 2974680800
+        },
+        "itemRef": "97510e35-624d-4c80-a45f-625ca4def133",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "5cdd511f-34d4-4b51-8d29-76ff1c9e0cd3",
+        "workshopId": {
+          "value": 1803700182
+        },
+        "name": {
+          "value": 2677516812
+        },
+        "item": {
+          "value": 4185580477
+        },
+        "itemRef": "f5e3f103-e20f-42a6-946c-6ec939b15432",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "05063373-d1a5-4b24-9b8f-6394217c0f0a",
+        "workshopId": {
+          "value": 2308352196
+        },
+        "name": {
+          "value": 675725713
+        },
+        "item": {
+          "value": 2736406931
+        },
+        "itemRef": "69c5e499-c113-4dcd-aa16-b3f22544e469",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "79b093e3-42ae-4ac8-90b4-8301b3ef8963",
+        "workshopId": {
+          "value": 130966000
+        },
+        "name": {
+          "value": 1547158793
+        },
+        "item": {
+          "value": 3587916203
+        },
+        "itemRef": "23351fac-7d9e-4247-815b-30157144b580",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "c74a451e-3ee1-4fe3-b00f-fa5775f8599e",
+        "workshopId": {
+          "value": 1792040910
+        },
+        "name": {
+          "value": 4025057169
+        },
+        "item": {
+          "value": 3032252431
+        },
+        "itemRef": "677d2a00-df66-4331-b01b-0e7cb5044fd2",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "7214fd5c-c6fc-40a3-b862-fd764ac2a785",
+        "workshopId": {
+          "value": 878070460
+        },
+        "name": {
+          "value": 3296734537
+        },
+        "item": {
+          "value": 3185865067
+        },
+        "itemRef": "34970456-a07d-4480-a268-8d95f69f5295",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "eab754cf-312e-4ec0-85b6-2cce9a778e32",
+        "workshopId": {
+          "value": 2253424106
+        },
+        "name": {
+          "value": 3135058671
+        },
+        "item": {
+          "value": 2501086572
+        },
+        "itemRef": "6db2d712-d600-4390-b786-aca8086a5ba4",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "b8973982-1707-40e3-94c0-0593b33808a1",
+        "workshopId": {
+          "value": 3918094922
+        },
+        "name": {
+          "value": 4057153741
+        },
+        "item": {
+          "value": 625549676
+        },
+        "itemRef": "a62318bc-e3c1-419f-97fa-5ad105bbb2fe",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": false,
+        "ignoreInJournalUi": true,
+        "workshopGuid": "581af21d-8ebb-494a-955c-7193c90268b8",
+        "workshopId": {
+          "value": 4247308806
+        },
+        "name": {
+          "value": 1768495365
+        },
+        "item": {
+          "value": 0
+        },
+        "itemRef": null,
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "f08d9055-de07-43f1-b707-082f19e48794",
+        "workshopId": {
+          "value": 3362288633
+        },
+        "name": {
+          "value": 3333925958
+        },
+        "item": {
+          "value": 4146744324
+        },
+        "itemRef": "b500ea01-9d3f-40c3-a3b1-14127f313755",
+        "upgradeItemCategories": [
+          "Equipment",
+          "Weapons",
+          "Ammunition"
+        ],
+        "upgradeWeaponTypes": [
+          "RangedStaff",
+          "RangedWand"
+        ],
+        "upgradeItemClassAlignments": [
+          "Mage"
+        ]
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "63dc5f14-aa2c-4e1e-b6d7-17e2b15d879a",
+        "workshopId": {
+          "value": 1103055054
+        },
+        "name": {
+          "value": 3357628507
+        },
+        "item": {
+          "value": 786532879
+        },
+        "itemRef": "505ccfbc-440d-4d63-a3d6-d689d3d55e78",
+        "upgradeItemCategories": [
+          "Equipment",
+          "Weapons",
+          "Tools",
+          "BuildTools"
+        ],
+        "upgradeWeaponTypes": [
+          "OneHandAxe",
+          "OneHandClub",
+          "OneHandSword",
+          "TwoHandAxe",
+          "TwoHandClub",
+          "TwoHandHammer",
+          "GreatSword"
+        ],
+        "upgradeItemClassAlignments": [
+          "Warrior"
+        ]
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "8dd2cc2d-ddc2-4a94-a8b5-d40603caefa1",
+        "workshopId": {
+          "value": 3185407206
+        },
+        "name": {
+          "value": 1084236782
+        },
+        "item": {
+          "value": 1149463877
+        },
+        "itemRef": "3431ac56-3dc6-4230-ba4a-3bf5e0f2d086",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "9f99dbd6-10fd-4b87-8ccd-87df5ded43a0",
+        "workshopId": {
+          "value": 2216351573
+        },
+        "name": {
+          "value": 1579483555
+        },
+        "item": {
+          "value": 1340233313
+        },
+        "itemRef": "3dbdc1d0-98e7-4b25-9327-937444b6ac87",
+        "upgradeItemCategories": [
+          "Equipment",
+          "Weapons",
+          "Ammunition"
+        ],
+        "upgradeWeaponTypes": [
+          "RangedBow",
+          "Dagger"
+        ],
+        "upgradeItemClassAlignments": [
+          "Ranger"
+        ]
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "c30042fb-3104-478e-b0b8-e4989c4cb3b7",
+        "workshopId": {
+          "value": 3651361391
+        },
+        "name": {
+          "value": 2395529621
+        },
+        "item": {
+          "value": 1004393385
+        },
+        "itemRef": "2ba6961c-f842-49bd-9551-654c82cb6de0",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "0b966715-c5c9-435d-b727-4c24b4ff7e67",
+        "workshopId": {
+          "value": 2906865252
+        },
+        "name": {
+          "value": 3148204644
+        },
+        "item": {
+          "value": 3764330463
+        },
+        "itemRef": "48aee0f0-ba8f-4045-9595-42b0723d67a2",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "aa5d01c2-8298-4f81-92af-2317c2f65597",
+        "workshopId": {
+          "value": 3866275888
+        },
+        "name": {
+          "value": 2340969932
+        },
+        "item": {
+          "value": 1100674176
+        },
+        "itemRef": "b3923138-2f51-44db-9a85-c400a342ff7b",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "ad639c41-b635-461f-a71e-4f804f553129",
+        "workshopId": {
+          "value": 2236893082
+        },
+        "name": {
+          "value": 3824357418
+        },
+        "item": {
+          "value": 2375735512
+        },
+        "itemRef": "05e5697b-983f-4a99-a1c9-77a39bead07a",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": true,
+        "workshopGuid": "b82431a8-8bef-43aa-a835-c141b894c830",
+        "workshopId": {
+          "value": 3087984146
+        },
+        "name": {
+          "value": 518368038
+        },
+        "item": {
+          "value": 3721320872
+        },
+        "itemRef": "828d1363-f824-4552-8f0a-1303bd369d14",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "8d1e9522-d8d4-4dff-a7bb-c3c6627ae6d8",
+        "workshopId": {
+          "value": 3299655940
+        },
+        "name": {
+          "value": 3049545225
+        },
+        "item": {
+          "value": 2684532648
+        },
+        "itemRef": "d2561878-5596-4b29-bfa2-0ce0da1f65d5",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      },
+      {
+        "isNpc": true,
+        "ignoreInJournalUi": false,
+        "workshopGuid": "aa727bcd-d000-4837-87dd-a2168eecda32",
+        "workshopId": {
+          "value": 4219574132
+        },
+        "name": {
+          "value": 2398022097
+        },
+        "item": {
+          "value": 1710067644
+        },
+        "itemRef": "a343beaa-e10f-4395-981d-ac3e8ca6a785",
+        "upgradeItemCategories": [],
+        "upgradeWeaponTypes": [],
+        "upgradeItemClassAlignments": []
+      }
+    ],
+    "craftingProps": [
+      {
+        "craftingPropGuid": "b3ff29bd-d4f2-4f41-91c1-4d977e8f399d",
+        "craftingPropId": {
+          "value": 2371410940
+        },
+        "craftingPropIndex": 0,
+        "name": {
+          "value": 4033619223
+        },
+        "item": {
+          "value": 2777715830
+        },
+        "itemRef": "61575880-3db5-4ce8-b9bc-1291402a9fb4"
+      },
+      {
+        "craftingPropGuid": "556b21ff-bf45-4b98-b1bc-601b136971ae",
+        "craftingPropId": {
+          "value": 108571071
+        },
+        "craftingPropIndex": 1,
+        "name": {
+          "value": 1532346137
+        },
+        "item": {
+          "value": 770717366
+        },
+        "itemRef": "307aa279-8f3a-4a8b-b079-8f8fdb478871"
+      },
+      {
+        "craftingPropGuid": "fd499c77-500e-4640-9ce9-3e46ca488bff",
+        "craftingPropId": {
+          "value": 3352045539
+        },
+        "craftingPropIndex": 2,
+        "name": {
+          "value": 1975454390
+        },
+        "item": {
+          "value": 1894641391
+        },
+        "itemRef": "2c44ed73-e5c1-460a-9050-6f95be262ca4"
+      },
+      {
+        "craftingPropGuid": "8c788ba3-1497-49d7-b791-908bf8d09025",
+        "craftingPropId": {
+          "value": 1782882070
+        },
+        "craftingPropIndex": 3,
+        "name": {
+          "value": 1702667426
+        },
+        "item": {
+          "value": 3955282507
+        },
+        "itemRef": "a057cffc-c554-469d-ba7f-346eed8748eb"
+      },
+      {
+        "craftingPropGuid": "828f8bd6-a589-45b6-b7ee-cb0653525516",
+        "craftingPropId": {
+          "value": 493705422
+        },
+        "craftingPropIndex": 4,
+        "name": {
+          "value": 4127054386
+        },
+        "item": {
+          "value": 21592019
+        },
+        "itemRef": "142b3e78-8eed-4490-95e5-dcc1a961560f"
+      },
+      {
+        "craftingPropGuid": "a3941a98-77c9-46a3-a007-80cf8e8670d8",
+        "craftingPropId": {
+          "value": 1950585083
+        },
+        "craftingPropIndex": 5,
+        "name": {
+          "value": 3014021066
+        },
+        "item": {
+          "value": 1998277725
+        },
+        "itemRef": "2f04a05f-697d-489b-a32f-76bb3439f5bc"
+      },
+      {
+        "craftingPropGuid": "04bac306-ca98-4e32-a7f3-c81ee520129c",
+        "craftingPropId": {
+          "value": 4264658137
+        },
+        "craftingPropIndex": 6,
+        "name": {
+          "value": 2385919752
+        },
+        "item": {
+          "value": 4247975958
+        },
+        "itemRef": "5c069268-a20e-487c-99d8-34a38d2da6dd"
+      },
+      {
+        "craftingPropGuid": "ae2a6049-0509-4fb9-8b6c-c4d224abfd7f",
+        "craftingPropId": {
+          "value": 2548450554
+        },
+        "craftingPropIndex": 7,
+        "name": {
+          "value": 714231825
+        },
+        "item": {
+          "value": 1594637042
+        },
+        "itemRef": "e0d5958b-fb5b-42f7-9545-25d85f29f585"
+      },
+      {
+        "craftingPropGuid": "ab4bf0e9-aa40-4b9e-8b7e-514d46e3c978",
+        "craftingPropId": {
+          "value": 1802652882
+        },
+        "craftingPropIndex": 8,
+        "name": {
+          "value": 3707289921
+        },
+        "item": {
+          "value": 1105034035
+        },
+        "itemRef": "fe9ae9b6-ae26-44b6-a82c-d437b7aaabf6"
+      },
+      {
+        "craftingPropGuid": "8008db8c-48cd-4216-bbad-ff10f4ff8636",
+        "craftingPropId": {
+          "value": 2138887107
+        },
+        "craftingPropIndex": 9,
+        "name": {
+          "value": 498328511
+        },
+        "item": {
+          "value": 3764911324
+        },
+        "itemRef": "e9584ac9-810b-4169-a274-1db0980b39ac"
+      },
+      {
+        "craftingPropGuid": "8ff33021-1c27-4934-8831-d2254d4b25c3",
+        "craftingPropId": {
+          "value": 812873116
+        },
+        "craftingPropIndex": 10,
+        "name": {
+          "value": 4072896271
+        },
+        "item": {
+          "value": 146975947
+        },
+        "itemRef": "8cc32600-6f88-467f-a956-a462170d4654"
+      },
+      {
+        "craftingPropGuid": "6c6ab401-0c08-49a9-ae38-245930301b7f",
+        "craftingPropId": {
+          "value": 1523488911
+        },
+        "craftingPropIndex": 11,
+        "name": {
+          "value": 3131424593
+        },
+        "item": {
+          "value": 2010028904
+        },
+        "itemRef": "ae0d1ddc-f0a6-442e-aee1-180623e4842b"
+      },
+      {
+        "craftingPropGuid": "1b7064d4-de9c-41f5-8272-ef2711287796",
+        "craftingPropId": {
+          "value": 181090778
+        },
+        "craftingPropIndex": 12,
+        "name": {
+          "value": 754053094
+        },
+        "item": {
+          "value": 2901638773
+        },
+        "itemRef": "91f20536-4483-4649-942e-5248a81e7e8c"
+      },
+      {
+        "craftingPropGuid": "f77fd080-b411-4961-9962-e2d92d68fc67",
+        "craftingPropId": {
+          "value": 3494089650
+        },
+        "craftingPropIndex": 13,
+        "name": {
+          "value": 3431804049
+        },
+        "item": {
+          "value": 3397817290
+        },
+        "itemRef": "c90a7365-c80c-485f-9e55-fa5c531ac015"
+      },
+      {
+        "craftingPropGuid": "1add5756-32b1-46c5-8441-96a314aa54f8",
+        "craftingPropId": {
+          "value": 1435796535
+        },
+        "craftingPropIndex": 14,
+        "name": {
+          "value": 1037374948
+        },
+        "item": {
+          "value": 869257370
+        },
+        "itemRef": "e376b799-69b5-408f-a475-ed976cc28d7b"
+      },
+      {
+        "craftingPropGuid": "f2b66b20-4463-4904-ba02-01fe92f20a58",
+        "craftingPropId": {
+          "value": 1470811989
+        },
+        "craftingPropIndex": 15,
+        "name": {
+          "value": 675024689
+        },
+        "item": {
+          "value": 2465126757
+        },
+        "itemRef": "3941d0bc-6b03-4e84-abc7-664134483bea"
+      },
+      {
+        "craftingPropGuid": "3d1b42b3-92e6-47cc-8c1a-98342d6c75f8",
+        "craftingPropId": {
+          "value": 2828791723
+        },
+        "craftingPropIndex": 16,
+        "name": {
+          "value": 1011544581
+        },
+        "item": {
+          "value": 1750422149
+        },
+        "itemRef": "f5352ae8-35b6-4411-a1e3-9499d2e639ca"
+      },
+      {
+        "craftingPropGuid": "dbfad658-2bec-454f-834f-8bce3391347c",
+        "craftingPropId": {
+          "value": 1926967406
+        },
+        "craftingPropIndex": 17,
+        "name": {
+          "value": 979471501
+        },
+        "item": {
+          "value": 869257370
+        },
+        "itemRef": "e376b799-69b5-408f-a475-ed976cc28d7b"
+      },
+      {
+        "craftingPropGuid": "164994ce-f966-456a-a70b-026623aaf778",
+        "craftingPropId": {
+          "value": 3022652788
+        },
+        "craftingPropIndex": 18,
+        "name": {
+          "value": 3722871690
+        },
+        "item": {
+          "value": 456573522
+        },
+        "itemRef": "083b0f91-71af-4442-85ed-bc6a55f3986a"
+      },
+      {
+        "craftingPropGuid": "4c2d57db-dbbf-4697-9bb4-66da27e5b7ac",
+        "craftingPropId": {
+          "value": 3499859985
+        },
+        "craftingPropIndex": 19,
+        "name": {
+          "value": 2310115582
+        },
+        "item": {
+          "value": 720550594
+        },
+        "itemRef": "64f3eb86-0606-4133-9dff-191da0a98155"
+      },
+      {
+        "craftingPropGuid": "80059230-6f48-4e1e-b470-316db23f05f1",
+        "craftingPropId": {
+          "value": 2574221288
+        },
+        "craftingPropIndex": 20,
+        "name": {
+          "value": 3645293029
+        },
+        "item": {
+          "value": 4105499170
+        },
+        "itemRef": "4be622b2-6be7-41ee-ad92-11fb272c5fc8"
+      },
+      {
+        "craftingPropGuid": "e5937931-822a-40ed-9fe7-eb11e2416997",
+        "craftingPropId": {
+          "value": 2202390661
+        },
+        "craftingPropIndex": 21,
+        "name": {
+          "value": 584696893
+        },
+        "item": {
+          "value": 1109058084
+        },
+        "itemRef": "40334004-7896-4c0a-8fbc-4effefa541bd"
+      },
+      {
+        "craftingPropGuid": "c95dd369-f74f-446a-9643-5dd07287e9ac",
+        "craftingPropId": {
+          "value": 728831843
+        },
+        "craftingPropIndex": 22,
+        "name": {
+          "value": 3431804049
+        },
+        "item": {
+          "value": 3231269838
+        },
+        "itemRef": "6436e66d-3293-4eda-9911-abcc488fb3e0"
+      },
+      {
+        "craftingPropGuid": "51640bb8-5adc-421f-a049-842337ab2b09",
+        "craftingPropId": {
+          "value": 2326678544
+        },
+        "craftingPropIndex": 23,
+        "name": {
+          "value": 2706268888
+        },
+        "item": {
+          "value": 3190213689
+        },
+        "itemRef": "d139bec4-22e1-4c10-b8ea-5f247eab0b6a"
+      },
+      {
+        "craftingPropGuid": "1f17cce6-d4cc-49c4-a2aa-2028c49d593b",
+        "craftingPropId": {
+          "value": 1860477549
+        },
+        "craftingPropIndex": 24,
+        "name": {
+          "value": 2329063592
+        },
+        "item": {
+          "value": 1256355087
+        },
+        "itemRef": "158931a4-fe1c-49fa-95e6-0d978f7ff84f"
+      },
+      {
+        "craftingPropGuid": "c3ecbaa6-a1a5-4769-ac07-da2996506f28",
+        "craftingPropId": {
+          "value": 4263998015
+        },
+        "craftingPropIndex": 25,
+        "name": {
+          "value": 2237652679
+        },
+        "item": {
+          "value": 637869357
+        },
+        "itemRef": "ad911906-f085-4914-9f7c-79ea59eed59d"
+      },
+      {
+        "craftingPropGuid": "023c9322-14e4-4fdd-8230-c91b09728a15",
+        "craftingPropId": {
+          "value": 2965387520
+        },
+        "craftingPropIndex": 26,
+        "name": {
+          "value": 1757559871
+        },
+        "item": {
+          "value": 2938349424
+        },
+        "itemRef": "72b32b9f-932e-4b22-96d0-6abc91f7471f"
+      },
+      {
+        "craftingPropGuid": "4cbb9528-269c-40ff-9019-b7462bbee100",
+        "craftingPropId": {
+          "value": 1379383422
+        },
+        "craftingPropIndex": 27,
+        "name": {
+          "value": 3645293029
+        },
+        "item": {
+          "value": 4243734462
+        },
+        "itemRef": "2bd7915e-923a-4bdc-8401-8110996281ef"
+      },
+      {
+        "craftingPropGuid": "26c702a2-a0ae-44a4-9888-ac7f4cef01d2",
+        "craftingPropId": {
+          "value": 3383527549
+        },
+        "craftingPropIndex": 28,
+        "name": {
+          "value": 972139413
+        },
+        "item": {
+          "value": 3881781700
+        },
+        "itemRef": "97021e32-eb48-4b86-a0bd-05cc5f636b95"
+      },
+      {
+        "craftingPropGuid": "9a770d5c-331c-496b-9f83-716e7d5408ba",
+        "craftingPropId": {
+          "value": 2800298540
+        },
+        "craftingPropIndex": 29,
+        "name": {
+          "value": 2464264963
+        },
+        "item": {
+          "value": 1797898257
+        },
+        "itemRef": "86492bd2-0da1-4bb1-9800-d40d8c26f6ef"
+      },
+      {
+        "craftingPropGuid": "3ee15acf-7e4e-459e-abb3-2398d2bee7c0",
+        "craftingPropId": {
+          "value": 2996351708
+        },
+        "craftingPropIndex": 30,
+        "name": {
+          "value": 935626102
+        },
+        "item": {
+          "value": 4188196504
+        },
+        "itemRef": "23cffd4c-16b2-4708-9d17-c3eab6c5448f"
+      },
+      {
+        "craftingPropGuid": "6c6d29ce-80f4-4ffb-a8a3-5ffd09e6dcdd",
+        "craftingPropId": {
+          "value": 2753998646
+        },
+        "craftingPropIndex": 31,
+        "name": {
+          "value": 3497087062
+        },
+        "item": {
+          "value": 3580818309
+        },
+        "itemRef": "2661173f-8f17-4849-9423-e05048c43790"
+      },
+      {
+        "craftingPropGuid": "a27c6c74-d587-4663-a4b5-363d76017a93",
+        "craftingPropId": {
+          "value": 1715249018
+        },
+        "craftingPropIndex": 32,
+        "name": {
+          "value": 543732718
+        },
+        "item": {
+          "value": 2101422131
+        },
+        "itemRef": "75432c3b-ee99-4da6-9f24-9022b19bc9ed"
+      },
+      {
+        "craftingPropGuid": "3c08eee5-1ab9-4b9c-8b00-e538ca7ff7a0",
+        "craftingPropId": {
+          "value": 1025839878
+        },
+        "craftingPropIndex": 33,
+        "name": {
+          "value": 675024689
+        },
+        "item": {
+          "value": 2465126757
+        },
+        "itemRef": "3941d0bc-6b03-4e84-abc7-664134483bea"
+      },
+      {
+        "craftingPropGuid": "7009dd53-ebf5-4d50-a528-bad55736af37",
+        "craftingPropId": {
+          "value": 1329880352
+        },
+        "craftingPropIndex": 34,
+        "name": {
+          "value": 1343220600
+        },
+        "item": {
+          "value": 2974680800
+        },
+        "itemRef": "97510e35-624d-4c80-a45f-625ca4def133"
+      },
+      {
+        "craftingPropGuid": "0cf61560-0e30-47a5-99de-958810dbc180",
+        "craftingPropId": {
+          "value": 573386432
+        },
+        "craftingPropIndex": 35,
+        "name": {
+          "value": 3278802190
+        },
+        "item": {
+          "value": 917858421
+        },
+        "itemRef": "a942779c-5855-4440-a0a9-338dbb768972"
+      },
+      {
+        "craftingPropGuid": "50615c93-7e89-47cb-b218-38f50b92fe4f",
+        "craftingPropId": {
+          "value": 2259778041
+        },
+        "craftingPropIndex": 36,
+        "name": {
+          "value": 675374754
+        },
+        "item": {
+          "value": 2068629527
+        },
+        "itemRef": "a1a6896a-64bf-4bfc-9038-e078da037d76"
+      },
+      {
+        "craftingPropGuid": "fbfa22f9-bdf2-434d-8b69-02adb73cdc04",
+        "craftingPropId": {
+          "value": 3611853698
+        },
+        "craftingPropIndex": 37,
+        "name": {
+          "value": 3270946088
+        },
+        "item": {
+          "value": 4185580477
+        },
+        "itemRef": "f5e3f103-e20f-42a6-946c-6ec939b15432"
+      },
+      {
+        "craftingPropGuid": "8d6f6282-59ba-4afb-bacd-862a38046736",
+        "craftingPropId": {
+          "value": 70858873
+        },
+        "craftingPropIndex": 38,
+        "name": {
+          "value": 1532346137
+        },
+        "item": {
+          "value": 3513149511
+        },
+        "itemRef": "837e55e4-a151-4592-8355-b0fe5535644f"
+      },
+      {
+        "craftingPropGuid": "5d49560d-b7b6-4810-8428-ef7e5e0c382c",
+        "craftingPropId": {
+          "value": 1149933244
+        },
+        "craftingPropIndex": 39,
+        "name": {
+          "value": 1414716342
+        },
+        "item": {
+          "value": 2871019400
+        },
+        "itemRef": "35d74624-e017-45c8-8f2b-e378addc04ed"
+      },
+      {
+        "craftingPropGuid": "badfb4ec-142a-4a0d-8058-77b1f9ec089b",
+        "craftingPropId": {
+          "value": 3182487737
+        },
+        "craftingPropIndex": 40,
+        "name": {
+          "value": 2012050564
+        },
+        "item": {
+          "value": 367322414
+        },
+        "itemRef": "988c48f7-7e39-4bc7-a086-69b3d0d34f7b"
+      },
+      {
+        "craftingPropGuid": "0c6fe3cb-7484-402d-ba75-843cacbe0366",
+        "craftingPropId": {
+          "value": 1029131507
+        },
+        "craftingPropIndex": 41,
+        "name": {
+          "value": 1230812543
+        },
+        "item": {
+          "value": 3229096192
+        },
+        "itemRef": "6059f647-155e-4341-906e-ab9dfcb17675"
+      },
+      {
+        "craftingPropGuid": "551877f0-4265-437f-8a44-c01b0917396f",
+        "craftingPropId": {
+          "value": 620505049
+        },
+        "craftingPropIndex": 42,
+        "name": {
+          "value": 2517994654
+        },
+        "item": {
+          "value": 2407454540
+        },
+        "itemRef": "a858e1c8-325a-4f00-8b14-924154194006"
+      },
+      {
+        "craftingPropGuid": "26228843-4942-4f34-a630-cc7baf6ca210",
+        "craftingPropId": {
+          "value": 1762120128
+        },
+        "craftingPropIndex": 43,
+        "name": {
+          "value": 1693806198
+        },
+        "item": {
+          "value": 2792360705
+        },
+        "itemRef": "4f2223e3-8130-419b-9117-87f3cc822da5"
+      },
+      {
+        "craftingPropGuid": "ec7a2969-6441-4d51-a7f5-c5eae404d168",
+        "craftingPropId": {
+          "value": 1570355548
+        },
+        "craftingPropIndex": 44,
+        "name": {
+          "value": 1863782178
+        },
+        "item": {
+          "value": 48453107
+        },
+        "itemRef": "f93f311a-b9a7-4ad3-bcb8-5057da6f02d6"
+      },
+      {
+        "craftingPropGuid": "a01c0b01-12a3-4d9b-a414-68b7f8d4b7b8",
+        "craftingPropId": {
+          "value": 3068775774
+        },
+        "craftingPropIndex": 45,
+        "name": {
+          "value": 675725713
+        },
+        "item": {
+          "value": 2736406931
+        },
+        "itemRef": "69c5e499-c113-4dcd-aa16-b3f22544e469"
+      },
+      {
+        "craftingPropGuid": "5e8d432a-1ad5-43d6-814b-b341ebc1ffe4",
+        "craftingPropId": {
+          "value": 3310943142
+        },
+        "craftingPropIndex": 46,
+        "name": {
+          "value": 1547158793
+        },
+        "item": {
+          "value": 3587916203
+        },
+        "itemRef": "23351fac-7d9e-4247-815b-30157144b580"
+      },
+      {
+        "craftingPropGuid": "715b0584-0721-44c1-bd85-733eac8e7d6c",
+        "craftingPropId": {
+          "value": 2147916579
+        },
+        "craftingPropIndex": 47,
+        "name": {
+          "value": 4025057169
+        },
+        "item": {
+          "value": 3032252431
+        },
+        "itemRef": "677d2a00-df66-4331-b01b-0e7cb5044fd2"
+      },
+      {
+        "craftingPropGuid": "faae9b8d-4ed7-41c8-94e8-0fb915682e4c",
+        "craftingPropId": {
+          "value": 3075099340
+        },
+        "craftingPropIndex": 48,
+        "name": {
+          "value": 968138254
+        },
+        "item": {
+          "value": 2501086572
+        },
+        "itemRef": "6db2d712-d600-4390-b786-aca8086a5ba4"
+      },
+      {
+        "craftingPropGuid": "ce077f49-e76c-4a65-aa83-cd9ffaef9f25",
+        "craftingPropId": {
+          "value": 2356353242
+        },
+        "craftingPropIndex": 49,
+        "name": {
+          "value": 3739173891
+        },
+        "item": {
+          "value": 3185865067
+        },
+        "itemRef": "34970456-a07d-4480-a268-8d95f69f5295"
+      },
+      {
+        "craftingPropGuid": "06d16553-ed7c-4c19-a639-bd9220a7b45d",
+        "craftingPropId": {
+          "value": 632997068
+        },
+        "craftingPropIndex": 50,
+        "name": {
+          "value": 4057153741
+        },
+        "item": {
+          "value": 625549676
+        },
+        "itemRef": "a62318bc-e3c1-419f-97fa-5ad105bbb2fe"
+      }
+    ],
+    "$type": "keen::WorkshopRegistryResource",
+    "$guid": "3baba1c2-bc82-4ab7-b20e-16dec28208af",
+    "$part": 0
+  }
+}

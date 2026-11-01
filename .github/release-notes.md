@@ -1,51 +1,26 @@
-# Enshrouded Mod Studio 0.4.33
+# Enshrouded Mod Studio 0.4.34
 
-Enshrouded Mod Studio 0.4.33
+Mod Studio 0.4.34
+Nachtpflanzen und Drak-Handwerker
 
-PROGRAMM INSTALLIEREN UND AUTOMATISCH AKTUALISIEREN
-- Das neue Setup installiert Studio als normales Programm mit Startmenueintrag
-  und einem Eintrag zum Deinstallieren in Windows. Administratorrechte sind
-  nicht erforderlich. Der Installationsordner kann ausgewaehlt werden.
-- Beim ersten Setup kannst du den bisherigen portablen Studioordner auswaehlen.
-  Profile, Auswahl, Einstellungen, Sicherungen, gepruefte Originalbasen und
-  passende private Patcherdateien werden uebernommen. Das Original bleibt
-  erhalten. Ohne bisheriges Setup ist weiterhin eine frische Einrichtung moeglich.
-- Beim Start prueft Studio automatisch auf eine neuere stabile Version und
-  installiert sie nach Anzeige der Aenderungen. Die kurze Wartezeit laesst
-  sich anhalten; mit Spaeter wird fuer diesen Start verschoben.
-- Unter Werkzeuge koennen automatische Programmupdates ausgeschaltet werden.
-  Update pruefen und Aenderungen dieser Version anzeigen bleiben verfuegbar.
-- Installierte Programme behalten beim Update denselben Ordner. Die bestehenden
-  Profile und Einstellungen bleiben dort erhalten. Portable ZIPs nutzen weiter
-  die gepruefte Datenuebernahme mit Rueckfall auf den bisherigen Ordner.
+Sieben Nachtpflanzen mit eigenen Setzlingen, Wachstumsstufen und Ernteketten.
+Die Basis-Wachstumsdauer und Erntemenge sind einstellbar.
+Zusätzlicher platzierbarer Drak-Handwerker nach der Schmied-Freischaltung.
+Drei ewige Drak-Zauber mit eigenen Materialrezepten und nativen Symbolen.
+Speerkrieger: 8 Schuppen + 2 Krallen. Chakramjäger: 8 Schuppen + 2 Zähne.
+Magier: 8 Schuppen + 3 Blut + 1 Aquamarin.
 
-AUSDAUERREGENERATION BERICHTIGT
-- Ein Kodierungsfehler konnte Faktoren wie 2 oder 10 als viel zu grosse
-  Ganzzahl schreiben. In der 16-Bit-Netzwerkdarstellung konnte daraus 0 werden.
-- Sichere Ganzzahlmultiplikation und Division: Originalwert 50 wird bei Faktor 2
-  zu 100, bei Faktor 10 zu 500. Faktor 1 erhaelt die Originalformel unveraendert.
-- Faktor auf drei Nachkommastellen, abschliessende Netzwerkgrenze 65.535.
-  Das Protokoll zeigt ausgewaehlten und tatsaechlich verwendeten Faktor.
-- Die absolute Regeneration skaliert nicht automatisch mit maximaler Ausdauer.
-  Anlaufzeit, Wartezeit und Ausdaueranzeige bleiben unveraendert.
-- Hintergrundtests pruefen Ganzzahlwerte, 10 auf 2, Deaktivieren und das erneute
-  Lesen beider Ressourcen nach dem Packen. Die Spielwirkung bleibt live offen.
-KORREKTUREN UND PRUEFUNG
-- Die erkannte installierte Version stammt jetzt aus der laufenden Anwendung.
-  Die bisher fest eingetragene 0.4.30 konnte neuere vorhandene Versionen falsch
-  erkennen. Falls dein bisheriges Update deshalb abbricht: dieses Setup einmal
-  direkt herunterladen, das alte Studio schliessen und im Setup uebernehmen.
-- Laufende Patches und ungespeicherte Aenderungen werden nicht durch ein
-  automatisches Programmupdate unterbrochen. Fehlgeschlagene automatische
-  Versuche werden fuer dieselbe Version 30 Minuten verschoben.
-- Downloadadresse, Groesse und SHA-256 werden vor dem Installieren geprueft.
-  Bei Fehlern bleibt die bisherige Anwendung nutzbar.
-- Eigene Hintergrundtests pruefen Update-Metadaten, Einstellungen,
-  Datenuebernahme und Installer-Ruecknahme mit kuenstlichen Dateien.
-  Es wurden keine produktiven Profile, Spielstaende oder Spiele veraendert.
+Für die automatische Verteilung zuerst Manager 0.15.44 und Spielerclient
+0.16.27 aktualisieren. Anschließend Studio-Serverpatch und Synchronisation
+wie gewohnt ausführen. Alle beteiligten Installationen müssen denselben
+Modstand und den unterstützten Spielbuild 1273043 verwenden.
 
-SYNCHRONISATION
-Zuerst Manager 0.15.41 und Spielerclient 0.16.25 aktualisieren, danach Studio
-0.4.33 verwenden. Der neue Studio-Programmstand wird von beiden erkannt.
-Vorhandene aeltere Clientpakete bleiben unterstuetzt. Die Ausdauerberechnung ist berichtigt; die Anzahl und die gespeicherten
-Schluessel der 49 Spieloptionen bleiben unveraendert.
+Hintergrundtests sowie native Server-/Client-Archivprüfungen bestanden.
+Platzierung, tatsächliche Wachstumszeit, Ernte, Speichern/Laden und Kampf
+sind noch nicht im Spiel bestätigt. Die neuen Optionen sind standardmäßig
+ausgeschaltet. Anleitung: NACHTPFLANZEN-DRAK-TEST.txt
+
+Normales Windows-Setup und automatische Programmupdates bleiben verfügbar.
+Das öffentliche Paket enthält die Moddefinitionen und EMM mit GPL-Quellen.
+Original-Patcher, Vendor-Bytecode und Legacy-Parser werden aus der eigenen
+geprüften Installation übernommen oder über Patcher einrichten ergänzt.

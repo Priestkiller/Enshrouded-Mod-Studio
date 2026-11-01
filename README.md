@@ -1,10 +1,12 @@
-# Enshrouded Mod Studio 0.4.33
+# Enshrouded Mod Studio 0.4.34
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
 
-**Neu in 0.4.33:** normales Windows-Setup mit Startmenü und Deinstallation sowie automatische Programmupdates beim Start. Änderungen werden vor der Installation und nach dem Neustart angezeigt. Updates lassen sich verschieben oder in den Werkzeugen abschalten. Profile und Einstellungen bleiben erhalten.
+**Neu in 0.4.34:** sieben kultivierbare Nachtpflanzen, ein eigener Drak-Handwerker und drei Drak-Beschwörungszauber. Für die automatische Verteilung Manager 0.15.44 und Spielerclient 0.16.27 verwenden. Die Datenpfade und gepackten Archive sind geprüft; Platzierung, Ernte, Speichern/Laden und Kampf bleiben im Spiel zu erproben. [Anleitung](NACHTPFLANZEN-DRAK-TEST.txt).
 
-Für die erste normale Installation die **Enshrouded-Mod-Studio-0.4.33-Setup.exe** aus dem aktuellen Release verwenden. Ein vorhandener portabler Studioordner kann im Setup für die Datenübernahme ausgewählt werden. Das vollständige ZIP bleibt als portable Variante verfügbar. Für die neuen Pakete zuerst **Manager 0.15.41 und Spielerclient 0.16.25** aktualisieren.
+**Seit 0.4.33:** normales Windows-Setup mit Startmenü und Deinstallation sowie automatische Programmupdates beim Start. Änderungen werden vor der Installation und nach dem Neustart angezeigt. Updates lassen sich verschieben oder in den Werkzeugen abschalten. Profile und Einstellungen bleiben erhalten.
+
+Für die erste normale Installation die **Enshrouded-Mod-Studio-0.4.34-Setup.exe** aus dem aktuellen Release verwenden. Ein vorhandener portabler Studioordner kann im Setup für die Datenübernahme ausgewählt werden. Das vollständige ZIP bleibt als portable Variante verfügbar. Für die neuen Pakete zuerst **Manager 0.15.44 und Spielerclient 0.16.27** aktualisieren.
 
 **Ausdauerregeneration berichtigt:** Die Regenerationsformel verwendet Ganzzahl-Literale. Die vorherige Kodierung konnte bei Faktoren wie 2 oder 10 einen zu großen Wert erzeugen, dessen 16-Bit-Netzwerkdarstellung null war. Die neue Rechnung macht aus dem ursprünglichen Regenerationswert 50 bei Faktor 2 den Wert 100. Sie rundet den Faktor auf drei Nachkommastellen und begrenzt das Ergebnis auf 65.535. Maximale Ausdauer, Anlauf- und Wartezeiten bleiben unverändert; eine größere Ausdauerreserve braucht bei gleicher absoluter Regeneration länger. Hintergrundtests einschließlich Parser-Rücklesen bestätigen die korrigierten Daten, keine bereits beobachtete Spielwirkung.
 
@@ -21,8 +23,8 @@ Neu und zunächst ausgeschaltet: **Abladestationen: horizontalen Bereich vergrö
 ## In drei Schritten zu allen Spielern
 
 1. **Studio patcht:** Den vom UGSM Manager verwalteten Server-Installationsordner wählen, Einstellungen prüfen, Spiel bzw. Server schließen und **Patch anwenden / aktualisieren** ausführen.
-2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.41** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
-3. **Spieler synchronisieren:** Mit Spielerclient **0.16.25** zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
+2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Manager **0.15.44** prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
+3. **Spieler synchronisieren:** Mit Spielerclient **0.16.27** zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
 
 **Auf dem Server ist keine zusätzliche Spielclientinstallation erforderlich.** Die neue Standardmethode verwendet ausschließlich die vorhandene Serverbasis. Die Originaldateien der Spieler bleiben auf deren PCs; sie werden nicht hochgeladen. Server und Clients müssen denselben unterstützten Spielstand verwenden. Die bisherige Methode mit vorgefertigten Clientarchiven bleibt unter der eingeklappten erweiterten Einrichtung verfügbar.
 

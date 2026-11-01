@@ -1,0 +1,31 @@
+name: Publish verified stable updater release
+on:
+  push:
+    branches: [main]
+    paths: [.github/stable-release.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: stable-updater-release
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify publication parser and resume fixtures
+        shell: pwsh
+        run: node --test .github/scripts/tests/publish-stable-release.test.cjs
+      - name: Verify exact chunks and publish stable latest release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_PROMPT_DISABLED: '1'
+        run: node .github/scripts/publish-stable-release.cjs .github/stable-release.json

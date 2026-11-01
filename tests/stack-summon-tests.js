@@ -64,7 +64,7 @@ try{
   ];
   for(const[name,mutate]of bad)test('Rejects '+name,()=>{const o=setup('server',true);mutate(o);assert.throws(()=>stacks.check(o,input,output),/Stapelprüfung:/);});
   const backend=fs.readFileSync(path.join(engine,'studio-backend.js'),'utf8');
-  test('Backend passes the creation proof to both modified and complete readback checks',()=>{assert(backend.includes('reflection,skeletonSpells,logger:ctx.logger'));assert(backend.includes('complete:true,skeletonSpells:mods.skeletonSpells'));});
+  test('Backend passes the creation proof to both modified and complete readback checks',()=>{assert(backend.includes('reflection,skeletonSpells,nightPlants,drakMerchant,logger:ctx.logger'));assert(backend.includes('complete:true,skeletonSpells:mods.skeletonSpells'));});
 }finally{
   if(path.dirname(working)!==__dirname||!/^stack-fixtures-[a-f0-9]{12}$/.test(path.basename(working)))throw Error('Unsafe cleanup target');
   if(fs.existsSync(working))fs.rmSync(working,{recursive:true});
