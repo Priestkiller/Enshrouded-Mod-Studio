@@ -25,6 +25,10 @@ root-reward source variants were captured by the reviewed original Studio
 `ModProcessor` over inert inputs. `capture-producer-matrix-inputs.cjs` documents
 that optional development capture; CI never loads vendor bytecode or starts the
 native packer, Player worker, game, client installation or server.
+The omitted proprietary processor bytecode is checked against the frozen engine
+manifest capture hash; when present, its bytes must also match. All owned
+producer files are required and hashed. The reviewed contract binds the complete
+engine manifest, so this source-only path cannot certify a new engine identity.
 
 `fixtures/producer-consumer-contract.json` records the canonical recipe digests
 only after the independently generated recipes have passed the production Go
@@ -35,6 +39,9 @@ The Manager release gate additionally regenerates the matrix and requires all
 fail that gate. Consumer source SHA256 is certification provenance.
 The source fixture digest, native build and frozen producer identity are bound
 to the matrix index. A producer identity change during generation fails the run.
+The reviewed contract records the certified consumer dispatch, native-build
+handler, embedded feature snapshot, template policy, options and version
+approval source hashes.
 
 For a deliberate producer change, use an isolated review directory:
 

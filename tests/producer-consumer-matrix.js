@@ -8,8 +8,18 @@ const packed=fs.readFileSync(fixtureFile);assert.equal(R.digest(packed),provenan
 const bytes=zlib.gunzipSync(packed);assert.equal(R.digest(bytes),provenance.uncompressedSha256,'source fixture identity');
 const fixture=JSON.parse(bytes);assert.equal(fixture.format,1);assert.equal(fixture.sourceBuild,require(path.join(engine,'build-contract')).REVISION);require(path.join(engine,'build-contract')).assertReflection(fixture.reflection);
 assert.equal(provenance.sourceBuild,fixture.sourceBuild);assert.equal(provenance.nativeBuild,fixture.reflection.version);assert.equal(provenance.sourceRole,'server');
-for(const [file,expected]of Object.entries(provenance.producerFiles))assert.equal(R.digest(fs.readFileSync(path.join(engine,file))),expected,'Captured source variant producer changed: '+file);
 const engineManifest=JSON.parse(fs.readFileSync(path.join(engine,'engine-manifest.json'))),engineFingerprint=R.digest(R.canonical(engineManifest));
+// Captured vendor variants are data, not executed runtime. Public source
+// deliberately omits this one proprietary file; its capture remains pinned to
+// the certified engine manifest. Every present file and every owned source
+// must still match. The normal contract below binds the entire manifest.
+const omittedCaptureRuntime=[];
+for(const [file,expected]of Object.entries(provenance.producerFiles)){
+ assert.equal(engineManifest.files[file],expected,'Capture differs from the frozen engine manifest: '+file);
+ const sourceFile=path.join(engine,file);
+ if(file==='vendor/mod/processor.js.bytecode'&&!fs.existsSync(sourceFile)){omittedCaptureRuntime.push(file);continue;}
+ assert.equal(R.digest(fs.readFileSync(sourceFile)),expected,'Captured source variant producer changed: '+file);
+}
 const clone=v=>JSON.parse(JSON.stringify(v)),write=(file,value)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(value));};
 const candidate=process.argv[2]==='--candidate-output';
 const outputArgument=process.argv[candidate?3:2];
@@ -86,5 +96,5 @@ try{
   assert.equal(contract.format,1);assert.equal(contract.engineFingerprint,index.engineFingerprint,'Producer changed: review the paired consumer before certifying new output');assert.equal(contract.studioVersion,index.studioVersion);assert.equal(contract.engineVersion,index.engineVersion);assert.equal(contract.nativeBuild,index.nativeBuild);assert.equal(contract.sourceFixtureSha256,index.sourceFixtureSha256);
   assert.deepStrictEqual(rows.map(({name,sha256,resources,creates})=>({name,sha256,resources,creates})),contract.cases,'Actual producer output differs from the independently consumer-certified recipe contract');
  }
- console.log(JSON.stringify({passed:true,candidateOnly:candidate,cases:rows.length,features:keys,baseOptions:['gameplay.adjustManaCost','gameplay.adjustSpellCastTime','inventory.adjustStackSize','gameplay.adjustItemMaxLevel','player.adjustSkillPointsPerRoot'],vendorRuntimeExecuted:false,nativeArchivePackingExecuted:false,gameStarted:false}));
+ console.log(JSON.stringify({passed:true,candidateOnly:candidate,cases:rows.length,features:keys,baseOptions:['gameplay.adjustManaCost','gameplay.adjustSpellCastTime','inventory.adjustStackSize','gameplay.adjustItemMaxLevel','player.adjustSkillPointsPerRoot'],vendorRuntimeExecuted:false,omittedCaptureRuntime,nativeArchivePackingExecuted:false,gameStarted:false}));
 }finally{if(path.dirname(scratch)!==scratchParent||!path.basename(scratch).startsWith('ems-producer-matrix-'))throw Error('Unexpected fixture cleanup path');fs.rmSync(scratch,{recursive:true,force:true});}
