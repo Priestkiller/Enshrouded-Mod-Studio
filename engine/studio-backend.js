@@ -44,6 +44,7 @@ function managedCreateKeys(config,role,all=false){
  const features=require('./resource-recipe').featureDescriptors({...config,world},require('./skeleton-spell-definitions.json'));
  const keys=features.filter(f=>f.id!=='companions').flatMap(f=>f.resources.map(r=>resourceKey({$type:r.type,$guid:r.guid,$part:r.part})));
  if(all||config.world?.enableSkeletonSummoningSpells?.enabled)keys.push(...ownSpellCreateKeys(role));
+ if(role==='client')keys.push(...require('./native-item-textures').createdResources({...config,world}).map(r=>resourceKey({$type:r.type,$guid:r.guid,$part:r.part})));
  if(new Set(keys).size!==keys.length)throw Error('Neue Pflanzen- oder Draki-Ressourcenkennungen kollidieren.');return keys;
 }
 function itemGuidHash(guid){const raw=Buffer.from(guid.replace(/-/g,''),'hex'),bytes=Buffer.from([raw[3],raw[2],raw[1],raw[0],raw[5],raw[4],raw[7],raw[6],...raw.subarray(8)]);let hash=0x811c9dc5;for(const value of bytes)hash=Math.imul(hash^value,0x1000193)>>>0;return hash;}
@@ -146,12 +147,14 @@ function applyMods(config,input,output,log,role='unknown',reflection=null,origin
   skeletonSpells=require('./skeleton-spells').apply({...ownOption,options:config,enabled:true,reflection,role,logger:ctx.logger,track:ctx.track},input,output);
   skeletonSpells.multiplayer=multiplayer;
  }
+ const nativeItemTextures=require('./native-item-textures').apply({config,reflection,role,track:ctx.track},input,output);
  const templateCollection=TEMPLATE_COLLECTION_REGISTRATION_RELEASED?require('./template-collection-registration').apply({config,reflection,role,track:ctx.track,assertPristineBasis:()=>({build:reflection?.version,inventory:originalResourceInventory})},input,output):{enabled:false,requiresReviewedClientAppend:true,gameplayVerified:false};
  if(templateCollection.enabled)log('Neue Pflanzen- und Begleitervorlagen in der globalen Vorlagenliste registriert; ursprüngliche Verweise bleiben erhalten. Spieltest offen.');
  const skillPoints=require('./skill-points-check').check({config,role,reflection,logger:ctx.logger},input,output);
  const stacks=require('./stack-check').check({config,role,reflection,skeletonSpells,nightPlants,drakMerchant,logger:ctx.logger},input,output);
  const nativeOutputValues=require('./native-output-guard').apply({config,reflection},input,output);
- return {vendor:result,creativeCosts,settingsValues,playerValues,itemValues,craftValues,backpackValues,areaDepositRadius,autoLootPickup,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,nightPlants,drakMerchant,templateCollection,skillPoints,stacks,nativeOutputValues,extraChanges:changes.length,warnings};
+ if(role==='client')nativeItemTextures.itemCompleteness=require('./native-item-textures').auditCreatedItems(input,output);
+ return {vendor:result,creativeCosts,settingsValues,playerValues,itemValues,craftValues,backpackValues,areaDepositRadius,autoLootPickup,loot,limits,sharedStorage,taming,animalProduction,animalBreeding,summonedCompanions,skeletonSpells,nightPlants,drakMerchant,nativeItemTextures,templateCollection,skillPoints,stacks,nativeOutputValues,extraChanges:changes.length,warnings};
 }
 function currentState(data,t){const dir=path.join(data,'targets',t.id);const active=path.join(dir,'state.json');return {dir,active,state:fs.existsSync(active)?read(active):null};}
 function checkedBasis(st){const dir=within(st.dir,path.join(st.dir,st.state.basis));if(!st.state.basisArchives)throw Error('Basis-Metadaten fehlen. Eine neue passende Basis auswählen.');for(const[n,sha]of Object.entries(st.state.basisArchives)){if(path.basename(n)!==n||hash(path.join(dir,n))!==sha)throw Error('Gespeicherte Basis beschädigt: '+n);}return dir;}
@@ -313,6 +316,7 @@ async function prepare(options){progress(options,'validate','Profil und Installa
  if(mods.templateCollection?.enabled){mods.templateCollection.verification=require('./template-collection-registration').verify({summary:mods.templateCollection,verifyRoot:verify});mods.templateCollection.archiveReadbackValidated=true;}
  if(mods.featureLocalization&&!ownEnabled)mods.featureLocalizationVerification=require('./skeleton-spell-localization').verify(mods.featureLocalization,localizationOptions);
  mods.archiveResourceInventory=verifyArchiveResources(originalResourceInventory,archiveResourceInventory(path.join(stage,t.name+'.kfc')),manifest,ref);
+ if(!t.server){const icons=require('./native-item-textures');mods.nativeItemTextures.verification=icons.verify({summary:mods.nativeItemTextures,reflection:ref,verifyRoot:verify,options:config});mods.nativeItemTextures.contentVerification=icons.contentProof(mods.nativeItemTextures,t.dir,stage,t.name);mods.nativeItemTextures.itemCompletenessReadback=icons.auditCreatedItems(input,modified,verify);mods.nativeItemTextures.archiveReadbackValidated=true;}
  if(mods.settingsValues?.enabled){
   if(!outputs.length){progress(options,'verify-settings-values','Gewählte Zählwerte und Fallgrenzen erneut aus dem Archiv prüfen …',75);parser(path.join(bin,'kfc-parser.exe'),'unpack',staged,verify,log,mods.settingsValues.types.length?mods.settingsValues.types:['keen::BalancingTable']);}
   mods.settingsValues.verification=require('./settings-values-fix').verify(mods.settingsValues,ref,verify);

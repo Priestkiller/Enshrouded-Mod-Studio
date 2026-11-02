@@ -1,16 +1,18 @@
-# Enshrouded Mod Studio 0.4.36
+# Enshrouded Mod Studio 0.4.37
 
-**Spielpatch vom2.November2026:** unterstützt Enshrouded1.0.1.0 / Build1283531. Für die automatische Verteilung Manager0.15.50 und Spielerclient0.16.30 verwenden. Nach dem Steam-Update eine neue Basis freigeben und das Profil erneut anwenden.
+**Draki-Symbolfix:** Fehlende native Symbolressourcen für elf Draki- und Nachtpflanzen-Gegenstände ergänzt. Ein bestehendes Studio-0.4.36-Serverpaket kann weiterverwendet werden. Manager 0.15.51 und alle Spielerclients auf 0.16.31 aktualisieren, dann bei geschlossenem Spiel erneut synchronisieren.
+
+**Spielpatch vom2.November2026:** unterstützt Enshrouded1.0.1.0 / Build1283531. Für die automatische Verteilung Manager0.15.51 und Spielerclient0.16.31 verwenden. Nach dem Steam-Update eine neue Basis freigeben und das Profil erneut anwenden.
 
 Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
 
 **Spielupdate 1.0.1.0:** Diese Version unterstützt den nativen Spielbuild 1283531. Nach der Steam-Dateiprüfung die neue Basis freigeben und eine neue Vorschau erstellen. Die Basis des vorherigen Spielbuilds bleibt als Sicherung erhalten. Für die automatische Verteilung sind die passenden neuen Manager- und Spielerclient-Versionen erforderlich.
 
-**Neu in 0.4.36:** Anpassung an Enshrouded1.0.1.0 / Build1283531. Manager0.15.50 und Spielerclient0.16.30 für die automatische Verteilung aktualisieren. Archive und Übergabe werden im Hintergrund geprüft; Spielwirkung separat testen.
+**Neu in 0.4.37:** Fehlende native Drak- und Nachtpflanzen-Symbolressourcen ergänzt. Enshrouded1.0.1.0 / Build1283531. Manager0.15.51 und Spielerclient0.16.31 für die automatische Verteilung aktualisieren. Archive und Übergabe werden im Hintergrund geprüft; Spielwirkung separat testen.
 
 **Seit 0.4.33:** normales Windows-Setup mit Startmenü und Deinstallation sowie automatische Programmupdates beim Start. Änderungen werden vor der Installation und nach dem Neustart angezeigt. Updates lassen sich verschieben oder in den Werkzeugen abschalten. Profile und Einstellungen bleiben erhalten.
 
-Für die erste normale Installation die **Enshrouded-Mod-Studio-0.4.36-Setup.exe** aus dem aktuellen Release verwenden. Ein vorhandener portabler Studioordner kann im Setup für die Datenübernahme ausgewählt werden. Das vollständige ZIP bleibt als portable Variante verfügbar. Für den neuen Spielbuild zuerst die passenden aktuellen Versionen von Manager und Spielerclient installieren.
+Für die erste normale Installation die **Enshrouded-Mod-Studio-0.4.37-Setup.exe** aus dem aktuellen Release verwenden. Ein vorhandener portabler Studioordner kann im Setup für die Datenübernahme ausgewählt werden. Das vollständige ZIP bleibt als portable Variante verfügbar. Für den neuen Spielbuild zuerst die passenden aktuellen Versionen von Manager und Spielerclient installieren.
 
 **Ausdauerregeneration berichtigt:** Die Regenerationsformel verwendet Ganzzahl-Literale. Die vorherige Kodierung konnte bei Faktoren wie 2 oder 10 einen zu großen Wert erzeugen, dessen 16-Bit-Netzwerkdarstellung null war. Die neue Rechnung macht aus dem ursprünglichen Regenerationswert 50 bei Faktor 2 den Wert 100. Sie rundet den Faktor auf drei Nachkommastellen und begrenzt das Ergebnis auf 65.535. Maximale Ausdauer, Anlauf- und Wartezeiten bleiben unverändert; eine größere Ausdauerreserve braucht bei gleicher absoluter Regeneration länger. Hintergrundtests einschließlich Parser-Rücklesen bestätigen die korrigierten Daten, keine bereits beobachtete Spielwirkung.
 

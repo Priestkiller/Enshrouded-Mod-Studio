@@ -31,6 +31,8 @@ jobs:
           if ($LASTEXITCODE) { throw 'Studio production handoff regression failed' }
           node tests/build-contract-tests.js
           if ($LASTEXITCODE) { throw 'Unsupported-build regression failed' }
+          node tests/native-item-textures-tests.js
+          if ($LASTEXITCODE) { throw 'New item texture completeness regression failed' }
           node tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Studio knowledge composition regression failed' }
           node tests/producer-consumer-matrix.js
@@ -56,9 +58,11 @@ jobs:
           ./scripts/verify-studio-release-contract.ps1 -StudioRoot .compat/studio -AllowMissingVendorRuntime -RestoreSourceEMM
           node .compat/studio/tests/production-package-handoff-tests.js
           if ($LASTEXITCODE) { throw 'Studio production handoff regression failed' }
+          node .compat/studio/tests/native-item-textures-tests.js
+          if ($LASTEXITCODE) { throw 'New item texture completeness regression failed' }
           node .compat/studio/tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Studio knowledge composition regression failed' }
-          go test ./internal/player -run '^TestEMSStudio(34|35|36)' -count=1
+          go test ./internal/player -run '^TestEMSStudio(34|35|36|37)|^TestEMSNativeItemTexture' -count=1
           if ($LASTEXITCODE) { throw 'Manager and Player feature composition regression failed' }
       - name: Verify exact chunks and publish stable latest release
         shell: pwsh

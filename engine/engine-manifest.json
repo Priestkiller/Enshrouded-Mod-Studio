@@ -1,6 +1,6 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.36",
+  "studio": "0.4.37",
   "files": {
     "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
@@ -10,7 +10,7 @@
     "single-step-taming.js": "f8c22848e29bcd04e71a38bcb4c0e2e007d6c964160f93813ccbd0694334ec67",
     "skill-points-check.js": "111417ab8f8d6b35d2d28c9ab93196f212d3294037078b6e58d112441163aa19",
     "stack-check.js": "f8efb4d99156ed38757f0de15cdda3ead29b0b56c47b2de8a44b7675fd6e8e61",
-    "studio-backend.js": "53aa8be66bdfc11a0ada072f1c202a401d98ae02af43bf679136cefe48911609",
+    "studio-backend.js": "b36d5fe3fef1ead8dc837d16a081ab63c24fcf4c61d02f4c8bffd9a457a5d6c7",
     "studio-runner.js": "d653f8b6e2a7de6c05ce687269348fa02687216a56e06f1c0682e50a48d58cd2",
     "summoned-companions.js": "68ba658d56556e6e0e221e009f043647b88114f96017b0ad82fede3294f78033",
     "vendor/config/loader.js.bytecode": "98f1a99f8746a854822e673d6af3fbd76c173738c894fe093b31abad0235b2c0",
@@ -79,6 +79,8 @@
     "night-plant-definitions.json": "4307e533536b56f21275dd3d7a01f973d5ccc71792f16d6a6878ed41fb18db7e",
     "drak-merchant.js": "e83eba2ae8d0ced4fe0790978acc669a4a04036ec28de8d4cca005b5245658f9",
     "drak-definitions.json": "bdefd7b8c9daaf233fa3c0f9094cbe383b1163d88cd63d207d256e67651afbc6",
-    "build-contract.js": "05849baf28c02baf1fb453e6b0c8bde450ccb688b9dcb04cf39d08cf5123cb08"
+    "build-contract.js": "05849baf28c02baf1fb453e6b0c8bde450ccb688b9dcb04cf39d08cf5123cb08",
+    "native-item-textures.js": "ca165466b3b7343777a0603270172ec85fec2b4009ec80ad899247321dbed10f",
+    "native-item-texture-definitions.json": "0beb90b49308fcb19ac7331b6cbe7e983e2fbba4812e97c4393804b431d3ccc2"
   }
 }

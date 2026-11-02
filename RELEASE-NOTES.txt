@@ -1,13 +1,13 @@
-Mod Studio 0.4.36
+Mod Studio 0.4.37
 
-Unterstützt Enshrouded 1.0.1.0, nativer Build 1283531.
-Die geprüften Ressourcenstrukturen, Begleiterquellen, Drak-NPC-Vorlagen und
-die globale Vorlagenliste entsprechen den aktuellen Originaldateien.
+Behebt fehlende native UI-Texturressourcen für den Drak-Handwerker,
+die drei Drak-Zauber und sieben Nachtpflanzen-Setzlinge. Das Spiel
+forderte beim Öffnen der NPC-Auswahl die Textur unter der neuen
+Gegenstandskennung an; diese Ressource fehlte bisher.
 
-Nach einem Spielupdate zuerst Steam-Dateiprüfung abschließen, danach im
-Studio die neue Basis freigeben und eine neue Vorschau erstellen. Eine
-alte Spielbasis nicht auf die neue Spielversion zurückspielen.
-Unbekannte Spielbuilds verlangen ein passendes Studio-Update.
-
-Server, Manager und Spielerclients benötigen passende aktuelle Versionen.
-Daten- und Archivprüfungen ersetzen keinen Spieltest.
+Neue Clientarchive prüfen alle elf eigenen Gegenstandstexturen und
+deren unveränderte native Bildinhalte nach erneutem Auslesen.
+Die Serverrezepte und Spieloptionen bleiben inhaltlich unverändert.
+Manager 0.15.51 und Spielerclient 0.16.31 verwenden.
+Archive und Bildressourcen werden im Hintergrund geprüft; ein
+Spieltest für Platzierung, Animation und Kampf steht weiterhin aus.
