@@ -3,8 +3,9 @@
 // PKG_EXECPATH=PKG_INVOKE_NODEJS engine/enshrouded-patcher.exe <this file> <native-root>
 // Public CI consumes the data, never this proprietary runtime or game archives.
 const fs=require('fs'),path=require('path'),zlib=require('zlib'),crypto=require('crypto');
-const engine=path.resolve(__dirname,'../engine'),native=path.resolve(process.argv[2]||''),input=path.join(native,'server-input');
-if(!process.argv[2]||!fs.existsSync(path.join(native,'bin/reflection_data.json')))throw Error('Explicit inert native export root required');
+const engine=path.resolve(__dirname,'../engine'),native=path.resolve(process.argv[2]||''),input=path.join(native,'server-input'),reflectionFile=path.join(native,'server-bin/reflection_data.json');
+if(!process.argv[2]||!fs.existsSync(reflectionFile)||!fs.existsSync(input))throw Error('Explicit inert native root with server-input and server-bin/reflection_data.json required');
+const build=require(path.join(engine,'build-contract'));
 const read=f=>JSON.parse(fs.readFileSync(f,'utf8')),clone=v=>JSON.parse(JSON.stringify(v));
 const hash=v=>crypto.createHash('sha256').update(v).digest('hex');
 const sources=['summoned-companions','advanced-companions','custom-skeleton-items','night-plants','drak-merchant','template-collection-registration','item-values-fix'].map(n=>fs.readFileSync(path.join(engine,n+'.js'),'utf8')).join('\n');
@@ -37,14 +38,13 @@ const w=[clone(plant.knowledgeTemplates.worldItem),flag(plant.knowledgeTemplates
 for(const [rows,isPlayerKnowledge]of [[p,true],[w,false]])rows.push({id:{id:{value:146824705}},type:'Bool',expectedFlags:0,isPlayerKnowledge});
 const map=rows=>({entries:[{start:0,count:rows.length}],keys:rows.map(d=>clone(d.id)),values:rows});
 put('GameKnowledgeResource','bc47511c',{$type:'keen::GameKnowledgeResource',$guid:own.registries.knowledge,$part:0,playerKnowledge:map(p),worldKnowledge:map(w),achievements:[],skillPoints:[{knowledgeId:{id:{value:123456789}},amount:3}],flagKnowledgePatch:[]});
-const registries=read(path.join(__dirname,'fixtures/drak-registries.json'));
-for(const key of ['npcs','workshops'])put(drak.registries[key].directory,drak.registries[key].file.split('_')[1],clone(registries[key]));
+for(const key of ['npcs','workshops']){const row=drak.registries[key];put(row.directory,row.file.split('_')[1],read(path.join(input,row.directory,row.file)));}
 const collection=read(path.join(input,'TemplateCollectionResource','377f61dc-c7b8-4e4f-830f-7d2c3e8b7fd8_d80fe371_0.json'));
 put('TemplateCollectionResource','d80fe371',collection);
 for(const file of fs.readdirSync(path.join(input,'BalancingTable')))documents.push({directory:'BalancingTable',file,document:read(path.join(input,'BalancingTable',file))});
 // Retain real reflection layouts used by public assertions, with referenced
 // types as stubs where their fields are never inspected. No generated outputs.
-const full=read(path.join(native,'bin/reflection_data.json'));
+const full=read(reflectionFile);build.assertReflection(full);
 for(const row of documents)if(['ItemRegistryResource','RecipeRegistryResource','GameKnowledgeResource'].includes(row.directory)){
  const layout=full.types.find(t=>t.qualifiedName===row.document.$type);for(const key of Object.keys(layout.structFields))if(!(key in row.document))row.document[key]=null;
 }
@@ -67,10 +67,9 @@ try{
  }
  const knowledge=documents.find(r=>r.directory==='GameKnowledgeResource');const kd=path.join(scratch,'input',knowledge.directory);fs.mkdirSync(kd,{recursive:true});fs.writeFileSync(path.join(kd,knowledge.file),JSON.stringify(knowledge.document));
  for(const factor of [2,85]){const config=clone(defaults);config.player.adjustSkillPointsPerRoot={enabled:true,factor};vendor.ModProcessor.fromConfig(config).processGameKnowledgeResource(path.join(scratch,'input'),path.join(scratch,'output'));knowledgeVariants.push({factor,document:read(path.join(scratch,'output',knowledge.directory,knowledge.file))});}
- const fixture={format:1,sourceBuild:'1273043',documents,reflection:{version:'1273043|inert-producer-matrix',types},variants,knowledgeVariants};
+ const fixture={format:1,sourceBuild:build.REVISION,documents,reflection:{version:full.version,types},variants,knowledgeVariants};
  const bytes=Buffer.from(JSON.stringify(fixture)),packed=zlib.gzipSync(bytes,{level:9});
  const output=path.join(__dirname,'fixtures/producer-matrix-inputs.json.gz');fs.writeFileSync(output,packed);
- const manifest=read(path.join(engine,'engine-manifest.json'));
- fs.writeFileSync(path.join(__dirname,'fixtures/producer-matrix-provenance.json'),JSON.stringify({format:1,sourceBuild:'1273043',fixtureSha256:hash(packed),uncompressedSha256:hash(bytes),bytes:packed.length,documents:documents.length,reflectionTypes:types.length,vendorSourceVariants:variants.map(({document,...v})=>({...v,sourceSha256:hash(JSON.stringify(document))})),producerFiles:Object.fromEntries(['custom-skeleton-items.js','advanced-companions.js','night-plants.js','drak-merchant.js','vendor/mod/processor.js.bytecode'].map(n=>[n,manifest.files[n]])),capture:'Reviewed Studio Node 18 runtime processItemInfo, unchanged inert native source; minimal synthetic shared registries; no consumer expected-output code used',gameStarted:false},null,2)+'\n');
+ fs.writeFileSync(path.join(__dirname,'fixtures/producer-matrix-provenance.json'),JSON.stringify({format:1,sourceBuild:build.REVISION,nativeBuild:full.version,sourceRole:'server',fixtureSha256:hash(packed),uncompressedSha256:hash(bytes),bytes:packed.length,documents:documents.length,reflectionTypes:types.length,vendorSourceVariants:variants.map(({document,...v})=>({...v,sourceSha256:hash(JSON.stringify(document))})),producerFiles:Object.fromEntries(['custom-skeleton-items.js','advanced-companions.js','night-plants.js','drak-merchant.js','vendor/mod/processor.js.bytecode'].map(n=>[n,hash(fs.readFileSync(path.join(engine,n)))])),capture:'Reviewed Studio Node 18 runtime processItemInfo over build1283531 inert native server sources; actual full build identity and minimal synthetic shared registries; no consumer expected-output code used',gameStarted:false},null,2)+'\n');
  console.log(JSON.stringify({bytes:packed.length,documents:documents.length,reflectionTypes:types.length,variants:variants.length}));
 }finally{if(path.dirname(scratch)!==__dirname||!path.basename(scratch).startsWith('.capture-matrix-'))throw Error('Unexpected cleanup path');fs.rmSync(scratch,{recursive:true,force:true});}

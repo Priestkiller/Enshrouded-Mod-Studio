@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "sourceBuild": "1273043",
+  "sourceBuild": "1283531",
   "optionKey": "enableNightPlantCultivation",
   "defaults": {
     "enabled": false,
@@ -13000,7 +13000,7 @@
       }
     },
     "keen::FbUiBundle": {
-      "size": 81544,
+      "size": 81976,
       "alignment": 8,
       "qualifiedHash": 4277737656,
       "primitiveType": "STRUCT",
@@ -13010,183 +13010,183 @@
           "type": "keen::FbUiLocaLinks"
         },
         "logos": {
-          "offset": 47040,
+          "offset": 47424,
           "type": "keen::FbUiLogos"
         },
         "icons": {
-          "offset": 47256,
+          "offset": 47640,
           "type": "keen::FbUiIcons"
         },
         "inputAssets": {
-          "offset": 50728,
+          "offset": 51112,
           "type": "keen::FbUiInputAssets"
         },
         "characterViews": {
-          "offset": 52832,
+          "offset": 53216,
           "type": "keen::FbUiCharacterViews"
         },
         "primitives": {
-          "offset": 53840,
+          "offset": 54224,
           "type": "keen::FbUiPrimitives"
         },
         "loading": {
-          "offset": 54352,
+          "offset": 54736,
           "type": "keen::FbUiLoadingSymbol"
         },
         "globalColors": {
-          "offset": 54380,
+          "offset": 54764,
           "type": "keen::FbUiGlobalColors"
         },
         "globalPulses": {
-          "offset": 54616,
+          "offset": 55000,
           "type": "keen::FbUiGlobalPulseDurations"
         },
         "preGame": {
-          "offset": 54640,
+          "offset": 55024,
           "type": "keen::FbUiPreGame"
         },
         "hud": {
-          "offset": 55192,
+          "offset": 55576,
           "type": "keen::FbUiHUD"
         },
         "menu": {
-          "offset": 59488,
+          "offset": 59920,
           "type": "keen::FbUiMenu"
         },
         "emotes": {
-          "offset": 65416,
+          "offset": 65848,
           "type": "keen::BlobArray<keen::FbUiEmoteEntry>"
         },
         "knowledge": {
-          "offset": 65424,
+          "offset": 65856,
           "type": "keen::FbUiKnowledge"
         },
         "itemSlot": {
-          "offset": 66824,
+          "offset": 67256,
           "type": "keen::FbUiItemSlot"
         },
         "buffIcons": {
-          "offset": 67952,
+          "offset": 68384,
           "type": "keen::FbUiBuffIcons"
         },
         "fontSizes": {
-          "offset": 68064,
+          "offset": 68496,
           "type": "keen::FbUiFontSizes"
         },
         "namedStyles": {
-          "offset": 68108,
+          "offset": 68540,
           "type": "keen::FbUiCharacterStyles"
         },
         "namedParagraphStyles": {
-          "offset": 73740,
+          "offset": 74172,
           "type": "keen::FbUiParagraphStyles"
         },
         "sounds": {
-          "offset": 73824,
+          "offset": 74256,
           "type": "keen::FbUiSounds"
         },
         "testParameters": {
-          "offset": 77440,
+          "offset": 77872,
           "type": "keen::FbUiTestParameters"
         },
         "systemErrors": {
-          "offset": 77760,
+          "offset": 78192,
           "type": "keen::SystemErrorLoca"
         },
         "serverRoleSettings": {
-          "offset": 78432,
+          "offset": 78864,
           "type": "keen::FbUiServerRoleSettings"
         },
         "difficultySettings": {
-          "offset": 78448,
+          "offset": 78880,
           "type": "keen::FbUiDifficultySettings"
         },
         "sliderValueSteps": {
-          "offset": 79984,
+          "offset": 80416,
           "type": "keen::FbUiSliderValueSteps"
         },
         "twitchDropTags": {
-          "offset": 80016,
+          "offset": 80448,
           "type": "keen::BlobArray<keen::ItemTagReference>"
         },
         "tintableItemTypeSetups": {
-          "offset": 80024,
+          "offset": 80456,
           "type": "keen::BlobArray<keen::TintableItemType>"
         },
         "collectionCategories": {
-          "offset": 80032,
+          "offset": 80464,
           "type": "keen::BlobArray<keen::FbUiCollectionCategoryInfo>"
         },
         "loreCategories": {
-          "offset": 80040,
+          "offset": 80472,
           "type": "keen::BlobArray<keen::FbUiLoreCategory>"
         },
         "mutedIteractionLabels": {
-          "offset": 80048,
+          "offset": 80480,
           "type": "keen::BlobArray<keen::UiLocaTagReference>"
         },
         "npcRoamingRanges": {
-          "offset": 80056,
+          "offset": 80488,
           "type": "keen::BlobArray<keen::FbUiNpcRoamingRange>"
         },
         "credits": {
-          "offset": 80064,
+          "offset": 80496,
           "type": "keen::FbUiCredits"
         },
         "loreIntro": {
-          "offset": 80512,
+          "offset": 80944,
           "type": "keen::FbUiSlideShow"
         },
         "loreOutro": {
-          "offset": 80812,
+          "offset": 81244,
           "type": "keen::FbUiSlideShow"
         },
         "worldEvents": {
-          "offset": 81112,
+          "offset": 81544,
           "type": "keen::BlobArray<keen::FbUiWorldEvent>"
         },
         "sharedWorldTags": {
-          "offset": 81120,
+          "offset": 81552,
           "type": "keen::BlobArray<keen::FbUiSharedWorldTag>"
         },
         "termsConditionsVersion": {
-          "offset": 81128,
+          "offset": 81560,
           "type": "keen::uint32"
         },
         "termsConditionsParagraphs": {
-          "offset": 81132,
+          "offset": 81564,
           "type": "keen::BlobArray<keen::TermsAndConditionsParagraph>"
         },
         "eulaParagraphs": {
-          "offset": 81140,
+          "offset": 81572,
           "type": "keen::BlobArray<keen::TermsAndConditionsParagraph>"
         },
         "privacyPolicyParagraphs": {
-          "offset": 81148,
+          "offset": 81580,
           "type": "keen::BlobArray<keen::TermsAndConditionsParagraph>"
         },
         "adventureSharingMessages": {
-          "offset": 81156,
+          "offset": 81588,
           "type": "keen::G38UiAdventureSharingMessages"
         },
         "maxInputLengthForLabelledEntities": {
-          "offset": 81444,
+          "offset": 81876,
           "type": "keen::uint8"
         },
         "logicGraphEntityCategories": {
-          "offset": 81448,
+          "offset": 81880,
           "type": "keen::BlobArray<keen::FbUiLogicGraphEntityCategoryDefinition>"
         },
         "commerceProductsImages": {
-          "offset": 81456,
+          "offset": 81888,
           "type": "keen::BlobArray<keen::FbUiCommerceProduct>"
         },
         "customizationSetupReference": {
-          "offset": 81464,
+          "offset": 81896,
           "type": "keen::ObjectReference<keen::CharacterPresetDirectory>"
         },
         "characterCustomizationOptions": {
-          "offset": 81480,
+          "offset": 81912,
           "type": "keen::CharacterCustomizationResource"
         }
       }

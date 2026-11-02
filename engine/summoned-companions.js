@@ -80,8 +80,8 @@ function assertSchema(reflection) {
   const floatArray = type('keen::StaticArray<keen::float32,4>'), countArray = type('keen::StaticArray<keen::uint32,1>');
   if (floatArray.primitiveType !== 'STATIC_ARRAY' || floatArray.fieldCount !== 4 || types[floatArray.innerType] !== type('keen::float32') || countArray.primitiveType !== 'STATIC_ARRAY' || countArray.fieldCount !== 1 || types[countArray.innerType] !== type('keen::uint32')) fail('Attributspeicher passt nicht zur Definition.');
   const behavior = type(P + 'Enemy01BehaviorState');
-  if (behavior.primitiveType !== 'STRUCT' || behavior.size !== 2504 || behavior.alignment !== 8) fail('Unbekannte Kampf-KI-Struktur.');
-  field(behavior, 'guardSetup', 1416, 'keen::enemy01::GuardSetup');
+  if (behavior.primitiveType !== 'STRUCT' || behavior.size !== 2520 || behavior.alignment !== 8) fail('Unbekannte Kampf-KI-Struktur.');
+  field(behavior, 'guardSetup', 1432, 'keen::enemy01::GuardSetup');
   field(type('keen::enemy01::GuardSetup'), 'guardParent', 12, 'keen::bool');
   field(type(P + 'Faction'), 'faction', 0, 'keen::FactionType');
   const limited = struct(P + 'LimitedEntitySpawn', 48, 4, { spawnedEntities: [0, 'keen::StaticArray<keen::ecs::EntityId,12>'] }); serverOnly(limited);

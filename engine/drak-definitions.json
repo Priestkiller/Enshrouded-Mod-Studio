@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "sourceBuild": "1273043",
+  "sourceBuild": "1283531",
   "items": [
     {
       "key": "merchant",
@@ -163,21 +163,21 @@
       "file": "3064d35d-7342-40ca-bdc9-aad58f83bf45_72ab39b6_0.json",
       "guid": "3064d35d-7342-40ca-bdc9-aad58f83bf45",
       "type": "keen::ItemRegistryResource",
-      "sha256": "80e00080ee7978fc80e6efaddf8b937771d0511b4c669730274eb6e24a68e563"
+      "sha256": "465ff4c36b7916d5b76ccd901a266787e19de3d76534b6d8099240b5a2235b04"
     },
     "recipes": {
       "directory": "RecipeRegistryResource",
       "file": "5e57de0f-280c-4559-8191-f02c1ba656e2_5f5382cf_0.json",
       "guid": "5e57de0f-280c-4559-8191-f02c1ba656e2",
       "type": "keen::RecipeRegistryResource",
-      "sha256": "f16e61eb7d1f25d99683d66046f12117d72ec4ee21ffab281971640f90ee4e72"
+      "sha256": "93353fa3d438b78ac15ebe0908164b746d88e933a57a933bfc7c9e69e3fee79c"
     },
     "knowledge": {
       "directory": "GameKnowledgeResource",
       "file": "cb1eeb8b-f58a-4785-bf0f-6dd5437e9a5b_bc47511c_0.json",
       "guid": "cb1eeb8b-f58a-4785-bf0f-6dd5437e9a5b",
       "type": "keen::GameKnowledgeResource",
-      "sha256": "6a95c1c45485ec3733e6026c9aec316120c951168da723a45d91bcdbc0924660"
+      "sha256": "58632b5a0ea46c5c6fe1249355ae1883771a9f479f9d375ca1c0e1a16efc2785"
     },
     "npcs": {
       "directory": "NpcCollection",
@@ -198,7 +198,7 @@
       "file": "46e14df6-fb8f-4f66-9463-e23b9e19e48e_fef918b8_0.json",
       "guid": "46e14df6-fb8f-4f66-9463-e23b9e19e48e",
       "type": "keen::FbUiBundle",
-      "sha256": "69cfada7139ea1186e7b18e2e363f73474d004bf8fe70030a5d87d55dac67c2c"
+      "sha256": "3129bfa770d2c5ddf36ededd5b766524fce3c995ff5e866f1c0a009ba7ed992e"
     }
   },
   "sourceDocuments": {
@@ -207,7 +207,7 @@
       "file": "642098d4-fc09-48e2-811e-782d438bf551_39768775_0.json",
       "guid": "642098d4-fc09-48e2-811e-782d438bf551",
       "type": "keen::ecs::TemplateResource",
-      "sha256": "aa37c0251952722937b5468d2cd3ca336c7fcdd2db05eb238f77b223e11a1a0c",
+      "sha256": "8b83e7b6c5a6ad3a2838dc8ce11e28a826e9894d87c5167967fa47248b7d011e",
       "document": {
         "name": "Enemy_LizardpeopleDrak01_Melee_Spear",
         "family": "None",
@@ -8961,6 +8961,7 @@
                 "preferedDistanceEngagedVariation": 0.5,
                 "preferedDistanceInWater": 6,
                 "preferedDistanceInWaterVariation": 2,
+                "preferredDistanceThreshold": 0,
                 "maxVerticalDistance": 0,
                 "maxPlayerTargetDistance": 1000,
                 "maxNonPlayerTargetDistance": 20,
@@ -9146,6 +9147,10 @@
               },
               "targetSelectionSetup": {
                 "maxAttackersToDistribute": 3,
+                "bonusSettings": {
+                  "nonPlayerBonusFactor": 1,
+                  "playerBonusFactor": 1
+                },
                 "parameters": {
                   "closestDistance": {
                     "enabled": true,
@@ -14513,7 +14518,7 @@
       "file": "1d8b33df-1f90-4b3f-8309-00e4d18069ed_39768775_0.json",
       "guid": "1d8b33df-1f90-4b3f-8309-00e4d18069ed",
       "type": "keen::ecs::TemplateResource",
-      "sha256": "1f1b1ac02da703901519ca218f5993681856042894836adb1f8fa8116e8adb7d",
+      "sha256": "416650ea0d1cf7b2191ad68ce28df0219177129eb52a0e335a29620081a513b0",
       "document": {
         "name": "Enemy_LizardpeopleDrak02_Ranger",
         "family": "None",
@@ -23263,6 +23268,7 @@
                 "preferedDistanceEngagedVariation": 1,
                 "preferedDistanceInWater": 7,
                 "preferedDistanceInWaterVariation": 2,
+                "preferredDistanceThreshold": 0,
                 "maxVerticalDistance": 20,
                 "maxPlayerTargetDistance": 1000,
                 "maxNonPlayerTargetDistance": 50,
@@ -23448,6 +23454,10 @@
               },
               "targetSelectionSetup": {
                 "maxAttackersToDistribute": 3,
+                "bonusSettings": {
+                  "nonPlayerBonusFactor": 1,
+                  "playerBonusFactor": 1
+                },
                 "parameters": {
                   "closestDistance": {
                     "enabled": true,
@@ -28923,7 +28933,7 @@
       "file": "c44c0426-329b-43a8-b8f8-71ba925d038e_39768775_0.json",
       "guid": "c44c0426-329b-43a8-b8f8-71ba925d038e",
       "type": "keen::ecs::TemplateResource",
-      "sha256": "e594469714e46bc48524cf96d79d5b4465b4e683ad7518e57964f1eb05f3c0df",
+      "sha256": "2c5f5c8b3b25219cec77e0847cca33281246565445a4dce49429c12820deb6e8",
       "document": {
         "name": "Enemy_LizardpeopleDrak04_Mage",
         "family": "None",
@@ -37740,6 +37750,7 @@
                 "preferedDistanceEngagedVariation": 2,
                 "preferedDistanceInWater": 6,
                 "preferedDistanceInWaterVariation": 2,
+                "preferredDistanceThreshold": 0,
                 "maxVerticalDistance": 0,
                 "maxPlayerTargetDistance": 1000,
                 "maxNonPlayerTargetDistance": 20,
@@ -37925,6 +37936,10 @@
               },
               "targetSelectionSetup": {
                 "maxAttackersToDistribute": 3,
+                "bonusSettings": {
+                  "nonPlayerBonusFactor": 1,
+                  "playerBonusFactor": 1
+                },
                 "parameters": {
                   "closestDistance": {
                     "enabled": true,
@@ -43363,7 +43378,7 @@
       "file": "c313f0a8-ed2e-444e-8384-a540f6bbd98e_39768775_0.json",
       "guid": "c313f0a8-ed2e-444e-8384-a540f6bbd98e",
       "type": "keen::ecs::TemplateResource",
-      "sha256": "032edca644305d37101749d03709f3ef657725ae44dd848cc137e1b26c815d2d",
+      "sha256": "b1694e0a37eed4b8a5cbd850ea4e637a49eda318bd91b840b8c5a2cbfb9a5943",
       "document": {
         "name": "NPC_Workshop_Blacksmith01",
         "family": "Npc",
@@ -43525,16 +43540,16 @@
               },
               "socializingSetup": {
                 "socializingCooldownMin": {
-                  "value": 35000000000
+                  "value": 180000000000
                 },
                 "socializingCooldownMax": {
-                  "value": 90000000000
+                  "value": 450000000000
                 },
                 "socializingDurationMin": {
-                  "value": 25000000000
+                  "value": 15000000000
                 },
                 "socializingDurationMax": {
-                  "value": 50000000000
+                  "value": 30000000000
                 },
                 "sequences": {
                   "greetings": [
@@ -43545,10 +43560,8 @@
                   ],
                   "reactions": [
                     "c48262c5-a77c-4594-9777-992be8bce87b",
-                    "a2b10db7-8cb1-400e-ad0d-bb6990a8b5f6",
                     "6e9f8e65-89c7-45e7-874e-a854d0da0f23",
-                    "e70396fe-1c71-4c37-acbf-5408992a1e21",
-                    "83446b0f-6d5f-4683-b7d4-55ce1dbdde5d"
+                    "e70396fe-1c71-4c37-acbf-5408992a1e21"
                   ]
                 }
               }
@@ -50155,6 +50168,38 @@
             "$value": {}
           },
           {
+            "$type": "keen::ecs::GrassEffector",
+            "$value": {
+              "fxHandle": {
+                "value": 0
+              },
+              "toggleModifier": [
+                "IgnoreToggle"
+              ],
+              "attachmentOffset": {
+                "localOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "worldOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "orientationOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                }
+              },
+              "slot": "Root",
+              "attachedToEntity": "Self",
+              "attachToParent": false
+            }
+          },
+          {
             "$type": "keen::ecs::Gravity",
             "$value": {
               "direction": {
@@ -50862,7 +50907,7 @@
           {
             "$type": "keen::ecs::MovementColliderConfig",
             "$value": {
-              "width": 0.25,
+              "width": 0.5,
               "height": 2,
               "maxStepHeightVoxels": 1,
               "maxStepHeightProps": 0.5099999904632568,
@@ -55300,7 +55345,7 @@
                 "turnToNextWayPointMinDistanceWalk": 0.5,
                 "turnToNextWayPointMinDistanceRun": 0.5
               },
-              "pushTowardsValidPosition": false
+              "pushTowardsValidPosition": true
             }
           },
           {
@@ -58137,7 +58182,7 @@
       "file": "03707fe1-845f-4a91-90d5-16e5016fc2a9_39768775_0.json",
       "guid": "03707fe1-845f-4a91-90d5-16e5016fc2a9",
       "type": "keen::ecs::TemplateResource",
-      "sha256": "d1a67510236bd397fdd28bb4884b406abfa21d829c6f114a81d598d814051b86",
+      "sha256": "e1566754c6abcf359ef33d41c94d29b6afdffad06bd40ade6e81cc6167dbbe7d",
       "document": {
         "name": "NPC_Workshop_Blacksmith_8k_Version4",
         "family": "Npc",
@@ -58299,16 +58344,16 @@
               },
               "socializingSetup": {
                 "socializingCooldownMin": {
-                  "value": 35000000000
+                  "value": 180000000000
                 },
                 "socializingCooldownMax": {
-                  "value": 90000000000
+                  "value": 450000000000
                 },
                 "socializingDurationMin": {
-                  "value": 25000000000
+                  "value": 15000000000
                 },
                 "socializingDurationMax": {
-                  "value": 50000000000
+                  "value": 30000000000
                 },
                 "sequences": {
                   "greetings": [],
@@ -64919,6 +64964,38 @@
             "$value": {}
           },
           {
+            "$type": "keen::ecs::GrassEffector",
+            "$value": {
+              "fxHandle": {
+                "value": 0
+              },
+              "toggleModifier": [
+                "IgnoreToggle"
+              ],
+              "attachmentOffset": {
+                "localOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "worldOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "orientationOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                }
+              },
+              "slot": "Root",
+              "attachedToEntity": "Self",
+              "attachToParent": false
+            }
+          },
+          {
             "$type": "keen::ecs::Gravity",
             "$value": {
               "direction": {
@@ -65615,7 +65692,7 @@
           {
             "$type": "keen::ecs::MovementColliderConfig",
             "$value": {
-              "width": 0.25,
+              "width": 0.5,
               "height": 2,
               "maxStepHeightVoxels": 1,
               "maxStepHeightProps": 0.5099999904632568,
@@ -70037,7 +70114,7 @@
                 "turnToNextWayPointMinDistanceWalk": 0.5,
                 "turnToNextWayPointMinDistanceRun": 0.5
               },
-              "pushTowardsValidPosition": false
+              "pushTowardsValidPosition": true
             }
           },
           {
@@ -92302,7 +92379,7 @@
       "file": "2a1de535-c633-439c-abbb-78b31f4ca6c1_39768775_0.json",
       "guid": "2a1de535-c633-439c-abbb-78b31f4ca6c1",
       "type": "keen::ecs::TemplateResource",
-      "sha256": "c9bba8eecf0d0dbb6f653b255884f1a42fbbc44e14da8d3ff4c5ebd28ac258e3",
+      "sha256": "60e0ab253a42bdff6b732eb25775ddea52936668ec8bed522619436042320fa6",
       "document": {
         "name": "test_Townsfolk_Female_03",
         "family": "Npc_Townsfolk",
@@ -92464,31 +92541,27 @@
               },
               "socializingSetup": {
                 "socializingCooldownMin": {
-                  "value": 395000000000
+                  "value": 180000000000
                 },
                 "socializingCooldownMax": {
-                  "value": 630000000000
+                  "value": 450000000000
                 },
                 "socializingDurationMin": {
-                  "value": 5000000000
+                  "value": 15000000000
                 },
                 "socializingDurationMax": {
-                  "value": 15000000000
+                  "value": 30000000000
                 },
                 "sequences": {
                   "greetings": [
-                    "a0df25b9-b96d-4658-b79b-5303067d753d",
                     "a0df25b9-b96d-4658-b79b-5303067d753d"
                   ],
                   "talking": [
-                    "51f5b029-66cb-400e-a916-d50ac5944e42",
                     "51f5b029-66cb-400e-a916-d50ac5944e42"
                   ],
                   "reactions": [
-                    "b6f38112-0b30-4f13-abdb-730f8f592799",
-                    "7d3b4a66-b679-4db3-b103-cedf700d5e14",
-                    "b6f38112-0b30-4f13-abdb-730f8f592799",
-                    "7d3b4a66-b679-4db3-b103-cedf700d5e14"
+                    "c9df2466-91b8-4476-9e9e-fc19f82fdb20",
+                    "b6f38112-0b30-4f13-abdb-730f8f592799"
                   ]
                 }
               }
@@ -99099,6 +99172,38 @@
             "$value": {}
           },
           {
+            "$type": "keen::ecs::GrassEffector",
+            "$value": {
+              "fxHandle": {
+                "value": 0
+              },
+              "toggleModifier": [
+                "IgnoreToggle"
+              ],
+              "attachmentOffset": {
+                "localOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "worldOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "orientationOffset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                }
+              },
+              "slot": "Root",
+              "attachedToEntity": "Self",
+              "attachToParent": false
+            }
+          },
+          {
             "$type": "keen::ecs::Gravity",
             "$value": {
               "direction": {
@@ -99961,7 +100066,7 @@
           {
             "$type": "keen::ecs::MovementColliderConfig",
             "$value": {
-              "width": 0.25,
+              "width": 0.5,
               "height": 2,
               "maxStepHeightVoxels": 1,
               "maxStepHeightProps": 0.5099999904632568,
@@ -101395,7 +101500,7 @@
                 "turnToNextWayPointMinDistanceWalk": 0.5,
                 "turnToNextWayPointMinDistanceRun": 0.5
               },
-              "pushTowardsValidPosition": false
+              "pushTowardsValidPosition": true
             }
           },
           {
@@ -104589,7 +104694,7 @@
       "file": "3fce9d9b-fc72-4400-afbe-d966a062b27d_39768775_0.json",
       "guid": "3fce9d9b-fc72-4400-afbe-d966a062b27d",
       "type": "keen::ecs::TemplateResource",
-      "sha256": "8965ee80d2e3fbba727bd22d88e20a506a01d4da5b8caaea5cc06b96de16d798",
+      "sha256": "c32baefaa462beaf70dc980557e408b7d2be13ae851ee95fe9e9263598e7c8f0",
       "document": {
         "name": "Player_Companion_Lesser_Skeleton_Weakling_Necromancy_Spell_1",
         "family": "None",
@@ -112961,6 +113066,7 @@
                 "preferedDistanceEngagedVariation": 0.5,
                 "preferedDistanceInWater": 0,
                 "preferedDistanceInWaterVariation": 0,
+                "preferredDistanceThreshold": 0,
                 "maxVerticalDistance": 0,
                 "maxPlayerTargetDistance": 1000,
                 "maxNonPlayerTargetDistance": 20,
@@ -113146,6 +113252,10 @@
               },
               "targetSelectionSetup": {
                 "maxAttackersToDistribute": 3,
+                "bonusSettings": {
+                  "nonPlayerBonusFactor": 1,
+                  "playerBonusFactor": 1
+                },
                 "parameters": {
                   "closestDistance": {
                     "enabled": true,
@@ -127317,7 +127427,7 @@
     "file": "cd861d95-a79c-4c11-8b48-8fae34a4156c_f67d6fc3_0.json",
     "guid": "cd861d95-a79c-4c11-8b48-8fae34a4156c",
     "type": "keen::enemy::EnemyArsenalRegistryResource",
-    "sha256": "752cc6df0401b7e17d38970a367e5f087849d9efe4405e7b620dc053c28f8943"
+    "sha256": "7931bd46fcf8d97d7f08fd945d4f20335b5ec3589841df4a55975999c112784c"
   },
   "playerSources": [
     {

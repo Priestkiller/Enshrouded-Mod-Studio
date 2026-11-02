@@ -29,8 +29,12 @@ jobs:
         run: |
           node tests/production-package-handoff-tests.js
           if ($LASTEXITCODE) { throw 'Studio production handoff regression failed' }
+          node tests/build-contract-tests.js
+          if ($LASTEXITCODE) { throw 'Unsupported-build regression failed' }
           node tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Studio knowledge composition regression failed' }
+          node tests/producer-consumer-matrix.js
+          if ($LASTEXITCODE) { throw 'Studio create/export output differs from the independently consumer-certified contract' }
       - name: Read the current public Studio producer for Manager compatibility
         if: github.repository == 'Priestkiller/Universal-Game-Server-Manager'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -54,7 +58,7 @@ jobs:
           if ($LASTEXITCODE) { throw 'Studio production handoff regression failed' }
           node .compat/studio/tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Studio knowledge composition regression failed' }
-          go test ./internal/player -run '^TestEMSStudio(34|35)' -count=1
+          go test ./internal/player -run '^TestEMSStudio(34|35|36)' -count=1
           if ($LASTEXITCODE) { throw 'Manager and Player feature composition regression failed' }
       - name: Verify exact chunks and publish stable latest release
         shell: pwsh

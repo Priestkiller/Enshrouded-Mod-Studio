@@ -23,7 +23,7 @@ const uint32 = v => Number.isInteger(v) && v >= 0 && v <= 0xffffffff;
 function integer(value, min, max, name) { if (!Number.isInteger(value) || value < min || value > max) fail(name + ' muss eine ganze Zahl von ' + min + ' bis ' + max + ' sein.'); return value; }
 function role(value) { if (!['client', 'server'].includes(value)) fail('Client-/Server-Rolle fehlt.'); return value; }
 function assertSchema(reflection) {
-  if (!reflection?.version?.startsWith('1273043|') || !Array.isArray(reflection.types)) fail('Frische Reflection für Build1273043 erforderlich.');
+  if (reflection?.version !== require('./build-contract').BUILD || !Array.isArray(reflection.types)) fail('Frische Reflection für Build 1283531 erforderlich.');
   const types = reflection.types;
   function type(name) {
     const matches = types.filter(t => t?.qualifiedName === name);

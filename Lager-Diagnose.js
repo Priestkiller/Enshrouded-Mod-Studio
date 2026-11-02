@@ -1,7 +1,7 @@
 'use strict';
 // Standalone, read-only archive inspection. No backend/vendor code is loaded.
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),cp=require('child_process');
-const SERVER_SHA='d7baa768eb00aa895d9f5a1cd8747ccf66858c7b542f50983092b2e3261588ee';
+const SERVER_SHA='4429653ac0cfa154bc08e138853caa5d8557f82129b7488031f40345816aa6dc';
 const ENGINE_SHA='9c9a5911dfe1b87a7c155dc9ba4c95fc4a40b2cdf98eb8b1cebde16c106d8872';
 const PARSER_SHA='b65d0558d09c1f0793e70ec50a76d9a06c3cc1a177b3185895b2c2ba1150250f';
 const STOCK='keen::ecs::InventoryCraftingStock',DYNAMIC='keen::ecs::DynamicInventoryCraftingStock';
@@ -95,7 +95,7 @@ async function run(options={}){
   if(report.savedPatchState.present&&!report.savedPatchState.matchesCurrent)report.warnings.push('Der gespeicherte Patchstand dieses Toolordners stimmt nicht mit den aktuellen Serverdateien ueberein.');
   report.sourceFileMetadata=Object.keys(report.before).map(name=>{const s=fs.statSync(path.join(target.dir,name));return {name,bytes:s.size,lastWriteUtc:s.mtime.toISOString()};});
   for(const p of processes)if(report.sourceFileMetadata.some(f=>Date.parse(f.lastWriteUtc)>Date.parse(p.startUtc)))report.warnings.push('Mindestens eine untersuchte Datei wurde nach Start von Server-PID'+p.pid+' geaendert. Archivbefund beweist nicht, was dieser laufende Prozess geladen hat.');
-  if(report.before['enshrouded_server.exe']!==SERVER_SHA)throw Error('Unbekannte Server-EXE. Diese begrenzte Diagnose unterstuetzt nur den geprueften Build1273043; nichts wurde extrahiert.');
+  if(report.before['enshrouded_server.exe']!==SERVER_SHA)throw Error('Unbekannte Server-EXE. Diese begrenzte Diagnose unterstuetzt nur den geprueften Build1283531; nichts wurde extrahiert.');
   const bin=path.join(reportDir,'bin'),out=path.join(reportDir,'export');fs.mkdirSync(bin);fs.mkdirSync(out);const parser=path.join(bin,'kfc-parser.exe');fs.copyFileSync(path.join(engine,'bin','kfc-parser.exe'),parser);
   if(await sha(parser)!==PARSER_SHA)throw Error('Parserkopie stimmt nicht.');
   console.log('37 relevante Vorlagen aus Serverarchiv lesen ...');

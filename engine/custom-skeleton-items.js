@@ -20,7 +20,7 @@ const equal=(a,b)=>canonical(a)===canonical(b);
 function fnv1a(text){let h=2166136261;for(const b of Buffer.from(text,'utf8'))h=Math.imul(h^b,16777619)>>>0;return h;}
 function guidHash(value){if(!guid(value))fail('GUID für native FNV-Kennung ist ungültig.');const a=Buffer.from(value.replace(/-/g,''),'hex'),bytes=[a[3],a[2],a[1],a[0],a[5],a[4],a[7],a[6],...a.subarray(8)];let h=2166136261;for(const b of bytes)h=Math.imul(h^b,16777619)>>>0;return h;}
 function assertDefinitions(){
- const d=definitions;if(d.formatVersion!==1||d.sourceBuild!=='1273043'||d.itemLevel!==1||!Array.isArray(d.items)||d.items.length!==6)fail('Unbekannte Definitionsversion.');
+ const d=definitions;if(d.formatVersion!==1||d.sourceBuild!=='1283531'||d.itemLevel!==1||!Array.isArray(d.items)||d.items.length!==6)fail('Unbekannte Definitionsversion.');
  if(d.sourceItem?.guid!=='4147dce3-27fd-406f-9937-29b478a94046'||d.sourceItem.itemId!==3759493341||d.sourceItem.debugName!=='Ammo_T5_Spell_Skeleton_lvl28_Eternal')fail('Unbekannte ewige Itembasis.');
  if(d.sourceRecipe?.guid!=='3273a1b6-afb9-415c-ab41-a63b14a3ec8a'||d.sourceRecipe.recipeId!==2933402986||d.sourceRecipe.debugName!=='Ammo_Spell_T3_Skeleton'||d.sourceRecipe.workshopId!==2906865252||d.sourceRecipe.unlockQueryId!==2185886291)fail('Unbekanntes Alden-Rezeptmuster.');
  if(d.workshop?.guid!=='0b966715-c5c9-435d-b727-4c24b4ff7e67'||d.workshop.id!==2906865252||d.workshop.name!=='Alden Crowley'||d.workshop.npcItemGuid!=='48aee0f0-ba8f-4045-9595-42b0723d67a2'||d.workshop.npcTemplateGuid!=='b61da3e5-b8f2-4933-84f8-48e7ecfcba39'||d.workshop.unlockKnowledgeId!==146824705||d.workshop.requiresSheltered!==true)fail('Unbekannte Alden-Werkstattzuordnung.');
@@ -37,7 +37,7 @@ function assertDefinitions(){
  return d;
 }
 function assertSchema(reflection){
- if(!reflection||typeof reflection.version!=='string'||!reflection.version.startsWith('1273043|')||!Array.isArray(reflection.types))fail('Frische Reflection für Build1273043 erforderlich.');
+ if(!reflection||typeof reflection.version!=='string'||reflection.version !== require('./build-contract').BUILD||!Array.isArray(reflection.types))fail('Frische Reflection für Build 1283531 erforderlich.');
  const types=reflection.types,byName=new Map();for(const t of types){if(byName.has(t.qualifiedName))fail('Doppelter Reflection-Typ.');byName.set(t.qualifiedName,t);}
  function type(name){const t=byName.get(name);if(!t)fail('Reflection-Typ fehlt: '+name);return t;}
  function struct(name,size,fields){const t=type(name);if(t.primitiveType!=='STRUCT'||t.size!==size)fail('Struktur geändert: '+name);for(const [key,offset,target]of fields){const f=t.structFields?.[key];if(!f||f.dataOffset!==offset||types[f.type]!==type(target))fail('Feldstruktur geändert: '+name+'.'+key);}return t;}

@@ -6,6 +6,13 @@ and the Drak merchant. Ten profiles cover defaults, mana, cast time, binary
 rounding boundaries, the cast-time minimum, stack limits, item level, root skill
 rewards and combined feature bounds. This currently produces 70 complete recipes.
 
+The Studio 0.4.36 fixture comes from native build
+`1283531|^/game38/branches/release_1.0|2026-10-30T09:15:50.868196Z`.
+Its reduced reflection keeps that complete identity. Capture requires an
+explicit local export root containing `server-input` and
+`server-bin/reflection_data.json`. NPC and workshop source rows come from those
+fresh exports. The original Studio 0.4.35 fixtures remain separate.
+
 The companion and night-plant `apply` methods run on inert local inputs. Drak's
 real `buildCreatedResources` and `modifyResource` methods run on minimal shared
 registries. The real template-registration planner and resource-recipe exporter
@@ -26,6 +33,8 @@ it to reject producer drift without access to the private Manager repository.
 The Manager release gate additionally regenerates the matrix and requires all
 70 cases to pass its current production parser. Missing/skipped matrix tests
 fail that gate. Consumer source SHA256 is certification provenance.
+The source fixture digest, native build and frozen producer identity are bound
+to the matrix index. A producer identity change during generation fails the run.
 
 For a deliberate producer change, use an isolated review directory:
 

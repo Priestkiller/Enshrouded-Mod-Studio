@@ -15,7 +15,7 @@ Server und Spiel bleiben laufen, falls sie laufen. Die Diagnose startet oder
 beendet sie nicht und aendert keine Spielarchive oder Spielstaende.
 Nur 37 ausgewaehlte statische Vorlagen werden gelesen. Parserkopie, frische
 Reflection, Exporte und Bericht bleiben ausschliesslich unter Data\diagnostics.
-Eine bekannte Engine-/Parser-Pruefsumme und Serverbuild1273043 sind Pflicht.
+Eine bekannte Engine-/Parser-Pruefsumme und Serverbuild1283531 sind Pflicht.
 Andere oder mehrere unterschiedliche laufende Serverinstallationen werden
 bei unklarer Zuordnung nicht auf Verdacht untersucht.
 

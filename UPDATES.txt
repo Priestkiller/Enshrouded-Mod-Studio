@@ -1,4 +1,15 @@
-Enshrouded Mod Studio 0.4.34
+Mod Studio 0.4.36
+Anpassung an Enshrouded1.0.1.0 / Build1283531
+
+- Unterstützt den Spielpatch vom2.November2026 mit exakt geprüfter neuer Ausgangsbasis.
+- Übernimmt die neuen Begleiter-KI-Felder, die aktuelle Herstellungsoberfläche und den vollständigen neuen Vorlagenkatalog. Der Drak-Handwerker wird aus den aktuellen Original-NPC-Daten erzeugt.
+- Behält die gewählten Profilwerte bei. Nach Steam-Update die neue Basis freigeben und das Profil anwenden; alte Archive werden nicht zurückgespielt.
+- Meldet künftig unbekannte Spielbuilds vor der Mod-Verarbeitung ausdrücklich als benötigtes Studio-Update.
+- Für die automatische Clientverteilung Manager0.15.50 und Spielerclient0.16.30 aktualisieren. Ältere freigegebene Pakete behalten ihre bisherigen Prüfdaten und ihren eigenen Worker.
+
+Hintergrundprüfungen kontrollieren Originaldaten, gepackte Archive und Client-Aufbereitung. Ein Spieltest ist davon getrennt.
+
+Enshrouded Mod Studio 0.4.36
 
 PROGRAMM INSTALLIEREN UND AUTOMATISCH AKTUALISIEREN
 - Das neue Setup installiert Studio als normales Programm mit Startmenueintrag
@@ -43,8 +54,8 @@ KORREKTUREN UND PRUEFUNG
   Es wurden keine produktiven Profile, Spielstaende oder Spiele veraendert.
 
 SYNCHRONISATION
-Zuerst Manager 0.15.44 und Spielerclient 0.16.27 aktualisieren, danach Studio
-0.4.34 verwenden. Der neue Studio-Programmstand wird von beiden erkannt.
+Zuerst Manager 0.15.50 und Spielerclient 0.16.30 aktualisieren, danach Studio
+0.4.36 verwenden. Der neue Studio-Programmstand wird von beiden erkannt.
 Vorhandene aeltere Clientpakete bleiben unterstuetzt. Die Ausdauerberechnung bleibt berichtigt. Zwei neue Optionen ergänzen die
 bisherigen 49 Spieloptionen um Nachtpflanzen und Drak-Handwerker; ältere Pakete bleiben unterstützt.
 

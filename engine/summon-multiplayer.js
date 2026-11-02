@@ -8,7 +8,7 @@ const sha=v=>crypto.createHash('sha256').update(v).digest('hex');
 const fail=s=>{throw Error('Begleiter-Mehrspieler: '+s);};
 function create(options){
  if(!['client','server'].includes(options?.role))fail('Getrennte Client-/Serverrolle fehlt.');
- if(typeof options.build!=='string'||!options.build.startsWith('1273043|'))fail('Unbekannte Spielversion.');
+ if(typeof options.build!=='string'||options.build !== require('./build-contract').BUILD)fail('Unbekannte Spielversion.');
  const settings={maxCompanions:options.maxCompanions??4,durationSeconds:options.durationSeconds??120,strengthFactor:options.strengthFactor??1};
  for(const [k,max]of [['maxCompanions',8],['durationSeconds',3600],['strengthFactor',20]])if(!Number.isInteger(settings[k])||settings[k]<1||settings[k]>max)fail('Ungültige Einstellung: '+k);
  const manifest=JSON.parse(fs.readFileSync(path.join(__dirname,'engine-manifest.json'),'utf8'));

@@ -8,12 +8,12 @@ const P = 'keen::ecs::';
 const TYPES = { TemplateResource: P + 'TemplateResource', ActorSequenceResource: 'keen::actor::ActorSequenceResource', EnemyArsenalRegistryResource: 'keen::enemy::EnemyArsenalRegistryResource' };
 const HASHES = { TemplateResource: '39768775', ActorSequenceResource: '9fd4a561', EnemyArsenalRegistryResource: 'f67d6fc3' };
 const SOURCES = [
-  { key: 'mage', guid: 'e092e507-3bc0-4538-8fdc-a73f96de95e6', name: 'Enemy_Skeleton_Mage01_Dungeon', target: 'a0599ff0-5c70-48e6-8d91-64c367870b26', faction: 'Skeleton', sha256: '259c41585a402fc4b51653f9dd8de40264c1e7d78c2a29233baca3038edd0961' },
-  { key: 'hound', guid: 'cd8d28ed-0d6d-46ac-991e-a0480bf2d352', name: 'Enemy_Skeleton_Hound_Dungeon', target: 'bff03c68-c726-4f84-a515-94598f3c421d', faction: 'Skeleton', sha256: '067896355ee671a36f91245198132bf66800efc24b12c2d9f63bc328cc8b1023' },
-  { key: 'sabertooth', guid: '50b96064-3ffc-47a2-8c7d-1d592a3c459c', name: 'Enemy_Wildbeast_Sabertooth', target: 'c9fcc4f8-de5c-4484-ac28-883b7f297b9b', faction: 'WildBeast', sha256: '74899701c68b0ff63c3f988cc3068db2b628b4d227587c1d5605eacc9a436276' }
+  { key: 'mage', guid: 'e092e507-3bc0-4538-8fdc-a73f96de95e6', name: 'Enemy_Skeleton_Mage01_Dungeon', target: 'a0599ff0-5c70-48e6-8d91-64c367870b26', faction: 'Skeleton', sha256: '15e77d3206fcddb5faa3b283a94058828ac84af232f325747296e705610ad217' },
+  { key: 'hound', guid: 'cd8d28ed-0d6d-46ac-991e-a0480bf2d352', name: 'Enemy_Skeleton_Hound_Dungeon', target: 'bff03c68-c726-4f84-a515-94598f3c421d', faction: 'Skeleton', sha256: '219798e76a882d004e3136944062ce73124710b2aedb1f565651ef494a31ff0f' },
+  { key: 'sabertooth', guid: '50b96064-3ffc-47a2-8c7d-1d592a3c459c', name: 'Enemy_Wildbeast_Sabertooth', target: 'c9fcc4f8-de5c-4484-ac28-883b7f297b9b', faction: 'WildBeast', sha256: '39d5492dd2fab7416b370bf0a5e8719a34eb2423791ae84c850caa8f036f9930' }
 ];
-const WEAKLING = { guid: '3fce9d9b-fc72-4400-afbe-d966a062b27d', sha256: '8965ee80d2e3fbba727bd22d88e20a506a01d4da5b8caaea5cc06b96de16d798' };
-const ELITE = { guid: 'ef0c170d-0653-4517-88a7-0c4c9aba8139', sha256: '3b452a0d6cda2dd55c7ba83c90ce2892f6f458fe684c91e5b0829e9d61eedf34' };
+const WEAKLING = { guid: '3fce9d9b-fc72-4400-afbe-d966a062b27d', sha256: 'c32baefaa462beaf70dc980557e408b7d2be13ae851ee95fe9e9263598e7c8f0' };
+const ELITE = { guid: 'ef0c170d-0653-4517-88a7-0c4c9aba8139', sha256: '2fcc4be19beee69bbe3cfc1ce7cdd6adedf43dabdba98c59680a9395f1e3df4f' };
 const SPAWN = '11c073c0-9978-44cc-b0bc-f1628cfc55ed', FROST = '11393442-065e-424a-b076-d8038b68d8c7';
 const PROJECTILE = '6761f22c-91c5-4b10-bb74-4559324ef870', EXPLOSION = 'f09f1a86-5908-48ad-9031-bd193da56414';
 const PRESERVED = [
@@ -23,7 +23,7 @@ const PRESERVED = [
   { directory: 'TemplateResource', guid: PROJECTILE, sha256: '2de4d7975759755cf9c2df1efdb18cdbb0fa652fcbfb8ef75552203bc67547a9' },
   { directory: 'TemplateResource', guid: EXPLOSION, sha256: '27ad849be5baf8b827fc4dce41e37cf65266a4e5f04610a1bb618276275b6f03' }
 ];
-const REGISTRY = 'cd861d95-a79c-4c11-8b48-8fae34a4156c', REGISTRY_SHA = '752cc6df0401b7e17d38970a367e5f087849d9efe4405e7b620dc053c28f8943';
+const REGISTRY = 'cd861d95-a79c-4c11-8b48-8fae34a4156c', REGISTRY_SHA = '7931bd46fcf8d97d7f08fd945d4f20335b5ec3589841df4a55975999c112784c';
 const MAGE_ARSENAL = 'ad77d7d0-0ce3-439c-b238-fc619418e15a', OWN_ARSENAL = 'ed729181-ac33-41bf-9ac4-44ce8627a3d4', OWN_ATTACK = 'd5ccbbf0-6eb6-43f9-98a0-c667b4170f8f';
 const GUARD = { startDistance: 10, targetDistance: 3, maxArriveDistance: 2, guardParent: true, guardGroupLeader: false, canGuardPlayer: false, useMovementTarget: false, useTargetOffsetsWhileTargetIsMoving: true, predictTargetPosition: false, disableRunning: false };
 const WARNING = 'Mehrspieler-Testfunktion: Server und alle teilnehmenden Clients müssen dieselben Begleiterzauber und Einstellungen erhalten. Magier, Knochenhund und Säbelzahntiger verwenden eigene Vorlagen mit nativer Eltern-Folge-KI und gemeinsamem Skeleton-Limit. Der Magier behält nur seinen Frostangriff; weitere Beschwörungen und Wiederbelebung sind entfernt. Folgen, Zielwahl, Frostschaden gegen Gegner, Lebensdauer und gemischte Gruppen sind noch nicht im Spiel bestätigt. Die nachgeschalteten nativen Frost-Impactprogramme wurden nicht semantisch geprüft.';
@@ -36,13 +36,13 @@ const equal = (a, b) => canonical(a) === canonical(b);
 const guid = v => typeof v === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(v) && v !== '00000000-0000-0000-0000-000000000000';
 function config(ctx) { const c = { durationSeconds: ctx.durationSeconds ?? 120, strengthFactor: ctx.strengthFactor ?? 1 }; for (const [key, max] of [['durationSeconds', 3600], ['strengthFactor', 20]]) if (!Number.isInteger(c[key]) || c[key] < 1 || c[key] > max) fail('Ungültige Einstellung: ' + key); return c; }
 function assertDefinitions() {
-  if (definitions.sourceBuild !== '1273043' || definitions.formatVersion !== 1 || !Array.isArray(definitions.items) || definitions.items.length !== 6) fail('Sechs eigene Zauber für Build1273043 erforderlich.');
+  if (definitions.sourceBuild !== '1283531' || definitions.formatVersion !== 1 || !Array.isArray(definitions.items) || definitions.items.length !== 6) fail('Sechs eigene Zauber für Build 1283531 erforderlich.');
   for (const [i, s] of SOURCES.entries()) { const d = definitions.items[i + 3]; if (d.key !== s.key || d.target !== s.target || d.sourceTemplateGuid !== s.guid || d.sourceTemplateName !== s.name || !guid(d.target) || typeof d.targetName !== 'string' || !d.targetName.startsWith('EMS_Companion_')) fail('Unbekannte isolierte Begleiterdefinition: ' + s.key); }
   return definitions.items.slice(3);
 }
 const CREATED_RESOURCES = definitions.items.slice(3).map(d => ({ guid: d.target, type: TYPES.TemplateResource, part: 0, directory: 'TemplateResource', file: d.target + '_' + HASHES.TemplateResource + '_0.json' }));
 function assertSchema(reflection) {
-  if (!reflection?.version?.startsWith('1273043|')) fail('Frische Reflection für Build1273043 erforderlich.');
+  if (reflection?.version !== require('./build-contract').BUILD) fail('Frische Reflection für Build 1283531 erforderlich.');
   const schema = nativeCompanions.assertSchema(reflection), byName = new Map(reflection.types.map(t => [t.qualifiedName, t]));
   function field(name, key, offset, target) { const t = byName.get(name), f = t?.structFields?.[key]; if (!f || f.dataOffset !== offset || reflection.types[f.type] !== byName.get(target)) fail('Unbekanntes Schema: ' + name + '.' + key); }
   for (const [directory, type] of Object.entries(TYPES)) { const t = byName.get(type); if (t?.primitiveType !== 'STRUCT' || t.qualifiedHash?.toString(16).padStart(8, '0') !== HASHES[directory]) fail('Ressourcentyp geändert: ' + type); }

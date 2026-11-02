@@ -6,7 +6,10 @@ const engine=path.resolve(__dirname,'../engine'),R=require(path.join(engine,'res
 const fixtureFile=path.join(__dirname,'fixtures/producer-matrix-inputs.json.gz'),provenance=require('./fixtures/producer-matrix-provenance.json');
 const packed=fs.readFileSync(fixtureFile);assert.equal(R.digest(packed),provenance.fixtureSha256,'source fixture digest');
 const bytes=zlib.gunzipSync(packed);assert.equal(R.digest(bytes),provenance.uncompressedSha256,'source fixture identity');
-const fixture=JSON.parse(bytes);assert.equal(fixture.format,1);assert.equal(fixture.sourceBuild,'1273043');
+const fixture=JSON.parse(bytes);assert.equal(fixture.format,1);assert.equal(fixture.sourceBuild,require(path.join(engine,'build-contract')).REVISION);require(path.join(engine,'build-contract')).assertReflection(fixture.reflection);
+assert.equal(provenance.sourceBuild,fixture.sourceBuild);assert.equal(provenance.nativeBuild,fixture.reflection.version);assert.equal(provenance.sourceRole,'server');
+for(const [file,expected]of Object.entries(provenance.producerFiles))assert.equal(R.digest(fs.readFileSync(path.join(engine,file))),expected,'Captured source variant producer changed: '+file);
+const engineManifest=JSON.parse(fs.readFileSync(path.join(engine,'engine-manifest.json'))),engineFingerprint=R.digest(R.canonical(engineManifest));
 const clone=v=>JSON.parse(JSON.stringify(v)),write=(file,value)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(value));};
 const candidate=process.argv[2]==='--candidate-output';
 const outputArgument=process.argv[candidate?3:2];
@@ -69,16 +72,18 @@ try{
   const n=countFiles(modified),options=P.publicOptions(cfg,require('../assets/schema.json'));
   const plan={id:name,job,target:{server:true},build:fixture.reflection.version,modifiedFiles:n,verifiedFiles:n};
   const prepared=R.prepare({engineRoot:engine,job,plan,options}),loaded=R.load(prepared,job,engine),data=Buffer.from(R.canonical(loaded.recipe));
+  assert.equal(loaded.recipe.engineFingerprint,engineFingerprint,'Producer identity changed during matrix generation');
   const creates=loaded.recipe.resources.filter(r=>r.mode==='create').length;
   assert.equal(creates,(mask&1?9:0)+(mask&2?49:0)+(mask&4?8:0));
   const filename=name+'.json.gz';if(output)fs.copyFileSync(prepared.file,path.join(output,filename));
   rows.push({name,featureMask:mask,profile:profile.name,file:filename,sha256:R.digest(data),compressedSha256:prepared.compressedSha256,size:data.length,resources:loaded.recipe.resources.length,creates});
  }
- const manifest=JSON.parse(fs.readFileSync(path.join(engine,'engine-manifest.json'))),index={format:1,studioVersion:manifest.studio,engineVersion:manifest.version,engineFingerprint:R.digest(R.canonical(manifest)),profiles:profiles.map(p=>p.name),cases:rows,vendorRuntimeExecuted:false,nativeArchivePackingExecuted:false,gameStarted:false};
+ assert.equal(R.digest(R.canonical(JSON.parse(fs.readFileSync(path.join(engine,'engine-manifest.json'))))),engineFingerprint,'Producer identity changed during matrix generation');
+ const index={format:1,studioVersion:engineManifest.studio,engineVersion:engineManifest.version,engineFingerprint,sourceBuild:fixture.sourceBuild,nativeBuild:fixture.reflection.version,sourceFixtureSha256:provenance.fixtureSha256,profiles:profiles.map(p=>p.name),cases:rows,vendorRuntimeExecuted:false,nativeArchivePackingExecuted:false,gameStarted:false};
  assert.equal(rows.length,70);if(output)write(path.join(output,'index.json'),index);
  if(!candidate){
   const contract=JSON.parse(fs.readFileSync(path.join(__dirname,'fixtures/producer-consumer-contract.json'),'utf8'));
-  assert.equal(contract.format,1);assert.equal(contract.engineFingerprint,index.engineFingerprint,'Producer changed: review the paired consumer before certifying new output');
+  assert.equal(contract.format,1);assert.equal(contract.engineFingerprint,index.engineFingerprint,'Producer changed: review the paired consumer before certifying new output');assert.equal(contract.studioVersion,index.studioVersion);assert.equal(contract.engineVersion,index.engineVersion);assert.equal(contract.nativeBuild,index.nativeBuild);assert.equal(contract.sourceFixtureSha256,index.sourceFixtureSha256);
   assert.deepStrictEqual(rows.map(({name,sha256,resources,creates})=>({name,sha256,resources,creates})),contract.cases,'Actual producer output differs from the independently consumer-certified recipe contract');
  }
  console.log(JSON.stringify({passed:true,candidateOnly:candidate,cases:rows.length,features:keys,baseOptions:['gameplay.adjustManaCost','gameplay.adjustSpellCastTime','inventory.adjustStackSize','gameplay.adjustItemMaxLevel','player.adjustSkillPointsPerRoot'],vendorRuntimeExecuted:false,nativeArchivePackingExecuted:false,gameStarted:false}));

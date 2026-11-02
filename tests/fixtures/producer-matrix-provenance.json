@@ -1,11 +1,13 @@
 {
   "format": 1,
-  "sourceBuild": "1273043",
-  "fixtureSha256": "5fb6ef3cdfe472125312185f65698a7cba508710d44d81cad17d07361e0c0f7d",
-  "uncompressedSha256": "eafba3da41fe849a21760949950d6e9fa269de6d8302d91f89a3f42905880634",
-  "bytes": 805223,
+  "sourceBuild": "1283531",
+  "nativeBuild": "1283531|^/game38/branches/release_1.0|2026-10-30T09:15:50.868196Z",
+  "sourceRole": "server",
+  "fixtureSha256": "5a5fed94d78b23569402f2c84cd1f5ff19eb5923dd4139b5bb649c34c486ddba",
+  "uncompressedSha256": "cb8c5a4a0a67ebeda0d3ed29fb1660921bde316bc22373072698d3a5924697a5",
+  "bytes": 779467,
   "documents": 94,
-  "reflectionTypes": 696,
+  "reflectionTypes": 489,
   "vendorSourceVariants": [
     {
       "name": "plain",
@@ -51,12 +53,12 @@
     }
   ],
   "producerFiles": {
-    "custom-skeleton-items.js": "4b8e23a2604736713cee155ea14691f1ebafdd84eba27e78ea5e14f5d64cd028",
-    "advanced-companions.js": "3ead49f114b08c42139cb972b57d2e8f57a1d72039d1e645ccb9f5567ad9f6d7",
-    "night-plants.js": "95087e0aa2eb641cf96cecd4e2e9aa188588db50c11cc74b7dfa965135768f2b",
-    "drak-merchant.js": "ec85c42d5192d096b88873d8799c3272e6ae864398d20d66d79b19e358d454e3",
+    "custom-skeleton-items.js": "8b0eefeac9686c0bdc5252c5a754d07e63702a548020c9ccc9d649cdbf9fcee9",
+    "advanced-companions.js": "fbb1c4828890d48a8153c721f2790a132a77be1f339823c1ef50b736dcdb001f",
+    "night-plants.js": "8d54ce6dd06dbf869d73d02bcd363b36a104191bad8fae9fbaaa3ece868f81f7",
+    "drak-merchant.js": "e83eba2ae8d0ced4fe0790978acc669a4a04036ec28de8d4cca005b5245658f9",
     "vendor/mod/processor.js.bytecode": "01a026068938c3b3b6d901b81f40242417879b95dffca5abf3ec676c7141cb7c"
   },
-  "capture": "Reviewed Studio Node 18 runtime processItemInfo, unchanged inert native source; minimal synthetic shared registries; no consumer expected-output code used",
+  "capture": "Reviewed Studio Node 18 runtime processItemInfo over build1283531 inert native server sources; actual full build identity and minimal synthetic shared registries; no consumer expected-output code used",
   "gameStarted": false
 }

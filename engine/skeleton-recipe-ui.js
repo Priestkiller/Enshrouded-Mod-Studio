@@ -13,10 +13,10 @@ function canonical(value){if(Array.isArray(value))return '['+value.map(canonical
 const digest=value=>crypto.createHash('sha256').update(canonical(value)).digest('hex');
 const equal=(a,b)=>canonical(a)===canonical(b);
 function assertSchema(reflection){
- if(typeof reflection?.version!=='string'||!reflection.version.startsWith('1273043|')||!Array.isArray(reflection.types))fail('Frische Reflection für Build 1273043 erforderlich.');
+ if(typeof reflection?.version!=='string'||reflection.version !== require('./build-contract').BUILD||!Array.isArray(reflection.types))fail('Frische Reflection für Build 1283531 erforderlich.');
  const types=reflection.types,byName=new Map();for(const type of types){if(byName.has(type.qualifiedName))fail('Doppelter Reflection-Typ.');byName.set(type.qualifiedName,type);}
  function structure(name,size,fields){const type=byName.get(name);if(type?.primitiveType!=='STRUCT'||type.size!==size)fail('Geänderte Struktur: '+name);for(const [key,offset,target]of fields){const field=type.structFields?.[key];if(!field||field.dataOffset!==offset||types[field.type]?.qualifiedName!==target)fail('Geändertes Feld: '+name+'.'+key);}return type;}
- const root=structure(TYPE,81544,[['menu',59488,'keen::FbUiMenu']]);if(root.qualifiedHash!==4277737656)fail('Geänderte UI-Ressourcenkennung.');
+ const root=structure(TYPE,81976,[['menu',59920,'keen::FbUiMenu']]);if(root.qualifiedHash!==4277737656)fail('Geänderte UI-Ressourcenkennung.');
  structure('keen::FbUiMenu',5928,[['crafting',1600,'keen::FbUiCrafting']]);
  structure('keen::FbUiCrafting',120,[['recipeCollection',56,'keen::ObjectReference<keen::RecipeList>'],['recipes',72,'keen::FbUiCraftingRecipeCollection']]);
  structure('keen::FbUiCraftingRecipeCollection',24,[['workshops',0,'keen::BlobArray<keen::WorkshopId>'],['trees',8,'keen::BlobArray<keen::FbUiCraftingRecipeTree>'],['maxRecipeGroupCount',16,'keen::uint32'],['maxRecipeSetCount',20,'keen::uint32']]);

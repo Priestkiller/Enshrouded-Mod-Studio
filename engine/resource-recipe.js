@@ -23,16 +23,16 @@ function safeData(value,depth=0){if(depth>96)fail('JSON-Verschachtelung übersch
 // This is a closed feature catalog, not an extension/plugin loader. Definition
 // files and adapters are local release-owned inputs; none come from a recipe.
 const FEATURES=Object.freeze([
- Object.freeze({id:'companions',option:'enableSkeletonSummoningSpells',file:'skeleton-spell-definitions.json',sha256:'cf0e5bf8b8c8a11e05c61e120adacf5a8ad03745ea3d89c0e24e58fcb9c45e2a'}),
- Object.freeze({id:'night-plants',option:'enableNightPlantCultivation',file:'night-plant-definitions.json',adapter:'night-plants',sha256:'e703b4ef82b50969962f425ce0b447b472a76e4581b63c83cf383934dba6ebeb',counts:{'keen::ItemInfo':7,'keen::ecs::TemplateResource':28,'keen::ecs::DefaultInventoryResource':14}}),
- Object.freeze({id:'drak-merchant',option:'enableDrakMerchant',file:'drak-definitions.json',adapter:'drak-merchant',sha256:'38209f7b2da083fee4e420c2f68c30aacb83a309bd00cb185c63e9e94114399c',counts:{'keen::ItemInfo':4,'keen::ecs::TemplateResource':4}})
+ Object.freeze({id:'companions',option:'enableSkeletonSummoningSpells',file:'skeleton-spell-definitions.json',sha256:'9f4136e439ba8c5a674300e24e3fc2adbba0b7f0fd5556daea0c6e3a36a36a32'}),
+ Object.freeze({id:'night-plants',option:'enableNightPlantCultivation',file:'night-plant-definitions.json',adapter:'night-plants',sha256:'1c7d16af6d66de8c06982e6f4416dde80eb1d392ea3230189b9fddccc88f586f',counts:{'keen::ItemInfo':7,'keen::ecs::TemplateResource':28,'keen::ecs::DefaultInventoryResource':14}}),
+ Object.freeze({id:'drak-merchant',option:'enableDrakMerchant',file:'drak-definitions.json',adapter:'drak-merchant',sha256:'e9a4d8ad0fd4a8d554427edda99011b7a6e3f775f396181c83f06fa733f321ca',counts:{'keen::ItemInfo':4,'keen::ecs::TemplateResource':4}})
 ]);
 function featureDescriptors(options,definitions){
  const result=[],identities=new Set();
  for(const spec of FEATURES){
   if(options?.world?.[spec.option]?.enabled!==true)continue;
   const definition=spec.id==='companions'&&definitions?definitions:read(path.join(__dirname,spec.file));
-  if(definition.formatVersion!==1||definition.sourceBuild!=='1273043'||digest(canonical(definition))!==spec.sha256)fail('Unbekannte feste Featuredefinition: '+spec.id);
+  if(definition.formatVersion!==1||definition.sourceBuild!=='1283531'||digest(canonical(definition))!==spec.sha256)fail('Unbekannte feste Featuredefinition: '+spec.id);
   let resources,templates;
   if(spec.id==='companions'){
    if(!Array.isArray(definition.items)||definition.items.length!==6||definition.items.filter(i=>i.sourceTemplateGuid).length!==3)fail('Feste Begleiterdefinitionen fehlen.');
@@ -56,7 +56,7 @@ function allowedCreates(definitions,options={world:{enableSkeletonSummoningSpell
 function validate(recipe,definitions){
  if(!exact(recipe,['format','formatVersion','gameBuild','engineFingerprint','options','resources'])||recipe.format!==FORMAT||recipe.formatVersion!==VERSION||typeof recipe.gameBuild!=='string'||!recipe.gameBuild||recipe.gameBuild.length>512||!SHA.test(recipe.engineFingerprint||'')||!plain(recipe.options)||!Array.isArray(recipe.resources)||recipe.resources.length>MAX_RESOURCES)fail('Unbekanntes Rezeptformat.');
  const features=featureDescriptors(recipe.options,definitions),creates=new Set(features.flatMap(f=>f.resources.map(r=>r.type+'|'+r.guid+'|'+r.part))),seen=new Set();let previous='';
- if(features.some(f=>f.id!=='companions')&&!recipe.gameBuild.startsWith('1273043|'))fail('Feature-Rezept gehört nicht zum geprüften Spielbuild.');
+ if(recipe.gameBuild !== require('./build-contract').BUILD)fail('Feature-Rezept gehört nicht zum geprüften Spielbuild.');
  for(const row of recipe.resources){if(!exact(row,['type','guid','part','mode','before','after']))fail('Unbekannte Rezeptfelder.');const key=identity(row.after);if(key!==row.type+'|'+row.guid+'|'+row.part||seen.has(key)||(previous&&previous>=key))fail('Doppelte, unsortierte oder abweichende Ressourcenidentität.');seen.add(key);previous=key;
   if(Object.hasOwn(DRAK_REGISTRIES,row.type)&&(recipe.options.world?.enableDrakMerchant?.enabled!==true||row.guid!==DRAK_REGISTRIES[row.type]||row.part!==0||row.mode!=='modify'))fail('Nicht freigegebene Drak-Katalogänderung.');
   if(row.mode==='modify'){if(identity(row.before)!==key||canonical(row.before)===canonical(row.after))fail('Ungültige oder wirkungslose Änderung.');}
