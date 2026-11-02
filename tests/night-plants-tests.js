@@ -48,4 +48,25 @@ test('native readback rejects altered stage links harvest and presentation',()=>
 function recipeRows(f,summary){return summary.resources.map(r=>({type:r.type,guid:r.guid,part:r.part,mode:r.created?'create':'modify',before:r.created?null:get(f.input,r.directory,r.guid),after:get(f.modified,r.directory,r.guid)}));}
 test('recipe transfer requires exact descriptors options and all own registry entries',()=>withFixture(f=>{const options=option();options.inventory={adjustStackSize:{enabled:true,value:65000}};const summary=f.apply(options),rows=recipeRows(f,summary);assert.strictEqual(N.validateRecipeRows(rows,options).created,49);const modified=clone(rows);modified.find(r=>r.type===D.types.TemplateResource).after.components.push({$type:'foreign',$value:{}});assert.throws(()=>N.validateRecipeRows(modified,options));assert.throws(()=>N.validateRecipeRows(rows.slice(1),options));assert.throws(()=>N.validateRecipeRows(rows,option()));const bad=clone(rows),catalog=bad.find(r=>r.type===D.types.ItemRegistryResource).after;catalog.itemRefs.pop();catalog.dbgNames.pop();assert.throws(()=>N.validateRecipeRows(bad,options));}));
 test('source and destination cannot overlap or point through symlinks',()=>withFixture(f=>{assert.throws(()=>N.apply({input:f.input,modified:path.join(f.input,'out'),reflection:f.reflection,options:option()}),/überlappen/);const link=path.join(f.home,'alias'),injected=Object.create(fs);injected.existsSync=p=>path.resolve(p)===link||fs.existsSync(p);injected.lstatSync=p=>path.resolve(p)===link?{isSymbolicLink:()=>true}:fs.lstatSync(p);assert.throws(()=>N.apply({input:link,modified:f.modified,reflection:f.reflection,options:option(),fs:injected}),/Verknüpfte/);assert.strictEqual(resources(f.modified).length,0);}));
+function rootRewardRows(f,factor=4,points=3){
+ const K=require('../engine/custom-skeleton-items'),k=get(f.input,'GameKnowledgeResource',D.registries.knowledge),id=4291101057;
+ const old={id:{id:{value:id}},sendToAnalytics:false,hasOptionalPlayerProgression:false,isPlayerKnowledge:true,type:'Bool',expectedFlags:0,isAdditionalPlayerKnowledgePerFlag:0,experienceGainId:{value:0},unlockedSkillPoints:points};
+ k.playerKnowledge=K.rebuildMap(k.playerKnowledge,[[id,old]]);k.skillPoints=[{knowledgeId:{id:{value:id}},amount:points},{knowledgeId:{id:{value:42}},amount:0}];k.achievements={sentinel:'original'};k.flagKnowledgePatch=[];put(f.input,'GameKnowledgeResource',k);
+ const o=option();o.player={adjustSkillPointsPerRoot:{enabled:true,factor}};const summary=f.apply(o),after=get(f.modified,'GameKnowledgeResource',D.registries.knowledge);
+ for(const v of after.playerKnowledge.values)if(Object.hasOwn(v,'unlockedSkillPoints'))v.unlockedSkillPoints*=factor;
+ for(const v of after.skillPoints)v.amount*=factor;put(f.modified,'GameKnowledgeResource',after);
+ return {options:o,rows:recipeRows(f,summary),id};
+}
+for(const factor of [1,2,4,85])test('plant transfer composes with selected native root reward factor '+factor,()=>withFixture(f=>{const p=rootRewardRows(f,factor);assert.strictEqual(N.validateRecipeRows(p.rows,p.options).created,49);}));
+for(const fault of ['disabled','wrong points','wrong table','other player field','world field','metadata','overflow','fractional factor'])test('root reward composition rejects '+fault,()=>withFixture(f=>{
+ const p=rootRewardRows(f,fault==='overflow'?85:4,fault==='overflow'?4:3),k=p.rows.find(r=>r.type===D.types.GameKnowledgeResource).after;
+ if(fault==='disabled')p.options.player.adjustSkillPointsPerRoot.enabled=false;
+ if(fault==='wrong points')k.playerKnowledge.values.find(v=>v.id.id.value===p.id).unlockedSkillPoints--;
+ if(fault==='wrong table')k.skillPoints[0].amount--;
+ if(fault==='other player field')k.playerKnowledge.values.find(v=>v.id.id.value===p.id).sendToAnalytics=true;
+ if(fault==='world field')k.worldKnowledge.values[0].expectedFlags++;
+ if(fault==='metadata')k.achievements.sentinel='changed';
+ if(fault==='fractional factor')p.options.player.adjustSkillPointsPerRoot.factor=2.5;
+ assert.throws(()=>N.validateRecipeRows(p.rows,p.options),/Knowledge|Wurzelpunkte/);
+}));
 console.log(JSON.stringify({passed:true,checks,plants:7,createdResources:49,gameStarted:false,nativeToolStarted:false,liveFilesWritten:false}));

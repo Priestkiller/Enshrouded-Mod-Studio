@@ -19,3 +19,5 @@ jobs:
         run: |
           node tests/production-package-handoff-tests.js
           if ($LASTEXITCODE) { throw 'Production handoff regression failed' }
+          node tests/night-plants-tests.js
+          if ($LASTEXITCODE) { throw 'Knowledge composition regression failed' }

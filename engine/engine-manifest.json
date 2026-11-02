@@ -1,6 +1,6 @@
 {
   "version": "1.2.3",
-  "studio": "0.4.34",
+  "studio": "0.4.35",
   "files": {
     "animal-production.js": "9ea63a6e6334b921e74e8494ae9182294ddfc4f992dd9e78633b9a6ca3fba716",
     "limits-fix.js": "83fd1acdad7eb25857acfb24120e16f8b1fcc55337f8a645fbfba8da3b7e2767",
@@ -75,7 +75,7 @@
     "creative-costs-fix.js": "0e83298a776a8be7cab1f8a60ac6a4915311b49c3b4fdaa10feddaf68bfeea7c",
     "native-output-guard.js": "873d419c8fe74044c25027df73e111273cab50fde551c7562d7e136b8a302e10",
     "template-collection-registration.js": "d268ffe784f6bed0a2b29b8a60d4d9f8929af7647df61109c5aeff179b877fa0",
-    "night-plants.js": "eee977a402c0466f8f16ea482b6a674afff8573b2ee04e7d3228de3fd51f3030",
+    "night-plants.js": "95087e0aa2eb641cf96cecd4e2e9aa188588db50c11cc74b7dfa965135768f2b",
     "night-plant-definitions.json": "a2077f41a2a0afb8db33fd7f3b0e6d5e00b9938ae530183e0eb7504a64fc5f11",
     "drak-merchant.js": "ec85c42d5192d096b88873d8799c3272e6ae864398d20d66d79b19e358d454e3",
     "drak-definitions.json": "e1b5b904fbaa929881e81fa53d4e2968efc7c1f007d85821afbf7bbc53cbc336"

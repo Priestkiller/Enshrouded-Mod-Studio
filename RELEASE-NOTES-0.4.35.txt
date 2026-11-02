@@ -1,0 +1,15 @@
+Mod Studio 0.4.35
+Korrektur: Nachtpflanzen zusammen mit Wurzelpunkten
+
+Behebt den Abbruch der automatischen Clientpaket-Erstellung bei gleichzeitig
+aktiven Nachtpflanzen und einem Wurzelpunkte-Faktor. Die Prüfung erkennt jetzt
+exakt die gewählten Punktewerte in beiden nativen Tabellen und bewahrt alle
+anderen Einträge. Falsche Werte, fremde Änderungen und Überläufe bleiben gesperrt.
+
+Vor dem nächsten Serverpatch Manager 0.15.48 und Spielerclient 0.16.28
+aktualisieren. Danach das gewünschte Profil im Studio erneut anwenden und
+im Spielerclient synchronisieren. Profile und Einstellungen bleiben erhalten.
+
+Gezielte Kombinationstests, native Archiv-Rückleseprüfung und gemeinsame
+Paketprüfungen wurden ausgeführt. Kein Spielstart und keine Änderung von
+Spielständen im Hintergrundtest. Die Spielwirkung ist separat zu testen.
