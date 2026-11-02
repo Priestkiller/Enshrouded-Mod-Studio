@@ -1,0 +1,21 @@
+name: Studio package and Manager handoff regression
+on:
+  push:
+    paths: ['engine/**', 'assets/schema.json', 'tests/**', '.github/workflows/handoff-regressions.yml']
+  pull_request:
+    paths: ['engine/**', 'assets/schema.json', 'tests/**', '.github/workflows/handoff-regressions.yml']
+permissions:
+  contents: read
+jobs:
+  package-handoff:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Check the real recipe, package and receipt transaction
+        shell: pwsh
+        run: |
+          node tests/production-package-handoff-tests.js
+          if ($LASTEXITCODE) { throw 'Production handoff regression failed' }

@@ -23,6 +23,33 @@ jobs:
       - name: Verify publication parser and resume fixtures
         shell: pwsh
         run: node --test .github/scripts/tests/publish-stable-release.test.cjs
+      - name: Check Studio package and handoff regressions before publishing
+        if: github.repository == 'Priestkiller/Enshrouded-Mod-Studio'
+        shell: pwsh
+        run: |
+          node tests/production-package-handoff-tests.js
+          if ($LASTEXITCODE) { throw 'Studio production handoff regression failed' }
+      - name: Read the current public Studio producer for Manager compatibility
+        if: github.repository == 'Priestkiller/Universal-Game-Server-Manager'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Priestkiller/Enshrouded-Mod-Studio
+          ref: main
+          path: .compat/studio
+          persist-credentials: false
+      - name: Prepare Go for the production compatibility check
+        if: github.repository == 'Priestkiller/Universal-Game-Server-Manager'
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require a matching Studio, Manager and embedded Player worker
+        if: github.repository == 'Priestkiller/Universal-Game-Server-Manager'
+        shell: pwsh
+        run: |
+          ./scripts/verify-studio-release-contract.ps1 -StudioRoot .compat/studio -AllowMissingVendorRuntime
+          node .compat/studio/tests/production-package-handoff-tests.js
+          if ($LASTEXITCODE) { throw 'Studio production handoff regression failed' }
       - name: Verify exact chunks and publish stable latest release
         shell: pwsh
         env:
