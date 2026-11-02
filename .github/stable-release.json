@@ -3,77 +3,77 @@
   "app": "studio",
   "repository": "Priestkiller/Enshrouded-Mod-Studio",
   "visibility": "public",
-  "version": "0.4.36",
-  "releaseTag": "v0.4.36",
-  "releaseName": "Enshrouded Mod Studio 0.4.36",
-  "sourceCommit": "d0bf76017965f3b47bc8e3282f26bdea539f182b",
-  "notes": "Mod Studio 0.4.36\n\nUnterstützt Enshrouded 1.0.1.0, nativer Build 1283531.\nDie geprüften Ressourcenstrukturen, Begleiterquellen, Drak-NPC-Vorlagen und\ndie globale Vorlagenliste entsprechen den aktuellen Originaldateien.\n\nNach einem Spielupdate zuerst Steam-Dateiprüfung abschließen, danach im\nStudio die neue Basis freigeben und eine neue Vorschau erstellen. Eine\nalte Spielbasis nicht auf die neue Spielversion zurückspielen.\nUnbekannte Spielbuilds verlangen ein passendes Studio-Update.\n\nServer, Manager und Spielerclients benötigen passende aktuelle Versionen.\nDaten- und Archivprüfungen ersetzen keinen Spieltest.\n",
+  "version": "0.4.37",
+  "releaseTag": "v0.4.37",
+  "releaseName": "Enshrouded Mod Studio 0.4.37",
+  "sourceCommit": "a86fdcd4ff0614cbf4240decb293e1f5ac6cdf5b",
+  "notes": "Mod Studio 0.4.37\n\nBehebt fehlende native UI-Texturressourcen für den Drak-Handwerker,\ndie drei Drak-Zauber und sieben Nachtpflanzen-Setzlinge. Das Spiel\nforderte beim Öffnen der NPC-Auswahl die Textur unter der neuen\nGegenstandskennung an; diese Ressource fehlte bisher.\n\nNeue Clientarchive prüfen alle elf eigenen Gegenstandstexturen und\nderen unveränderte native Bildinhalte nach erneutem Auslesen.\nDie Serverrezepte und Spieloptionen bleiben inhaltlich unverändert.\nManager 0.15.51 und Spielerclient 0.16.31 verwenden.\nArchive und Bildressourcen werden im Hintergrund geprüft; ein\nSpieltest für Platzierung, Animation und Kampf steht weiterhin aus.\n",
   "assets": [
     {
-      "name": "Enshrouded-Mod-Studio-0.4.36.zip",
-      "size": 14052259,
-      "sha256": "51f10ad013f3a35500402f8ec383ddc8bd63358c688db5bf0aa042c46b13dfe6",
+      "name": "Enshrouded-Mod-Studio-0.4.37.zip",
+      "size": 14058106,
+      "sha256": "b7340359ced6bb6caffa1935837aa0d4fb0fcd6fb5abdef9085768208899aa6e",
       "parts": [
         {
-          "path": ".github/stable-release-parts/a1fc49932e0cef29950aa99489e54edddbfba0d42c8fa3e83df10ea6970e823d.bin",
+          "path": ".github/stable-release-parts/f6e48a0c646de5499a05386fa0dc1d051ee375b12fc3eed2b6341ea8a4ea2a5e.bin",
           "size": 8388608,
-          "sha256": "a1fc49932e0cef29950aa99489e54edddbfba0d42c8fa3e83df10ea6970e823d"
+          "sha256": "f6e48a0c646de5499a05386fa0dc1d051ee375b12fc3eed2b6341ea8a4ea2a5e"
         },
         {
-          "path": ".github/stable-release-parts/a27874c760f6ad192b9c9796d32f10d4f7ed10da17dfed4371a871ca11a5d667.bin",
-          "size": 5663651,
-          "sha256": "a27874c760f6ad192b9c9796d32f10d4f7ed10da17dfed4371a871ca11a5d667"
+          "path": ".github/stable-release-parts/d3eadc3819d97e5a7baca221fdbbfaa0acea886665e427de25b0d608b0fb9a43.bin",
+          "size": 5669498,
+          "sha256": "d3eadc3819d97e5a7baca221fdbbfaa0acea886665e427de25b0d608b0fb9a43"
         }
       ]
     },
     {
-      "name": "Enshrouded-Mod-Studio-0.4.36-Setup.exe",
-      "size": 14155776,
-      "sha256": "a4da2ff09dd00d8dad0c23deffd5a7b374e9ae161510ba09a2891d3fc8595984",
+      "name": "Enshrouded-Mod-Studio-0.4.37-Setup.exe",
+      "size": 14162432,
+      "sha256": "de05effe8ed8f95d70c81e1dce196428797d4415ad0dfb356ad456cfeb322310",
       "parts": [
         {
-          "path": ".github/stable-release-parts/2890d9a0b27e379aa1338b2ccfaf3c2d5b1fc1151eedf7185c1065eb5382372f.bin",
+          "path": ".github/stable-release-parts/291e3bc406caa7bca465224faa459ed1f4c094905aa3390b8ff652397d025013.bin",
           "size": 39672,
-          "sha256": "2890d9a0b27e379aa1338b2ccfaf3c2d5b1fc1151eedf7185c1065eb5382372f"
+          "sha256": "291e3bc406caa7bca465224faa459ed1f4c094905aa3390b8ff652397d025013"
         },
         {
-          "path": ".github/stable-release-parts/a1fc49932e0cef29950aa99489e54edddbfba0d42c8fa3e83df10ea6970e823d.bin",
+          "path": ".github/stable-release-parts/f6e48a0c646de5499a05386fa0dc1d051ee375b12fc3eed2b6341ea8a4ea2a5e.bin",
           "size": 8388608,
-          "sha256": "a1fc49932e0cef29950aa99489e54edddbfba0d42c8fa3e83df10ea6970e823d"
+          "sha256": "f6e48a0c646de5499a05386fa0dc1d051ee375b12fc3eed2b6341ea8a4ea2a5e"
         },
         {
-          "path": ".github/stable-release-parts/a27874c760f6ad192b9c9796d32f10d4f7ed10da17dfed4371a871ca11a5d667.bin",
-          "size": 5663651,
-          "sha256": "a27874c760f6ad192b9c9796d32f10d4f7ed10da17dfed4371a871ca11a5d667"
+          "path": ".github/stable-release-parts/d3eadc3819d97e5a7baca221fdbbfaa0acea886665e427de25b0d608b0fb9a43.bin",
+          "size": 5669498,
+          "sha256": "d3eadc3819d97e5a7baca221fdbbfaa0acea886665e427de25b0d608b0fb9a43"
         },
         {
-          "path": ".github/stable-release-parts/f1b8e24219d6293af73e02a8713b8ad2f640b374daaa06d679baaa63954661f8.bin",
-          "size": 63845,
-          "sha256": "f1b8e24219d6293af73e02a8713b8ad2f640b374daaa06d679baaa63954661f8"
+          "path": ".github/stable-release-parts/90155ca17519f884ce9f60454691593e41ed93f3ea4c38b960308980f951150d.bin",
+          "size": 64654,
+          "sha256": "90155ca17519f884ce9f60454691593e41ed93f3ea4c38b960308980f951150d"
         }
       ]
     },
     {
       "name": "RELEASE-NOTES.txt",
-      "size": 624,
-      "sha256": "43e9a779a6dee34a77dcaa53d9ae0933a078e4febe4482b97977ef1e7be4811a",
+      "size": 660,
+      "sha256": "891a82e6fa7885d4432d7fcfa8355575dc523a4b4a929374f9810f8fd82ec91f",
       "parts": [
         {
-          "path": ".github/stable-release-parts/43e9a779a6dee34a77dcaa53d9ae0933a078e4febe4482b97977ef1e7be4811a.bin",
-          "size": 624,
-          "sha256": "43e9a779a6dee34a77dcaa53d9ae0933a078e4febe4482b97977ef1e7be4811a"
+          "path": ".github/stable-release-parts/891a82e6fa7885d4432d7fcfa8355575dc523a4b4a929374f9810f8fd82ec91f.bin",
+          "size": 660,
+          "sha256": "891a82e6fa7885d4432d7fcfa8355575dc523a4b4a929374f9810f8fd82ec91f"
         }
       ]
     },
     {
       "name": "SHA256SUMS.txt",
       "size": 288,
-      "sha256": "0727402b29ffb406f0cf2736fa6b99e5fd1fd6b49421e877edc737e8c6088852",
+      "sha256": "54049c35e4c9221043ab2cec6fd8b75e22f8237b130146460a46f14ac8b19b7c",
       "parts": [
         {
-          "path": ".github/stable-release-parts/0727402b29ffb406f0cf2736fa6b99e5fd1fd6b49421e877edc737e8c6088852.bin",
+          "path": ".github/stable-release-parts/54049c35e4c9221043ab2cec6fd8b75e22f8237b130146460a46f14ac8b19b7c.bin",
           "size": 288,
-          "sha256": "0727402b29ffb406f0cf2736fa6b99e5fd1fd6b49421e877edc737e8c6088852"
+          "sha256": "54049c35e4c9221043ab2cec6fd8b75e22f8237b130146460a46f14ac8b19b7c"
         }
       ]
     }

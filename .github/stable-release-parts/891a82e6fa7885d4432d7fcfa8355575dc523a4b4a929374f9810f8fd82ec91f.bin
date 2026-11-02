@@ -1,0 +1,13 @@
+Mod Studio 0.4.37
+
+Behebt fehlende native UI-Texturressourcen für den Drak-Handwerker,
+die drei Drak-Zauber und sieben Nachtpflanzen-Setzlinge. Das Spiel
+forderte beim Öffnen der NPC-Auswahl die Textur unter der neuen
+Gegenstandskennung an; diese Ressource fehlte bisher.
+
+Neue Clientarchive prüfen alle elf eigenen Gegenstandstexturen und
+deren unveränderte native Bildinhalte nach erneutem Auslesen.
+Die Serverrezepte und Spieloptionen bleiben inhaltlich unverändert.
+Manager 0.15.51 und Spielerclient 0.16.31 verwenden.
+Archive und Bildressourcen werden im Hintergrund geprüft; ein
+Spieltest für Platzierung, Animation und Kampf steht weiterhin aus.
