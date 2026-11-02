@@ -1,9 +1,9 @@
 name: Studio package and Manager handoff regression
 on:
   push:
-    paths: ['engine/**', 'assets/schema.json', 'tests/**', '.github/workflows/handoff-regressions.yml']
+    paths: ['engine/**', 'assets/**', 'tests/**', '.github/workflows/handoff-regressions.yml']
   pull_request:
-    paths: ['engine/**', 'assets/schema.json', 'tests/**', '.github/workflows/handoff-regressions.yml']
+    paths: ['engine/**', 'assets/**', 'tests/**', '.github/workflows/handoff-regressions.yml']
 permissions:
   contents: read
 jobs:
@@ -21,3 +21,5 @@ jobs:
           if ($LASTEXITCODE) { throw 'Production handoff regression failed' }
           node tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Knowledge composition regression failed' }
+          node tests/producer-consumer-matrix.js
+          if ($LASTEXITCODE) { throw 'Studio create/export output differs from the independently consumer-certified contract' }

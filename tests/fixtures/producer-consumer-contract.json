@@ -1,0 +1,431 @@
+{
+  "format": 1,
+  "engineFingerprint": "ffa134b6b9e70cfb970d18059e22d380610b93b6f59d880d3c05d83367bf0086",
+  "studioVersion": "0.4.35",
+  "engineVersion": "1.2.3",
+  "consumer": "production ParseEMSResourceRecipe",
+  "consumerRecipeSourceSHA256": "f3fbbb15fd96bd62f449c60571bb754073fc7862d4bc84d5566ae2ce41cd4219",
+  "certification": "All 70 independently generated Studio recipes passed TestEMSStudioReleaseContractProducerMatrix; source code fixtures never generate expected after-images",
+  "cases": [
+    {
+      "name": "1-plain",
+      "sha256": "a354a177c0877c345070119a7dcca9b754b8a89632cdbf37f60879c269ff9305",
+      "resources": 19,
+      "creates": 9
+    },
+    {
+      "name": "1-mana",
+      "sha256": "2470c620cc23d03e02ef9dfd2b6eb45adb679f54e122c26060f1e2890cedff38",
+      "resources": 20,
+      "creates": 9
+    },
+    {
+      "name": "1-cast",
+      "sha256": "9e49b97b68e0a7c1220825bcb3e02098e04b8b296d69a3c6a91c9682652ec294",
+      "resources": 20,
+      "creates": 9
+    },
+    {
+      "name": "1-round-down",
+      "sha256": "8f1cceb7ffb10f029896062d5efc02e3a83517db690f8bec71782d7e1c0494e1",
+      "resources": 20,
+      "creates": 9
+    },
+    {
+      "name": "1-round-up",
+      "sha256": "77cf3e6800a440ff42b41d3d5d54042275527521ff4e70a34ec0065a0d669028",
+      "resources": 20,
+      "creates": 9
+    },
+    {
+      "name": "1-minimum",
+      "sha256": "222aec55e34f2413237fa9f292d39f5a3f0cb23463457a7c25a669691c0e5179",
+      "resources": 20,
+      "creates": 9
+    },
+    {
+      "name": "1-stack",
+      "sha256": "31342830ba5e0f8ff125510ce4841998a9ce21aa8ba78921597df6188eace027",
+      "resources": 19,
+      "creates": 9
+    },
+    {
+      "name": "1-item-level",
+      "sha256": "66d441e4e1b60fa21a09026ac61668ed404e92b58d282b579d8d862a51533ed5",
+      "resources": 38,
+      "creates": 9
+    },
+    {
+      "name": "1-root-rewards",
+      "sha256": "80db07da5531db030fab288023e95a6c3855f783ba53fe7212f12160cbc95fa4",
+      "resources": 19,
+      "creates": 9
+    },
+    {
+      "name": "1-combined",
+      "sha256": "ee2efe51a97eb19bdbed19a37b50295576b9818ad7e59a9cab03400b8c799a49",
+      "resources": 38,
+      "creates": 9
+    },
+    {
+      "name": "2-plain",
+      "sha256": "3e594ad8291a7f980d41e36a11b139ca683803c9db063c1fec7c36a46f921820",
+      "resources": 53,
+      "creates": 49
+    },
+    {
+      "name": "2-mana",
+      "sha256": "091f3b52cd9390f846d78d8f818cbee5ce66cd1409182cf0998c4deb286f6de6",
+      "resources": 54,
+      "creates": 49
+    },
+    {
+      "name": "2-cast",
+      "sha256": "fe30dfe9ef9386ab4461ecf8985556bd022c2ef606cdbf65570e66a18587ebf2",
+      "resources": 54,
+      "creates": 49
+    },
+    {
+      "name": "2-round-down",
+      "sha256": "e5232416f2cf915da9d86a2ef68758b62571412d026542eece6a7094877192ed",
+      "resources": 54,
+      "creates": 49
+    },
+    {
+      "name": "2-round-up",
+      "sha256": "8ed7285259a4ff8e102e27f69eba0cf4676e0c2818c74f2bdbacc6ad14010699",
+      "resources": 54,
+      "creates": 49
+    },
+    {
+      "name": "2-minimum",
+      "sha256": "7fd90c31e1f878dcc8855b6ac36f0065f92f0fa77166c85f2cf0a9a4ccb4a257",
+      "resources": 54,
+      "creates": 49
+    },
+    {
+      "name": "2-stack",
+      "sha256": "824d0df434d114bbe11759fb675719af194adf2a68ce101f38465ad448830654",
+      "resources": 53,
+      "creates": 49
+    },
+    {
+      "name": "2-item-level",
+      "sha256": "175d80175c2e05ac2be062bd5c6f4b9800f8059368433f7faf935b65924c4d15",
+      "resources": 72,
+      "creates": 49
+    },
+    {
+      "name": "2-root-rewards",
+      "sha256": "79142d54f7f3705212aefdb292a4f5efcfdd80b83bf5fb23726591a2a91ff052",
+      "resources": 53,
+      "creates": 49
+    },
+    {
+      "name": "2-combined",
+      "sha256": "0ed9d3127fd3f91e4b502b38f8f955f5b01b465b1c7868c1a67f53c2cce1860c",
+      "resources": 72,
+      "creates": 49
+    },
+    {
+      "name": "3-plain",
+      "sha256": "ea010873553a849820348e22439a0b1a4a77eeb5f4744dd4a5dc40d20d4dd6c8",
+      "resources": 68,
+      "creates": 58
+    },
+    {
+      "name": "3-mana",
+      "sha256": "4b79c10b32a20e3be8f93869fb052d8e7bdddc4c7a49ff97ef84b31e9b3701f0",
+      "resources": 69,
+      "creates": 58
+    },
+    {
+      "name": "3-cast",
+      "sha256": "bd4f3d1d7ee024e577e5a087f6547868ac3d17eefdb9e83b38f0af71b83465e4",
+      "resources": 69,
+      "creates": 58
+    },
+    {
+      "name": "3-round-down",
+      "sha256": "af524c375993d2b3a2b5b37117e75a1874b2c367ebe96ddc4430fe245c829254",
+      "resources": 69,
+      "creates": 58
+    },
+    {
+      "name": "3-round-up",
+      "sha256": "dfbee76174f459be8cd406144734fcfd6bbf0a0bffeee99d22ea04090dffc59f",
+      "resources": 69,
+      "creates": 58
+    },
+    {
+      "name": "3-minimum",
+      "sha256": "6583e2537824c3ea0268687f9a0a97d08d8e198c58c402ff4efd812ad684351a",
+      "resources": 69,
+      "creates": 58
+    },
+    {
+      "name": "3-stack",
+      "sha256": "ac513e671f328975bb26fb6a724d402f71848685c103fcbda6d8ac595731f2a1",
+      "resources": 68,
+      "creates": 58
+    },
+    {
+      "name": "3-item-level",
+      "sha256": "246795e1446a2e4adef465121156ebcd695a0c5feca28bac5235f4bd02a586c0",
+      "resources": 87,
+      "creates": 58
+    },
+    {
+      "name": "3-root-rewards",
+      "sha256": "7f8798b842a0591a4f0f67f1912193c8fe911a6976ce368899ae1adc15ce69dd",
+      "resources": 68,
+      "creates": 58
+    },
+    {
+      "name": "3-combined",
+      "sha256": "648020262a307e1320a06a5584e9453e706d8865588cc41535bdd15d68a014e1",
+      "resources": 87,
+      "creates": 58
+    },
+    {
+      "name": "4-plain",
+      "sha256": "36bcc547e7c56e4484beb45bd37ba99beb4c6719fda22195e47942226ddb3a2e",
+      "resources": 16,
+      "creates": 8
+    },
+    {
+      "name": "4-mana",
+      "sha256": "c12b10b6fc58c2cf1118a5d756dcf468b2355a07e5787cbe6b255e5ec90052f2",
+      "resources": 17,
+      "creates": 8
+    },
+    {
+      "name": "4-cast",
+      "sha256": "a9c4cc9a3f1801f6be1cbaede58c663e93bc849d83411e9290c2fc09a6de10ba",
+      "resources": 17,
+      "creates": 8
+    },
+    {
+      "name": "4-round-down",
+      "sha256": "4af725d8fa7c3aee752d4d8a3123ce5d142b8eb01d44c822ff1322f2be186c62",
+      "resources": 17,
+      "creates": 8
+    },
+    {
+      "name": "4-round-up",
+      "sha256": "a1c71e8acb843ca7d5bc9c257f8c13b626e816ea67aacad276780a513a996ac6",
+      "resources": 17,
+      "creates": 8
+    },
+    {
+      "name": "4-minimum",
+      "sha256": "04273cf3139607899e236a08f40e9ac3154cc4a325dedbc5ea8a127402cebefd",
+      "resources": 17,
+      "creates": 8
+    },
+    {
+      "name": "4-stack",
+      "sha256": "ee41fc228f670da3e39119fe287140e1b3a6fef8aa1c2061d77b646aa8806c0d",
+      "resources": 16,
+      "creates": 8
+    },
+    {
+      "name": "4-item-level",
+      "sha256": "1ad186cf29bb4e48c74b241d5901f6bdfe4b9166498c702ec6c0c8cbfd361acd",
+      "resources": 35,
+      "creates": 8
+    },
+    {
+      "name": "4-root-rewards",
+      "sha256": "f4921661e799ac8398d535780c9a802bdd53ee30a27498fffcc91591067acb58",
+      "resources": 16,
+      "creates": 8
+    },
+    {
+      "name": "4-combined",
+      "sha256": "9c2bacf10afd08c36861d05342604b8404616b7a9b1a4a838670fce05e2e0c58",
+      "resources": 35,
+      "creates": 8
+    },
+    {
+      "name": "5-plain",
+      "sha256": "5a1227c58836f794efba73bb2560e3f4154eca5c986d1a7d5f0cf4fd0c0e328d",
+      "resources": 29,
+      "creates": 17
+    },
+    {
+      "name": "5-mana",
+      "sha256": "97ef99e0c0b6f6538f4ea9a88bb5e00676103a4a1c77fd12b848f6df62148ff0",
+      "resources": 30,
+      "creates": 17
+    },
+    {
+      "name": "5-cast",
+      "sha256": "0577df64d410408751c9640bdf7916dc147359ae808c81cc79c0f5bc5744f4d5",
+      "resources": 30,
+      "creates": 17
+    },
+    {
+      "name": "5-round-down",
+      "sha256": "b9dff7546fa512a72210f62fd9597d13524f2399ac26a533996c8d0089e130af",
+      "resources": 30,
+      "creates": 17
+    },
+    {
+      "name": "5-round-up",
+      "sha256": "2cc4df02e58f9d949404b3836e8900079f26d645ac507a2c2cb834d3f3fbc374",
+      "resources": 30,
+      "creates": 17
+    },
+    {
+      "name": "5-minimum",
+      "sha256": "19324ba486010a61a9418361f71e0a1365943deed533d782fa6bfe4e71af8549",
+      "resources": 30,
+      "creates": 17
+    },
+    {
+      "name": "5-stack",
+      "sha256": "d8bf32c01e8ea14a336217896e2792cdc1a436f60904b4e33d2ba34a21adf52e",
+      "resources": 29,
+      "creates": 17
+    },
+    {
+      "name": "5-item-level",
+      "sha256": "e51094be068781ed62bee8a411fea09041a4f8cb990204a39ccd8e4903708bb6",
+      "resources": 48,
+      "creates": 17
+    },
+    {
+      "name": "5-root-rewards",
+      "sha256": "3e40b303aabf6a747ea4c2f03d2468d8bcc2a69f0acf888e2350a10d46a2d1b8",
+      "resources": 29,
+      "creates": 17
+    },
+    {
+      "name": "5-combined",
+      "sha256": "5f6c8ce487bf1ee499c387287a05766f3e8a373302611aa5f67e3f5d39a8ec24",
+      "resources": 48,
+      "creates": 17
+    },
+    {
+      "name": "6-plain",
+      "sha256": "d51ebd347c71b172960fb079c3ce119175f1c64ce2dda8bc70a3391e0e8c703e",
+      "resources": 65,
+      "creates": 57
+    },
+    {
+      "name": "6-mana",
+      "sha256": "07a8af3b7fb296e8bfcd95b407a53f7f690896ff85b8950be1a01b3951c60817",
+      "resources": 66,
+      "creates": 57
+    },
+    {
+      "name": "6-cast",
+      "sha256": "a979edc31298bd15d41a9ef4da8e17fb4586061561bdedeac668ddcc03e2fc8c",
+      "resources": 66,
+      "creates": 57
+    },
+    {
+      "name": "6-round-down",
+      "sha256": "498b2f137d6b700989a866bc6acb2d95f12a21b11ac01cb8e9b4b53e26057787",
+      "resources": 66,
+      "creates": 57
+    },
+    {
+      "name": "6-round-up",
+      "sha256": "a1a79b8d27c067cfecf60aa03b9eb619b73a063ad5379176450aa54a9a31f3de",
+      "resources": 66,
+      "creates": 57
+    },
+    {
+      "name": "6-minimum",
+      "sha256": "db29cc9828f1413f4bf2df85d1ad3c4c40c2766a15b87e586722e47775a1d03c",
+      "resources": 66,
+      "creates": 57
+    },
+    {
+      "name": "6-stack",
+      "sha256": "360d6f07c717a8e59e3f27dbac89ee808e8c4d5b260c2aad83bde0c7a3b42278",
+      "resources": 65,
+      "creates": 57
+    },
+    {
+      "name": "6-item-level",
+      "sha256": "792d58ce5061f2e8a8746935fd79522509732ba44d35d60fb9a410a5c00d0cf6",
+      "resources": 84,
+      "creates": 57
+    },
+    {
+      "name": "6-root-rewards",
+      "sha256": "b8862fc22e2b4a5409700863c733ace865182f6fea1ad85f24fd1edb5f0d8f4a",
+      "resources": 65,
+      "creates": 57
+    },
+    {
+      "name": "6-combined",
+      "sha256": "769c17fc708c767eec5faad0738eff2e5fea39193edd9c18846762da7fb6cf61",
+      "resources": 84,
+      "creates": 57
+    },
+    {
+      "name": "7-plain",
+      "sha256": "6e405924552138f0ea8146549491c8db553561c3b8139ddab3b5642e2e8fb440",
+      "resources": 78,
+      "creates": 66
+    },
+    {
+      "name": "7-mana",
+      "sha256": "92a564bcb3065fa6c32d4bf7e1ef445f7e80fa4691f523e87eb6e505437f6343",
+      "resources": 79,
+      "creates": 66
+    },
+    {
+      "name": "7-cast",
+      "sha256": "1ff8bb7e5e6c26ee52c7491c708c16fad1e1e46a9c010d63d514970b32408b4d",
+      "resources": 79,
+      "creates": 66
+    },
+    {
+      "name": "7-round-down",
+      "sha256": "e568c71b237862788d67e2f768569dccf212023424edfbcbb3b0f4626bd97516",
+      "resources": 79,
+      "creates": 66
+    },
+    {
+      "name": "7-round-up",
+      "sha256": "1c3a0ac16e0ab0f7099533f71f01fb0fc8be834c574a943b0e1f5e7d9618159e",
+      "resources": 79,
+      "creates": 66
+    },
+    {
+      "name": "7-minimum",
+      "sha256": "2bcfa20c44b6afea9c65c339a2a0a3e5b10b487dfcecc2a18c91722ff395953a",
+      "resources": 79,
+      "creates": 66
+    },
+    {
+      "name": "7-stack",
+      "sha256": "37dacca43fff382d16294a7ce53a6dbf7ed1bb334bd55225cf96d41ae72b30c9",
+      "resources": 78,
+      "creates": 66
+    },
+    {
+      "name": "7-item-level",
+      "sha256": "16c3abf90b774ae2d4bee63ea01e1e42f04676f57d7fa298ef234fafe7ba00f9",
+      "resources": 97,
+      "creates": 66
+    },
+    {
+      "name": "7-root-rewards",
+      "sha256": "0d68f27364dcd3819a7f402fe40988edbbf47afd7631635c3f41719ec3b53584",
+      "resources": 78,
+      "creates": 66
+    },
+    {
+      "name": "7-combined",
+      "sha256": "70108b5022c4a416777a24651544196f0ee960a66a32599ed50c864f82ef0a1d",
+      "resources": 97,
+      "creates": 66
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "format": 1,
+  "sourceBuild": "1273043",
+  "fixtureSha256": "5fb6ef3cdfe472125312185f65698a7cba508710d44d81cad17d07361e0c0f7d",
+  "uncompressedSha256": "eafba3da41fe849a21760949950d6e9fa269de6d8302d91f89a3f42905880634",
+  "bytes": 805223,
+  "documents": 94,
+  "reflectionTypes": 696,
+  "vendorSourceVariants": [
+    {
+      "name": "plain",
+      "mana": null,
+      "cast": null,
+      "sourceSha256": "d2eb58e018ee300d53d9d95303c9af58f38e7f3657aba272907be878799dde69"
+    },
+    {
+      "name": "mana",
+      "mana": 0.2,
+      "cast": null,
+      "sourceSha256": "91838e8dd195c0bef83a1230f148463cf2836dfff77c1426d0b905aab0432d19"
+    },
+    {
+      "name": "cast",
+      "mana": null,
+      "cast": 0.2,
+      "sourceSha256": "28199de88148fa38efcb5a75e9b0878c154a33fcc3acbafdbbfc188a3d299e09"
+    },
+    {
+      "name": "round-down",
+      "mana": null,
+      "cast": 0.6675,
+      "sourceSha256": "c6ff429e7da064880cd0b8497a6a75c02f558d98b82be0b6a50fff0f1c5e8392"
+    },
+    {
+      "name": "round-up",
+      "mana": null,
+      "cast": 0.5625,
+      "sourceSha256": "38d039de85846f8527b6cf210ceb5f8975782614c7dd0c7c0d43830a1c7a5796"
+    },
+    {
+      "name": "minimum",
+      "mana": null,
+      "cast": 0.1025,
+      "sourceSha256": "6064c086d80de4619e5365b0c640a91e79206c8726057a6c69c1f89a8c067451"
+    },
+    {
+      "name": "combined",
+      "mana": 0.2,
+      "cast": 0.6675,
+      "sourceSha256": "a4bc857343c4ca8d662a64c6cb27d51e259e7d796203aae27e2f0daa75b049f3"
+    }
+  ],
+  "producerFiles": {
+    "custom-skeleton-items.js": "4b8e23a2604736713cee155ea14691f1ebafdd84eba27e78ea5e14f5d64cd028",
+    "advanced-companions.js": "3ead49f114b08c42139cb972b57d2e8f57a1d72039d1e645ccb9f5567ad9f6d7",
+    "night-plants.js": "95087e0aa2eb641cf96cecd4e2e9aa188588db50c11cc74b7dfa965135768f2b",
+    "drak-merchant.js": "ec85c42d5192d096b88873d8799c3272e6ae864398d20d66d79b19e358d454e3",
+    "vendor/mod/processor.js.bytecode": "01a026068938c3b3b6d901b81f40242417879b95dffca5abf3ec676c7141cb7c"
+  },
+  "capture": "Reviewed Studio Node 18 runtime processItemInfo, unchanged inert native source; minimal synthetic shared registries; no consumer expected-output code used",
+  "gameStarted": false
+}
