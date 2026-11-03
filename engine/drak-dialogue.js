@@ -20,7 +20,7 @@ function assertDefinitions(){
  return definitions;
 }
 function assertSchema(reflection){
- require('./build-contract').assertReflection(reflection);assertDefinitions();
+ require('./build-contract').assertBuild(reflection?.version);if(!Array.isArray(reflection.types))fail('Frische native Reflection fehlt.');assertDefinitions();
  for(const [name,want]of Object.entries(definitions.schema)){const rows=reflection.types.filter(t=>t.qualifiedName===name),t=rows[0];if(rows.length!==1||['primitiveType','size','alignment','qualifiedHash','fieldCount'].some(k=>t[k]!==want[k]))fail('Natives Dialogschema geändert: '+name);const inner=Number.isInteger(t.innerType)?reflection.types[t.innerType]?.qualifiedName:null;if(inner!==want.innerType)fail('Dialog-Vererbung geändert: '+name);for(const[k,f]of Object.entries(want.fields)){const actual=t.structFields?.[k];if(!actual||actual.dataOffset!==f.offset||reflection.types[actual.type]?.qualifiedName!==f.type)fail('Dialogfeld geändert: '+name+'.'+k);}if(want.enums)for(const[k,value]of Object.entries(want.enums))if(t.enumFields?.[k]?.value!==value)fail('Dialogkennung geändert: '+name+'.'+k);}
  return reflection.version;
 }

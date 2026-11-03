@@ -1,13 +1,32 @@
-Mod Studio 0.4.38
+Mod Studio 0.4.36
 
-Vier eigene Draki-Symbole: Ssarikk als Handwerker sowie Speerkrieger, Chakramjäger und Magier erhalten jeweils ein unterscheidbares Bild.
+Unterstützt Enshrouded 1.0.1.0, nativer Build 1283531.
+Die geprüften Ressourcenstrukturen, Begleiterquellen, Drak-NPC-Vorlagen und
+die globale Vorlagenliste entsprechen den aktuellen Originaldateien.
 
-Ssarikk bekommt vier Gesprächsthemen mit eigener Mod-Hintergrundgeschichte: Herkunft, freiwillige Beschwörung über das Rufzeichen im Stab, verbündete Gefährten und Herstellung. Das native Gesprächsmenü wird verwendet. Der Gesprächshinweis über dem Kopf ist eine Testfunktion; seine Anzeige sowie Platzierung und Kampf benötigen einen Spieltest. Keine neue Sprachausgabe.
+Nach einem Spielupdate zuerst Steam-Dateiprüfung abschließen, danach im
+Studio die neue Basis freigeben und eine neue Vorschau erstellen. Eine
+alte Spielbasis nicht auf die neue Spielversion zurückspielen.
+Unbekannte Spielbuilds verlangen ein passendes Studio-Update.
 
-Für diese Erweiterung den Server mit Studio 0.4.38 patchen, neu starten und alle Spieler mit dem passenden Client synchronisieren. Manager 0.15.52 und Spielerclient 0.16.32 verwenden. Vorherige freigegebene Pakete behalten ihre passenden Prüfdaten.
+Server, Manager und Spielerclients benötigen passende aktuelle Versionen.
+Daten- und Archivprüfungen ersetzen keinen Spieltest.
 
+Mod Studio 0.4.34 – private Testfassung
 
-Mod Studio 0.4.33
+Sieben Nachtpflanzen mit Setzlingen, eigener Wachstums- und Erntekette.
+Eigener Drak-Handwerker nach Schmied-Freischaltung, mit drei ewigen Zaubern.
+Speerkrieger: 8 Schuppen + 2 Krallen. Chakramjäger: 8 Schuppen + 2 Zähne.
+Magier: 8 Schuppen + 3 Blut + 1 Aquamarin. Native Drak-/Pflanzenbilder.
+Neue Manager-/Spielerclient-Worker-Unterstützung für die automatische Verteilung.
+
+Hintergrundtests und vollständige native Server-/Client-Archivprüfungen bestanden.
+Keine laufende Spielpartie, kein Spielstand und keine produktive Installation verändert.
+Platzierung, Ernte, Speichern/Laden und Kampf im Spiel müssen noch geprüft werden.
+
+Anleitung: NACHTPFLANZEN-DRAK-TEST.txt
+
+Enshrouded Mod Studio 0.4.33
 
 PROGRAMM INSTALLIEREN UND AUTOMATISCH AKTUALISIEREN
 - Das neue Setup installiert Studio als normales Programm mit Startmenueintrag

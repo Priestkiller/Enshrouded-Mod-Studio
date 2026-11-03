@@ -37,7 +37,7 @@ function assertDefinitions(){
  return d;
 }
 function assertSchema(reflection){
- if(!reflection||typeof reflection.version!=='string'||reflection.version !== require('./build-contract').BUILD||!Array.isArray(reflection.types))fail('Frische Reflection für Build 1283531 erforderlich.');
+ if(!reflection||typeof reflection.version!=='string'||!require('./build-contract').isBuildIdentity(reflection.version)||!Array.isArray(reflection.types))fail('Frische Reflection für Build 1283531 erforderlich.');
  const types=reflection.types,byName=new Map();for(const t of types){if(byName.has(t.qualifiedName))fail('Doppelter Reflection-Typ.');byName.set(t.qualifiedName,t);}
  function type(name){const t=byName.get(name);if(!t)fail('Reflection-Typ fehlt: '+name);return t;}
  function struct(name,size,fields){const t=type(name);if(t.primitiveType!=='STRUCT'||t.size!==size)fail('Struktur geändert: '+name);for(const [key,offset,target]of fields){const f=t.structFields?.[key];if(!f||f.dataOffset!==offset||types[f.type]!==type(target))fail('Feldstruktur geändert: '+name+'.'+key);}return t;}

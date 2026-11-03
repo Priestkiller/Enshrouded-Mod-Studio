@@ -42,7 +42,7 @@ function assertDefinitions() {
 }
 const CREATED_RESOURCES = definitions.items.slice(3).map(d => ({ guid: d.target, type: TYPES.TemplateResource, part: 0, directory: 'TemplateResource', file: d.target + '_' + HASHES.TemplateResource + '_0.json' }));
 function assertSchema(reflection) {
-  if (reflection?.version !== require('./build-contract').BUILD) fail('Frische Reflection für Build 1283531 erforderlich.');
+  if (!require('./build-contract').isBuildIdentity(reflection?.version)) fail('Frische Reflection für Build 1283531 erforderlich.');
   const schema = nativeCompanions.assertSchema(reflection), byName = new Map(reflection.types.map(t => [t.qualifiedName, t]));
   function field(name, key, offset, target) { const t = byName.get(name), f = t?.structFields?.[key]; if (!f || f.dataOffset !== offset || reflection.types[f.type] !== byName.get(target)) fail('Unbekanntes Schema: ' + name + '.' + key); }
   for (const [directory, type] of Object.entries(TYPES)) { const t = byName.get(type); if (t?.primitiveType !== 'STRUCT' || t.qualifiedHash?.toString(16).padStart(8, '0') !== HASHES[directory]) fail('Ressourcentyp geändert: ' + type); }

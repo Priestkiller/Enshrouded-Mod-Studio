@@ -1,4 +1,7 @@
-# Enshrouded Mod Studio 0.4.38
+# Enshrouded Mod Studio 0.4.39
+
+Kompatible Spielupdates werden durch native Schema- und Quellenprüfungen zugelassen. Die Buildnummer allein erfordert kein neues Studio. Einmalig Manager 0.15.54 und Spielerclient 0.16.33 verwenden. Server und alle Spieler müssen denselben tatsächlichen Enshrouded-Build haben. Nach einem Steam-Update mit unveränderter Basis erneut patchen und synchronisieren.
+
 
 Windows-Programm für lokale Profile, geprüfte Datenpatches und die automatische Verteilung an Enshrouded-Spielerclients. Unterstützter Spielbuild: **1283531 / Enshrouded 1.0.1.0**.
 

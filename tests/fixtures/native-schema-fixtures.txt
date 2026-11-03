@@ -1,0 +1,15 @@
+Captured schema-only fixtures for the native1283531-schema-v1 compatibility tests.
+The source was the independently extracted native 1283531 client/server reflection.
+No resource documents, game assets, settings, saves or credentials are included.
+
+Only relevant native types and their layout/default metadata are retained. Opaque
+GUID-reference targets outside the serialized closure use named zero-field stubs;
+their target layout is never traversed or admitted as a modified document type.
+Type indexes are remapped, which also checks that indexes are not build identity.
+
+Client: 2821 required types plus 124 opaque target names; 343783 gzip bytes.
+Server: 2447 required types plus 104 opaque target names; 251457 gzip bytes.
+
+The tests change widths, offsets, references, enum mappings, defaults, identities
+and nested document types independently. An unchanged future build label, index
+reordering and an unrelated new native type remain valid.

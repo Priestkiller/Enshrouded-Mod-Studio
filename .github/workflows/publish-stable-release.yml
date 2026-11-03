@@ -70,7 +70,7 @@ jobs:
           if ($LASTEXITCODE) { throw 'Drak dialogue regression failed' }
           node .compat/studio/tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Studio knowledge composition regression failed' }
-          go test ./internal/player -run '^TestEMSStudio(34|35|36|37|38)|^TestEMSNativeItemTexture' -count=1
+          go test ./internal/player -run '^TestEMSStudio(34|35|36|37|38|39)|^TestEMSNativeItemTexture|^TestEMSNativeSchema060' -count=1
           if ($LASTEXITCODE) { throw 'Manager and Player feature composition regression failed' }
       - name: Check client archive member limits without opening the GUI
         if: github.repository == 'Priestkiller/Universal-Game-Server-Manager'
@@ -79,6 +79,16 @@ jobs:
           go test ./internal/app -run '^TestClientCandidateAndArchiveMember128MiBBound$' -count=1
           if ($LASTEXITCODE) { throw 'Client member bound regression failed' }
           ./scripts/tests/test-player-member-limit.ps1
+      - name: Check stopped-file recovery and other supported Manager operations
+        if: github.repository == 'Priestkiller/Universal-Game-Server-Manager' && hashFiles('internal/app/stop_operation_test.go') != ''
+        shell: pwsh
+        run: |
+          go test ./internal/app -run '^TestManager53|^TestStopTransport|^TestStopDiagnostic|^TestConanStopNativeWindow' -count=1
+          if ($LASTEXITCODE) { throw 'Manager operational audit regression failed' }
+          go test ./internal/platform -run '^TestSharedJava|^TestUnrealConsoleCloseScopesNativeFixture' -count=1
+          if ($LASTEXITCODE) { throw 'Native stop and process identity regression failed' }
+          go test ./internal/shaiya -run '^TestArchiveDownload' -count=1
+          if ($LASTEXITCODE) { throw 'Anonymous archive session regression failed' }
       - name: Verify exact chunks and publish stable latest release
         shell: pwsh
         env:

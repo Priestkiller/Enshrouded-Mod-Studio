@@ -25,7 +25,7 @@ function reflectionFixture(){
  struct('keen::StaticHashMapEntry',8,[['start',0,'keen::uint32'],['count',4,'keen::uint32']]);
  for(const role of ['Player','World'])struct('keen::'+role+'KnowledgeMap',24,[['entries',0,'keen::BlobArray<keen::StaticHashMapEntry>'],['keys',8,'keen::BlobArray<keen::KnowledgeId>'],['values',16,'keen::BlobArray<keen::'+role+'KnowledgeObjectResource>']]);
  for(const[name,hash]of Object.entries({'keen::ItemInfo':0xb5ce8765,'keen::ItemRegistryResource':0x12345671,'keen::RecipeRegistryResource':0x12345672,'keen::GameKnowledgeResource':0x12345673}))type(name).qualifiedHash=hash;
- return {version:'1273043|synthetic-float32-regression',types};
+ return {version:require('../engine/build-contract').BUILD,types};
 }
 function fixture(role='server'){
  const dir=path.join(working,String(checks.length)),input=path.join(dir,'input'),output=path.join(dir,'output'),verify=path.join(dir,'verify'),reflection=reflectionFixture(),schema=own.assertSchema(reflection);

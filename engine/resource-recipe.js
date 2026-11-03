@@ -56,7 +56,7 @@ function allowedCreates(definitions,options={world:{enableSkeletonSummoningSpell
 function validate(recipe,definitions){
  if(!exact(recipe,['format','formatVersion','gameBuild','engineFingerprint','options','resources'])||recipe.format!==FORMAT||recipe.formatVersion!==VERSION||typeof recipe.gameBuild!=='string'||!recipe.gameBuild||recipe.gameBuild.length>512||!SHA.test(recipe.engineFingerprint||'')||!plain(recipe.options)||!Array.isArray(recipe.resources)||recipe.resources.length>MAX_RESOURCES)fail('Unbekanntes Rezeptformat.');
  const features=featureDescriptors(recipe.options,definitions),creates=new Set(features.flatMap(f=>f.resources.map(r=>r.type+'|'+r.guid+'|'+r.part))),seen=new Set();let previous='';
- if(recipe.gameBuild !== require('./build-contract').BUILD)fail('Feature-Rezept gehört nicht zum geprüften Spielbuild.');
+ if(!require('./build-contract').isBuildIdentity(recipe.gameBuild))fail('Feature-Rezept gehört nicht zum geprüften Spielbuild.');
  for(const row of recipe.resources){if(!exact(row,['type','guid','part','mode','before','after']))fail('Unbekannte Rezeptfelder.');const key=identity(row.after);if(key!==row.type+'|'+row.guid+'|'+row.part||seen.has(key)||(previous&&previous>=key))fail('Doppelte, unsortierte oder abweichende Ressourcenidentität.');seen.add(key);previous=key;
   if(Object.hasOwn(DRAK_REGISTRIES,row.type)&&(recipe.options.world?.enableDrakMerchant?.enabled!==true||row.guid!==DRAK_REGISTRIES[row.type]||row.part!==0||row.mode!=='modify'))fail('Nicht freigegebene Drak-Katalogänderung.');
   if(row.mode==='modify'){if(identity(row.before)!==key||canonical(row.before)===canonical(row.after))fail('Ungültige oder wirkungslose Änderung.');}
@@ -71,11 +71,11 @@ function validate(recipe,definitions){
 function prepare({engineRoot,job,plan,options}){
  if(plan.target?.server!==true||plan.modifiedFiles!==plan.verifiedFiles)fail('Bestätigte Server-Ressourcenprüfung fehlt.');
  const input=within(job,path.join(job,'unpacked')),output=within(job,path.join(job,'modified'));
- const resources=[];
+ const resources=[];const compatibility=require('./build-contract');const role='server';const fresh=read(path.join(job,'bin','reflection_data.json'));compatibility.assertReflection(fresh,role);if(fresh.version!==plan.build)fail('Frische Spielversion passt nicht zum geprüften Auftrag.');
  // The backend already verified the complete original and packed inventory.
  // Read only preimages of changed files here instead of retaining every
  // unmodified server descriptor in the exporter's heap a second time.
- for(const file of files(output)){const after=read(file),key=identity(after),originalFile=within(input,path.join(input,path.relative(output,file))),before=fs.existsSync(originalFile)?read(originalFile):null;if(before&&identity(before)!==key)fail('Ressourcenidentität der Ausgangsdatei stimmt nicht.');if(before&&canonical(before)===canonical(after))continue;resources.push({type:after.$type,guid:after.$guid,part:after.$part,mode:before?'modify':'create',before,after});}
+ for(const file of files(output)){const after=read(file),key=identity(after),originalFile=within(input,path.join(input,path.relative(output,file))),before=fs.existsSync(originalFile)?read(originalFile):null;if(before&&identity(before)!==key)fail('Ressourcenidentität der Ausgangsdatei stimmt nicht.');if(before&&canonical(before)===canonical(after))continue;compatibility.assertDocumentTypes(after,role);if(before)compatibility.assertDocumentTypes(before,role);resources.push({type:after.$type,guid:after.$guid,part:after.$part,mode:before?'modify':'create',before,after});}
  resources.sort((a,b)=>{const x=identity(a.after),y=identity(b.after);return x<y?-1:x>y?1:0;});
  const recipe=validate({format:FORMAT,formatVersion:VERSION,gameBuild:String(plan.build),engineFingerprint:digest(canonical(read(path.join(engineRoot,'engine-manifest.json')))),options,resources},read(path.join(engineRoot,'skeleton-spell-definitions.json')));
  const bytes=Buffer.from(canonical(recipe));if(bytes.length>MAX_BYTES)fail('Rezept überschreitet 256 MiB.');

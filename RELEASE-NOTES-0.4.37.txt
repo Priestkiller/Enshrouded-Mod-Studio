@@ -11,4 +11,3 @@ Die Serverrezepte und Spieloptionen bleiben inhaltlich unverändert.
 Manager 0.15.51 und Spielerclient 0.16.31 verwenden.
 Archive und Bildressourcen werden im Hintergrund geprüft; ein
 Spieltest für Platzierung, Animation und Kampf steht weiterhin aus.
-

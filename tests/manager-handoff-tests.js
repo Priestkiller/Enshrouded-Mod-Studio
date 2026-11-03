@@ -145,9 +145,9 @@ async function run() {
     }
     assert.deepEqual(fs.readdirSync(external), []);
   });
-  const f = fixture('waiting-flow'); write(path.join(path.dirname(f.options.data), 'client-packages.json'), f.legacy);
+  const f = fixture('waiting-flow'); write(path.join(path.dirname(f.options.data), 'client-packages.json'), { ...f.legacy, transportMode: 'client-archive-delta' });
   const preparation = await packages.prepareForPlan(f.options, f.plan, async () => { throw Error('must not run'); });
-  check('registered server without client basis waits without invoking native client preparation', () => { assert.equal(preparation.status, 'waiting-client-basis'); assert.equal(preparation.setup.enabled, true); });
+  check('legacy archive-delta mode without client basis waits without invoking native client preparation', () => { assert.equal(preparation.status, 'waiting-client-basis'); assert.equal(preparation.setup.enabled, true); });
   check('real package completion and invalidation propagate waiting state and retire old pointers', () => {
     manager.receipt(f.options, { ...f.plan, id: null }, 'preparing', 'Vorbereitung.');
     f.plan.clientPackagePreparation = preparation;

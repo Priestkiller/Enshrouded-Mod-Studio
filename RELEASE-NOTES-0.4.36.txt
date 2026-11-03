@@ -11,4 +11,3 @@ Unbekannte Spielbuilds verlangen ein passendes Studio-Update.
 
 Server, Manager und Spielerclients benötigen passende aktuelle Versionen.
 Daten- und Archivprüfungen ersetzen keinen Spieltest.
-

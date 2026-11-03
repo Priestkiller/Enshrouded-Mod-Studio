@@ -6,7 +6,7 @@ const engine=path.resolve(__dirname,'../engine'),R=require(path.join(engine,'res
 const fixtureFile=path.join(__dirname,'fixtures/producer-matrix-inputs.json.gz'),provenance=require('./fixtures/producer-matrix-provenance.json');
 const packed=fs.readFileSync(fixtureFile);assert.equal(R.digest(packed),provenance.fixtureSha256,'source fixture digest');
 const bytes=zlib.gunzipSync(packed);assert.equal(R.digest(bytes),provenance.uncompressedSha256,'source fixture identity');
-const fixture=JSON.parse(bytes);assert.equal(fixture.format,1);assert.equal(fixture.sourceBuild,require(path.join(engine,'build-contract')).REVISION);require(path.join(engine,'build-contract')).assertReflection(fixture.reflection);
+const fixture=JSON.parse(bytes);assert.equal(fixture.format,1);assert.equal(fixture.sourceBuild,require(path.join(engine,'build-contract')).REVISION);require(path.join(engine,'build-contract')).assertReflection(fixture.reflection,'server');
 assert.equal(provenance.sourceBuild,fixture.sourceBuild);assert.equal(provenance.nativeBuild,fixture.reflection.version);assert.equal(provenance.sourceRole,'server');
 const engineManifest=JSON.parse(fs.readFileSync(path.join(engine,'engine-manifest.json'))),engineFingerprint=R.digest(R.canonical(engineManifest));
 // Captured vendor variants are data, not executed runtime. Public source
@@ -80,7 +80,8 @@ try{
   write(path.join(modified,collection.directory,collection.file),registration.plan(collection.document,collection.document,created,{originalSHA:registration.ORIGINAL_SHA,originalCount:registration.ORIGINAL_COUNT,options:cfg}));
   const countFiles=dir=>fs.readdirSync(dir,{withFileTypes:true}).reduce((n,e)=>n+(e.isDirectory()?countFiles(path.join(dir,e.name)):e.name.endsWith('.json')?1:0),0);
   const n=countFiles(modified),options=P.publicOptions(cfg,require('../assets/schema.json'));
-  const plan={id:name,job,target:{server:true},build:fixture.reflection.version,modifiedFiles:n,verifiedFiles:n};
+  const plan={id:name,job,target:{server:true},build:fixture.reflection.version,modifiedFiles:n,verifiedFiles:n,nativeCompatibility:require(path.join(engine,'build-contract')).compatibility(fixture.reflection,'server')};
+  write(path.join(job,'bin/reflection_data.json'),fixture.reflection);
   const prepared=R.prepare({engineRoot:engine,job,plan,options}),loaded=R.load(prepared,job,engine),data=Buffer.from(R.canonical(loaded.recipe));
   assert.equal(loaded.recipe.engineFingerprint,engineFingerprint,'Producer identity changed during matrix generation');
   const creates=loaded.recipe.resources.filter(r=>r.mode==='create').length;

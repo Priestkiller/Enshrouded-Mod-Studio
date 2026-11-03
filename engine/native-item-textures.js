@@ -22,7 +22,7 @@ const resource=item=>({guid:item.guid,type:TYPE,part:0,directory:DIRECTORY,file:
 const CREATED_RESOURCES=definitions.items.map(resource);
 const createdResources=options=>selectedItems(options).map(resource);
 function assertSchema(reflection){
- require('./build-contract').assertReflection(reflection);
+ require('./build-contract').assertBuild(reflection?.version);if(!Array.isArray(reflection.types))fail('Frische native Reflection fehlt.');
  const types=reflection.types,rows=types.filter(t=>t.qualifiedName===TYPE),t=rows[0];
  if(rows.length!==1||t.primitiveType!=='STRUCT'||t.size!==56||t.alignment!==8||t.fieldCount!==7||t.qualifiedHash!==0xf9e86997)fail('UI-Texturschema geändert.');
  for(const [name,offset,target]of [['data',0,'keen::ResourceContentReference'],['debugName',32,'keen::string'],['size',40,'keen::uint2'],['type',48,'keen::TextureType'],['format',49,'keen::PixelFormat'],['levelCount',50,'keen::uint8'],['isTiled',51,'keen::bool']]){const f=t.structFields?.[name];if(!f||f.dataOffset!==offset||types[f.type]?.qualifiedName!==target)fail('UI-Texturfeld geändert: '+name);}
@@ -36,7 +36,7 @@ function itemInfo(fs,root,item){const doc=read(fs,path.join(root,'ItemInfo',item
 function expected(item){const source=definitions.sources.find(s=>s.guid===item.sourceGuid);if(!source)fail('Unbekannter Texturspender.');if(customDrak.hasItem(item))return customDrak.expectedTexture(item,source.document);const doc=clone(source.document);doc.$guid=item.guid;return doc;}
 function checkedSummary(summary,options){
  if(summary?.enabled!==true)return [];
- const items=selectedItems(summary.options);if(summary.role!=='client'||summary.build!==require('./build-contract').BUILD||!items.length||summary.icons!==items.length||!equal(summary.createdResources,items.map(resource))||summary.resources?.length!==items.length||(options&&!equal(selection(options),summary.options)))fail('Textur-Prüfliste ist unvollständig.');
+ const items=selectedItems(summary.options);if(summary.role!=='client'||!require('./build-contract').isBuildIdentity(summary.build)||!items.length||summary.icons!==items.length||!equal(summary.createdResources,items.map(resource))||summary.resources?.length!==items.length||(options&&!equal(selection(options),summary.options)))fail('Textur-Prüfliste ist unvollständig.');
  const rows=items.map(item=>({...resource(item),created:true,sourceGuid:item.sourceGuid,sha256:digest(expected(item))}));
  if(!equal(rows,summary.resources))fail('Textur-Prüfidentitäten wurden verändert.');return items;
 }
@@ -51,6 +51,7 @@ function apply(ctx,inputRoot,outputRoot){
  for(const row of pending){fs.mkdirSync(path.dirname(row.file),{recursive:true});fs.writeFileSync(row.file,JSON.stringify(row.doc,null,2));ctx.track?.(row.file,'data.hash','create');}summary.filesChanged=pending.length;return summary;
 }
 function verify({summary,reflection,verifyRoot,options,fs=nativeFs}){
+ if(summary?.enabled===true&&summary.build!==reflection?.version)fail('Textur-Prüfliste gehört zu einer anderen Spielversion.');
  if(summary?.enabled!==true){if(selectedItems(options).length)fail('Erforderliche Item-Texturprüfung fehlt.');return {enabled:false,checked:0};}assertSchema(reflection);const items=checkedSummary(summary,options);
  for(const s of nativeSourcesForOptions(summary.options))sourceTexture(fs,verifyRoot,s);
  for(const item of items){itemInfo(fs,verifyRoot,item);const names=matching(fs,verifyRoot,item.guid);if(names.length!==1||names[0]!==filename(item.guid)||!equal(read(fs,path.join(verifyRoot,DIRECTORY,names[0])),expected(item)))fail('Angeforderte Item-Textur fehlt oder ist nach Rücklesen verändert: '+item.guid);}

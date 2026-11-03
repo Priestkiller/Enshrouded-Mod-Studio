@@ -15,7 +15,7 @@ const sourceTexture={data:{hash:{size:349552,hash0:4263327717,hash1:2711692084,h
 const filename=guid=>guid+'_'+HASH+'_0.json';
 const CREATED_RESOURCES=definitions.items.map(item=>({guid:item.guid,type:TYPE,part:0,directory:DIRECTORY,file:filename(item.guid)}));
 function assertSchema(reflection){
- if(typeof reflection?.version!=='string'||reflection.version !== require('./build-contract').BUILD||!Array.isArray(reflection.types))fail('Frische Reflection für Build 1283531 erforderlich.');
+ if(typeof reflection?.version!=='string'||!require('./build-contract').isBuildIdentity(reflection.version)||!Array.isArray(reflection.types))fail('Frische Reflection für Build 1283531 erforderlich.');
  const types=reflection.types,found=types.filter(t=>t.qualifiedName===TYPE);if(found.length!==1)fail('UI-Texturtyp fehlt oder ist mehrdeutig.');
  const t=found[0];if(t.primitiveType!=='STRUCT'||t.size!==56||t.qualifiedHash!==0xf9e86997)fail('UI-Texturschema geändert.');
  for(const [name,offset,target]of [['data',0,'keen::ResourceContentReference'],['debugName',32,'keen::string'],['size',40,'keen::uint2'],['type',48,'keen::TextureType'],['format',49,'keen::PixelFormat'],['levelCount',50,'keen::uint8'],['isTiled',51,'keen::bool']]){

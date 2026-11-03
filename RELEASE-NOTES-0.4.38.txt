@@ -5,4 +5,3 @@ Vier eigene Draki-Symbole: Ssarikk als Handwerker sowie Speerkrieger, Chakramjä
 Ssarikk bekommt vier Gesprächsthemen mit eigener Mod-Hintergrundgeschichte: Herkunft, freiwillige Beschwörung über das Rufzeichen im Stab, verbündete Gefährten und Herstellung. Das native Gesprächsmenü wird verwendet. Der Gesprächshinweis über dem Kopf ist eine Testfunktion; seine Anzeige sowie Platzierung und Kampf benötigen einen Spieltest. Keine neue Sprachausgabe.
 
 Für diese Erweiterung den Server mit Studio 0.4.38 patchen, neu starten und alle Spieler mit dem passenden Client synchronisieren. Manager 0.15.52 und Spielerclient 0.16.32 verwenden. Vorherige freigegebene Pakete behalten ihre passenden Prüfdaten.
-

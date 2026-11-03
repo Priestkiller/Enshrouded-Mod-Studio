@@ -1,0 +1,9 @@
+Mod Studio 0.4.39
+
+Kompatible Enshrouded-Updates werden anhand der nativen Datenstruktur zugelassen. Eine neue Buildnummer allein erfordert kein weiteres Studio-Update. Referenz ist ein festes, lokal mitgeliefertes Profil: 2447 benötigte Servertypen und 2821 Clienttypen. Zusätzliche unbeteiligte Typen und geänderte Typindizes sind erlaubt; relevante Layouts, Datentypen und feste Feature-Quelldaten müssen weiterhin passen.
+
+Der heutige Build 1285601 wurde mit offiziellen Originaldateien im Hintergrund geprüft. Server und Spieler benötigen weiterhin denselben aktuellen Enshrouded-Build. Nach einem Steam-Update eine unveränderte Basis verwenden, das gewünschte Profil erneut anwenden und alle Spieler synchronisieren.
+
+Die Kompatibilitätsprüfung erfolgt vor dem langen Entpacken. Bei einer echten Strukturänderung nennt das Protokoll den betroffenen Typ bzw. das Feld. Geänderte Archive werden weiterhin gepackt, vollständig zurückgelesen und gegen die geplanten Änderungen geprüft.
+
+Einmalig Manager 0.15.54 und Spielerclient 0.16.33 für dieses neue Prüfverfahren installieren. Bereits freigegebene ältere Pakete behalten ihre ursprüngliche Verarbeitung. Profile und Einstellungen bleiben erhalten. Die Hintergrundprüfung bestätigt Spieldaten, keinen neuen Spieltest.

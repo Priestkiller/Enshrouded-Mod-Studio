@@ -1,13 +1,13 @@
 {
   "format": 1,
   "sourceBuild": "1283531",
-  "nativeBuild": "1283531|^/game38/branches/release_1.0|2026-10-30T09:15:50.868196Z",
+  "nativeBuild": "1285601|^/game38/branches/release_1.0|2026-11-03T10:13:01.005543Z",
   "sourceRole": "server",
-  "fixtureSha256": "5a5fed94d78b23569402f2c84cd1f5ff19eb5923dd4139b5bb649c34c486ddba",
-  "uncompressedSha256": "cb8c5a4a0a67ebeda0d3ed29fb1660921bde316bc22373072698d3a5924697a5",
-  "bytes": 779467,
+  "fixtureSha256": "510e289fadba4263a019583151688ce8932c0211b9aae6ba5d95bcc66ff50976",
+  "uncompressedSha256": "8b6220850200713185b30b6a53e854cbbc5265cb999af5a76d71a63df62d7c53",
+  "bytes": 1937734,
   "documents": 94,
-  "reflectionTypes": 489,
+  "reflectionTypes": 11184,
   "vendorSourceVariants": [
     {
       "name": "plain",
@@ -53,29 +53,16 @@
     }
   ],
   "producerFiles": {
-    "custom-skeleton-items.js": "8b0eefeac9686c0bdc5252c5a754d07e63702a548020c9ccc9d649cdbf9fcee9",
-    "advanced-companions.js": "fbb1c4828890d48a8153c721f2790a132a77be1f339823c1ef50b736dcdb001f",
-    "night-plants.js": "8d54ce6dd06dbf869d73d02bcd363b36a104191bad8fae9fbaaa3ece868f81f7",
+    "build-contract.js": "0d6c4c32d33bf5c85617bb1ccf18f5740837e6f00f28b871435d07f8fbf9b3d3",
+    "native-schema-compatibility.js": "19b8531c98b09382faafa5d19f73dedab5f06dc53615f439d6607e7bbd40dbc2",
+    "native-compatibility-profiles.json": "7083d52accafb824b900802011c4fa61f4e0a9440b8273c6ce843fd9f030950d",
+    "resource-recipe.js": "17ee7169948854958996942b846f9358ac4abcb3d3c1efddfb157b171ea38ca7",
+    "custom-skeleton-items.js": "de7f6c6b30a18713da4e0d12d8c1aab1687b169f2893ab631729153dace70bb6",
+    "advanced-companions.js": "b1f8f7ea492b70afc4b319fff65f593920660ad4b24c4eb2036df12be7ac9927",
+    "night-plants.js": "17461a1b22e62983ca35fa71689ff6e7d1ea713e0d0dffe490e98044b510f912",
     "drak-merchant.js": "5b05881937939d3ebdcf49692a925645d6de41fcfea6ccc73d6fe3496314f74d",
     "vendor/mod/processor.js.bytecode": "01a026068938c3b3b6d901b81f40242417879b95dffca5abf3ec676c7141cb7c"
   },
-  "capture": "Reviewed Studio Node 18 runtime processItemInfo over build1283531 inert native server sources; actual full build identity and minimal synthetic shared registries; no consumer expected-output code used",
-  "gameStarted": false,
-  "capturedProducerFiles": {
-    "advanced-companions.js": "fbb1c4828890d48a8153c721f2790a132a77be1f339823c1ef50b736dcdb001f",
-    "night-plants.js": "8d54ce6dd06dbf869d73d02bcd363b36a104191bad8fae9fbaaa3ece868f81f7",
-    "drak-merchant.js": "e83eba2ae8d0ced4fe0790978acc669a4a04036ec28de8d4cca005b5245658f9",
-    "custom-skeleton-items.js": "8b0eefeac9686c0bdc5252c5a754d07e63702a548020c9ccc9d649cdbf9fcee9",
-    "vendor/mod/processor.js.bytecode": "01a026068938c3b3b6d901b81f40242417879b95dffca5abf3ec676c7141cb7c"
-  },
-  "reviewedProducerChanges": [
-    {
-      "studioVersion": "0.4.38",
-      "engineFingerprint": "b4a4d8ef9ec5507245a6b26d31207612b720a2a566b2521881e1f6ed909b1b99",
-      "file": "drak-merchant.js",
-      "before": "e83eba2ae8d0ced4fe0790978acc669a4a04036ec28de8d4cca005b5245658f9",
-      "after": "5b05881937939d3ebdcf49692a925645d6de41fcfea6ccc73d6fe3496314f74d",
-      "reason": "Frozen059native Drak dialogue implementation; pristine native source fixture and captured vendor variants unchanged. Matrix regenerates new after-images independently consumed by Go."
-    }
-  ]
+  "capture": "Reviewed Studio Node 18 runtime processItemInfo over freshly read 1285601|^/game38/branches/release_1.0|2026-11-03T10:13:01.005543Z inert native server sources; complete native reflection and minimal synthetic shared registries; fixed feature definitions retain sourceBuild 1283531 provenance; no consumer expected-output code used",
+  "gameStarted": false
 }

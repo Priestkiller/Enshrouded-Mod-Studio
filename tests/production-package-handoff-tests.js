@@ -24,6 +24,7 @@ async function prepare(id,value){
  const job=path.join(options.data,'jobs',id),config=configuration(value),source={$type:'keen::ItemInfo',$guid:'11111111-2222-3333-4444-555555555555',$part:0,maxStackSize:20};
  write(path.join(job,'unpacked/ItemInfo/item.json'),source);write(path.join(job,'modified/ItemInfo/item.json'),{...source,maxStackSize:value});
  const plan={format:2,id,job,target,config,applied:true,build:require('../engine/build-contract').BUILD,source:{exe:sha(path.join(target.dir,target.exe))},artifacts:target.archives.map(name=>({name,sha256:sha(path.join(target.dir,name))})),mods:{},modifiedFiles:1,verifiedFiles:1};
+ plan.nativeCompatibility=require('./native-compatibility-fixture').writeJob(job,plan.build);
  const state={lastJob:id,currentArchives:Object.fromEntries(plan.artifacts.map(a=>[a.name,a.sha256]))};
  plan.clientPackagePreparation=await packages.prepareForPlan(options,plan,()=>{throw Error('A client installation must never be prepared');});
  assert.equal(plan.clientPackagePreparation.status,'prepared',plan.clientPackagePreparation.message);

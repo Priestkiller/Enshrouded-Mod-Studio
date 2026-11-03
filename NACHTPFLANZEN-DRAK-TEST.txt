@@ -64,8 +64,9 @@ SOLO UND MEHRSPIELER
 
 Spiel bzw. Server vor dem Patchen schließen. Für Solo den Spielclient
 patchen. Für Mehrspieler müssen Server und alle Spielclients dieselben
-passenden Erweiterungen erhalten. Für die automatische Verteilung sind
-Manager 0.15.52 und Spielerclient 0.16.32 erforderlich. Alte veröffentlichte Worker akzeptieren diese
+passenden Erweiterungen erhalten. Für die automatische Verteilung ist
+auch die zu dieser Testfassung passende neue Manager-/Client-Worker-
+Version erforderlich. Alte veröffentlichte Worker akzeptieren diese
 neuen Ressourcen bewusst nicht. Keine komplette Server-KFC auf einen
 Spielclient kopieren.
 

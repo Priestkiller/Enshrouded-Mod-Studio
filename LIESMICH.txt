@@ -1,8 +1,13 @@
-Mod Studio 0.4.38
+Mod Studio 0.4.34 – private Testfassung
 
-Vier eigene Draki-Symbole: Ssarikk als Handwerker sowie Speerkrieger, Chakramjäger und Magier erhalten jeweils ein unterscheidbares Bild.
+Sieben Nachtpflanzen mit Setzlingen, eigener Wachstums- und Erntekette.
+Eigener Drak-Handwerker nach Schmied-Freischaltung, mit drei ewigen Zaubern.
+Speerkrieger: 8 Schuppen + 2 Krallen. Chakramjäger: 8 Schuppen + 2 Zähne.
+Magier: 8 Schuppen + 3 Blut + 1 Aquamarin. Native Drak-/Pflanzenbilder.
+Neue Manager-/Spielerclient-Worker-Unterstützung für die automatische Verteilung.
 
-Ssarikk bekommt vier Gesprächsthemen mit eigener Mod-Hintergrundgeschichte: Herkunft, freiwillige Beschwörung über das Rufzeichen im Stab, verbündete Gefährten und Herstellung. Das native Gesprächsmenü wird verwendet. Der Gesprächshinweis über dem Kopf ist eine Testfunktion; seine Anzeige sowie Platzierung und Kampf benötigen einen Spieltest. Keine neue Sprachausgabe.
+Hintergrundtests und vollständige native Server-/Client-Archivprüfungen bestanden.
+Keine laufende Spielpartie, kein Spielstand und keine produktive Installation verändert.
+Platzierung, Ernte, Speichern/Laden und Kampf im Spiel müssen noch geprüft werden.
 
-Für diese Erweiterung den Server mit Studio 0.4.38 patchen, neu starten und alle Spieler mit dem passenden Client synchronisieren. Manager 0.15.52 und Spielerclient 0.16.32 verwenden. Vorherige freigegebene Pakete behalten ihre passenden Prüfdaten.
-
+Anleitung: NACHTPFLANZEN-DRAK-TEST.txt
