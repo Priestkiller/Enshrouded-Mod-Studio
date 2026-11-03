@@ -1,3 +1,3 @@
-b7340359ced6bb6caffa1935837aa0d4fb0fcd6fb5abdef9085768208899aa6e  Enshrouded-Mod-Studio-0.4.37.zip
-de05effe8ed8f95d70c81e1dce196428797d4415ad0dfb356ad456cfeb322310  Enshrouded-Mod-Studio-0.4.37-Setup.exe
-891a82e6fa7885d4432d7fcfa8355575dc523a4b4a929374f9810f8fd82ec91f  RELEASE-NOTES.txt
+b6dbbce19f1ffb0b7a1e23f73645ca790e0c644e06b279698074f11c91b7e5cb  Enshrouded-Mod-Studio-0.4.38.zip
+0dd19c6fc6d2e5d685da304cf3e07c9ed894228fdd051e0610d04814266d6b4d  Enshrouded-Mod-Studio-0.4.38-Setup.exe
+9456ff33cf4b4ed1d4bde1e4bd947665e7b2f81f9f6190070f56640c70cb10d8  RELEASE-NOTES.txt

@@ -33,6 +33,10 @@ jobs:
           if ($LASTEXITCODE) { throw 'Unsupported-build regression failed' }
           node tests/native-item-textures-tests.js
           if ($LASTEXITCODE) { throw 'New item texture completeness regression failed' }
+          node tests/custom-drak-icons-tests.js
+          if ($LASTEXITCODE) { throw 'Custom Drak icon regression failed' }
+          node tests/drak-dialogue-tests.js
+          if ($LASTEXITCODE) { throw 'Drak dialogue regression failed' }
           node tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Studio knowledge composition regression failed' }
           node tests/producer-consumer-matrix.js
@@ -60,10 +64,21 @@ jobs:
           if ($LASTEXITCODE) { throw 'Studio production handoff regression failed' }
           node .compat/studio/tests/native-item-textures-tests.js
           if ($LASTEXITCODE) { throw 'New item texture completeness regression failed' }
+          node .compat/studio/tests/custom-drak-icons-tests.js
+          if ($LASTEXITCODE) { throw 'Custom Drak icon regression failed' }
+          node .compat/studio/tests/drak-dialogue-tests.js
+          if ($LASTEXITCODE) { throw 'Drak dialogue regression failed' }
           node .compat/studio/tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Studio knowledge composition regression failed' }
-          go test ./internal/player -run '^TestEMSStudio(34|35|36|37)|^TestEMSNativeItemTexture' -count=1
+          go test ./internal/player -run '^TestEMSStudio(34|35|36|37|38)|^TestEMSNativeItemTexture' -count=1
           if ($LASTEXITCODE) { throw 'Manager and Player feature composition regression failed' }
+      - name: Check client archive member limits without opening the GUI
+        if: github.repository == 'Priestkiller/Universal-Game-Server-Manager'
+        shell: pwsh
+        run: |
+          go test ./internal/app -run '^TestClientCandidateAndArchiveMember128MiBBound$' -count=1
+          if ($LASTEXITCODE) { throw 'Client member bound regression failed' }
+          ./scripts/tests/test-player-member-limit.ps1
       - name: Verify exact chunks and publish stable latest release
         shell: pwsh
         env:
