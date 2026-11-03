@@ -25,7 +25,7 @@ function safeData(value,depth=0){if(depth>96)fail('JSON-Verschachtelung übersch
 const FEATURES=Object.freeze([
  Object.freeze({id:'companions',option:'enableSkeletonSummoningSpells',file:'skeleton-spell-definitions.json',sha256:'9f4136e439ba8c5a674300e24e3fc2adbba0b7f0fd5556daea0c6e3a36a36a32'}),
  Object.freeze({id:'night-plants',option:'enableNightPlantCultivation',file:'night-plant-definitions.json',adapter:'night-plants',sha256:'1c7d16af6d66de8c06982e6f4416dde80eb1d392ea3230189b9fddccc88f586f',counts:{'keen::ItemInfo':7,'keen::ecs::TemplateResource':28,'keen::ecs::DefaultInventoryResource':14}}),
- Object.freeze({id:'drak-merchant',option:'enableDrakMerchant',file:'drak-definitions.json',adapter:'drak-merchant',sha256:'e9a4d8ad0fd4a8d554427edda99011b7a6e3f775f396181c83f06fa733f321ca',counts:{'keen::ItemInfo':4,'keen::ecs::TemplateResource':4}})
+ Object.freeze({id:'drak-merchant',option:'enableDrakMerchant',file:'drak-definitions.json',adapter:'drak-merchant',sha256:'87988e877c00d0b9f2fa1a02664d7e23846047188fde7277923b2e68270b8f33',counts:{'keen::ItemInfo':4,'keen::ecs::TemplateResource':4}})
 ]);
 function featureDescriptors(options,definitions){
  const result=[],identities=new Set();

@@ -1,0 +1,22 @@
+{
+  "formatVersion": 1,
+  "key": "mystic",
+  "definitionKey": "mage",
+  "itemGuid": "93fcf2df-d07c-59ee-9192-fd638b77dab2",
+  "debugName": "EMS_Summon_Drak_mage_icon",
+  "width": 512,
+  "height": 512,
+  "format": "R8G8B8A8_unorm",
+  "levelCount": 1,
+  "rawFile": "drak-mystic.rgba",
+  "rawSize": 1048576,
+  "rawSha256": "29c600ce2ba62b3dc8e3ea3887992a329b3455cb4671061aad5a09a22e163564",
+  "sourcePngSha256": "db3b70982963621d02f3fad8f42abcf19c8071cf52d8ee0dbef409fe81e89380",
+  "contentHash": {
+    "size": 1048576,
+    "hash0": 1383072000,
+    "hash1": 114927761,
+    "hash2": 2840422156
+  },
+  "bootstrapEmmSha256": "b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305"
+}

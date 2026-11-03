@@ -1,0 +1,22 @@
+{
+  "formatVersion": 1,
+  "key": "chakram",
+  "definitionKey": "ranger",
+  "itemGuid": "e16b5fa4-f91d-5195-9c00-cfe52b8600d5",
+  "debugName": "EMS_Summon_Drak_ranger_icon",
+  "width": 512,
+  "height": 512,
+  "format": "R8G8B8A8_unorm",
+  "levelCount": 1,
+  "rawFile": "drak-chakram.rgba",
+  "rawSize": 1048576,
+  "rawSha256": "aeadb3cf49525fe7cbe8faae0c0357cd64b0902d4a75682e846430754647795b",
+  "sourcePngSha256": "9e13ec28d7f7fe2723a995fabff86118ad4073b0ffff721fec2ab6695aa096d7",
+  "contentHash": {
+    "size": 1048576,
+    "hash0": 4201232624,
+    "hash1": 3966130767,
+    "hash2": 2699181671
+  },
+  "bootstrapEmmSha256": "b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305"
+}

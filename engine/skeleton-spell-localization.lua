@@ -80,4 +80,5 @@ if mode ~= 'inspect' then
     end
 end
 customSummonIcon(configuration.icon, mode)
+customDrakIcons(configuration.drakIcons, mode)
 exportCollection()

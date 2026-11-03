@@ -1,0 +1,22 @@
+{
+  "formatVersion": 1,
+  "key": "spear",
+  "definitionKey": "melee",
+  "itemGuid": "00ccd737-8fa1-58f9-a25f-17ae21373e4e",
+  "debugName": "EMS_Summon_Drak_melee_icon",
+  "width": 512,
+  "height": 512,
+  "format": "R8G8B8A8_unorm",
+  "levelCount": 1,
+  "rawFile": "drak-spear.rgba",
+  "rawSize": 1048576,
+  "rawSha256": "37a6ee867147da342f9d6c0b308d1fbd415e3c37a25b2daa4e678527738cc65f",
+  "sourcePngSha256": "a929998e3c9d64183b0a5a2e72516252400f5e0fdfefd6e242ec849f1374641f",
+  "contentHash": {
+    "size": 1048576,
+    "hash0": 2410775628,
+    "hash1": 1579936025,
+    "hash2": 1586878688
+  },
+  "bootstrapEmmSha256": "b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305"
+}

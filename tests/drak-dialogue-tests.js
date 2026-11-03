@@ -1,0 +1,31 @@
+'use strict';
+const assert=require('assert'),fs=require('fs'),path=require('path'),os=require('os');
+const dialogue=require('../engine/drak-dialogue'),drak=require('../engine/drak-merchant');
+const d=dialogue.definitions,clone=v=>JSON.parse(JSON.stringify(v));
+let checks=0;const check=(v,m)=>{checks++;assert(v,m);},reject=(f,p)=>{checks++;assert.throws(f,p);};
+const baseline=require('./fixtures/drak-37-resource-baseline.json'),config=baseline.config,docs=drak.buildCreatedResources(config),npc=docs.find(v=>v.$guid===d.merchantTemplateGuid),component=(doc,name)=>doc.components.find(c=>c.$type==='keen::ecs::'+name).$value;
+const generated=component(npc,'NpcDialog'),resource=generated.dialogResource;
+check(docs.length===8&&baseline.resources.length===8,'server create inventory stays eight Drak resources');
+for(const doc of docs){const original=baseline.resources.find(x=>x.guid===doc.$guid),actual=clone(doc);if(original.excludeMerchantDialogue)actual.components=actual.components.filter(c=>c.$type!=='keen::ecs::NpcDialog');check(dialogue.digest(actual)===original.sha256,'only own merchant NpcDialog changes: '+doc.$guid);}
+check(resource.dialogOptions.length===4&&resource.initLines.length===1&&resource.farewellLines.length===1&&resource.transitionLines.length===0,'four topics and bounded intro/farewell');
+const lines=[...resource.dialogOptions,...resource.initLines,...resource.farewellLines];
+check(lines.every(r=>r.overrideSequence===false&&r.sequence===null&&r.voiceovers.length===1&&r.voiceovers[0]===null),'silent native null-override line shape');
+check(lines.every(r=>r.knowledgeUnlockOperations.length===0),'no custom knowledge writes');
+check(resource.defaultSequence===d.defaultSequence.guid&&d.defaultSequence.document.subSequences.every(s=>s.events.length===0),'default uses real animation-free native sequence');
+check(resource.dialogOptions.filter(o=>o.uiHintType==='Hint').length===1,'one native Hint candidate');
+check(component(npc,'InteractionOfferRuntime').defaultSequence.value===23213376,'native Talk opener preserved');
+const tags=dialogue.localizationTags(),ids=new Set(tags.map(t=>t.id));check(tags.length===10&&ids.size===10&&tags.every(t=>t.de.trim()&&t.en.trim()),'ten unique DE/EN tags');
+check(lines.every(r=>r.bodyTexts.every(t=>ids.has(t.value)))&&resource.dialogOptions.every(o=>ids.has(o.optionText.value)),'every new text reference resolves to an owned tag');
+check(drak.localizationTags().length===19,'existing nine Drak tags plus ten dialogue tags');
+check(dialogue.verifyTemplate(npc).topics===4,'readback evidence verifies four topics');
+for(const [label,alter]of [['body',r=>r.dialogOptions[0].bodyTexts[0].value++],['unlock',r=>r.dialogOptions[0].knowledgeUnlockOperations.push({knowledgeId:{id:{value:1}},type:'Bool',value:1})],['voiceover',r=>r.dialogOptions[0].voiceovers[0]='11111111-1111-4111-8111-111111111111'],['human animation',r=>r.defaultSequence='faef9703-1f40-4cc1-a1ff-600fa974f62f'],['missing topic',r=>r.dialogOptions.pop()]]){const corrupt=clone(npc);alter(component(corrupt,'NpcDialog').dialogResource);reject(()=>dialogue.verifyTemplate(corrupt),/Dialog nach Rücklesen verändert/);}
+reject(()=>dialogue.applyToTemplate({...npc,$guid:'c313f0a8-ed2e-444e-8384-a540f6bbd98e'}),/nur die eigene/);
+const names=new Set(Object.keys(d.schema));for(const s of Object.values(d.schema)){if(s.innerType)names.add(s.innerType);for(const f of Object.values(s.fields))names.add(f.type);}const types=[...names].map(qualifiedName=>({qualifiedName})),indexes=new Map(types.map((t,i)=>[t.qualifiedName,i]));for(const[name,s]of Object.entries(d.schema)){const t=types[indexes.get(name)];Object.assign(t,{primitiveType:s.primitiveType,size:s.size,alignment:s.alignment,qualifiedHash:s.qualifiedHash,fieldCount:s.fieldCount,structFields:Object.fromEntries(Object.entries(s.fields).map(([k,f])=>[k,{dataOffset:f.offset,type:indexes.get(f.type)}]))});if(s.innerType)t.innerType=indexes.get(s.innerType);if(s.enums)t.enumFields=Object.fromEntries(Object.entries(s.enums).map(([k,value])=>[k,{value}]));}const reflection={version:d.nativeBuild,types};
+check(dialogue.assertSchema(reflection)===d.nativeBuild,'fixed native dialogue schema');
+const temp=fs.mkdtempSync(path.join(os.tmpdir(),'ems-drak-dialogue-')),put=(dir,file,v)=>{const f=path.join(temp,dir,file);fs.mkdirSync(path.dirname(f),{recursive:true});fs.writeFileSync(f,JSON.stringify(v));};
+put('TemplateResource',d.silentPattern.templateGuid+'_39768775_0.json',{$type:'keen::ecs::TemplateResource',$guid:d.silentPattern.templateGuid,$part:0,components:[{$type:'keen::ecs::NpcDialog',$value:{dialogResource:{initLines:[{},clone(d.silentPattern.document)]}}}]});
+put('ActorSequenceResource',d.defaultSequence.guid+'_9fd4a561_0.json',d.defaultSequence.document);
+check(dialogue.assertNativeSources(temp,reflection).animationEvents===0,'two native source proofs');
+const altered=clone(d.defaultSequence.document);altered.subSequences[0].events.push({$type:'keen::actor::SetAnimationEvent',$value:{}});put('ActorSequenceResource',d.defaultSequence.guid+'_9fd4a561_0.json',altered);reject(()=>dialogue.assertNativeSources(temp,reflection),/animationsfreie Sequenz geändert/);
+if(!path.resolve(temp).startsWith(path.resolve(os.tmpdir())+path.sep)||!path.basename(temp).startsWith('ems-drak-dialogue-'))throw Error('Unsafe fixture cleanup');fs.rmSync(temp,{recursive:true,force:true});
+console.log(JSON.stringify({passed:true,checks,topics:4,customKnowledgeWrites:0,gameplayVerified:false,speechBubbleRuntimeVerified:false}));

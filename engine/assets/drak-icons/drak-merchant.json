@@ -1,0 +1,22 @@
+{
+  "formatVersion": 1,
+  "key": "merchant",
+  "definitionKey": "merchant",
+  "itemGuid": "10c84674-9497-5eb2-a8fe-a5b7fb4a7ec6",
+  "debugName": "EMS_Drak_Craftsman_icon",
+  "width": 512,
+  "height": 512,
+  "format": "R8G8B8A8_unorm",
+  "levelCount": 1,
+  "rawFile": "drak-merchant.rgba",
+  "rawSize": 1048576,
+  "rawSha256": "39b55951e800cf82b4b5b0903b6b91339e33f9a7c7319252c377befe7ae40dfe",
+  "sourcePngSha256": "a96dfac4883a1faece802e3b0341d01a4d0d6d713e881c2b900945b2d17911d6",
+  "contentHash": {
+    "size": 1048576,
+    "hash0": 1405427821,
+    "hash1": 2138078578,
+    "hash2": 44613709
+  },
+  "bootstrapEmmSha256": "b1133f6b8ea7000596cc7710901bd8307b48165b0e650c0487a611d90ea49305"
+}

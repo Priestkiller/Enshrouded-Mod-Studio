@@ -1,4 +1,4 @@
-Mod Studio 0.4.37
+Mod Studio 0.4.38
 Nachtpflanzen und Drak-Handwerker
 
 Diese Erweiterung ist für den Spielbuild 1283531 vorbereitet. Die
@@ -32,9 +32,16 @@ DRAK-HANDWERKER UND ZAUBER
 
 Unter Welt & Bauen „Draki-Händler und Draki-Beschwörungszauber“ einschalten.
 Den vorhandenen Schmied zuerst freischalten/retten. Danach im normalen
-Beschwörungsstab den zusätzlichen „Drak-Handwerker“ auswählen und in der
+Beschwörungsstab den zusätzlichen „Ssarikk, Drak-Handwerker“ auswählen und in der
 Basis platzieren. Baurechte und die übrigen Platzierungsregeln gelten.
 Der neue NPC ersetzt keinen vorhandenen Handwerker.
+
+Ssarikk hat ein eigenes Bild und vier Gesprächsthemen: Herkunft,
+Beschwörung, Gefährten und Herstellung. Ihn wie einen normalen
+Handwerker ansprechen und das gewünschte Thema wählen. Die Texte
+erzählen eine eigene Mod-Geschichte. Eine Gesprächsblase wird über
+das native Hinweissystem vorbereitet; die tatsächliche Anzeige muss
+im Spiel getestet werden. Es gibt keine neue Sprachausgabe.
 
 Bei ihm gibt es drei ewige Zauber:
   - Drak-Speerkrieger beschwören
@@ -58,7 +65,7 @@ SOLO UND MEHRSPIELER
 Spiel bzw. Server vor dem Patchen schließen. Für Solo den Spielclient
 patchen. Für Mehrspieler müssen Server und alle Spielclients dieselben
 passenden Erweiterungen erhalten. Für die automatische Verteilung sind
-Manager 0.15.51 und Spielerclient 0.16.31 erforderlich. Alte veröffentlichte Worker akzeptieren diese
+Manager 0.15.52 und Spielerclient 0.16.32 erforderlich. Alte veröffentlichte Worker akzeptieren diese
 neuen Ressourcen bewusst nicht. Keine komplette Server-KFC auf einen
 Spielclient kopieren.
 

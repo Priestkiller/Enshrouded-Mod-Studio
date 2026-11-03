@@ -23,6 +23,10 @@ jobs:
           if ($LASTEXITCODE) { throw 'Unsupported-build regression failed' }
           node tests/native-item-textures-tests.js
           if ($LASTEXITCODE) { throw 'New item texture completeness regression failed' }
+          node tests/custom-drak-icons-tests.js
+          if ($LASTEXITCODE) { throw 'Custom Drak icon regression failed' }
+          node tests/drak-dialogue-tests.js
+          if ($LASTEXITCODE) { throw 'Drak dialogue regression failed' }
           node tests/night-plants-tests.js
           if ($LASTEXITCODE) { throw 'Knowledge composition regression failed' }
           node tests/producer-consumer-matrix.js

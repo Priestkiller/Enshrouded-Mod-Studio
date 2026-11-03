@@ -1,75 +1,49 @@
-# Enshrouded Mod Studio 0.4.37
+# Enshrouded Mod Studio 0.4.38
 
-**Draki-Symbolfix:** Fehlende native Symbolressourcen für elf Draki- und Nachtpflanzen-Gegenstände ergänzt. Ein bestehendes Studio-0.4.36-Serverpaket kann weiterverwendet werden. Manager 0.15.51 und alle Spielerclients auf 0.16.31 aktualisieren, dann bei geschlossenem Spiel erneut synchronisieren.
+Windows-Programm für lokale Profile, geprüfte Datenpatches und die automatische Verteilung an Enshrouded-Spielerclients. Unterstützter Spielbuild: **1283531 / Enshrouded 1.0.1.0**.
 
-**Spielpatch vom2.November2026:** unterstützt Enshrouded1.0.1.0 / Build1283531. Für die automatische Verteilung Manager0.15.51 und Spielerclient0.16.31 verwenden. Nach dem Steam-Update eine neue Basis freigeben und das Profil erneut anwenden.
+## Neu: Ssarikk und eigene Draki-Bilder
 
-Windows-Oberfläche für lokale Profile und geprüfte Datenpatches für Enshrouded.
+Der Drak-Handwerker **Ssarikk**, der Speerkrieger, der Chakramjäger und der Magier erhalten vier unterschiedliche Bilder. Ssarikk verwendet das native Gesprächsmenü mit vier Themen: Herkunft, Beschwörung, Gefährten und Herstellung. Die Texte erzählen eine eigene Mod-Geschichte: Ssarikk hilft freiwillig, und das Rufzeichen im Beschwörungsstab weist ihm den Weg zum Flammenaltar. Die Geschichte ist keine offizielle Enshrouded-Lore.
 
-**Spielupdate 1.0.1.0:** Diese Version unterstützt den nativen Spielbuild 1283531. Nach der Steam-Dateiprüfung die neue Basis freigeben und eine neue Vorschau erstellen. Die Basis des vorherigen Spielbuilds bleibt als Sicherung erhalten. Für die automatische Verteilung sind die passenden neuen Manager- und Spielerclient-Versionen erforderlich.
+Die Gesprächsanzeige über dem Kopf ist eine Testfunktion. Dialog, Anzeige und neue Bilder werden anhand der erzeugten Archive geprüft; ihr Verhalten im Spiel muss separat getestet werden. Es gibt keine neue Sprachausgabe. Der vorherige Absturz beim Beschwören ist nach erneutem Synchronisieren laut Spieltest des Nutzers behoben.
 
-**Neu in 0.4.37:** Fehlende native Drak- und Nachtpflanzen-Symbolressourcen ergänzt. Enshrouded1.0.1.0 / Build1283531. Manager0.15.51 und Spielerclient0.16.31 für die automatische Verteilung aktualisieren. Archive und Übergabe werden im Hintergrund geprüft; Spielwirkung separat testen.
+**Für die neuen Bilder und Gespräche:** Manager **0.15.52** und Spielerclient **0.16.32** installieren, den Server mit Studio **0.4.38** erneut patchen und neu starten. Anschließend synchronisieren alle Spieler bei geschlossenem Spiel. Ein vorheriges Paket enthält die neuen Inhalte noch nicht.
 
-**Seit 0.4.33:** normales Windows-Setup mit Startmenü und Deinstallation sowie automatische Programmupdates beim Start. Änderungen werden vor der Installation und nach dem Neustart angezeigt. Updates lassen sich verschieben oder in den Werkzeugen abschalten. Profile und Einstellungen bleiben erhalten.
-
-Für die erste normale Installation die **Enshrouded-Mod-Studio-0.4.37-Setup.exe** aus dem aktuellen Release verwenden. Ein vorhandener portabler Studioordner kann im Setup für die Datenübernahme ausgewählt werden. Das vollständige ZIP bleibt als portable Variante verfügbar. Für den neuen Spielbuild zuerst die passenden aktuellen Versionen von Manager und Spielerclient installieren.
-
-**Ausdauerregeneration berichtigt:** Die Regenerationsformel verwendet Ganzzahl-Literale. Die vorherige Kodierung konnte bei Faktoren wie 2 oder 10 einen zu großen Wert erzeugen, dessen 16-Bit-Netzwerkdarstellung null war. Die neue Rechnung macht aus dem ursprünglichen Regenerationswert 50 bei Faktor 2 den Wert 100. Sie rundet den Faktor auf drei Nachkommastellen und begrenzt das Ergebnis auf 65.535. Maximale Ausdauer, Anlauf- und Wartezeiten bleiben unverändert; eine größere Ausdauerreserve braucht bei gleicher absoluter Regeneration länger. Hintergrundtests einschließlich Parser-Rücklesen bestätigen die korrigierten Daten, keine bereits beobachtete Spielwirkung.
-
-Version 0.4.32 korrigiert Inventarkapazitäten auf vollständige Achterreihen, erhält beim kostenlosen Herstellen die ursprünglichen Freischaltbedingungen und weist native Zahlenüberläufe vor dem Packen zurück. Drei zusätzliche Begleitervorlagen werden auf Server und passenden Clients im globalen Katalog registriert. Die Rezeptanzeige enthält den Mengenfaktor bereits: ×4 bedeutet insgesamt vier Stück. Ein aktueller Rüstungsversuch bestätigt diese Ausgabe; Herstellungszeit, Lagerzugriff und Autoloot sind damit nicht als Spielwirkung bestätigt. Für neue Pakete zuerst Manager 0.15.39 und Spielerclient 0.16.23 aktualisieren.
-
-Vorversion 0.4.31 korrigierte zusätzliche Wertepfade: Ausdauerregeneration ändert den ursprünglichen Regenerationswert und dessen passende Begrenzung; Herstellungszahlen und Zeiten beachten ihre tatsächlichen nativen Zahlentypen. Axt-Holzschaden wird als ganze Zahl aus dem Originalwert berechnet. Eine Gegenstandshöchststufe unter der ursprünglichen Mindeststufe eines betroffenen Gegenstands wird vor der Anwendung abgewiesen. Die zugehörigen Hintergrundtests prüfen geänderte Werte, ausgeschaltete Optionen, unberührte Nachbarfelder und kombinierte Einstellungen. Sie bestätigen Datenberechnungen und Dateiprüfungen, keine unbeobachtete Spielwirkung.
-
-Neu und zunächst ausgeschaltet: **Abladestationen: horizontalen Bereich vergrößern**. Der Faktor skaliert die vorhandene halbe Breite und Länge der bestätigten 16x16- und 24x24-Stationen aus deren Originaldaten. Faktor 2 ergibt rechnerisch die vierfache Grundfläche; Höhe, Versatz und Spieleraktivierung bleiben unverändert. Der native Ablauf ist dem AreaDepositEvent zugeordnet. Die tatsächliche Ablage und mögliche Laufzeitgrenzen sind noch im Spiel zu prüfen. Diese Option verändert weder Auto-Loot noch die Materialsuche magischer Kisten.
-
-**Auto-Loot: generische Bodenbeute ergänzt.** Die bisher ausgelassene Vorlage für physisch ausgeworfene einzelne Zufallsgegenstände erhält bei eingeschalteter „Fallender und generischer Bodenbeute“ die drei bestehenden Aufhebe-Komponenten des nativen Beutefunkens. Radius und Zeitabstand stammen aus dem Profil. Die Gegenstandszuordnung, manuelle Interaktion und alle anderen Komponenten bleiben erhalten; beide nativen Spawner-Verbindungen und das Rücklesen werden geprüft. Die zusätzlichen 21 Hintergrundprüfungen bestätigen diese begrenzte Datenkorrektur. Das tatsächliche Aufsammeln bleibt im Spiel zu prüfen. **Leichen und Behälterinventare werden nicht automatisch geleert.** Die bereits unterstützten anderen Bodenbeutegruppen behalten ihre bisherigen Regeln.
-
-**[Aktuelle Windows-Version herunterladen](https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/latest)**
+[Aktuelle Windows-Version herunterladen](https://github.com/Priestkiller/Enshrouded-Mod-Studio/releases/latest)
 
 ## In drei Schritten zu allen Spielern
 
-1. **Studio patcht:** Den vom UGSM Manager verwalteten Server-Installationsordner wählen, Einstellungen prüfen, Spiel bzw. Server schließen und **Patch anwenden / aktualisieren** ausführen.
-2. **Manager übernimmt:** Studio erstellt das Änderungsrezept aus der vorhandenen Serverbasis. Der aktuelle Manager prüft und übernimmt die Übergabe automatisch. Den Server danach mit den neuen Daten neu starten und die Spielerfreigabe aktivieren.
-3. **Spieler synchronisieren:** Mit dem passenden aktuellen Spielerclient zuerst **Synchronisieren** wählen. Der Client lädt die Änderungen, verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach **Spiel starten** anklicken. Der vorherige Modstand wird gesichert.
+1. **Studio patcht:** Den vom UGSM Manager verwalteten Server-Installationsordner wählen. Einstellungen prüfen, Server stoppen und **Patch anwenden / aktualisieren** ausführen.
+2. **Manager übernimmt:** Studio erstellt aus der vorhandenen Serverbasis das Änderungsrezept. Der Manager prüft die Übergabe und stellt sie den Spielern bereit. Den Server mit den neuen Daten neu starten.
+3. **Spieler synchronisieren:** Bei geschlossenem Spiel **Synchronisieren** wählen. Der Spielerclient verarbeitet seine eigenen Originaldateien auf Arbeitskopien und installiert erst nach erfolgreicher Prüfung. Danach separat **Spiel starten** anklicken.
 
-**Auf dem Server ist keine zusätzliche Spielclientinstallation erforderlich.** Die neue Standardmethode verwendet ausschließlich die vorhandene Serverbasis. Die Originaldateien der Spieler bleiben auf deren PCs; sie werden nicht hochgeladen. Server und Clients müssen denselben unterstützten Spielstand verwenden. Die bisherige Methode mit vorgefertigten Clientarchiven bleibt unter der eingeklappten erweiterten Einrichtung verfügbar.
+Auf dem Server ist keine zusätzliche Spielclientinstallation erforderlich. Clientoriginale werden nicht hochgeladen. Server und Spieler müssen denselben unterstützten Spielbuild verwenden. Ältere freigegebene Pakete behalten ihre eigenen Prüfverträge; sie werden durch ein Programmupdate nicht zu neuen Paketen umgedeutet.
 
-Die Oberfläche trennt **Serverpatch**, **Änderungen bereitstellen** und **Spieler synchronisieren**. Ein erfolgreicher Serverpatch allein meldet keine fertige Verteilung. Der Manager erhält die geprüfte Übergabe über die reservierte Ablage im verwalteten Installationsordner; Desktop-Zugriffsrechte sind dafür nicht nötig. [Einrichtung](CLIENTPAKETE.txt) · [Schnittstelle](SERVERMANAGER-CLIENTPAKETE.md).
-
-Die Punkteoption berechnet den gesamten Levelanteil als **(Level - 1) × Punktewert**. Auch bereits bekannte Wurzel- und Brunnenbelohnungen können mit einem geänderten Wurzelfaktor neu bewertet werden. Deshalb kann die erste Neuberechnung nach dem Patch einen größeren tatsächlichen Punktezuwachs ergeben; sie misst nicht allein den Zuwachs eines neuen Levels. Studio 0.4.30 berichtigt die bisherige irreführende Erklärung, dass nur künftige Wurzelbelohnungen betroffen seien. Die Archivwerte und Berechnungslogik bleiben gegenüber 0.4.28 unverändert. [Punkte erklären und prüfen](SKILLPUNKTE.txt).
-
-Teilweise importierte Profile aktivieren keine fehlenden Mods automatisch. Vorhandene Zahlenwerte bleiben sichtbar und bearbeitbar. Eine neue native Obergrenze gilt beim Einschalten der betreffenden Option; ausgeschaltete Altwerte blockieren andere Patches nicht.
+[Einrichtung](CLIENTPAKETE.txt) · [Schnittstelle](SERVERMANAGER-CLIENTPAKETE.md)
 
 ## Installieren und aktualisieren
 
-Das vollständige öffentliche ZIP in einen neuen beschreibbaren Ordner entpacken. Benötigt werden Windows x64 und .NET Framework 4.8. Für die **Erstinstallation** zuerst **Patcher einrichten** wählen. Das selbst beschaffte Original-Patcher-ZIP 1.2.3 oder dessen EXE mit passendem Custom-Parser auswählen. Die Einrichtung prüft und ergänzt die Programmdateien; ein alter Studioordner, alte Profile oder Archivbasen sind nicht erforderlich. Ist die Runtime bereits vollständig und hashgeprüft eingerichtet, ist kein Originalpaket mehr nötig. **Altes Setup übernehmen** bleibt eine getrennte, optionale Funktion zum Umziehen vorhandener Profile und Archivbasen. Die ursprüngliche Patcher-EXE, deren Bytecode und der Legacy-Parser sind im öffentlichen Paket nicht enthalten. EMM liegt mit GPL-Lizenz und zugehörigem Quelltext separat bei. [Herkunft und Paketgrenzen](THIRD-PARTY.md).
+Für eine normale Windows-Installation die **Enshrouded-Mod-Studio-0.4.38-Setup.exe** verwenden. Das Setup erstellt Startmenü-Eintrag und Deinstallation. Ein vorhandener portabler Studioordner kann zur Übernahme von Profilen und Einstellungen gewählt werden. Das vollständige ZIP bleibt als portable Variante verfügbar. Benötigt werden Windows x64 und .NET Framework 4.8.
 
-Ab Studio 0.4.10 kann **Update prüfen** die angebotene Version installieren und vorhandene Daten übernehmen. Von 0.4.9 das ZIP manuell entpacken und **Altes Setup übernehmen** verwenden. Alte Engine-Ordner nicht über die neue Version kopieren. Ein Tool-Update speichert oder übernimmt Einstellungen; den Spielpatch startet **Patch anwenden / aktualisieren**. [Updateanleitung](UPDATES.txt).
+Beim Start prüft Studio auf Programmupdates und zeigt die Änderungen vor der Installation an. Updates können verschoben oder in den Werkzeugen abgeschaltet werden. Ein Programmupdate übernimmt Einstellungen; den Spielpatch startet weiterhin **Patch anwenden / aktualisieren**. [Updateanleitung](UPDATES.txt)
 
-Beim ersten Patch werden unveränderte aktuelle Spielarchive nach Bestätigung als Basis gesichert. Bereits gepatchte Archive werden ohne geeignete Originalbasis vor dem Modifizieren abgelehnt. Eine eigene private Originalreferenz für denselben Dedicated-Serverstand kann anhand von Server-EXE und Archivprüfsummen übernommen werden; vorhandener Studiozustand bleibt geschützt. Solche Spieldateien liegen nicht im öffentlichen Paket. Für eine frische Einrichtung saubere Dateien dieser Spielversion verwenden oder die eigene passende Basis übernehmen. [Erstinstallation und Basis](ERSTINSTALLATION.txt).
+Bei einer frischen Einrichtung **Patcher einrichten** wählen und das selbst beschaffte Original-Patcher-ZIP 1.2.3 oder dessen EXE mit passendem Parser auswählen. **Altes Setup übernehmen** ist nur für den Umzug vorhandener Daten gedacht. Die ursprüngliche Patcher-EXE, ihr Bytecode und der Legacy-Parser sind im öffentlichen Paket nicht enthalten. EMM liegt mit GPL-Lizenz und zugehörigem Quelltext separat bei. [Herkunft](THIRD-PARTY.md)
+
+Nach einem Spielupdate zuerst die aktuellen Dateien über Steam prüfen und die neue Basis freigeben. Alte Archive nicht auf einen neuen Spielbuild zurückspielen. Bereits gepatchte Dateien werden ohne passende Originalbasis vor dem Modifizieren abgewiesen. [Basiswechsel](ERSTINSTALLATION.txt)
 
 ## Funktionen und Prüfstand
 
-Profile enthalten Spieler- und Gegenstandswerte, Tierproduktion, Zähmung, Nutztierzucht und sechs eigene Begleiterzauber bei Alden Crowley. Die Begleiterwerte müssen auf Server und allen Clients zueinander passen. Clientpakete können diese Dateistände verteilen. Erklärungen und Grenzen stehen an den Optionen und in [EINSTELLUNGEN.txt](EINSTELLUNGEN.txt).
+Profile enthalten Spieler- und Gegenstandswerte, Herstellungsmenge und Zeiten, Tierproduktion, Zähmung, Nutztierzucht, Begleiterzauber, Nachtpflanzen und den Drak-Handwerker. Erklärungen und Grenzen stehen direkt an den Optionen und in [EINSTELLUNGEN.txt](EINSTELLUNGEN.txt).
 
-Die Korrekturen aus 0.4.23 und 0.4.24 bleiben enthalten: Stapelgrößen können zusammen mit den sechs eigenen Begleitern verarbeitet werden; native 32-Bit-Gleitkommazahlen werden beim Kontrolllesen korrekt berücksichtigt. Hintergrundtests bestätigen erzeugte Archive und ihre exakte Rekonstruktion. Sie ersetzen keine Prüfung von Besitzerzuordnung, Folge-KI, Schaden oder anderen bislang unbestätigten Mechaniken im laufenden Mehrspieler. [Prüfbericht](PRUEFBERICHT.txt).
+Hintergrundtests prüfen berechnete Werte, unveränderte Nachbarfelder, Archiv-Readback und die Rekonstruktion im Spielerclient. Sie bestätigen keine unbeobachtete Spielwirkung. Ein erfolgreicher Herstellungstest des Nutzers bestätigt die Ausgabe von vier Rüstungsteilen bei Faktor 4; daraus folgt keine Bestätigung aller anderen Optionen.
 
-Für 0.4.27 bestand der vollständige Transfer eines echten Serverprofils mit **38 eingeschalteten Optionen**: 3661 Serverressourcen wurden in ein Datenrezept übernommen. Der fest gebündelte Spielerclient-Worker erzeugte und kontrollierte 3669 Clientänderungen einschließlich Namen, Bildern und Herstellungsmenü der sechs Begleiterzauber. Alle 91827 KFC-Ressourcenidentitäten wurden geprüft; die Clientoriginale blieben unverändert. Sicherung, Wiederherstellung, Profilwechsel und die Kompatibilität mit bisherigen Paketen wurden zusätzlich geprüft. Kein Spiel oder produktiver Server wurde gestartet.
+Die Punkteoption bewertet den Levelanteil als **(Level − 1) × Punktewert**. Ein geänderter Wurzelfaktor kann bekannte Belohnungen neu bewerten. Der erste tatsächliche Punktezuwachs nach einem Patch kann deshalb größer ausfallen als der eingestellte Wert pro weiterem Level. [Punkte erklären und prüfen](SKILLPUNKTE.txt)
 
-Der gemeldete Materialzugriff aus normalen Kisten und Stationsinventaren wird durch die Synchronisation nicht repariert. Ein Servermod, der ohne passende Clientänderungen allen Spielern automatisch vier Fähigkeitspunkte je Level gibt, ist nicht enthalten. [Lagerbefund](LAGERZUGRIFF.txt) · [Fähigkeitspunkte](PUNKTE-SERVERMOD.txt).
+Der Materialzugriff aus normalen Kisten und Stationsinventaren sowie das tatsächliche Aufsammeln durch Autoloot bleiben gesondert im Spiel zu prüfen. Leichen- und Behälterinventare werden durch die Bodenbeute-Option nicht automatisch geleert. [Lagerbefund](LAGERZUGRIFF.txt) · [Prüfbericht](PRUEFBERICHT.txt)
 
-## Selbst bauen und Hintergrundtests
+## Selbst bauen
 
-```powershell
-./source/build.ps1
-node tests/manager-handoff-tests.js
-node tests/float-summon-tests.js
-node tests/stack-summon-tests.js
-node tests/input-basis-check-tests.js
-```
+Der Build über source/build.ps1 verwendet den Windows-Compiler für .NET Framework 4.8. Portable Tests benötigen keine laufende Spielinstallation. Eigene Profile, Runtime-Dateien, Spielarchive, Spielstände und Sicherungen gehören nicht ins öffentliche Repository oder ZIP.
 
-Der Build verwendet den Windows-Compiler für .NET Framework 4.8. Die portablen Tests verwenden synthetische Dateien; sie benötigen keine laufende Spielinstallation. Eigene Profile, Runtime-Dateien, Spielarchive, Spielstände und Sicherungen gehören nicht ins öffentliche Repository oder ZIP.
-
-Dies ist ein unabhängiges Projekt. Enshrouded und Fremdwerkzeuge gehören ihren jeweiligen Rechteinhabern. Nach Spielupdates weiterhin den geführten Basiswechsel verwenden; eine alte Archivbasis nicht auf eine neue Spielversion zurückspielen.
-
-Update-Pfadfehler: Die Arbeitsdaten-Übernahme ist korrigiert. Details und die einmalige Abhilfe für alte Updater stehen in UPDATE-PFADHILFE.txt.
+Unabhängiges Projekt. Enshrouded und Fremdwerkzeuge gehören ihren jeweiligen Rechteinhabern.

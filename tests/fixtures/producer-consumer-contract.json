@@ -1,440 +1,442 @@
 {
   "format": 1,
-  "engineFingerprint": "28fbcfac23a37424c8c080b150bbc7701c67d429f3cc94422b33cdf35fb88c05",
-  "studioVersion": "0.4.37",
+  "engineFingerprint": "b4a4d8ef9ec5507245a6b26d31207612b720a2a566b2521881e1f6ed909b1b99",
+  "studioVersion": "0.4.38",
   "engineVersion": "1.2.3",
   "sourceBuild": "1283531",
   "nativeBuild": "1283531|^/game38/branches/release_1.0|2026-10-30T09:15:50.868196Z",
   "sourceFixtureSha256": "5a5fed94d78b23569402f2c84cd1f5ff19eb5923dd4139b5bb649c34c486ddba",
   "consumer": "production ParseEMSResourceRecipe",
-  "consumerRecipeSourceSHA256": "d051d1ee23b18d2ae6d32e9bfdc705dc701f33db304def23dc4da4dc0e37040a",
+  "consumerRecipeSourceSHA256": "ad0f68da0e45090a4b5fff899d9599ea7e181a78ff07be0e1b83f6e967c746e2",
   "consumerSourceSHA256": {
-    "ems_resource_recipe.go": "d051d1ee23b18d2ae6d32e9bfdc705dc701f33db304def23dc4da4dc0e37040a",
+    "ems_resource_recipe.go": "ad0f68da0e45090a4b5fff899d9599ea7e181a78ff07be0e1b83f6e967c746e2",
     "ems_native1283531.go": "10c3393d7df262875163c6d600b86691423d5227f874c6cbc3a8e74e2158790a",
     "ems-feature-contract1283531.json": "b05483f29098a7c3cbad5963b52e1f740282c1cd58a815747d40f2b4af40e8e0",
+    "ems_native1283531_dialog.go": "20e5e985bf272f670363f131a4d6351cdcb71c715d43f093429f048b6bc4e499",
+    "ems-feature-contract1283531-dialog.json": "5ffdad39145d4c1c1d641dfac05b52c44d4aacb5cac4f137d620a8e3626e5f09",
     "ems_template_collection.go": "53b53b499d70b8d5191e8fd13a4c782b7c6caed5d55826675c8851aa797dd86f",
-    "ems_options.go": "70d2afe934632f22bd581f0594cc4da2ede2f755f0154ed9361f4a1fe30bb9a3",
-    "ems_studio.go": "9fcfe6bb79122c2bd6802e48a1ce1051bfaf177aa235c41bf75a815d7f3d41b3"
+    "ems_options.go": "ab51754a1f92b2361856d4055ebf74f7a321f15aca2fdaf7913b151f0d648663",
+    "ems_studio.go": "1dfe077566a6fd7e9e299fd130279fc134226451f94a1a77f628da90cb373575"
   },
-  "certification": "All 70 independently generated Studio 0.4.37 recipes for native build 1283531 passed TestEMSStudioReleaseContractProducerMatrix against exact058; old057 actual server recipe also passed the refreshed worker with all11native item textures. Source fixtures never generate expected after-images.",
+  "certification": "All70 independently generated Studio0.4.38 recipes for native build1283531 passed the production Go ParseEMSResourceRecipe in TestEMSStudioReleaseContractProducerMatrix against exact059. Historical056/057 recipes and058 compatibility passed separately. Fixture inputs never generate expected afterimages; original capture identities retained.",
   "cases": [
     {
       "name": "1-plain",
-      "sha256": "122c8a7aa7b3fd08595f7b8590b372031f4b12eca99b6689c9394eb4e341fb6c",
+      "sha256": "a0c29f9db823d51ea2407232e3c9706b0e260cadcbc659970d66a54bb7a98170",
       "resources": 19,
       "creates": 9
     },
     {
       "name": "1-mana",
-      "sha256": "e4af13775e45c50e94a41e0e680efeb7468c10c4b1ba6a1571838c416d53216d",
+      "sha256": "a6784b1bed570a7a3cfa72854e28100a6b67175a87bab78daa0ef69e8284ae08",
       "resources": 20,
       "creates": 9
     },
     {
       "name": "1-cast",
-      "sha256": "206a69583e26c8b320e1d634a32e25d27013f2fff3118d54751459d53f01647e",
+      "sha256": "cbeac77e520a02f7dd12bbedaa218c2b72f753b9f94e17e333a96d977486dfb9",
       "resources": 20,
       "creates": 9
     },
     {
       "name": "1-round-down",
-      "sha256": "672767657b4848c0229d2b55bcb2767f089f3511cec5473d0f2bfc46eb899c8e",
+      "sha256": "b4a90b88a373b13e6bd68bfdb4ca956421779cc213fd5090e2d2e22050a4233e",
       "resources": 20,
       "creates": 9
     },
     {
       "name": "1-round-up",
-      "sha256": "026bcf0126cfb2f626eadfbd60751e868efa3528eee54ca38b96c51eeaf9b40d",
+      "sha256": "bbe43ab3faa1858950babd2ae2d409cd6a8710f7bc3d528ceb6fb5c100cb5c94",
       "resources": 20,
       "creates": 9
     },
     {
       "name": "1-minimum",
-      "sha256": "35b766e7480375a3800c6f2e5e95729f5b98bc1d989abaad7b149c6fbc76e565",
+      "sha256": "b5744460580141a4cc83167f42d3064087198d5647edc533b5bcea2a8309dbc4",
       "resources": 20,
       "creates": 9
     },
     {
       "name": "1-stack",
-      "sha256": "9a2d585a5def11c485037fc84b6c7e272a962e97b2dc052d68b0948c8ed90f4b",
+      "sha256": "7cec9f753917c1cbb9be948d655f472c9e7047e8f28aea9ea09f2b338bbc622f",
       "resources": 19,
       "creates": 9
     },
     {
       "name": "1-item-level",
-      "sha256": "f6fb4f4987893a9d398a61f7c9c2e3b95ecd5b4fe2e23d2629586698b54c895c",
+      "sha256": "c7ff07585f6a7d051a213d788ba0701f6adadccb711fddbe0be342d9577eaef8",
       "resources": 38,
       "creates": 9
     },
     {
       "name": "1-root-rewards",
-      "sha256": "0f8fa461d2e4175614e65e673be786d4c6175ded999ca2c6e1fa514e9a1b67b4",
+      "sha256": "47df6f208d75c45ef5391e3a597123e1eaf84bab3d1080fdede8edecbb64c29d",
       "resources": 19,
       "creates": 9
     },
     {
       "name": "1-combined",
-      "sha256": "26f8cc708b986187c194f303992eb00772b23e1933bd643b451a3ba78baf50c3",
+      "sha256": "1ee687f7be31960103e8acde0e94f99c3c0de88fafcdfb261b09a4fe23b04e98",
       "resources": 38,
       "creates": 9
     },
     {
       "name": "2-plain",
-      "sha256": "8b1f4ae9a8b37311e9049646d6d31dca9beb86dd691d43e4d3ba5be559101029",
+      "sha256": "5046fffdc5f5d9997b7fd3e25c707096422d2eaa6727cec804934972caab0673",
       "resources": 53,
       "creates": 49
     },
     {
       "name": "2-mana",
-      "sha256": "1fe00585c38dee7dcdbcbe75e32046654bbfa2560a7764c9b2a36291e648946e",
+      "sha256": "9c29c968beb6012b08c5b995e4b463360f620229268a469cc6308348789a8178",
       "resources": 54,
       "creates": 49
     },
     {
       "name": "2-cast",
-      "sha256": "922a67fc5ca9947899d004c1da8fd6fe354c767e3b52ac5abeb9ba924c42e875",
+      "sha256": "7f355cf971d7d0f3a735fc7b5929142bd2195b300f06fc5e0408bbb43134da04",
       "resources": 54,
       "creates": 49
     },
     {
       "name": "2-round-down",
-      "sha256": "72a52530091f39fd7f13b457bf52a706abf6c6db51d818cae8a25d653039163e",
+      "sha256": "26909ea3f45585a94b5ec3a2f4a3f707c2dbf74fc5c87e12ab026bc443b2fedf",
       "resources": 54,
       "creates": 49
     },
     {
       "name": "2-round-up",
-      "sha256": "19a9b942b542e1ebc3db18284acf75befda3211e153a9e413a03dd41b0ae27e2",
+      "sha256": "3437455447e4685c6f14ee8cb33d83cb377b535b461ad015d6d0eb1a9e9c810e",
       "resources": 54,
       "creates": 49
     },
     {
       "name": "2-minimum",
-      "sha256": "f29a4fbed4f67a5085ec14b424c5f5cab78306e62d68d20b433f9ef88dfcd526",
+      "sha256": "e62c9a27b83a11bfc98b26f3b59518841e1c32bad58d5ee9049f96939aa15fce",
       "resources": 54,
       "creates": 49
     },
     {
       "name": "2-stack",
-      "sha256": "aeff9c2d2a424da15554e45b83d2a25fe73ac6bcc9bb0d978f7e4f0f6b133d51",
+      "sha256": "57b2c3a0c465f28024a4ae04bb640bae42c268994e66f99ed0c5a14fce32d7aa",
       "resources": 53,
       "creates": 49
     },
     {
       "name": "2-item-level",
-      "sha256": "120e3047830808ee1b73db8ff48ec8aae9ff26bc8df4cc0e3710225f377a88d2",
+      "sha256": "d54ab58e8d42f70f2f2df4492ab02de90fe04f65017c4fd97fdda67c5e23097f",
       "resources": 72,
       "creates": 49
     },
     {
       "name": "2-root-rewards",
-      "sha256": "af2c281774317f3437ac0a3f523d6e6d6252bb713aafdfbeb0025cb66d99808e",
+      "sha256": "ecebd2e43524ebd34031d8db257d9aaa5a8aa26300e4843fc629c4b4d5b9c354",
       "resources": 53,
       "creates": 49
     },
     {
       "name": "2-combined",
-      "sha256": "f8f2aa2342b4c6e0b0bffa7b0d3cbc8b9fe1eee9e1bccc3076cd674a1ccafe53",
+      "sha256": "cacb9618eb4a96ff783e800637b2d1d95e273625c2603b6a43049db8e3dd1b9a",
       "resources": 72,
       "creates": 49
     },
     {
       "name": "3-plain",
-      "sha256": "c62d98f3aa88830c135cb8ff5c23edd2dfb071b2c31254b74f603b18673e3461",
+      "sha256": "259a3e40e8bc9560b7dcad861405843f4301ef8e578c1521d7bf068573c1c470",
       "resources": 68,
       "creates": 58
     },
     {
       "name": "3-mana",
-      "sha256": "49bbeb7df9ea51a02f927ece24bfc8cb29ee3d9d49fc3e016c24edf8f0326565",
+      "sha256": "af36576f1edd02a2c6278ef3d6c0457b835a7f3b5fba19eb48a4fb500ac42d43",
       "resources": 69,
       "creates": 58
     },
     {
       "name": "3-cast",
-      "sha256": "29c965a7966acae72dec2f61ed7fc6a59c34cf8e77abb49c6096c421a9a24f74",
+      "sha256": "b1149245880467d2513f9af2aa22d0527a5bbb4d4e9c97b49e07e444097122e0",
       "resources": 69,
       "creates": 58
     },
     {
       "name": "3-round-down",
-      "sha256": "e8bf39fd05950c0198c82d0a58d10cf087b3697c86c68bd9e958841795ad54fc",
+      "sha256": "6048b0796f7a641a17e93388f0a85cb158b27125d32e12f821ef7bd04ee94768",
       "resources": 69,
       "creates": 58
     },
     {
       "name": "3-round-up",
-      "sha256": "f0aba347793593dc922493f2e4140321e5df4e71d6c07030d6f26bd8172d2aac",
+      "sha256": "d9dc22e65c5a6c3aa594b7455aca88cb3d4ce1f321c5c17e93219bdf92efde4e",
       "resources": 69,
       "creates": 58
     },
     {
       "name": "3-minimum",
-      "sha256": "fdcd2a29410e68d83648999ff7dd4b4eec6e2d4951436c2874fccaab59dd29ed",
+      "sha256": "7db3b4e369a178825e7304ccb71776ab5cff0d287f96b79413652ec284029b60",
       "resources": 69,
       "creates": 58
     },
     {
       "name": "3-stack",
-      "sha256": "74453d2a85840b035e96630de8aeeab15b8bbd0166e49816b1b4c2af3a1502bb",
+      "sha256": "0bd56def9202fdf314af0d6ffaa6b8290bf46f01720c9b49b91ad7883d321cac",
       "resources": 68,
       "creates": 58
     },
     {
       "name": "3-item-level",
-      "sha256": "c8fd9bd4c3912864857ad1227b73039a474c849de207d46d485f653156cf444b",
+      "sha256": "83aa9572d3567de0c79dd7b865310b3b1331712f1fcff5a86b4c8cca87be1824",
       "resources": 87,
       "creates": 58
     },
     {
       "name": "3-root-rewards",
-      "sha256": "5e4ad485adc122e30a7b9f9c3a7c0fcd7a7df057fc4af09274cd708c77364b79",
+      "sha256": "1bcccd09a8f571004bbd9c4aa6ee67626f0f05f48b28ea7fc11b09368f8def7d",
       "resources": 68,
       "creates": 58
     },
     {
       "name": "3-combined",
-      "sha256": "6a3a7cc1db2c54d35e65993ca476fe8a7248b50ffda5177a570bfbf0fdd1ebf8",
+      "sha256": "cc177304a76aa0cd4b08ae66b0a38f6b43a97b5ca79018a5ce798a7fb44e5b86",
       "resources": 87,
       "creates": 58
     },
     {
       "name": "4-plain",
-      "sha256": "8037c4c5d9900f826babb23fad518faabbb607b62f2d2afdb9b8adb11340d87e",
+      "sha256": "34e45517d03acf49f0001109b4410c98e6bd04cdc268226cb084d7f0c319169c",
       "resources": 16,
       "creates": 8
     },
     {
       "name": "4-mana",
-      "sha256": "785c06b894a56b0996f441150f53fb4b228769f8969d941b44d12f50cf9d4f72",
+      "sha256": "8bedc1f789578feb59246919dbd225dfdd96371d29124f1eea4d0c2155c4f6bc",
       "resources": 17,
       "creates": 8
     },
     {
       "name": "4-cast",
-      "sha256": "f3ee78441f336036ecea787a147f40c846425ec31a4a0f1628d659293932ff91",
+      "sha256": "653ed25a7e98da81b22a572621242fe607d22f55f42d130f19d645cafcb86bf1",
       "resources": 17,
       "creates": 8
     },
     {
       "name": "4-round-down",
-      "sha256": "132597c4a17a46a1e985966bc652a5b0c05ea2db418948fd7019fb4b92f687ea",
+      "sha256": "a6f8a20a0ca7950b21cfef2ec9bb3019341469dbb2f8d88b13375313edf4e0f0",
       "resources": 17,
       "creates": 8
     },
     {
       "name": "4-round-up",
-      "sha256": "489b5c2942bc9022146177b25fbb539cf22f4e71687d224b0be3aee4ee68081f",
+      "sha256": "d81746e2c002bdcdaeefbcdb0704d68328a447898c2eb909dec6710aea5ccc4e",
       "resources": 17,
       "creates": 8
     },
     {
       "name": "4-minimum",
-      "sha256": "a2b5bcf04084916f896da953f3a00bb8e00c2bfa9baca83c21977ab94f8e26aa",
+      "sha256": "8c380b5ea0a45286f569f152ab7e583563158e6c9fa5abd5af3ab76a1267c7d7",
       "resources": 17,
       "creates": 8
     },
     {
       "name": "4-stack",
-      "sha256": "a3710cfbb8d8f020602beec45c93394d0be18cf74b169370c2e88e15f099c977",
+      "sha256": "a16e5e726a8d344171687be2ac43da422b20ba79ebec817f394e57d093f54d7a",
       "resources": 16,
       "creates": 8
     },
     {
       "name": "4-item-level",
-      "sha256": "b01d2f6ba6a9b509754d2ac7bc299420b1fb1d92d16d5746c695258bcce48d69",
+      "sha256": "7bd23e681506ce5d4336a73642297df05c2266f285f7ab1d364c4efab3af3b6e",
       "resources": 35,
       "creates": 8
     },
     {
       "name": "4-root-rewards",
-      "sha256": "97697fd23dbc629323b362a5c32798d444c87e0d28e1d5768c4a42048d6200a5",
+      "sha256": "26c36f4ee80997c981ae140af6bda5e74aea4bcfd7df86dbb5abc7fbea2ec54c",
       "resources": 16,
       "creates": 8
     },
     {
       "name": "4-combined",
-      "sha256": "01b95a0a84cf229e8443de212af1040213799642f60b74fbf45f444e46c8c4d5",
+      "sha256": "1925d4565c2a1d4f735b80f526d0c095dab5b301fdb121dd01fdd0f58dabfd19",
       "resources": 35,
       "creates": 8
     },
     {
       "name": "5-plain",
-      "sha256": "eb5cf0a82d57c3b6d775507657088a32d1a69502547ccd0ce9ba531196e0a235",
+      "sha256": "b38b521e641d104927574692fcb99503382dd3bad9e5d14b1b645f677714db58",
       "resources": 29,
       "creates": 17
     },
     {
       "name": "5-mana",
-      "sha256": "da23618479dde0fd555ce66062cc5d1fdec2a8766ae037bef2f9100e580bc985",
+      "sha256": "c8ea0035175217f99ad440b4f152089965afbf152ad49993e1884a2f2f46406a",
       "resources": 30,
       "creates": 17
     },
     {
       "name": "5-cast",
-      "sha256": "f266343a1d6e03bd51b012925d965816315e6b983050994f75d8373505a06ce4",
+      "sha256": "3cc737c8b0672509941269cd15c3ba6f64e89d94bfb11d7a8246fc3459561e64",
       "resources": 30,
       "creates": 17
     },
     {
       "name": "5-round-down",
-      "sha256": "3e41bc9de1af317f86ab63a5bdef4b6e687128211ec908e7bfaa8c21d12f7fb6",
+      "sha256": "5d18a824e21f87a8dbe0a4fbe184be02f0bdca8831453b3b6a38a346abd895f2",
       "resources": 30,
       "creates": 17
     },
     {
       "name": "5-round-up",
-      "sha256": "472548888cf5590b2c944f83b854ba253a5b5d06eaa735114c62e08aad7aed00",
+      "sha256": "d1f53ba0a817e6a73b40c894535fe0abcab50750da9e6254773de8780487b204",
       "resources": 30,
       "creates": 17
     },
     {
       "name": "5-minimum",
-      "sha256": "d27e2f844403c1b5dd4c844df60a7d064d94d7441e6b9b40214f3bf941d47adc",
+      "sha256": "d4e0e08c7d84e5b207a1e06680cc41de15a7117bcf3f66c5d936a36998b74004",
       "resources": 30,
       "creates": 17
     },
     {
       "name": "5-stack",
-      "sha256": "fdaf205104f3c4b2f9eaed48433156294cfaa346bd2beb420e32fadb5e997929",
+      "sha256": "370904ee580621e7040f94c0dc0cf48fc0c42fa5404ad23a7114035aa3faff3b",
       "resources": 29,
       "creates": 17
     },
     {
       "name": "5-item-level",
-      "sha256": "581acffcedba487ff6d956d2354a749e708b9ad572c3bc273971679ce6f4f5eb",
+      "sha256": "7059ccfdfc5034163f2e0a7acb1aad4122a7afe4fcc334f0cba2dd1cf42440f3",
       "resources": 48,
       "creates": 17
     },
     {
       "name": "5-root-rewards",
-      "sha256": "0f258c99951beb0bb7015063c4f73ab3912966628bddfb8781f05ed8054a5126",
+      "sha256": "8360a326f012e9535617295026643cae06c1a569b8a72d2e832d9eb1bdeae322",
       "resources": 29,
       "creates": 17
     },
     {
       "name": "5-combined",
-      "sha256": "e606bd220b08dd3f3e089d3fc0315e3c1e57e40a1fb2a9d0c324d90d9f929566",
+      "sha256": "44d3da295c29d509fc4fa61137b442453fe0abae64700494b367a00a958bd6c3",
       "resources": 48,
       "creates": 17
     },
     {
       "name": "6-plain",
-      "sha256": "7e5b4888d4205fb4b9dd7490129b8347bb1c64a151fe48211ee93cb304652e28",
+      "sha256": "b93698151a5e6479d95f050ecf64d74f5098373e9ed2d6feaee391b297486f88",
       "resources": 65,
       "creates": 57
     },
     {
       "name": "6-mana",
-      "sha256": "95c87b038809bece11f51c69a49dc44b8dd5ac72fdd653ee9d4b12591a1f7c21",
+      "sha256": "144d582fb739c3766d1f60ddd6216afb3541a2f8821eeae79b9578f1614de99e",
       "resources": 66,
       "creates": 57
     },
     {
       "name": "6-cast",
-      "sha256": "3cd707f26275893a9a8b485a4cc50a036eaab52c4356a5cff603ed0adbf6b22d",
+      "sha256": "4b3622befbfa1cf4442fb082730d337158d9173c0368ed39648814df8a2a684f",
       "resources": 66,
       "creates": 57
     },
     {
       "name": "6-round-down",
-      "sha256": "0b22e30148c16d98bd3c10e92f3d96dae382aa64386f19f91b1e71697419f6c1",
+      "sha256": "87c830e86d4ace363ed4551ff2474159d4c4cfbc8152637681f5a76a222a03d3",
       "resources": 66,
       "creates": 57
     },
     {
       "name": "6-round-up",
-      "sha256": "848257f64581184b1ff022b3eec78c4114f857473df2847c7d7c2e35eb8e3fa5",
+      "sha256": "be72db183b5d40e7ea8936dfa4679700982805316546cf4b5da6d1fe2ca75f5e",
       "resources": 66,
       "creates": 57
     },
     {
       "name": "6-minimum",
-      "sha256": "01fa74ba2b76127543332218c9118173c7a06f57902a866f16b617bff911ce02",
+      "sha256": "ca9f80727d9d8ee93fada6734bba894a13e0767d3cdfeb89067d02f0808e2cf9",
       "resources": 66,
       "creates": 57
     },
     {
       "name": "6-stack",
-      "sha256": "2d60539c6a63fb6b55c18678a3cad60050e7c3b99f88114b259a09b83b20ae9c",
+      "sha256": "90edb6cd51d818155c775b226f6ff2deffe1ca31f9e1bef823238b15172ee58e",
       "resources": 65,
       "creates": 57
     },
     {
       "name": "6-item-level",
-      "sha256": "4afcad584a6f13ca84f65b24920998213b33a8c6a5767094436e5cec12005552",
+      "sha256": "eb785adde2ef9b7aa86ca76f7b74e218b9cfefe97e476f4feaaf7b3cae9d7fed",
       "resources": 84,
       "creates": 57
     },
     {
       "name": "6-root-rewards",
-      "sha256": "e836a742e3523dd68979f59cd813e8c1044bca6a4c6ad14e936d6763b086c15b",
+      "sha256": "5cfd892be2428d773e085846412fb02f97436b631e5c2a17f130c7fed6d8f4f0",
       "resources": 65,
       "creates": 57
     },
     {
       "name": "6-combined",
-      "sha256": "5fc1f978a5b92d61913390a428851ea1f2a0c5b318d29ea1a8fbe936d93c96c6",
+      "sha256": "5b71d2af92a31c4604ef53ce6e5db8a5cba99a757a531961d4a673aef0018a40",
       "resources": 84,
       "creates": 57
     },
     {
       "name": "7-plain",
-      "sha256": "8bce1a49e661dac5f22490ad78af04aef5111c599a8ee39a426a40751c2e2db9",
+      "sha256": "5a38520f803baac14449b1f2cab7a7f30f0c72e91f91346c0e4d0d69821dfc15",
       "resources": 78,
       "creates": 66
     },
     {
       "name": "7-mana",
-      "sha256": "f837ffde79d6c1b2bd570dd8df7d9124a6d3bf2b2dff27ce5d841cebd5edaaa4",
+      "sha256": "c501a077e6118b36678a9a7aa7510b6c297d3399e21ea9d21e1531d1ef9bfa8a",
       "resources": 79,
       "creates": 66
     },
     {
       "name": "7-cast",
-      "sha256": "c36c57800b69b31b05792689c6b81cee75c9b4583b758535dcf46b6a78f77d4b",
+      "sha256": "23de9e420ecb65e0101cb3969664fdd8ce620acded3c04ca6d4b6deab577cb90",
       "resources": 79,
       "creates": 66
     },
     {
       "name": "7-round-down",
-      "sha256": "401e0e38f5782ed942c59408c0078a7ad764488db436c9fe44951372f4fbb7db",
+      "sha256": "993d3e3650015eaf6cc86853a06380a7559819cd4a26ef15f3a75ee35a978b62",
       "resources": 79,
       "creates": 66
     },
     {
       "name": "7-round-up",
-      "sha256": "b0743900308b9b01bebf6a0f2d200bc785b5e7ddd93a7866dc00181ade36a6d4",
+      "sha256": "544472d1a9b713809fa949e19f448428b0c60c3d76412f97cd9b7f7cf391b3df",
       "resources": 79,
       "creates": 66
     },
     {
       "name": "7-minimum",
-      "sha256": "a1f2ed85e24e0965c0faa1fdb11b9637ff1fb864a739fa752f23bf2593759753",
+      "sha256": "a8e43a3a632ea1ef6d9c33e67c1003f34ca82023c8eda4caf9b9bffe95008d1e",
       "resources": 79,
       "creates": 66
     },
     {
       "name": "7-stack",
-      "sha256": "cb370727a89346a21143f48ed2fed4f82405699b4715902ae4b1431587f69894",
+      "sha256": "a35bcda4f6b7d484db0bd0555ff55a2c7d817fb7eb5866051a6d17ed8d602146",
       "resources": 78,
       "creates": 66
     },
     {
       "name": "7-item-level",
-      "sha256": "5b728196089b50ef70bfcd9752e6e79a1c4b43db78948b88b459563c3b9e0782",
+      "sha256": "52f752c270b14b95d64d1c7ce537fba85aa187f4ef78d30f4d4d5a6ff5f60961",
       "resources": 97,
       "creates": 66
     },
     {
       "name": "7-root-rewards",
-      "sha256": "2eec148ac2870225e49819a571f2a2a8c555150f459c33c97262f980d918dedd",
+      "sha256": "198f5852e3dbeeefaf7c026cead13defc130cc1f6f2acc93a237327f0ecbe8ac",
       "resources": 78,
       "creates": 66
     },
     {
       "name": "7-combined",
-      "sha256": "38d8a59b63570de1bcad7fe6aa4451f77b891a742794cc9758cdb6ad6e16d285",
+      "sha256": "dd98375bd1f6551656f589addf18337fdb74d0ee3c7c7b1ca599ed1c8f216b7d",
       "resources": 97,
       "creates": 66
     }

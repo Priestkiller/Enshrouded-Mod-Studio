@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "studio": "0.4.37",
+  "engineFingerprint": "28fbcfac23a37424c8c080b150bbc7701c67d429f3cc94422b33cdf35fb88c05",
+  "config": {
+    "enabled": true,
+    "maxCompanions": 5,
+    "durationSeconds": 120,
+    "strengthFactor": 2
+  },
+  "resources": [
+    {
+      "guid": "38f78df4-7fe4-5a87-b2f1-56998464f91d",
+      "sha256": "6d0da1505cea9653570c339ffed291dfeb89b59cb6e1bcfb60bab1818ecfc0ee",
+      "excludeMerchantDialogue": true
+    },
+    {
+      "guid": "10c84674-9497-5eb2-a8fe-a5b7fb4a7ec6",
+      "sha256": "7c0c186cc8b23e7ad8038127e7d8642c4f8e21acc60ed75addb2f9ee5caab4d4",
+      "excludeMerchantDialogue": false
+    },
+    {
+      "guid": "06f8b44a-350d-508d-9af7-f249396f29b7",
+      "sha256": "990c4734129b2c197ce9497e3b707c2796de5572e826457ee67d5d7e879d7dc3",
+      "excludeMerchantDialogue": false
+    },
+    {
+      "guid": "00ccd737-8fa1-58f9-a25f-17ae21373e4e",
+      "sha256": "ebfcc8a8794e25b6b042db87c162c8dcda418c216990acad7ab24c14bdb371c3",
+      "excludeMerchantDialogue": false
+    },
+    {
+      "guid": "e6ce22fd-b33a-53ac-9fd3-440c09be6b23",
+      "sha256": "7912b7204945c94c5c9d363346c0cc739acc3f1dfdd2a187c6cb5c91cd3ffc7a",
+      "excludeMerchantDialogue": false
+    },
+    {
+      "guid": "e16b5fa4-f91d-5195-9c00-cfe52b8600d5",
+      "sha256": "ddf031011eb77691dc448b8b42fb9e87c3a224b43b372ac670dd94f3e3d7e52a",
+      "excludeMerchantDialogue": false
+    },
+    {
+      "guid": "09a3fd91-5b7e-5298-9f65-a0aafcf8195a",
+      "sha256": "52912526b85ee05183f52eaeb842e26d2921ab68ebc534f1bad8ae02b0effbe6",
+      "excludeMerchantDialogue": false
+    },
+    {
+      "guid": "93fcf2df-d07c-59ee-9192-fd638b77dab2",
+      "sha256": "14913402b568da1304f063272d46e507e0d889300f5ebb57c2969338fe6d3a7d",
+      "excludeMerchantDialogue": false
+    }
+  ]
+}

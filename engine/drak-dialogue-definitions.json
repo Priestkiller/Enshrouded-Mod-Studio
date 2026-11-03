@@ -1,0 +1,405 @@
+{
+  "format": 1,
+  "sourceBuild": "1283531",
+  "nativeBuild": "1283531|^/game38/branches/release_1.0|2026-10-30T09:15:50.868196Z",
+  "authorship": "original-mod-backstory; not official Enshrouded canon",
+  "merchantTemplateGuid": "38f78df4-7fe4-5a87-b2f1-56998464f91d",
+  "name": {
+    "guid": "f989e92e-db0f-5085-9868-a25b515db955",
+    "de": "Ssarikk, Drak-Handwerker",
+    "en": "Ssarikk, Drak Craftsman"
+  },
+  "schema": {
+    "keen::ecs::NpcDialog": {
+      "primitiveType": "STRUCT",
+      "size": 120,
+      "alignment": 4,
+      "qualifiedHash": 2846724326,
+      "fieldCount": 4,
+      "innerType": "keen::ecs::Component",
+      "fields": {
+        "isFlame": {
+          "offset": 0,
+          "type": "keen::bool"
+        },
+        "dialog": {
+          "offset": 4,
+          "type": "keen::ObjectReference<keen::NpcDialogDefinition>"
+        },
+        "dialogResource": {
+          "offset": 20,
+          "type": "keen::NpcDialogResource"
+        },
+        "interactionVerbLoca": {
+          "offset": 104,
+          "type": "keen::LocaTagReference"
+        }
+      },
+      "enums": null
+    },
+    "keen::NpcDialogResource": {
+      "primitiveType": "STRUCT",
+      "size": 84,
+      "alignment": 4,
+      "qualifiedHash": 913956789,
+      "fieldCount": 11,
+      "innerType": null,
+      "fields": {
+        "headline": {
+          "offset": 0,
+          "type": "keen::LocaTagId"
+        },
+        "crafting": {
+          "offset": 4,
+          "type": "keen::LocaTagId"
+        },
+        "itemUpgrade": {
+          "offset": 8,
+          "type": "keen::LocaTagId"
+        },
+        "itemRecycling": {
+          "offset": 12,
+          "type": "keen::LocaTagId"
+        },
+        "sendBackToFlame": {
+          "offset": 16,
+          "type": "keen::LocaTagId"
+        },
+        "defaultSequence": {
+          "offset": 20,
+          "type": "keen::actor::ActorSequenceReference"
+        },
+        "missingRequirementSequence": {
+          "offset": 36,
+          "type": "keen::actor::ActorSequenceReference"
+        },
+        "initLines": {
+          "offset": 52,
+          "type": "keen::BlobArray<keen::NpcDialogInitLineResource>"
+        },
+        "transitionLines": {
+          "offset": 60,
+          "type": "keen::BlobArray<keen::NpcDialogTransitionLineResource>"
+        },
+        "farewellLines": {
+          "offset": 68,
+          "type": "keen::BlobArray<keen::NpcDialogFarewellResource>"
+        },
+        "dialogOptions": {
+          "offset": 76,
+          "type": "keen::BlobArray<keen::NpcDialogOptionResource>"
+        }
+      },
+      "enums": null
+    },
+    "keen::NpcDialogOptionResourceBase": {
+      "primitiveType": "STRUCT",
+      "size": 64,
+      "alignment": 4,
+      "qualifiedHash": 1998232909,
+      "fieldCount": 10,
+      "innerType": null,
+      "fields": {
+        "optionId": {
+          "offset": 0,
+          "type": "keen::DialogOptionId"
+        },
+        "overrideSequence": {
+          "offset": 4,
+          "type": "keen::bool"
+        },
+        "sequence": {
+          "offset": 8,
+          "type": "keen::actor::ActorSequenceReference"
+        },
+        "knowledgeUnlockOperations": {
+          "offset": 24,
+          "type": "keen::BlobArray<keen::KnowledgeUnlockOperation>"
+        },
+        "knowledgeRequirement": {
+          "offset": 32,
+          "type": "keen::KnowledgeQueryData"
+        },
+        "bodyTexts": {
+          "offset": 44,
+          "type": "keen::BlobArray<keen::LocaTagId>"
+        },
+        "voiceovers": {
+          "offset": 52,
+          "type": "keen::BlobArray<keen::ObjectReference<keen::VoiceoverResource>>"
+        },
+        "uiHintType": {
+          "offset": 60,
+          "type": "keen::DialogHintType"
+        },
+        "dialogStartAction": {
+          "offset": 61,
+          "type": "keen::DialogAction"
+        },
+        "dialogEndAction": {
+          "offset": 62,
+          "type": "keen::DialogAction"
+        }
+      },
+      "enums": null
+    },
+    "keen::NpcDialogOptionResource": {
+      "primitiveType": "STRUCT",
+      "size": 68,
+      "alignment": 4,
+      "qualifiedHash": 1395711912,
+      "fieldCount": 1,
+      "innerType": "keen::NpcDialogOptionResourceBase",
+      "fields": {
+        "optionText": {
+          "offset": 64,
+          "type": "keen::LocaTagId"
+        }
+      },
+      "enums": null
+    },
+    "keen::NpcDialogInitLineResource": {
+      "primitiveType": "STRUCT",
+      "size": 68,
+      "alignment": 4,
+      "qualifiedHash": 2777769417,
+      "fieldCount": 1,
+      "innerType": "keen::NpcDialogOptionResourceBase",
+      "fields": {
+        "isWakeup": {
+          "offset": 64,
+          "type": "keen::bool"
+        }
+      },
+      "enums": null
+    },
+    "keen::NpcDialogFarewellResource": {
+      "primitiveType": "STRUCT",
+      "size": 64,
+      "alignment": 4,
+      "qualifiedHash": 1848270149,
+      "fieldCount": 0,
+      "innerType": "keen::NpcDialogOptionResourceBase",
+      "fields": {},
+      "enums": null
+    },
+    "keen::KnowledgeQueryData": {
+      "primitiveType": "STRUCT",
+      "size": 12,
+      "alignment": 4,
+      "qualifiedHash": 3309454702,
+      "fieldCount": 5,
+      "innerType": null,
+      "fields": {
+        "knowledgeOrQueryId": {
+          "offset": 0,
+          "type": "keen::HashKey32"
+        },
+        "compareValue": {
+          "offset": 4,
+          "type": "keen::KnowledgeState"
+        },
+        "compareOperator": {
+          "offset": 8,
+          "type": "keen::CompareOperator"
+        },
+        "type": {
+          "offset": 9,
+          "type": "keen::KnowledgeQueryDataType"
+        },
+        "isExplicitPlayerKnowledgeQuery": {
+          "offset": 10,
+          "type": "keen::bool"
+        }
+      },
+      "enums": null
+    },
+    "keen::DialogAction": {
+      "primitiveType": "ENUM",
+      "size": 1,
+      "alignment": 1,
+      "qualifiedHash": 4196414028,
+      "fieldCount": 2,
+      "innerType": "keen::uint8",
+      "fields": {},
+      "enums": {
+        "None": 0,
+        "PlayOutro": 1
+      }
+    },
+    "keen::DialogHintType": {
+      "primitiveType": "ENUM",
+      "size": 1,
+      "alignment": 1,
+      "qualifiedHash": 1722225483,
+      "fieldCount": 4,
+      "innerType": "keen::uint8",
+      "fields": {},
+      "enums": {
+        "None": 0,
+        "Hint": 1,
+        "Attention": 2,
+        "MainQuest": 3
+      }
+    }
+  },
+  "silentPattern": {
+    "templateGuid": "04d42ed2-beb4-4013-8f10-5d63efae2015",
+    "pointer": "components.keen::ecs::NpcDialog.dialogResource.initLines[1]",
+    "sha256": "032de736fef789d038c2c1ad270fac75511d336c119c5ae7c049f28c2b3fcc06",
+    "document": {
+      "optionId": {
+        "value": 1724574792
+      },
+      "overrideSequence": false,
+      "sequence": null,
+      "knowledgeUnlockOperations": [],
+      "knowledgeRequirement": {
+        "knowledgeOrQueryId": {
+          "value": 0
+        },
+        "compareValue": 0,
+        "compareOperator": "GreaterThan",
+        "type": "Extern",
+        "isExplicitPlayerKnowledgeQuery": false
+      },
+      "bodyTexts": [
+        {
+          "value": 2262475715
+        }
+      ],
+      "voiceovers": [
+        null
+      ],
+      "uiHintType": "None",
+      "dialogStartAction": "None",
+      "dialogEndAction": "None",
+      "isWakeup": false
+    }
+  },
+  "defaultSequence": {
+    "guid": "773f9e8d-fe1a-4993-b540-a7bdc69c10a1",
+    "sha256": "46df7b7d84b429685c1c51e31c6035635fa587c7f029ce241f38ba6abbe707a0",
+    "document": {
+      "resourceId": "773f9e8d-fe1a-4993-b540-a7bdc69c10a1",
+      "subSequences": [
+        {
+          "events": [],
+          "length": {
+            "value": 5000000100
+          },
+          "loop": false,
+          "name": "NPC_Flame_talk_5sec",
+          "triggerRequirements": {
+            "requiredActorStates": [],
+            "forbiddenActorStates": []
+          },
+          "sourceSubSequenceId": "9b54e640-54a6-4c41-b830-5e223b812878",
+          "majorDirection": "Invalid",
+          "mask": [
+            "DoesRequireStandingUp"
+          ]
+        }
+      ],
+      "$type": "keen::actor::ActorSequenceResource",
+      "$guid": "773f9e8d-fe1a-4993-b540-a7bdc69c10a1",
+      "$part": 0
+    }
+  },
+  "intro": {
+    "optionGuid": "8d0b76f6-7a2a-5dec-8abe-f68719712c7c",
+    "body": {
+      "key": "intro",
+      "guid": "a79fd353-ef2e-5b2d-86b7-163d3b0f57dd",
+      "de": "Ssarikk. Handwerker, Wanderer – und aus freiem Willen hier. Dein Rufzeichen hat mich gefunden. Was möchtest du wissen?",
+      "en": "Ssarikk. Craftsman, wanderer—and here by my own choice. Your calling mark has found me. What would you like to know?"
+    }
+  },
+  "farewell": {
+    "optionGuid": "a5734573-a621-55fb-8f5d-f9589cb3d699",
+    "body": {
+      "key": "farewell",
+      "guid": "88683cd9-f264-5a87-b534-a49a05ea1dcc",
+      "de": "Bewahre das Rufzeichen. Ich kehre zurück, solange unser Pakt besteht.",
+      "en": "Keep the calling mark safe. I will return while our pact holds."
+    }
+  },
+  "topics": [
+    {
+      "key": "identity",
+      "optionGuid": "11dbc7d0-7db9-5d29-b038-2d67754c5231",
+      "label": {
+        "key": "identity.label",
+        "guid": "633172a6-1e9a-51d2-92af-3c1d158883b1",
+        "de": "Wer bist du?",
+        "en": "Who are you?"
+      },
+      "body": {
+        "key": "identity.body",
+        "guid": "0e7da0f9-4931-5e5d-a17d-4935a25acdde",
+        "de": "Ich bin Ssarikk. Als ich meine Heimat verlassen musste, nahm ich meine Werkzeuge mit, nicht den Streit meiner Leute. Unter dem Schutz deiner Flamme kann ich wieder arbeiten. Du erhältst mein Handwerk, ich einen sicheren Ort.",
+        "en": "I am Ssarikk. When I had to leave my home, I took my tools, not my people’s quarrels. Under the protection of your Flame, I can work again. You gain my craft; I gain a safe place."
+      },
+      "uiHintType": "None"
+    },
+    {
+      "key": "summoning",
+      "optionGuid": "6721697f-cf43-5171-ac52-0870cd99b31a",
+      "label": {
+        "key": "summoning.label",
+        "guid": "731a18ab-aaeb-57cb-8c70-5a9eef8cbdda",
+        "de": "Warum kann ich dich rufen?",
+        "en": "Why can I summon you?"
+      },
+      "body": {
+        "key": "summoning.body",
+        "guid": "84422314-7242-5082-8824-d0700787e55d",
+        "de": "Weil ich es erlaubt habe. Dein Beschwörungsstab trägt mein Rufzeichen. Ein geschützter Flammenaltar weist mir den Weg zu dir. Ich bin kein wiedererwecktes Skelett und kein gefesselter Geist. Dies ist ein freiwilliger Pakt.",
+        "en": "Because I agreed to it. Your Summoning Staff carries my calling mark. A safe Flame Altar shows me the way to you. I am no reanimated skeleton and no captive spirit. This is a willing pact."
+      },
+      "uiHintType": "Hint"
+    },
+    {
+      "key": "companions",
+      "optionGuid": "24d8863a-1ea1-5191-ab9a-00665d9a223e",
+      "label": {
+        "key": "companions.label",
+        "guid": "f36990ad-3bc3-58e1-9ac5-b757894542c1",
+        "de": "Wer sind deine Gefährten?",
+        "en": "Who are your companions?"
+      },
+      "body": {
+        "key": "companions.body",
+        "guid": "9f746838-3165-570b-945d-7ced6c095087",
+        "de": "Meine Gefährten haben denselben Pakt gewählt. Der Speer hält die Front, das Chakram schützt die Flanken, der Magier trägt das geheime Wort. Du rufst ihre Hilfe, nicht ihren Willen. Behandle sie wie Verbündete.",
+        "en": "My companions chose the same pact. The spear holds the front, the chakram guards the flanks, and the mage bears the hidden word. You call for their help, not control of their will. Treat them as allies."
+      },
+      "uiHintType": "None"
+    },
+    {
+      "key": "craft",
+      "optionGuid": "6d759b57-0453-5a63-afcb-01fc6d8cb1ef",
+      "label": {
+        "key": "craft.label",
+        "guid": "2cb0daeb-2456-5982-812c-fbd87c07dca6",
+        "de": "Was stellst du her?",
+        "en": "What do you craft?"
+      },
+      "body": {
+        "key": "craft.body",
+        "guid": "6d7cfa59-bcf6-5695-a35e-d3b30ed76c2c",
+        "de": "Aus Drak-Schuppen, Klauen, Zähnen und Blut forme ich beständige Rufzauber; für den Magier brauche ich auch Aquamarin. Der Stab bringt mich zu dir. Meine Zauber rufen die Gefährten. Über mein Handwerksmenü kannst du sie herstellen.",
+        "en": "From Drak scales, claws, teeth, and blood, I shape lasting calling spells; the mage also requires aquamarine. The staff brings me to you. My spells call the companions. You can craft them through my workshop menu."
+      },
+      "uiHintType": "None"
+    }
+  ],
+  "ambient": false,
+  "baseLabels": {
+    "headline": 2737515966,
+    "crafting": 889726458,
+    "itemUpgrade": 0,
+    "itemRecycling": 0,
+    "sendBackToFlame": 3834400317
+  }
+}

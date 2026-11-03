@@ -1,15 +1,7 @@
-Mod Studio 0.4.37
+Mod Studio 0.4.38
 
-Behebt fehlende native UI-Texturressourcen für den Drak-Handwerker,
-die drei Drak-Zauber und sieben Nachtpflanzen-Setzlinge. Das Spiel
-forderte beim Öffnen der NPC-Auswahl die Textur unter der neuen
-Gegenstandskennung an; diese Ressource fehlte bisher.
+Vier eigene Draki-Symbole: Ssarikk als Handwerker sowie Speerkrieger, Chakramjäger und Magier erhalten jeweils ein unterscheidbares Bild.
 
-Neue Clientarchive prüfen alle elf eigenen Gegenstandstexturen und
-deren unveränderte native Bildinhalte nach erneutem Auslesen.
-Die Serverrezepte und Spieloptionen bleiben inhaltlich unverändert.
-Manager 0.15.51 und Spielerclient 0.16.31 verwenden.
-Archive und Bildressourcen werden im Hintergrund geprüft; ein
-Spieltest für Platzierung, Animation und Kampf steht weiterhin aus.
+Ssarikk bekommt vier Gesprächsthemen mit eigener Mod-Hintergrundgeschichte: Herkunft, freiwillige Beschwörung über das Rufzeichen im Stab, verbündete Gefährten und Herstellung. Das native Gesprächsmenü wird verwendet. Der Gesprächshinweis über dem Kopf ist eine Testfunktion; seine Anzeige sowie Platzierung und Kampf benötigen einen Spieltest. Keine neue Sprachausgabe.
 
-Ein vorhandenes Studio-0.4.36-Serverpaket kann weiterverwendet werden. Nach dem Update bei geschlossenem Spiel Synchronisieren drücken; die Clientdateien werden auch bei gleicher Serverrevision neu erstellt.
+Für diese Erweiterung den Server mit Studio 0.4.38 patchen, neu starten und alle Spieler mit dem passenden Client synchronisieren. Manager 0.15.52 und Spielerclient 0.16.32 verwenden. Vorherige freigegebene Pakete behalten ihre passenden Prüfdaten.
